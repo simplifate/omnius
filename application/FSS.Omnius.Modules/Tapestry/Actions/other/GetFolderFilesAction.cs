@@ -1,10 +1,6 @@
-﻿using FSS.Omnius.Modules.CORE;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.IO;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.other
 {
@@ -15,45 +11,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
     [OtherRepository]
     class GetFolderFilesAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 118999;
-            }
-        }
+        public override int Id => 118999;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "?Path", "?WithFullPaths"};
-            }
-        }
+        public override string[] InputVar => new string[] { "?Path", "?WithFullPaths"};
 
-        public override string Name
-        {
-            get
-            {
-                return "Get Folder Files";
-            }
-        }
+        public override string Name => "Get Folder Files";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Files" };
-            }
-        }
+        public override string[] OutputVar => new string[] { "Files" };
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {

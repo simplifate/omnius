@@ -1,63 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FSS.Omnius.Modules.CORE;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Web;
 using System.Web.Configuration;
+using FSS.Omnius.Modules.Entitron.DB;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
     public class OpenUrlAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 1111;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] {"Block","ModelId", "?Button" };
-            }
-        }
+        public override int Id => 1111;
 
-        public override string Name
-        {
-            get
-            {
-                return "Open Url";
-            }
-        }
+        public override int? ReverseActionId => null;
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { };
-            }
-        }
+        public override string[] InputVar => new string[] {"Block","ModelId", "?Button" };
 
-    
+        public override string Name => "Open Url";
+
+        public override string[] OutputVar => new string[] { };
+
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            DBConnection db = Modules.Entitron.Entitron.i;
 
             string hostname = TapestryUtils.GetServerHostName();
-            string appName = core.Entitron.AppName;
+            string appName = db.Application.Name;
             string blockName = (string)vars["Block"];
             string button = vars.ContainsKey("Button") ? (string)vars["Button"] : "";
             int modelId = vars.ContainsKey("ModelId") ? (int)vars["ModelId"] : -1;

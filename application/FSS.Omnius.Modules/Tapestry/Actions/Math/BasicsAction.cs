@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using FSS.Omnius.Modules.CORE;
-using NCalc;
 using FSS.Omnius.Modules.Tapestry.Actions.Entitron;
+using NCalc;
 
-namespace FSS.Omnius.Modules.Tapestry.Actions
+namespace FSS.Omnius.Modules.Tapestry.Actions.Math
 {
     /// <summary>
     /// Evaluate any math problem

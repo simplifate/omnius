@@ -14,72 +14,71 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
     {
         public ActionResult Index(FormCollection formParams)
         {
-            using (var context = DBEntities.instance)
+            DBEntities context = DBEntities.instance;
+            JArray metablockList = JArray.Parse("[]");
+
+            if (Request.HttpMethod == "POST")
             {
-                JArray metablockList = JArray.Parse("[]");
-
-                if (Request.HttpMethod == "POST")
+                int metablockId = 0;
+                TapestryDesignerMetablock parentMetablock = null;
+                if (formParams["appId"] != null)
                 {
-                    int metablockId = 0;
-                    TapestryDesignerMetablock parentMetablock = null;
-                    if (formParams["appId"] != null)
+                    int appId = int.Parse(formParams["appId"]);
+                    HttpContext.GetLoggedUser().DesignAppId = appId;
+                    context.SaveChanges();
+                    var app = context.Applications.Find(appId);
+                    var rootMetablock = app.TapestryDesignerRootMetablock;
+                    if(rootMetablock == null)
                     {
-                        int appId = int.Parse(formParams["appId"]);
-                        HttpContext.GetLoggedUser().DesignAppId = appId;
-                        HttpContext.GetCORE().Entitron.GetStaticTables().SaveChanges();
-                        var app = context.Applications.Find(appId);
-                        var rootMetablock = app.TapestryDesignerRootMetablock;
-                        if(rootMetablock == null)
+                        var newRootMetablock = new TapestryDesignerMetablock
                         {
-                            var newRootMetablock = new TapestryDesignerMetablock
-                            {
-                                Name = "Root metablock",
-                                ParentApp = app
-                            };
-                            context.TapestryDesignerMetablocks.Add(newRootMetablock);
-                            context.SaveChanges();
-                            metablockId = newRootMetablock.Id;
-                        }
-                        else
-                            metablockId = rootMetablock.Id;
-                        ViewData["appName"] = context.Applications.Find(appId).DisplayName;
-                        ViewData["currentAppId"] = appId;
-
-                        GetMetablockList(rootMetablock, ref metablockList, 0);
+                            Name = "Root metablock",
+                            ParentApp = app
+                        };
+                        context.TapestryDesignerMetablocks.Add(newRootMetablock);
+                        context.SaveChanges();
+                        metablockId = newRootMetablock.Id;
                     }
                     else
-                    {
-                        metablockId = int.Parse(formParams["metablockId"]);
-                        parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock")
-                            .Where(c => c.Id == metablockId).First().ParentMetablock;
+                        metablockId = rootMetablock.Id;
+                    ViewData["appName"] = context.Applications.Find(appId).DisplayName;
+                    ViewData["currentAppId"] = appId;
 
-                        Application app = GetApplication(parentMetablock, metablockId, context); 
-
-                        ViewData["appName"] = app.Name;
-                        ViewData["currentAppId"] = app.Id;
-                        GetMetablockList(app.TapestryDesignerRootMetablock, ref metablockList, 0);
-                    }
-                    ViewData["metablockId"] = metablockId;
-                    if (parentMetablock == null)
-                        ViewData["parentMetablockId"] = 0;
-                    else
-                        ViewData["parentMetablockId"] = parentMetablock.Id;
-                    
+                    GetMetablockList(rootMetablock, ref metablockList, 0);
                 }
                 else
                 {
-                    var userApp = HttpContext.GetLoggedUser().DesignApp;
-                    if (userApp == null)
-                        userApp = context.Applications.First();
-                    ViewData["metablockId"] = userApp.TapestryDesignerRootMetablock.Id;
-                    ViewData["parentMetablockId"] = 0;
-                    ViewData["appName"] = userApp.DisplayName;
-                    ViewData["currentAppId"] = userApp.Id;
-                    GetMetablockList(userApp.TapestryDesignerRootMetablock, ref metablockList, 0);
-                }
+                    metablockId = int.Parse(formParams["metablockId"]);
+                    parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock")
+                        .Where(c => c.Id == metablockId).First().ParentMetablock;
 
-                ViewData["metablockList"] = metablockList;
+                    Application app = GetApplication(parentMetablock, metablockId, context); 
+
+                    ViewData["appName"] = app.Name;
+                    ViewData["currentAppId"] = app.Id;
+                    GetMetablockList(app.TapestryDesignerRootMetablock, ref metablockList, 0);
+                }
+                ViewData["metablockId"] = metablockId;
+                if (parentMetablock == null)
+                    ViewData["parentMetablockId"] = 0;
+                else
+                    ViewData["parentMetablockId"] = parentMetablock.Id;
+                    
             }
+            else
+            {
+                var userApp = HttpContext.GetLoggedUser().DesignApp;
+                if (userApp == null)
+                    userApp = context.Applications.First();
+                ViewData["metablockId"] = userApp.TapestryDesignerRootMetablock.Id;
+                ViewData["parentMetablockId"] = 0;
+                ViewData["appName"] = userApp.DisplayName;
+                ViewData["currentAppId"] = userApp.Id;
+                GetMetablockList(userApp.TapestryDesignerRootMetablock, ref metablockList, 0);
+            }
+
+            ViewData["metablockList"] = metablockList;
+
             return View();
         }
 

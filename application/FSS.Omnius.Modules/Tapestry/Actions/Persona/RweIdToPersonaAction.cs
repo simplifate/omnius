@@ -1,71 +1,35 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
+using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.other
 {
     [OtherRepository]
     class RweIdToPersonaAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 4109;
-            }
-        }
-
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "Id", "?Email", "?Pernr", "?SapId", "?SapId2" };
-            }
-        }
-
-        public override string Name
-        {
-            get
-            {
-                return "Persona: RWE property to UserId";
-            }
-        }
-
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Result" };
-            }
-        }
-
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int Id => 4109;
+        public override string[] InputVar => new string[] { "Id", "?Email", "?Pernr", "?SapId", "?SapId2" };
+        public override string Name => "Persona: RWE property to UserId";
+        public override string[] OutputVar => new string[] { "Result" };
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            var context = DBEntities.appInstance(core.Entitron.Application);
-            var rweUsersTable = core.Entitron.GetDynamicTable("Users");
+            DBConnection db = Modules.Entitron.Entitron.i;
+            var context = DBEntities.appInstance(db.Application);
+            var rweUsersTable = db.Table("Users");
 
             List<DBItem> results;
             if (vars.ContainsKey("Id"))
             {
                 int userId = Convert.ToInt32(vars["Id"]);
-                results = rweUsersTable.Select().where(c => c.column("id").Equal(userId)).ToList();
+                results = rweUsersTable.Select().Where(c => c.Column("id").Equal(userId)).ToList();
             }
             else {
-                results = rweUsersTable.Select().where(c => c.column("pernr").Equal((string)vars["Pernr"])).ToList();
+                results = rweUsersTable.Select().Where(c => c.Column("pernr").Equal((string)vars["Pernr"])).ToList();
 
             }
             if (results.Count > 0)

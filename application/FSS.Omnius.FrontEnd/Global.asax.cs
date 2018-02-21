@@ -1,22 +1,16 @@
-﻿using FSS.Omnius.FrontEnd.Views;
-using FSS.Omnius.Controllers.CORE;
-using System;
-using System.Collections.Specialized;
+﻿using System;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
-using System.Web.Optimization;
+using System.Configuration;
 using System.Web.Routing;
-using System.Net.Mail;
-using System.Net;
+using FSS.Omnius.FrontEnd.Views;
+using FSS.Omnius.Controllers.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Controllers.Tapestry;
-using System.Collections.Generic;
-using System.Data.Entity.Validation;
-using System.Diagnostics;
-using System.Globalization;
-using System.Configuration;
+using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.FrontEnd
 {
@@ -34,8 +28,9 @@ namespace FSS.Omnius.FrontEnd
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
             Logger.Log.ConfigureRootDir(Server);
-            Omnius.Modules.Entitron.Entitron.connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             MvcHandler.DisableMvcResponseHeader = true;
+            Entitron.DefaultConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            Entitron.DefaultDBType = DBCommandSet.GetSqlType(ConfigurationManager.ConnectionStrings["DefaultConnection"].ProviderName);
             App_Start.AppStart.AppInitialize();
             Logger.Log.Info("Omnius starts");
         }
@@ -70,6 +65,28 @@ namespace FSS.Omnius.FrontEnd
 
             RunController.requestStart = DateTime.Now;
             DBEntities.Create();
+
+            // app
+            RouteData routeData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current));
+            if (routeData != null)
+            {
+                string appName = (string)routeData.Values["appName"];
+                if (string.IsNullOrEmpty(appName) && (routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values.ContainsKey("appName") == true)
+                    appName = (string)(routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values["appName"];
+                if (!string.IsNullOrEmpty(appName))
+                    Entitron.Create(appName); // run controller || api run controller
+                else
+                {
+                    int appId = routeData.Values.ContainsKey("appId")
+                        ? Convert.ToInt32(routeData.Values["appId"])
+                        : (routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values.ContainsKey("appId") == true
+                            ? Convert.ToInt32((routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values["appId"] ?? -1)
+                            : -1;
+
+                    if (appId != -1)
+                        Entitron.Create(appId);
+                }
+            }
         }
 
         protected void Application_EndRequest()
@@ -100,6 +117,7 @@ namespace FSS.Omnius.FrontEnd
                 c.Execute(new RequestContext(new HttpContextWrapper(Context), rd));
             }
             DBEntities.Destroy();
+            Entitron.Destroy();
         }
     }
 }

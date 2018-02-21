@@ -1,20 +1,16 @@
-﻿using FSS.Omnius.Modules.Entitron;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
 using System.IO;
-using System.Data.Entity;
+using System.Linq;
+using System.Web;
+using System.Text.RegularExpressions;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.CORE;
-using System.Text.RegularExpressions;
+using FSS.Omnius.Modules.Entitron.DB;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 {
@@ -22,52 +18,24 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
     [MozaicRepository]
     public class ExportToExcelAction : Action
     {
-        private CORE.CORE core;
+        private DBConnection _db;
 
-        public override int Id
-        {
-            get
-            {
-                return 2004;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "?TableName", "?ViewName", "?Filter", "?Columns" };
-            }
-        }
+        public override int Id => 2004;
 
-        public override string Name
-        {
-            get
-            {
-                return "Export to Excel";
-            }
-        }
+        public override int? ReverseActionId => null;
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { };
-            }
-        }
+        public override string[] InputVar => new string[] { "?TableName", "?ViewName", "?Filter", "?Columns" };
+
+        public override string Name => "Export to Excel";
+
+        public override string[] OutputVar => new string[] { };
 
         public int DBSet { get; private set; }
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // Init
-            core = (CORE.CORE)vars["__CORE__"];
+            _db = Modules.Entitron.Entitron.i;
             List<DBItem> data = new List<DBItem>();
             List<string> rows = new List<string>();
             List<string> columns = new List<string>();
@@ -124,7 +92,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                         string foreignTable = target[0];
                         string foreignColumn = target[1];
 
-                        foreach (DBItem fr in core.Entitron.GetDynamicTable(foreignTable).Select().where(c => c.column("id").In(new HashSet<object>(data.Select(i => i[key.Key])))).ToList()) {
+                        foreach (DBItem fr in _db.Table(foreignTable).Select().Where(c => c.Column("id").In(new HashSet<object>(data.Select(i => i[key.Key])))).ToList()) {
                             foreignData[key.Key].Add((int)fr["id"], (string)fr[foreignColumn]);
                         }
 
@@ -254,12 +222,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
         private List<DBItem> ExportFromView(string viewName, Dictionary<string, object> vars)
         {
-            FSS.Omnius.Modules.Entitron.Table.DBView view = core.Entitron.GetDynamicView(viewName);
+            Tabloid view = _db.Tabloid(viewName);
 
             List<DBItem> rows;
             if (vars.ContainsKey("Filter")) {
                 string[] ids = ((string)vars["Filter"]).Split(',');
-                rows = view.Select().where(m => m.column("id").In(ids)).ToList();
+                rows = view.Select().Where(m => m.Column("id").In(ids)).ToList();
             }
             else {
                 rows = view.Select().ToList();
@@ -272,7 +240,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             List<string> columns = new List<string>();
 
             if (!vars.ContainsKey("Columns")) {
-                foreach (DBColumn col in core.Entitron.GetDynamicTable(tableName).columns) {
+                foreach (DBColumn col in _db.Table(tableName).Columns) {
                     columns.Add(col.Name);
                 }
             }

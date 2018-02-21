@@ -77,11 +77,11 @@ namespace FSS.Omnius.Utils.Builder
             try
             {
                 // Lock scheme
-                this.LockScheme();
-                this.DbContext.SaveChanges();
+                LockScheme();
+                DbContext.SaveChanges();
 
-                // Give entitron id of app that we working on 
-                this.Core.Entitron.AppId = this.App.Id;
+                // Give entitron id of app that we working on
+                Entitron.Create(App);
 
                 // Get commits
                 var dbSchemeCommit = this.App.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
@@ -97,7 +97,7 @@ namespace FSS.Omnius.Utils.Builder
                     throw new Exception("Pozor! Databázové schéma je špatně uložené, build nemůže pokračovat, protože by způsobil ztrátu dat!");
 
                 // Generate database
-                new DatabaseGenerateService(SharedTables.Prefix).GenerateDatabase(dbSchemeCommit, this.Core, x => this.Dispatch(x));
+                new DatabaseGenerateService().GenerateDatabase(dbSchemeCommit, this.Core, x => this.Dispatch(x));
 
                 // Set that scheme is updated
                 this.App.EntitronChangedSinceLastBuild = false;

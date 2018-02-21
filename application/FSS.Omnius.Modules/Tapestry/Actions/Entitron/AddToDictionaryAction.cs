@@ -1,63 +1,26 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Sql;
-using FSS.Omnius.Modules.Watchtower;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
     public class AddToDictionaryAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 1030;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "RowData", "KeyMapping", "?Dictionary", "?AutoMapping" };
-            }
-        }
+        public override int Id => 1030;
 
-        public override string Name
-        {
-            get
-            {
-                return "Add to dictionary";
-            }
-        }
+        public override int? ReverseActionId => null;
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Result" };
-            }
-        }
+        public override string[] InputVar => new string[] { "RowData", "KeyMapping", "?Dictionary", "?AutoMapping" };
+
+        public override string Name => "Add to dictionary";
+
+        public override string[] OutputVar => new string[] { "Result" };
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            // init
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            if (core.Entitron.Application == null)
-                core.Entitron.AppName = "EvidencePeriodik";
-
             var dictionary = new Dictionary<string, object>();
             if (vars.ContainsKey("Dictionary"))
                 dictionary = (Dictionary<string, object>)vars["Dictionary"];

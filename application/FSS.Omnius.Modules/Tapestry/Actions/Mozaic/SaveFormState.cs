@@ -1,54 +1,21 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Watchtower;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Web;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 {
     [MozaicRepository]
     public class SaveFormStateAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 2008;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { };
-            }
-        }
+        public override int Id => 2008;
 
-        public override string Name
-        {
-            get
-            {
-                return "Save form state";
-            }
-        }
+        public override int? ReverseActionId => null;
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { };
-            }
-        }
+        public override string[] InputVar => new string[] { };
+
+        public override string Name => "Save form state";
+
+        public override string[] OutputVar => new string[] { };
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {

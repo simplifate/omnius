@@ -227,7 +227,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 if (result.Succeeded)
                 {
                     // module Access permissions
-                    DBEntities context = ControllerContext.HttpContext.GetCORE().Entitron.GetStaticTables();
+                    DBEntities context = DBEntities.instance;
                     context.ModuleAccessPermissions.Add(new ModuleAccessPermission { User = context.Users.Single(u => u.UserName == user.UserName) });
                     context.SaveChanges();
 
@@ -587,7 +587,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //getUser JSON (for dataTable)
         public JsonResult loadData()
         {
-            DBEntities e = ControllerContext.HttpContext.GetCORE().Entitron.GetStaticTables();
+            DBEntities e = DBEntities.instance;
             //var data = e.Users.OrderBy(a => a.UserName).ToList();
             var data = AjaxUsers.converToAjaxUsers(e.Users.ToList()).OrderBy(a => a.UserName);
                 return Json(new { data = data }, JsonRequestBehavior.AllowGet);
@@ -732,7 +732,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         public ActionResult SyncFromWSO()
         {
             var core = new CORE();
-            var db = core.Entitron.GetStaticTables();
+            var db = DBEntities.instance;
 
             NexusWSService webService = new NexusWSService();
             object[] parameters = new[] { "Auction_User" };
@@ -791,10 +791,10 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                             var roles = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString().Split(',').Where(r => r.Substring(0, 8) == "Auction_").Select(e => e.Remove(0, 8));
                             foreach (string role in roles)
                             {
-                                PersonaAppRole approle = db.AppRoles.SingleOrDefault(r => r.Name == role && r.ApplicationId == core.Entitron.AppId);
+                                PersonaAppRole approle = db.AppRoles.SingleOrDefault(r => r.Name == role && r.ApplicationId == core.Application.Id);
                                 if (approle == null)
                                 {
-                                    db.AppRoles.Add(new PersonaAppRole() { Name = role, Application = core.Entitron.Application, Priority = 0 });
+                                    db.AppRoles.Add(new PersonaAppRole() { Name = role, Application = core.Application, Priority = 0 });
                                     db.SaveChanges();
                                 }
                                 //User_Role userRole = newUser.Roles.SingleOrDefault(ur => ur.AppRole == approle && ur.User == newUser);

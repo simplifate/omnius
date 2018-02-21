@@ -40,7 +40,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //getUser JSON (for dataTable)
         public JsonResult loadData()
         {
-            DBEntities e = ControllerContext.HttpContext.GetCORE().Entitron.GetStaticTables();
+            DBEntities e = DBEntities.instance;
             //var data = e.Users.OrderBy(a => a.UserName).ToList();
             var data = e.ModuleAccessPermissions
                     .Select(c => new AjaxModuleAccessPermission

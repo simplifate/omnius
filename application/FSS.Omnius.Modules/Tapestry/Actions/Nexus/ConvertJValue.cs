@@ -1,56 +1,21 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Sql;
-using FSS.Omnius.Modules.Watchtower;
+﻿using System.Collections.Generic;
+using FSS.Omnius.Modules.CORE;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
     public class ConvertJValueAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 205;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "From", "s$Type[String|Integer|Double|Bool]" };
-            }
-        }
+        public override int Id => 205;
 
-        public override string Name
-        {
-            get
-            {
-                return "Convert JValue";
-            }
-        }
+        public override int? ReverseActionId => null;
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Result" };
-            }
-        }
+        public override string[] InputVar => new string[] { "From", "s$Type[String|Integer|Double|Bool]" };
+
+        public override string Name => "Convert JValue";
+
+        public override string[] OutputVar => new string[] { "Result" };
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {

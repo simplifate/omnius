@@ -9191,13 +9191,8 @@ SqlServerDataTypes = [
     ["boolean", "Boolean", false],
     ["integer", "Integer", false],
     ["float", "Float", false],
-    ["currency", "Currency", false],
     ["decimal", "Decimal", false],
-    ["date", "Date", false],
-    ["time", "Time", false],
     ["datetime", "DateTime", false],
-    ["timestamp", "Timestamp", false],
-    ["xml", "XML", true],
     ["blob", "Blob", true],
 ];
 

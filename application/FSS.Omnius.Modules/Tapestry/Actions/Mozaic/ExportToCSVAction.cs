@@ -1,61 +1,28 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.IO;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 {
     [MozaicRepository]
     public class ExportToCSVAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 2003;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "Data", "?Delimiter", "?ExportPath" };
-            }
-        }
+        public override int Id => 2003;
 
-        public override string Name
-        {
-            get
-            {
-                return "Export to CSV";
-            }
-        }
+        public override int? ReverseActionId => null;
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { };
-            }
-        }
+        public override string[] InputVar => new string[] { "Data", "?Delimiter", "?ExportPath" };
+
+        public override string Name => "Export to CSV";
+
+        public override string[] OutputVar => new string[] { };
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // Init
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             List<string> rows = new List<string>();
             string exportPath = vars.ContainsKey("ExportPath") ? (string)vars["ExportPath"] : null;
 
@@ -99,7 +66,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             {
                 File.WriteAllText(exportPath, csv);
             }
-
         }
     }
 }

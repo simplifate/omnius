@@ -1,14 +1,8 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using System.IO;
+using FSS.Omnius.Modules.CORE;
 using Org.BouncyCastle.Utilities.IO.Pem;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Security;
@@ -19,45 +13,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
     [OtherRepository]
     class CreateMSSignature : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 1985;
-            }
-        }
+        public override int Id => 1985;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "s$Data" };
-            }
-        }
+        public override string[] InputVar => new string[] { "s$Data" };
 
-        public override string Name
-        {
-            get
-            {
-                return "Create MoneyServer signature";
-            }
-        }
+        public override string Name => "Create MoneyServer signature";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Result" };
-            }
-        }
+        public override string[] OutputVar => new string[] { "Result" };
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
         private const string XMUPrivateKey = @"-----BEGIN PRIVATE KEY-----
 MIHuAgEAMBAGByqGSM49AgEGBSuBBAAjBIHWMIHTAgEBBEIAxqQzDeo8g4qn07/l
@@ -85,7 +49,8 @@ sE0FP1G8FoMc/5V0lRLGpwyUfH8rT9H/VYC4l2gM58TCmEZ4mu1ygy7mg7vhDZ4d
 
             byte[] result = signer.GenerateSignature();
             byte[] encodedBytes;
-            using (MemoryStream encStream = new MemoryStream()) {
+            using (MemoryStream encStream = new MemoryStream())
+            {
                 Base64.Encode(result, 0, result.Length, encStream);
                 encodedBytes = encStream.ToArray();
             }
@@ -101,7 +66,7 @@ sE0FP1G8FoMc/5V0lRLGpwyUfH8rT9H/VYC4l2gM58TCmEZ4mu1ygy7mg7vhDZ4d
         {
             TimeSpan span = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc));
             double unixTime = span.TotalSeconds;
-            return string.Format("{0}", Math.Floor(unixTime));
+            return string.Format("{0}", System.Math.Floor(unixTime));
         }
     }
 }

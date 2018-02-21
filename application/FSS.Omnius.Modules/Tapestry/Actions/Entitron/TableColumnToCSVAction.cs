@@ -1,15 +1,10 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Nexus.Service;
-using FSS.Omnius.Modules.Tapestry.Actions.Entitron;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Globalization;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
+using FSS.Omnius.Modules.Tapestry.Actions.Entitron;
+
 namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 {
     /// <summary>
@@ -18,41 +13,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
     [EntitronRepository]
     public class TableColumnToCSV : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 30104;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "TableData", "LabelColumn", "ValueColumn1", "?ValueColumn2", "?ValueColumn3", "?ValueColumn4" };
-            }
-        }
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Result" };
-            }
-        }
-        public override string Name
-        {
-            get
-            {
-                return "Table Column To CSV";
-            }
-        }
+        public override int Id => 30104;
+
+        public override int? ReverseActionId => null;
+
+        public override string[] InputVar => new string[] { "TableData", "LabelColumn", "ValueColumn1", "?ValueColumn2", "?ValueColumn3", "?ValueColumn4" };
+
+        public override string[] OutputVar => new string[] { "Result" };
+
+        public override string Name => "Table Column To CSV";
+
         private string checkNull(object Input)
         {
             if (Input == DBNull.Value || Input == null)

@@ -1,64 +1,35 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.Linq;
+using System.Data;
+using System.Linq;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
     public class CreateDbItemForEachAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 1025;
-            }
-        }
+        public override int Id => 1025;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "?TableName", "?ParentProperty", "?ParentId", "?SearchInShared" };
-            }
-        }
+        public override string[] InputVar => new string[] { "?TableName", "?ParentProperty", "?ParentId", "?SearchInShared" };
 
-        public override string Name
-        {
-            get
-            {
-                return "Create DB Item for each";
-            }
-        }
+        public override string Name => "Create DB Item for each";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { };
-            }
-        }
+        public override string[] OutputVar => new string[] { };
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return 1010;
-            }
-        }
+        public override int? ReverseActionId => 1010;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            DBConnection db = Modules.Entitron.Entitron.i;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
 
             string tableName = vars.ContainsKey("TableName")
                 ? (string)vars["TableName"]
                 : (string)vars["__TableName__"];
-            DBTable table = core.Entitron.GetDynamicTable(tableName);
+            DBTable table = db.Table(tableName);
 
             if (table == null)
                 throw new Exception($"Požadovaná tabulka nebyla nalezena (Tabulka: {tableName}, Akce: {Name} ({Id}))");
@@ -66,28 +37,26 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             bool addParentRelation = false;
             string parentRelationColumn = "";
             int parentId = -1;
-            if(vars.ContainsKey("ParentProperty") && vars.ContainsKey("ParentId")
-                && table.columns.Exists(c => c.Name == (string)vars["ParentProperty"]))
+            if (vars.ContainsKey("ParentProperty") && vars.ContainsKey("ParentId")
+                && table.Columns.Any(c => c.Name == (string)vars["ParentProperty"]))
             {
                 addParentRelation = true;
                 parentRelationColumn = (string)vars["ParentProperty"];
                 parentId = (int)vars["ParentId"];
             }
 
-            DBItem item = new DBItem();
-            foreach (DBColumn column in table.columns)
+            DBItem item = new DBItem(db, table);
+            foreach (DBColumn column in table.Columns)
             {
-                if (column.type == "bit")
-                    item.createProperty(column.ColumnId, column.Name,
-                        vars.ContainsKey($"__Model.{table.tableName}.{column.Name}"));
-                else if (vars.ContainsKey($"__Model.{table.tableName}.{column.Name}"))
+                if (column.Type == DbType.Boolean)
+                    item[column.Name] = vars.ContainsKey($"__Model.{table.Name}.{column.Name}");
+                else if (vars.ContainsKey($"__Model.{table.Name}.{column.Name}"))
                 {
-                    if (column.type == "datetime")
+                    if (column.Type == DbType.DateTime)
                     {
                         try
                         {
-                            item.createProperty(column.ColumnId, column.Name,
-                                DateTime.ParseExact((string)vars[$"__Model.{table.tableName}.{column.Name}"], "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture));
+                            item[column.Name] = DateTime.ParseExact((string)vars[$"__Model.{table.Name}.{column.Name}"], "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
                         }
                         catch (FormatException)
                         {
@@ -95,31 +64,28 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                         }
                     }
                     else
-                        item.createProperty(column.ColumnId, column.Name,
-                            vars[$"__Model.{table.tableName}.{column.Name}"]);
+                        item[column.Name] = vars[$"__Model.{table.Name}.{column.Name}"];
                 }
             }
-            if(addParentRelation)
+            if (addParentRelation)
             {
-                item.createProperty(table.columns.Find(c=>c.Name == parentRelationColumn).ColumnId, parentRelationColumn, parentId);
+                item[parentRelationColumn] = parentId;
             }
             table.Add(item);
             for (int panelIndex = 1; vars.ContainsKey($"panelCopy{panelIndex}Marker"); panelIndex++)
             {
-                item = new DBItem();
-                foreach (DBColumn column in table.columns)
+                item = new DBItem(db, table);
+                foreach (DBColumn column in table.Columns)
                 {
-                    if (column.type == "bit")
-                        item.createProperty(column.ColumnId, column.Name,
-                            vars.ContainsKey($"__Model.panelCopy{panelIndex}.{table.tableName}.{column.Name}"));
-                    else if (vars.ContainsKey($"__Model.panelCopy{panelIndex}.{table.tableName}.{column.Name}"))
+                    if (column.Type == DbType.Boolean)
+                        item[column.Name] = vars.ContainsKey($"__Model.panelCopy{panelIndex}.{table.Name}.{column.Name}");
+                    else if (vars.ContainsKey($"__Model.panelCopy{panelIndex}.{table.Name}.{column.Name}"))
                     {
-                        if (column.type == "datetime")
+                        if (column.Type == DbType.DateTime)
                         {
                             try
                             {
-                                item.createProperty(column.ColumnId, column.Name,
-                                    DateTime.ParseExact((string)vars[$"__Model.{table.tableName}.{column.Name}"], "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture));
+                                item[column.Name] = DateTime.ParseExact((string)vars[$"__Model.{table.Name}.{column.Name}"], "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
                             }
                             catch (FormatException)
                             {
@@ -127,17 +93,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                             }
                         }
                         else
-                            item.createProperty(column.ColumnId, column.Name,
-                                vars[$"__Model.panelCopy{panelIndex}.{table.tableName}.{column.Name}"]);
+                            item[column.Name] = vars[$"__Model.panelCopy{panelIndex}.{table.Name}.{column.Name}"];
                     }
                 }
                 if (addParentRelation)
                 {
-                    item.createProperty(table.columns.Find(c => c.Name == parentRelationColumn).ColumnId, parentRelationColumn, parentId);
+                    item[parentRelationColumn] = parentId;
                 }
                 table.Add(item);
             }
-            core.Entitron.Application.SaveChanges();
+            db.SaveChanges();
         }
     }
 }

@@ -1,63 +1,36 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Entitron.Entity.CORE;
-using FSS.Omnius.Modules.Entitron.Sql;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
 	[EntitronRepository]
 	public class SelectAction : Action
 	{
-		public override int Id
-		{
-			get { return 1020; }
-		}
+		public override int Id => 1020;
 
-		public override int? ReverseActionId
-		{
-			get { return null; }
-		}
+		public override int? ReverseActionId => null;
 
-		public override string[] InputVar
-		{
-			get
-			{
-				return new string[]
-					{"TableName", "CondColumn[index]", "CondValue[index]", "?CondOperator[index]", "?SearchInShared"};
-			}
-		}
+		public override string[] InputVar => new string[] { "TableName", "CondColumn[index]", "CondValue[index]", "?CondOperator[index]", "?SearchInShared" };
 
-		public override string Name
-		{
-			get { return "Select (filter)"; }
-		}
+		public override string Name => "Select (filter)";
 
-		public override string[] OutputVar
-		{
-			get { return new string[] { "Data" }; }
-		}
+		public override string[] OutputVar => new string[] { "Data" };
 
-		public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars,
-			Dictionary<string, object> invertedVars, Message message)
+		public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
 		{
-			// init
-			CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            // init
+            DBConnection db = Modules.Entitron.Entitron.i;
 
 			bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
 
-			DBTable table =
-				core.Entitron.GetDynamicTable(
-					vars.ContainsKey("TableName") ? (string)vars["TableName"] : (string)vars["__TableName__"], searchInShared);
-			DBEntities e = new DBEntities();
+			DBTable table = db.Table(vars.ContainsKey("TableName") ? (string)vars["TableName"] : (string)vars["__TableName__"], searchInShared);
 
 			//
 			var select = table.Select();
 			int CondCount = vars.Keys.Where(k => k.StartsWith("CondColumn[") && k.EndsWith("]")).Count();
-			Conditions condition = new Conditions(select);
-			Condition_concat outCondition = null;
 
 			// setConditions
 			for (int i = 0; i < CondCount; i++)
@@ -66,41 +39,37 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 				string condColumn = (string)vars[$"CondColumn[{i}]"];
 				object condValue = vars[$"CondValue[{i}]"];
 
-				DBColumn column = table.columns.Single(c => c.Name == condColumn);
-				var value = Convertor.convert(DataType.BySqlName(column.type), condValue);
+				DBColumn column = table.Columns.Single(c => c.Name == condColumn);
+				var value = DataType.ConvertTo(column.Type, condValue);
 
 				switch (condOperator)
 				{
 					case "Less":
-						outCondition = condition.column(condColumn).Less(value);
+						select.Where(c => c.Column(condColumn).Less(value));
 						break;
 					case "LessOrEqual":
-						outCondition = condition.column(condColumn).LessOrEqual(value);
+                        select.Where(c => c.Column(condColumn).LessOrEqual(value));
 						break;
 					case "Greater":
-						outCondition = condition.column(condColumn).Greater(value);
+                        select.Where(c => c.Column(condColumn).Greater(value));
 						break;
 					case "GreaterOrEqual":
-						outCondition = condition.column(condColumn).GreaterOrEqual(value);
+                        select.Where(c => c.Column(condColumn).GreaterOrEqual(value));
 						break;
 					case "Equal":
-						outCondition = condition.column(condColumn).Equal(value);
+                        select.Where(c => c.Column(condColumn).Equal(value));
 						break;
 					case "IsIn":
-						outCondition = condition.column(condColumn).In((IEnumerable<object>)value);
+                        select.Where(c => c.Column(condColumn).In((IEnumerable<object>)value));
 						break;
 					default: // ==
-						outCondition = condition.column(condColumn).Equal(value);
+                        select.Where(c => c.Column(condColumn).Equal(value));
 						break;
 				}
-				condition = outCondition.and();
 			}
 
             // return
-
-
-            outputVars["Data"] = select.where(i => outCondition).ToList();
-
+            outputVars["Data"] = select.ToList();
         }
 	}
 }

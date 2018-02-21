@@ -1,12 +1,5 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Sql;
-using FSS.Omnius.Modules.Watchtower;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -16,43 +9,28 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
     [EntitronRepository]
     public class PaddingZeroAction : Action
     {
-        public override int Id
-        {
-            get { return 216; }
-        }
+        public override int Id => 216;
 
         /// <summary>
         /// Id of the action which revereses consequences of this action.
         /// </summary>
-        public override int? ReverseActionId
-        {
-            get { return null; }
-        }
+        public override int? ReverseActionId => null;
 
         /// <summary>
         /// Shows which parameters user can insert in UI.
         /// </summary>
-        public override string[] InputVar
-        {
-            get { return new string[] {"s$InputString", "i$Length"}; }
-        }
+        public override string[] InputVar => new string[] {"s$InputString", "i$Length"};
 
         /// <summary>
         /// Header in tapestry
         /// </summary>
-        public override string Name
-        {
-            get { return "Pad by zeros"; }
-        }
+        public override string Name => "Pad by zeros";
 
         /// <summary>
         /// Specifies where the action should store its results.
         /// </summary>
-        public override string[] OutputVar
-        {
-            get { return new string[] {"Result"}; }
-        }
-
+        public override string[] OutputVar => new string[] {"Result"};
+        
         /// <summary>
         /// Kód co se spustí, když dojde k dané akci.
         /// </summary>
@@ -60,8 +38,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         /// <param name="outputVars">Output variables - user can specify where the results will be placed.</param>
         /// <param name="invertedInputVars"></param>
         /// <param name="message">Message for user.</param>
-        public override void InnerRun(Dictionary<string, object> inputVars, Dictionary<string, object> outputVars,
-            Dictionary<string, object> invertedInputVars, Message message)
+        public override void InnerRun(Dictionary<string, object> inputVars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedInputVars, Message message)
         {
             string inputString = (string)inputVars["InputString"];
             int cipherCount = (int)inputVars["Length"];

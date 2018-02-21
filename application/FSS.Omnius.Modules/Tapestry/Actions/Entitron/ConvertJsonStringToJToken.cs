@@ -1,10 +1,6 @@
-﻿using FSS.Omnius.Modules.CORE;
+﻿using System.Collections.Generic;
+using FSS.Omnius.Modules.CORE;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -13,50 +9,19 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
     {
         public class ConvertJsonStringToJTokenAction : Action
         {
-            public override int Id
-            {
-                get
-                {
-                    return 5021;
-                }
-            }
+            public override int Id => 5021;
 
-            public override string[] InputVar
-            {
-                get
-                {
-                    return new string[] { "JsonString" };
-                }
-            }
+            public override string[] InputVar => new string[] { "JsonString" };
 
-            public override string Name
-            {
-                get
-                {
-                    return "ConvertJsonStringToJToken";
-                }
-            }
+            public override string Name => "ConvertJsonStringToJToken";
 
-            public override string[] OutputVar
-            {
-                get
-                {
-                    return new string[] { "Result"};
-                }
-            }
+            public override string[] OutputVar => new string[] { "Result"};
 
-            public override int? ReverseActionId
-            {
-                get
-                {
-                    return null;
-                }
-            }
+            public override int? ReverseActionId => null;
 
             public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
             {
                 outputVars["Result"] =  JToken.Parse(vars["JsonString"].ToString());
-
             }
         }
     }
