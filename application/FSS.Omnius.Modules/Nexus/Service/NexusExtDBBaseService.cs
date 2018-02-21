@@ -21,6 +21,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         public abstract NexusExtDBResult Insert(string table, JToken row);
         public abstract NexusExtDBResult Update(string table, JToken row, object id);
+        public abstract NexusExtDBResult Delete(string table, object id);
         
         #region SqlBuilderProxy
 
