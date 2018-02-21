@@ -105,6 +105,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 return -1;
             }
 
+            item.Tabloid = this;
             using (DBReader reader = _db.ExecuteCommand(_db.CommandSet.INSERT(_db, Name, item)))
             {
                 reader.Read();
@@ -120,6 +121,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 Watchtower.OmniusWarning.Log($"Try to insert no values to table [{RealName}]", Watchtower.OmniusLogSource.Entitron, _db.Application);
                 return;
             }
+
             _itemsToAdd.Add(item);
             _db.SaveTable(this);
         }
@@ -127,6 +129,9 @@ namespace FSS.Omnius.Modules.Entitron.DB
         {
             int page = 0;
             int batch = 10;
+            foreach (DBItem item in items)
+                item.Tabloid = this;
+
             do
             {
                 _db.Commands.Enqueue(_db.CommandSet.INSERT_range(_db, Name, items.Skip(page * batch).Take(batch)));
