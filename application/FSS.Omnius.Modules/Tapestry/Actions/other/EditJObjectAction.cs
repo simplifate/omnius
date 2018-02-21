@@ -53,7 +53,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            JObject jObject = (JObject)vars["JObject"];
+            JObject originalJObject = (JObject)vars["JObject"];
+            JObject jObject = (JObject)originalJObject.DeepClone();
+
             int propertiesCount = vars.Keys.Where(k => k.StartsWith("PropertyName[") && k.EndsWith("]")).Count();
             int valuesCount = vars.Keys.Where(k => k.StartsWith("Value[") && k.EndsWith("]")).Count();
             if (propertiesCount != valuesCount)
