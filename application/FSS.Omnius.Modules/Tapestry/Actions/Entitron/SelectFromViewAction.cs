@@ -49,6 +49,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
                 string columnName = (string)vars[columnNameVars];
                 object value = vars[valueVars];
+                if (value is Newtonsoft.Json.Linq.JValue)
+                    result.Where(c => c.Column(columnName).Equal(value.ToString()));
                 // condition is list
                 if (!(value is string) && value is IEnumerable)
                 {
