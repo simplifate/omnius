@@ -1,4 +1,4 @@
-﻿namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
+﻿namespace FSS.Omnius.Modules.Tapestry.Actions.Math
 {
     class MathRepositoryAttribute : ActionRepositoryAttribute
     {

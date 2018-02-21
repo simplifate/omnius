@@ -1,5 +1,6 @@
 ﻿using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.DB;
 using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
@@ -7,72 +8,37 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
     [EntitronRepository]
     class GetUserData : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 1023;
-            }
-        }
+        public override int Id => 1023;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "?SearchInShared" };
-            }
-        }
+        public override string[] InputVar => new string[] { "?SearchInShared" };
 
-        public override string Name
-        {
-            get
-            {
-                return "Get user data";
-            }
-        }
+        public override string Name => "Get user data";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[]
-                {
-                    "UserData"
-                };
-            }
-        }
+        public override string[] OutputVar => new string[] { "UserData" };
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            DBConnection db = Modules.Entitron.Entitron.i;
+            var user = core.User;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
 
-            if (core.Entitron.Application == null)
-                core.Entitron.AppName = "EvidencePeriodik";
-            var user = core.User;
+            DBItem result = db.Table("Users", searchInShared).Select()
+                .Where(c => c.Column("ad_email").Equal(user.Email)).FirstOrDefault();
 
-            DBItem result = core.Entitron.GetDynamicTable("Users", searchInShared).Select()
-                                        .where(c => c.column("ad_email").Equal(user.Email)).FirstOrDefault();
+            result["RweId"] = result["id"];
 
-            result.createProperty(1010, "RweId", result["id"]);
+            result["Id"] = user.Id;
+            result["UserName"] = user.UserName;
+            result["DisplayName"] = user.DisplayName;
+            result["Email"] = user.Email;
+            result["Job"] = user.Job;
+            result["Company"] = user.Company;
+            result["Address"] = user.Address;
 
-            result.createProperty(1000, "Id", user.Id);
-            result.createProperty(1001, "UserName", user.UserName);
-            result.createProperty(1002, "DisplayName", user.DisplayName);
-            result.createProperty(1003, "Email", user.Email);
-            result.createProperty(1004, "Job", user.Job);
-            result.createProperty(1005, "Company", user.Company);
-            result.createProperty(1006, "Address", user.Address);
-            
             outputVars["UserData"] = result;
         }
     }

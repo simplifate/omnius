@@ -6,43 +6,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
     [EntitronRepository]
     public class PassVariableAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 184;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "Key", "Value" };
-            }
-        }
-
-        public override string Name
-        {
-            get
-            {
-                return "Pass variable";
-            }
-        }
-
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Result" };
-            }
-        }
+        public override int Id => 184;
+        public override int? ReverseActionId => null;
+        public override string[] InputVar => new string[] { "Key", "Value" };
+        public override string Name => "Pass variable";
+        public override string[] OutputVar => new string[] { "Result" };
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {

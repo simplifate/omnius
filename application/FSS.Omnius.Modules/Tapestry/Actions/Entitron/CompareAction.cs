@@ -1,63 +1,26 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
     public class CompareAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 1001;
-            }
-        }
+        public override int Id => 1001;
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
-        public override string[] InputVar
-        {
-            get
+        public override string[] InputVar => new string[]
             {
-                return new string[]
-                {
-                    "model",
-                    "parameter",
-                    "value"
-                };
-            }
-        }
+                "model",
+                "parameter",
+                "value"
+            };
 
-        public override string Name
-        {
-            get
-            {
-                return "Compare";
-            }
-        }
+        public override string Name => "Compare";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[]
-                {
-                    "comparation"
-                };
-            }
-        }
+        public override string[] OutputVar => new string[] { "comparation" };
         
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {

@@ -1,60 +1,29 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Sql;
-using FSS.Omnius.Modules.Watchtower;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
-using Microsoft.VisualBasic.FileIO;
 using System.Globalization;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
 using CsvHelper;
-using System.IO;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
     public class ImportCSVAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 1042;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "s$CsvSource", "?isServerFile", "s$TableName", "?s$Delimiter", "?b$HasFieldsInQuotes", "?s$UniqueColumns", "?s$DateTimeFormat" };
-            }
-        }
+        public override int Id => 1042;
 
-        public override string Name
-        {
-            get
-            {
-                return "Import CSV";
-            }
-        }
+        public override int? ReverseActionId => null;
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Success", "Message", "CountAdded" };
-            }
-        }
+        public override string[] InputVar => new string[] { "s$CsvSource", "?isServerFile", "s$TableName", "?s$Delimiter", "?b$HasFieldsInQuotes", "?s$UniqueColumns", "?s$DateTimeFormat" };
+
+        public override string Name => "Import CSV";
+
+        public override string[] OutputVar => new string[] { "Success", "Message", "CountAdded" };
 
         private string typeError = "Řádek {0}, sloupec {1}: hodnota musí být {2}. Řádek vynechán.";
         private string uniqueError = "Řádek {0}: Tabulka již obsahuje takovýto řádek. Řádek vynechán.";
@@ -64,6 +33,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            DBConnection db = Modules.Entitron.Entitron.i;
             bool isServerFile = vars.ContainsKey("isServerFile") ? (bool)vars["isServerFile"] : false;
 
             int countAdded = 0;
@@ -75,15 +45,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             bool enclosed = vars.ContainsKey("b$HasFieldsInQuotes") ? (bool)vars["b$HasFieldsInQuotes"] : false;
             List<string> uniqueColumns = vars.ContainsKey("UniqueColumns") ? ((string)vars["UniqueColumns"]).Split(',').ToList() : new List<string>();
             CultureInfo czechCulture = new CultureInfo("cs-CZ");
-            var columnMetadataList = core.Entitron.Application.ColumnMetadata.Where(c => c.TableName == tableName).ToList();
+            var columnMetadataList = db.Application.ColumnMetadata.Where(c => c.TableName == tableName).ToList();
 
-            DBTable table = core.Entitron.GetDynamicTable(tableName, false);
-            if (table == null)
-            {
-                throw new Exception(string.Format("{0}: Cílová tabulka nebyla nalezena ({1})", Name, tableName));
-            }
-
-            DBColumns columns = table.columns;
+            DBTable table = db.Table(tableName, false);
             Dictionary<int, DBColumn> columnsMap = new Dictionary<int, DBColumn>();
 
             dynamic files;
@@ -132,9 +96,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                             {
                                 var colMetadata = columnMetadataList.SingleOrDefault(c => c.ColumnDisplayName == field);
                                 string colName = colMetadata == null ? field : colMetadata.ColumnName;
-                                if (columns.Where(c => c.Name == colName).Count() > 0)
+                                if (table.Columns.Where(c => c.Name == colName).Count() > 0)
                                 {
-                                    columnsMap.Add(i, columns.Where(c => c.Name == colName).First());
+                                    columnsMap.Add(i, table.Columns.Where(c => c.Name == colName).First());
                                 }
                                 i++;
                             }
@@ -174,14 +138,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
                                     DBColumn col = columnsMap[i];
 
-                                    switch (col.type.ToLower())
+                                    switch (col.Type)
                                     {
-                                        case "nvarchar":
-                                        case "varchar":
+                                        case DbType.String:
                                             data.Add(col.Name, value);
                                             break;
-                                        case "boolean":
-                                        case "bit":
+                                        case DbType.Boolean:
                                             bool parsedBool;
                                             if (bool.TryParse(value, out parsedBool))
                                             {
@@ -204,8 +166,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                                 }
                                             }
                                             break;
-                                        case "int":
-                                        case "integer":
+                                        case DbType.Int32:
                                             int parsedInt;
                                             if (int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedInt))
                                             {
@@ -217,7 +178,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                                 messages.Add(string.Format(typeError, line, col.Name, "celé číslo"));
                                             }
                                             break;
-                                        case "float":
+                                        case DbType.Double:
                                             double parsedDouble;
                                             if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedDouble))
                                             {
@@ -229,9 +190,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                                 messages.Add(string.Format(typeError, line, col.Name, "celé nebo desetinní číslo"));
                                             }
                                             break;
-                                        case "datetime":
-                                        case "date":
-                                        case "time":
+                                        case DbType.DateTime:
                                             try
                                             {
                                                 DateTime parsedDateTime = DateTime.Parse(value, czechCulture);
@@ -257,8 +216,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                     try
                                     {
                                         var select = table.Select();
-                                        Conditions condition = new Conditions(select);
-                                        Condition_concat outCondition = null;
 
                                         // setConditions
                                         foreach (string colName in uniqueColumns)
@@ -267,14 +224,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                             object condValue = data[colName2].ToString();
                                             if (colName == "IČO")
                                                 condValue = data[colName2].ToString().PadLeft(8, '0');
-                                            DBColumn column = columns.Single(c => c.Name == colName2);
+                                            DBColumn column = table.Columns.Single(c => c.Name == colName2);
 
-                                            outCondition = condition.column(colName2).Equal(condValue);
-                                            condition = outCondition.and();
+                                            select.Where(c => c.Column(colName2).Equal(condValue));
                                         }
 
                                         // check if row already exists
-                                        if (select.where(c => outCondition).ToList().Count > 0)
+                                        if (select.ToList().Count > 0)
                                         {
                                             isValid = false;
                                             messages.Add(string.Format(uniqueError, line));
@@ -292,12 +248,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                     data.Add("Datum_vlozeni", DateTime.Now);
                                     data.Add("Cas_editace", DateTime.Now);
                                     data.Add("Editoval", core.User.Id);
-                                    DBItem item = new DBItem();
-                                    int j = 0;
+                                    DBItem item = new DBItem(db, table);
                                     foreach (KeyValuePair<string, object> kv in data)
                                     {
-                                        item.createProperty(j, kv.Key, kv.Value);
-                                        j++;
+                                        item[kv.Key] = kv.Value;
                                     }
                                     table.Add(item);
                                     countAdded++;
@@ -307,11 +261,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     }
                 }
             }
-
-            if (countAdded > 0)
-            {
-                core.Entitron.Application.SaveChanges();
-            }
+            
+            db.SaveChanges();
 
             outputVars["Success"] = messages.Count() == 0;
             outputVars["Message"] = string.Join("<br>", messages);

@@ -170,8 +170,7 @@ namespace FSS.Omnius.Modules.Tapestry
                 prevActionRules.Add(nextRule);
                 actionRule.Run(_results);
 
-                if (_results.Type == ActionResultType.Error)
-                {
+                if (_results.Type == ActionResultType.Error) {
                     return new Tuple<ActionResult, Block>(_results, actionRule.TargetBlock);
                     //return new Tuple<ActionResult, Block>(_results, Rollback(prevActionRules).SourceBlock);
                 }
@@ -208,7 +207,7 @@ namespace FSS.Omnius.Modules.Tapestry
         public static ActionRule GetActionRule(CORE core, Block block, ActionResult results, string buttonId = null)
         {
             DBEntities masterContext = DBEntities.instance;
-            DBEntities context = DBEntities.appInstance(core.Entitron.Application);
+            DBEntities context = DBEntities.appInstance(core.Application);
 
             // filter by executor
             if (buttonId != null)
@@ -226,7 +225,7 @@ namespace FSS.Omnius.Modules.Tapestry
             }
 
             // filter by rights
-            List<string> roles = masterContext.Users_Roles.Where(ur => ur.UserId == core.User.Id && ur.ApplicationId == core.Entitron.AppId).Select(ur => ur.RoleName).ToList();
+            List<string> roles = masterContext.Users_Roles.Where(ur => ur.UserId == core.User.Id && ur.ApplicationId == core.Application.Id).Select(ur => ur.RoleName).ToList();
             List<ActionRule> ARs = context.ActionRules.SqlQuery($"SELECT *, ISNULL(appr.Priority, 999) as [Prior] FROM Tapestry_ActionRule ar LEFT JOIN Persona_ActionRuleRights arr ON arr.ActionRuleId = ar.Id Left JOIN Persona_AppRoles appr ON appr.Id = arr.AppRoleId WHERE SourceBlockId = @p0 AND ExecutedBy {(buttonId == null ? "IS NULL" : "= @p1")} AND(arr.AppRoleId IS NULL OR appr.Name IN ({(roles.Any() ? string.Join(", ", roles.Select(s => $"N'{s}'")) : "''")})) ORDER BY Prior", block.Id, buttonId).ToList();
             if (!ARs.Any())
             {

@@ -1,82 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
 using System.Globalization;
-using FSS.Omnius.Modules.Entitron.Entity;
+using System.Data;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     public class UpdateDBItemWithoutFormAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 1008;
-            }
-        }
+        public override int Id => 1008;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "?TableName", "?Id", "?SearchInShared" };
-            }
-        }
+        public override string[] InputVar => new string[] { "?TableName", "?Id", "?SearchInShared" };
 
-        public override string Name
-        {
-            get
-            {
-                return "Update DBItem Without Form";
-            }
-        }
+        public override string Name => "Update DBItem Without Form";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { };
-            }
-        }
+        public override string[] OutputVar => new string[] { };
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            Modules.Entitron.Entitron ent = core.Entitron;
+            DBConnection db = Modules.Entitron.Entitron.i;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
-
             string tableName = vars.ContainsKey("TableName")
                 ? (string)vars["TableName"]
                 : (string)vars["__TableName__"];
             int itemId = vars.ContainsKey("Id")
                 ? (vars["Id"] is int ? (int)vars["Id"] : Convert.ToInt32(vars["Id"]))
                 : (int)vars["__ModelId__"];
-            DBTable table = ent.GetDynamicTable(tableName, searchInShared);
-            if (table == null)
-                throw new Exception($"Požadovaná tabulka nebyla nalezena (Tabulka: {tableName}, Akce: {Name} ({Id}))");
+            DBTable table = db.Table(tableName, searchInShared);
 
-            DBItem row = table.Select().where(c => c.column("Id").Equal(itemId)).First();
+            DBItem row = table.SelectById(itemId);
             if (row == null)
                 throw new Exception($"Položka nebyla nalezena (Tabulka: {tableName}, Id: {itemId}, Akce: {Name} ({Id}))");
 
-            foreach (DBColumn column in table.columns.Where(c => vars.ContainsKey($"__Model.{tableName}.{c.Name}")))
+            foreach (DBColumn column in table.Columns.Where(c => vars.ContainsKey($"__Model.{tableName}.{c.Name}")))
             {
                 var inputValue = vars[$"__Model.{tableName}.{column.Name}"];
-                if (column.type == "datetime" && inputValue is string)
+                if (column.Type == DbType.DateTime && inputValue is string)
                 {
                     DateTime parsedDateTime = new DateTime();
                     bool parseSuccessful = DateTime.TryParseExact((string)inputValue,
@@ -91,13 +56,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     row[column.Name] = inputValue;
                 }
             }
-            if (table.columns.Exists(c => c.Name == "id_user_change"))
+            if (table.Columns.Any(c => c.Name == "id_user_change"))
             {
                 row["id_user_change"] = core.User.Id;
                 row["datetime_change"] = DateTime.Now;
             }
             table.Update(row, itemId);
-            ent.Application.SaveChanges();
+            db.SaveChanges();
         }
     }
 }

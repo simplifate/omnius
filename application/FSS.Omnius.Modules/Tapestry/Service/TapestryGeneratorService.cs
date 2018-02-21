@@ -42,7 +42,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             _sendWs = sendWs;
 
             //_context = DBEntities.instance;
-            Application app = core.Entitron.Application;
+            Application app = core.Application;
             _app = app.similarApp;
 
             try

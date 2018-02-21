@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FSS.Omnius.Modules.Entitron.Entity.CORE;
+﻿using System.Collections.Generic;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections.Specialized;
-using System.Web.Mvc;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.CORE
 {
@@ -73,6 +68,8 @@ namespace FSS.Omnius.Modules.CORE
                 return (Persona.Persona)_modules["Persona"];
             }
         }
+
+        public Application Application => Modules.Entitron.Entitron.i.Application;
 
         //private bool isModuleEnabled(string moduleName)
         //{

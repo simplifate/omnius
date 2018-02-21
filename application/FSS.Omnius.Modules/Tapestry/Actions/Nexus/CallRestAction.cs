@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.IO;
+using System.Text;
+using System.Security.Cryptography;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Tapestry.Actions.Nexus;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Watchtower;
-using System.Linq;
-using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Text;
-using System.Security.Cryptography;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -25,48 +25,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
     {
         private static Dictionary<string, CachedResult> cache = new Dictionary<string, CachedResult>();
 
-        public override int Id
-        {
-            get
-            {
-                return 3002;
-            }
-        }
+        public override int Id => 3002;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "Endpoint", "Method", "?WSName", "?InputData", "?InputFromJSON", "?MaxAge", "?v$CustomHeaders" };
-            }
-        }
+        public override string[] InputVar => new string[] { "Endpoint", "Method", "?WSName", "?InputData", "?InputFromJSON", "?MaxAge", "?v$CustomHeaders" };
 
-        public override string Name
-        {
-            get
-            {
-                return "Call REST";
-            }
-        }
+        public override string Name => "Call REST";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[]
-                {
-                    "Result", "Error"
-                };
-            }
-        }
+        public override string[] OutputVar => new string[] { "Result", "Error" };
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
@@ -106,7 +73,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 }
 
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                var context = DBEntities.appInstance(core.Entitron.Application);
+                var context = DBEntities.appInstance(core.Application);
                 string queryString = "";
                 var service = context.WSs.First(c => c.Name == wsName);
 
@@ -198,7 +165,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             {
                 string errorMsg = e.Message;
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                OmniusException.Log(e, OmniusLogSource.Nexus, core.Entitron.Application, core.User);
+                OmniusException.Log(e, OmniusLogSource.Nexus, core.Application, core.User);
                 outputVars["Result"] = String.Empty;
                 outputVars["Error"] = true;
             }

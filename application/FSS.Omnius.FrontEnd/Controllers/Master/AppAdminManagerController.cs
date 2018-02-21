@@ -106,10 +106,10 @@ namespace FSS.Omnius.Controllers.Master
         public override void OnOpen()
         {
             var core = new Modules.CORE.CORE();
-            core.Entitron.AppId = _AppId;
-            Application masterApp = core.Entitron.Application;
+            Modules.Entitron.Entitron.Create(_AppId);
+            Application masterApp = core.Application;
             DBEntities masterContext = DBEntities.instance;
-            DBEntities context = DBEntities.appInstance(core.Entitron.Application);
+            DBEntities context = DBEntities.appInstance(core.Application);
 
             if (masterApp.DbSchemeLocked)
             {
@@ -121,7 +121,7 @@ namespace FSS.Omnius.Controllers.Master
             Application app;
             if (context != masterContext)
             {
-                app = context.Applications.SingleOrDefault(a => a.Name == core.Entitron.AppName);
+                app = context.Applications.SingleOrDefault(a => a.Name == core.Application.Name);
                 if (app == null)
                 {
                     app = new Application();
@@ -136,24 +136,8 @@ namespace FSS.Omnius.Controllers.Master
             
             try
             {
-                // If building shared tables app
-                if (_AppId == SharedTables.AppId)
-                {
-                    // Create instance of db builder
-                    SharedTableBuilder builder = new SharedTableBuilder(core, context, app);
-
-                    // Assign dispatcher 
-                    builder.OnDispatch += this.SendMessage;
-
-                    // Build tables
-                    builder.Build();
-
-                    // And skip standard building process.
-                    return;
-                }
-
-                // Entitron Generate Database
-                if (masterApp.EntitronChangedSinceLastBuild || _rebuildInAction)
+                /// Entitron Generate Database
+                if (app.EntitronChangedSinceLastBuild || _rebuildInAction)
                     Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
                 else
                     Send(Json.Encode(new { id = "entitron", type = "success", message = "databázi není potřeba aktualizovat" }));
@@ -241,6 +225,10 @@ namespace FSS.Omnius.Controllers.Master
                         masterContext.SaveChanges();
                     }
                 }
+                // system app only build entitron
+                if (masterApp.IsSystem)
+                    return;
+
 
                 // Mozaic pages
                 string applicationViewPath = $"{AppDomain.CurrentDomain.BaseDirectory}Views\\App\\{app.Name}";
@@ -432,7 +420,7 @@ namespace FSS.Omnius.Controllers.Master
         private Tuple<string, HashSet<string>> GetApplicationMenu(Modules.CORE.CORE core, Dictionary<TapestryDesignerBlock, Block> blockMapping, int rootId = 0, int level = 0)
         {
             DBEntities e = DBEntities.instance;
-            rootId = rootId == 0 ? core.Entitron.Application.TapestryDesignerRootMetablock.Id : rootId;
+            rootId = rootId == 0 ? core.Application.TapestryDesignerRootMetablock.Id : rootId;
             HashSet<string> rights = new HashSet<string>();
 
             List<TapestryDesignerMenuItem> items = new List<TapestryDesignerMenuItem>();
@@ -477,7 +465,7 @@ namespace FSS.Omnius.Controllers.Master
             ViewData.Model = items;
             ViewData["Level"] = level;
             ViewData["ParentID"] = rootId;
-            ViewData["AppId"] = core.Entitron.Application.Id;
+            ViewData["AppId"] = core.Application.Id;
             */
             //TempDataDictionary TempData = new TempDataDictionary();
             //ControllerContext ControllerContext = new ControllerContext();
@@ -494,8 +482,8 @@ namespace FSS.Omnius.Controllers.Master
 
             DynamicViewBag ViewBag = new DynamicViewBag();
             ViewBag.AddValue("Level", level);
-            ViewBag.AddValue("AppId", core.Entitron.AppId);
-            ViewBag.AddValue("AppName", core.Entitron.AppName);
+            ViewBag.AddValue("AppId", core.Application.Id);
+            ViewBag.AddValue("AppName", core.Application.Name);
             ViewBag.AddValue("ParentId", rootId);
 
             string source = File.ReadAllText(_menuPath);

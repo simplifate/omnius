@@ -1,65 +1,29 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Sql;
-using FSS.Omnius.Modules.Watchtower;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
     public class SearchInTableAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 1026;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "TableName", "ColumnName", "Query", "?SearchMode", "?SearchInShared" };
-            }
-        }
+        public override int Id => 1026;
 
-        public override string Name
-        {
-            get
-            {
-                return "Search in table";
-            }
-        }
+        public override int? ReverseActionId => null;
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Data" };
-            }
-        }
+        public override string[] InputVar => new string[] { "TableName", "ColumnName", "Query", "?SearchMode", "?SearchInShared" };
+
+        public override string Name => "Search in table";
+
+        public override string[] OutputVar => new string[] { "Data" };
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // init
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            DBConnection db = Modules.Entitron.Entitron.i;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
-
-            if (core.Entitron.Application == null)
-                core.Entitron.AppName = "EvidencePeriodik";
+            
             string query = "";
             if (vars.ContainsKey("SearchMode"))
             {
@@ -80,8 +44,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             else
                 query = (string)vars["Query"] + "%";
 
-            outputVars["Data"] = core.Entitron.GetDynamicTable((string)vars["TableName"], searchInShared).Select()
-                .where(c => c.column((string)vars["ColumnName"]).LikeCaseInsensitive(query)).ToList();
+            outputVars["Data"] = db.Table((string)vars["TableName"], searchInShared).Select()
+                .Where(c => c.Column((string)vars["ColumnName"]).LikeCaseInsensitive(query)).ToList();
         }
     }
 }

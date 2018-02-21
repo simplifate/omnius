@@ -1,35 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Data;
 using System.Web.Helpers;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
-using FSS.Omnius.Modules.Entitron.Table;
-using FSS.Omnius.Modules.Entitron.Entity.CORE;
-using System;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Entitron.Service
 {
     public class DatabaseGenerateService : IDatabaseGenerateService
     {
-        private string TablesPrefix = null;
-
-        public string GetTablesPrefix(Application app)
-        {
-            return this.TablesPrefix != null ? this.TablesPrefix : app.Name;
-        }
-
-        public DatabaseGenerateService(string tablesPrefix = null)
-        {
-            this.TablesPrefix = tablesPrefix;
-        }
-
-        private Entitron _entitron;
+        private DBConnection _db;
         private DBEntities _ent;
         private Application _app;
 
+        private List<DBForeignKey> _entitronFKs;
+
         public delegate void SendWs(string str);
+
+        public DatabaseGenerateService()
+        {
+            _entitronFKs = new List<DBForeignKey>();
+        }
+
         /// <summary>
         /// </summary>
         /// <param name="dbSchemeCommit"></param>
@@ -37,18 +32,30 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             if (dbSchemeCommit != null)
             {
-                _entitron = core.Entitron;
-                _ent = DBEntities.appInstance(_entitron.Application);
-                _app = _ent.Applications.SingleOrDefault(a => a.Name == _entitron.Application.Name);
+                try
+                {
+                    _db = Entitron.i;
+                    _ent = DBEntities.instance;
+                    _app = _db.Application;
 
-                GenerateTables(dbSchemeCommit, sendWs);
-                sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace tabulek", id = "entitron-gentables" }));
-                GenerateRelation(dbSchemeCommit);
-                sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace relací" }));
-                GenerateView(dbSchemeCommit);
-                sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace pohledů" }));
-                DroppingOldTables(dbSchemeCommit, sendWs);
-                sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "staré tabulky byly smazány", id = "entitron-deltables" }));
+                    DropOldRelations(dbSchemeCommit);
+                    GenerateTables(dbSchemeCommit, sendWs);
+                    sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace tabulek", id = "entitron-gentables" }));
+                    GenerateRelation(dbSchemeCommit);
+                    sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace relací" }));
+                    GenerateView(dbSchemeCommit);
+                    sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace pohledů" }));
+                    DroppingOldTables(dbSchemeCommit, sendWs);
+                    sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "staré tabulky byly smazány", id = "entitron-deltables" }));
+                }
+                catch(Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    Entitron.ClearCache();
+                }
             }
         }
 
@@ -59,304 +66,301 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
         private void GenerateTables(DbSchemeCommit dbSchemeCommit, SendWs sendWs)
         {
-            _ent.ColumnMetadata.RemoveRange(_app.ColumnMetadata);
-            _ent.SaveChanges();
-
             int progress = 0, progressMax = dbSchemeCommit.Tables.Count;
+            
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
-                progress++;
-                sendWs(Json.Encode(new { childOf = "entitron", id = "entitron-gentables", type = "info",
-                    message = $"probíhá aktualizace tabulek <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>" }));
-                DBTable entitronTable = _entitron.Application.GetTable(efTable.Name);
-
-                //if table doesn't exist, create new one
-                if (entitronTable == null)
+                sendWs(Json.Encode(new
                 {
-                    entitronTable = new DBTable();
-                    entitronTable.tableName = efTable.Name;
-                    entitronTable.Application = _app;
+                    childOf = "entitron",
+                    id = "entitron-gentables",
+                    type = "info",
+                    message = $"probíhá aktualizace tabulek <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>"
+                }));
 
+                //// Table ////
+                DBTable entitronTable = _db.Table(efTable.Name);
+                // new
+                if (!_db.Exists(entitronTable.Name, ETabloid.ApplicationTables))
+                {
+                    // columns
                     foreach (DbColumn column in efTable.Columns)
                     {
-                        DBColumn col = new DBColumn()
-                        {
-                            Name = column.Name,
-                            isPrimary = column.PrimaryKey,
-                            canBeNull = column.AllowNull,
-                            maxLength = column.ColumnLengthIsMax ? 4000 : column.ColumnLength,
-                            type = DataType.ByDBColumnTypeName(column.Type).SqlName
-                        };
-                        entitronTable.columns.Add(col);
-                        _app.ColumnMetadata.Add(new ColumnMetadata
-                        {
-                            TableName = efTable.Name,
-                            ColumnName = column.Name,
-                            ColumnDisplayName = column.DisplayName ?? column.Name
-                        });
+                        AddColumn(entitronTable, efTable, column);
                     }
+
+                    // add indexes
+                    foreach(DBIndex index in MergeSchemeIndexUnique(entitronTable, efTable))
+                        entitronTable.Indexes.Add(index);
+
+                    // create table & columns & costraints & indexes
                     entitronTable.Create();
-                    _entitron.Application.SaveChanges();
-                    //set default values and unique constraints for new tables
-                    foreach (DbColumn defColumn in efTable.Columns)
-                    {
-                        if (!string.IsNullOrEmpty(defColumn.DefaultValue))
-                        {
-                            entitronTable.columns.AddDefaultValue(defColumn.Name, defColumn.DefaultValue);
-                        }
-                        if (defColumn.Unique)
-                        {
-                            entitronTable.columns.AddUniqueValue(defColumn.Name);
-                        }
-                    }
-                }//end of table==null
+                }
+                // update existing
                 else
-                {//if table exists, update columns
-                    UpdateColumns(entitronTable,efTable);
-                }//end updating table columns
-                _entitron.Application.SaveChanges();
-
-                //set indeces
-
-                if (efTable.Indices.Count != 0)
                 {
-                    foreach (DbIndex i in efTable.Indices)
+                    /// columns
+                    UpdateColumns(entitronTable, efTable);
+
+                    /// Indexes
+                    List<DBIndex> designerIndexes = MergeSchemeIndexUnique(entitronTable, efTable);
+                    foreach (DBIndex designerIndex in designerIndexes)
                     {
-                        DBIndex index = entitronTable.GetIndex(i.Name);
-                        if (index.indexName==null)
+                        // create
+                        DBIndex entitronIndex = entitronTable.Indexes.SingleOrDefault(ei => ei.Columns.Count == designerIndex.Columns.Count && ei.Columns.All(eic => designerIndex.Columns.Contains(eic)));
+                        if (entitronIndex == null)
+                            entitronTable.Indexes.Add(designerIndex);
+
+                        // modify - isUnique changed
+                        else if (entitronIndex.isUnique != designerIndex.isUnique)
                         {
-                            entitronTable.indices.AddToDB(i.Name, i.ColumnNames.Split(',').ToList(), i.Unique);
-                        }
-                        else if(index.isUnique!=i.Unique || index.columns.Select(x=>x.Name)!=i.ColumnNames.Split(',').ToList())
-                        {
-                            entitronTable.indices.DropFromDB(index.indexName);
-                            entitronTable.indices.AddToDB(i.Name, i.ColumnNames.Split(',').ToList(), i.Unique);
+                            entitronTable.Indexes.Remove(entitronIndex);
+                            entitronTable.Indexes.Add(designerIndex);
                         }
                     }
+
+                    // drop
+                    IEnumerable<DBIndex> deletedIndeces = entitronTable.Indexes.Where(ei => !designerIndexes.Any(di => di.Columns.Count == ei.Columns.Count && ei.Columns.All(eic => di.Columns.Contains(eic)))).ToList();
+                    foreach (DBIndex index in deletedIndeces)
+                    {
+                        entitronTable.Indexes.Remove(index);
+                    }
                 }
-                _entitron.Application.SaveChanges();
 
-                //list of index names, which are in database, but not in scheme
-                List<string> deletedIndeces = entitronTable.indices.Select(x => x.indexName.ToLower())
-                    .Except(efTable.Indices.Select(x => "index_" + x.Name.ToLower())).ToList();
-
-
-                //droping new indeces
-                foreach (string indexName in deletedIndeces)
-                {
-                    entitronTable.indices.DropFromDB(indexName);
-                }
-                _entitron.Application.SaveChanges();
+                progress++;
             } //end foreach efTable
+
+            /// SAVE
+            _db.SaveChanges();
             _ent.SaveChanges();
         }
 
         private void GenerateRelation(DbSchemeCommit dbSchemeCommit)
         {
-            List<string> entitronsFKsNames = new List<string>();
-            List<DBForeignKey> entitronFKs = new List<DBForeignKey>();
+            // foreign keys in scheme, but not in database
+            IEnumerable<DbRelation> newFK = dbSchemeCommit.Relations
+                .Where(rel => !_entitronFKs.Any(fk => fk.Compare(rel)));
 
-            //getting FKs for dropping, FK names are for list of new FKs and oldFks
-            foreach (DBTable table in _entitron.Application.GetTables())
-            {
-                foreach (DBForeignKey key in table.foreignKeys)
-                {
-                    entitronFKs.Add(key);
-                    entitronsFKsNames.Add(key.name.ToLower());
-                }
-            }
-
-            //list of foreign key names, which are in scheme, but not in database
-            List<string> newFK = dbSchemeCommit.Relations
-                .Where(x1 => !entitronsFKsNames.Any(x2 => x2 == "fk_" + x1.Name.ToLower())).Select(x => x.Name).ToList();
-
-            //list of foreign key names, which are in database, but not in scheme
-            List<string> deletedFK = entitronsFKsNames
-                .Where(x1 => !dbSchemeCommit.Relations.Any(x2 => "fk_" + x2.Name.ToLower() == x1)).Distinct().ToList();
 
             //adding new FKs
-            foreach (string fkname in newFK)
+            foreach (DbRelation designerFK in newFK)
             {
-                DbRelation efRelation = dbSchemeCommit.Relations.SingleOrDefault(x => x.Name.ToLower() == fkname.ToLower());
-                DbTable rightTable = efRelation.RightTable;
-                DbTable leftTable = efRelation.LeftTable;
-                DbColumn rightColumn = efRelation.RightColumn;
-                DbColumn leftColumn = efRelation.LeftColumn;
-
-                DBForeignKey entitronFK = new DBForeignKey();
-                entitronFK.sourceTable = _entitron.Application.GetTable(rightTable.Name);
-                entitronFK.targetTable = _entitron.Application.GetTable(leftTable.Name);
-                entitronFK.sourceColumn = entitronFK.sourceTable.columns.SingleOrDefault(c => c.Name.ToLower() == rightColumn.Name.ToLower()).Name;
-                entitronFK.targetColumn = entitronFK.targetTable.columns.SingleOrDefault(c => c.Name.ToLower() == leftColumn.Name.ToLower()).Name;
-                entitronFK.name = efRelation.Name;
-
-                entitronFK.sourceTable.foreignKeys.AddToDB(entitronFK);
+                DBTable sourceTable = _db.Table(designerFK.LeftTable.Name);
+                DBTable targetTable = _db.Table(designerFK.RightTable.Name);
+                
+                sourceTable.ForeignKeys.Add(new DBForeignKey(_db)
+                {
+                    SourceTable = sourceTable,
+                    TargetTable = targetTable,
+                    SourceColumn = designerFK.LeftColumn.Name,
+                    TargetColumn = designerFK.RightColumn.Name
+                });
             }
-            _entitron.Application.SaveChanges();
 
-            //dropping old FKs
-            foreach (string fkey in deletedFK)
-            {
-                DBForeignKey foreignKeyForDrop = entitronFKs.SingleOrDefault(x => x.name.ToLower() == fkey);
-                foreignKeyForDrop.sourceTable.DropConstraint(foreignKeyForDrop.name);
-            }
-            _entitron.Application.SaveChanges();
+            _db.SaveChanges();
         }
 
         private void GenerateView(DbSchemeCommit dbSchemeCommit)
         {
-            foreach (DbView efView in dbSchemeCommit.Views)
+            Queue<DbView> que = new Queue<DbView>(dbSchemeCommit.Views);
+            DbView firstError = null;
+            while(que.Any())
             {
+                DbView efView = que.Dequeue();
+
+                DBView newView = new DBView(_db)
+                {
+                    Name = efView.Name,
+                    Sql = efView.Query
+                };
+                
                 try
                 {
-                    bool viewExists = DBView.isInDb(_app, efView.Name);
-
-                    DBView newView = new DBView()
-                    {
-                        Application = _app,
-                        dbViewName = efView.Name,
-                        sql = efView.Query
-                    };
-
-                    if (!viewExists)
+                    if (!_db.Exists(efView.Name, ETabloid.Views))
                         newView.Create();
                     else
                         newView.Alter();
 
-                    _entitron.Application.SaveChanges();
+                    _db.SaveChanges();
+                    firstError = null;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw new Exception($"{efView.Name} - {ex.Message}", ex);
+                    if (firstError == null)
+                        firstError = efView;
+                    else if (firstError == efView)
+                        throw;
+
+                    que.Enqueue(efView);
                 }
-            }//end of foreach efViews
+            }
 
             //list of views, which are in database, but not in scheme
-            List<string> deleteViews = _entitron.Application.GetViewNames()
-                .Except(dbSchemeCommit.Views.Select(x => "Entitron_" + this.GetTablesPrefix(_entitron.Application) + "_" + x.Name)).ToList();
+            List<string> deleteViews = _db.List(ETabloid.Views)
+                .Except(dbSchemeCommit.Views.Select(x => x.Name)).ToList();
 
             //dropping views
             foreach (string viewName in deleteViews)
             {
-                DBView.Drop(_app, viewName);
+                _db.ViewDrop(viewName);
             }
-            _entitron.Application.SaveChanges();
+            _db.SaveChanges();
         }
 
         private void DroppingOldTables(DbSchemeCommit dbSchemeCommit, SendWs sendWs)
         {
             //list of tables, which are in database, but not in scheme
-            List<string> deletedTables = _entitron.Application.GetTables().Select(x => x.tableName.ToLower())
-                                .Except(dbSchemeCommit.Tables.Select(x => x.Name.ToLower())).ToList();
+            IEnumerable<string> deletedTables = _db.List(ETabloid.ApplicationTables)
+                                .Except(dbSchemeCommit.Tables.Select(x => x.Name));
 
             //dropping old tables(must be here, after dropping all constraints)
+            int progress = 0, progressMax = dbSchemeCommit.Tables.Count;
             foreach (string deleteTable in deletedTables)
             {
-                DBTable dropTable = _entitron.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == deleteTable);
-                _entitron.Application.GetTable(dropTable.tableName).Drop();
-            }
-            _entitron.Application.SaveChanges();
-
-            int progress = 0, progressMax = dbSchemeCommit.Tables.Count;
-
-            //foreach for tables again, for getting all columns
-            foreach (DbTable schemeTable in dbSchemeCommit.Tables)
-            {
-                progress++;
-                sendWs(Json.Encode(new { childOf = "entitron", id = "entitron-deltables", type = "info",
-                    message = $"probíhá odstranění starých tabulek <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>" }));
-                DBTable entitronTable = _entitron.Application.GetTables()
-                    .SingleOrDefault(x => x.tableName.ToLower() == schemeTable.Name.ToLower());
-
-                //list of column names, which are in database,but not in scheme
-                List<string> deletedColumns = entitronTable.columns.Select(x => x.Name.ToLower())
-                        .Except(schemeTable.Columns.Select(x => x.Name.ToLower())).ToList();
-
-                //dropping columns, must be here for the same reason like tables, it is because FKs must be dropping first
-                foreach (string columnName in deletedColumns)
+                sendWs(Json.Encode(new
                 {
-                    DBColumn column = entitronTable.columns.SingleOrDefault(x => x.Name.ToLower() == columnName);
-                    if(column.isUnique)
-                        entitronTable.DropConstraint($"UN_Entitron_{this.GetTablesPrefix(_entitron.Application)}_{entitronTable.tableName}_{column.Name}");
-
-                    Dictionary<string, string> defaultConstraint = entitronTable.columns.GetSpecificDefault(column.Name);
-                    if (defaultConstraint.Count!=0)
-                    {
-                        entitronTable.DropConstraint(defaultConstraint.Keys.First());
-                    }
-                    if (entitronTable.indices.Count != 0)
-                    {
-                        List<DBIndex> columnIndeces = entitronTable.indices.Where(c => c.columns.Contains(column)).ToList();
-                        foreach (DBIndex columnIndex in columnIndeces)
-                        {
-                                entitronTable.indices.DropFromDB(columnIndex.indexName);
-                        }
-                    }
-
-                    entitronTable.columns.DropFromDB(column.Name);
-                }
-                _entitron.Application.SaveChanges();
-            }//end of foreach schemeTable for dropping old columns
-
+                    childOf = "entitron",
+                    id = "entitron-deltables",
+                    type = "info",
+                    message = $"probíhá odstranění starých tabulek <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>"
+                }));
+                _db.TableDrop(new DBTable(_db) { Name = deleteTable });
+                _ent.ColumnMetadata.RemoveRange(_app.ColumnMetadata.Where(c => c.TableName == deleteTable));
+                progress++;
+            }
+            _db.SaveChanges();
         }
-
+        
         private void UpdateColumns(DBTable entitronTable, DbTable schemeTable)
         {
-            // MN: Protoze SQL Server < 2016 je stupidní a neumí alter / drop na sloupcích s constraintem :/
-            entitronTable.DropAllConstraints();
-
+            // list scheme columns
             foreach (DbColumn efColumn in schemeTable.Columns)
             {
-                DBColumn entitronColumn = entitronTable.columns
+                DBColumn entitronColumn = entitronTable.Columns
                     .SingleOrDefault(x => x.Name.ToLower() == efColumn.Name.ToLower());
 
-                _app.ColumnMetadata.Add(new ColumnMetadata
+                // add column
+                if (entitronColumn == null)
                 {
-                    TableName = schemeTable.Name,
-                    ColumnName = efColumn.Name,
-                    ColumnDisplayName = efColumn.DisplayName ?? efColumn.Name
-                });
-
-                if (entitronColumn == null)                     //adding new column
-                {
-                    entitronColumn = new DBColumn()
-                    {
-                        Name = efColumn.Name,
-                        canBeNull = efColumn.AllowNull,
-                        maxLength = efColumn.ColumnLengthIsMax ? 4000 : efColumn.ColumnLength,
-                        type = DataType.ByDBColumnTypeName(efColumn.Type).SqlName,
-                        DefaultValue = efColumn.DefaultValue
-                    };
-                    entitronTable.columns.AddToDB(entitronColumn);
-                    if (efColumn.Unique)
-                    {
-                        entitronTable.columns.AddUniqueValue(efColumn.Name);
-                    }
-                    _entitron.Application.SaveChanges();
-                }//end column==null
+                    AddColumn(entitronTable, schemeTable, efColumn);
+                }
+                //updating existing column if changed
                 else
-                {//updating existing column
-                    if (entitronColumn.canBeNull != efColumn.AllowNull ||
-                        entitronColumn.maxLength != efColumn.ColumnLength ||
-                        entitronColumn.type != efColumn.Type)
-                        entitronTable.columns.ModifyInDB(entitronColumn.Name, DataType.ByDBColumnTypeName(efColumn.Type).SqlName, efColumn.ColumnLengthIsMax ? 4000 : efColumn.ColumnLength, entitronColumn.precision, entitronColumn.scale, efColumn.AllowNull);
+                {
+                    // column
+                    if (!entitronColumn.Compare(efColumn))
+                    {
+                        entitronColumn.ModifyInDB(efColumn, reCreateIndex: false, reCreateForeignKeys: false);
 
-                    /* MN: Protože jsme na začátku smazali všechny constrainty, vždy je pouze vytvoříme, pokud mají existovat */
-                    if (entitronColumn.isUnique && !efColumn.PrimaryKey) { //set column as unique
-                        entitronTable.columns.AddUniqueValue(efColumn.Name);
+                        // meta
+                        ColumnMetadata meta = entitronColumn.Metadata;
+                        meta.ColumnName = efColumn.Name;
+                        meta.ColumnDisplayName = efColumn.DisplayName;
+                        _ent.SaveChanges();
                     }
-                    if (!string.IsNullOrEmpty(efColumn.DefaultValue)) { //set column default value
-                        entitronTable.columns.AddDefaultValue(efColumn.Name, efColumn.DefaultValue);
-                    }
-                }//end updating column
-
-
-            }//end foreach efColumn
+                    // defaults creates with column
+                    else
+                        // check & default
+                        entitronTable.RefreshConstraints(entitronColumn, efColumn);
+                }
+            }
             _ent.SaveChanges();
+            _db.SaveChanges();
+
+            // Drop old
+            IEnumerable<string> designerColumnNames = schemeTable.Columns.Select(dc => dc.Name);
+            foreach (DBColumn column in entitronTable.Columns.Where(c => !designerColumnNames.Select(dcn => dcn.ToLower()).Contains(c.Name.ToLower())).ToList())
+            {
+                // remove index
+                foreach(DBIndex index in entitronTable.Indexes.Where(i => i.Columns.Contains(column.Name)).ToList())
+                {
+                    entitronTable.Indexes.Remove(index);
+                }
+                // remove default
+                if (column.DefaultValue != null)
+                    column.DropDefault();
+
+                entitronTable.Columns.Remove(column);
+                _ent.ColumnMetadata.RemoveRange(_app.ColumnMetadata.Where(c => c.TableName == entitronTable.Name && c.ColumnName == column.Name));
+            }
+            _db.SaveChanges();
         }
-        private static string GetConnectionString()
+
+        /// <summary>
+        /// Add column to table, create Check and defaults
+        /// </summary>
+        private void AddColumn(DBTable table, DbTable designerTable, DbColumn designerColumn)
         {
-            return ConfigurationManager.ConnectionStrings["EntitronTesting"].ConnectionString;
+            // column
+            DbType type = DataType.FromDesignerName(designerColumn.Type);
+            DBColumn col = new DBColumn(_db)
+            {
+                Tabloid = table,
+                Name = designerColumn.Name,
+                IsNullable = designerColumn.AllowNull,
+                MaxLength = designerColumn.ColumnLengthIsMax ? DataType.MaxLength(type) : designerColumn.ColumnLength,
+                Type = type,
+                DefaultValue = designerColumn.RealDefaultValue(type),
+                IsUnique = designerColumn.Unique || designerColumn.Name == DBCommandSet.PrimaryKey
+            };
+            table.Columns.Add(col);
+
+            // metadata
+            ColumnMetadata cm = _app.ColumnMetadata.SingleOrDefault(c => c.TableName == designerTable.Name && c.ColumnName == designerColumn.Name);
+            if (cm == null)
+            {
+                cm = new ColumnMetadata()
+                {
+                    TableName = designerTable.Name,
+                    ColumnName = designerColumn.Name
+                };
+                _app.ColumnMetadata.Add(cm);
+            }
+            cm.ColumnDisplayName = designerColumn.DisplayName ?? designerColumn.Name;
+        }
+
+        private void DropOldRelations(DbSchemeCommit dbSchemeCommit)
+        {
+            foreach (string tableName in _db.List(ETabloid.ApplicationTables))
+            {
+                _entitronFKs.AddRange(new DBTable(_db) { Name = tableName }.ForeignKeys);
+            }
+
+            // foreign keys in database, but not in scheme
+            IEnumerable<DBForeignKey> deletedFK = _entitronFKs
+                .Where(fk => !dbSchemeCommit.Relations.Any(rel => fk.Compare(rel)));
+
+            //dropping old FKs
+            foreach (DBForeignKey fk in deletedFK)
+            {
+                fk.SourceTable.ForeignKeys.Remove(fk);
+            }
+
+            _db.SaveChanges();
+        }
+
+        private List<DBIndex> MergeSchemeIndexUnique(DBTable table, DbTable designerTable)
+        {
+            // get designer indexes
+            List<DBIndex> indexes = designerTable.Indices.Where(i => i.ColumnNames != "id").Select(i => new DBIndex(_db) { Table = table, Columns = i.ColumnNames.Split(',').ToList(), isUnique = i.Unique }).ToList();
+
+            // get unique columns (not PK)
+            IEnumerable<DbColumn> uniqueColumns = designerTable.Columns.Where(c => c.Unique && !c.PrimaryKey);
+            // get target of FK (not PK)
+            IEnumerable<DbColumn> targetOfForeignKey = designerTable.DbSchemeCommit.Relations.Where(r => r.RightTableId == designerTable.Id).Select(r => r.RightColumn).Where(c => !c.PrimaryKey);
+            foreach (DbColumn column in uniqueColumns.Concat(targetOfForeignKey))
+            {
+                // exists index - update
+                DBIndex index = indexes.SingleOrDefault(i => i.Columns.Count == 1 && i.Columns.First() == column.Name);
+                if (index != null)
+                    index.isUnique = true;
+
+                // create new index
+                else
+                    indexes.Add(new DBIndex(_db) { Table = table, Columns = new List<string> { column.Name }, isUnique = true });
+            }
+            
+            return indexes;
         }
     }
 }

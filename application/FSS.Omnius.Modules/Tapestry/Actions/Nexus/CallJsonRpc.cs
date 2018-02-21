@@ -1,16 +1,17 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Watchtower;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Watchtower;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 {
+    [NexusRepository]
 	class CallJsonRpc : Action
 	{
 		#region JsonIdGenerator
@@ -24,50 +25,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 			}
 		}
 		#endregion
-       
 
-		public override int Id
-		{
-			get
-			{
-				return 3012;
-			}
-		}
+		public override int Id => 3012;
 
-		public override string[] InputVar
-		{
-			get
-			{
-				return new string[] { "WsName", "Method", "Params", "?Endpoint", "?v$CustomHeaders" };
-			}
-		}
+		public override string[] InputVar => new string[] { "WsName", "Method", "Params", "?Endpoint", "?v$CustomHeaders" };
 
-		public override string Name
-		{
-			get
-			{
-				return "Call JSON RPC";
-			}
-		}
+		public override string Name => "Call JSON RPC";
 
-		public override string[] OutputVar
-		{
-			get
-			{
-				return new string[]
-				{
-					"Result", "Error"
-				};
-			}
-		}
+		public override string[] OutputVar => new string[] { "Result", "Error" };
 
-		public override int? ReverseActionId
-		{
-			get
-			{
-				return null;
-			}
-		}
+		public override int? ReverseActionId => null;
 
 		public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
 		{
@@ -80,7 +47,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                 string endpoint = vars.ContainsKey("Endpoint") ? (string)vars["Endpoint"] : "";
                 // vezmu uri
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-				var context = DBEntities.appInstance(core.Entitron.Application);
+				var context = DBEntities.appInstance(core.Application);
 				var service = context.WSs.First(c => c.Name == wsName);
 
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -124,7 +91,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 			{
 				string errorMsg = e.Message;
 				CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-				OmniusException.Log(e, OmniusLogSource.Nexus, core.Entitron.Application, core.User);
+				OmniusException.Log(e, OmniusLogSource.Nexus, core.Application, core.User);
 				outputVars["Result"] = String.Empty;
 				outputVars["Error"] = true;
 			}

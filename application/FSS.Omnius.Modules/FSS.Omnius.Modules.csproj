@@ -227,10 +227,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CORE\Convertor.cs" />
     <Compile Include="CORE\CORE.cs" />
     <Compile Include="CORE\ITranslator.cs" />
-    <Compile Include="CORE\ListJson.cs" />
     <Compile Include="CORE\Message.cs" />
     <Compile Include="CORE\IModule.cs" />
     <Compile Include="CORE\ModuleNotFoundOrEnabledException.cs" />
@@ -241,10 +239,27 @@
     <Compile Include="Cortex\Interface\ICortexAPI.cs" />
     <Compile Include="Entitron\DAL\DefaultEFRepository.cs" />
     <Compile Include="Entitron\DAL\IRepository.cs" />
+    <Compile Include="Entitron\DataType.cs" />
+    <Compile Include="Entitron\DB\Application.cs" />
+    <Compile Include="Entitron\DB\DBColumn.cs" />
+    <Compile Include="Entitron\DB\DBCommandSet.cs" />
+    <Compile Include="Entitron\DB\DBCommandSet_MSSQL.cs" />
+    <Compile Include="Entitron\DB\DBCommandSet_MySQL.cs" />
+    <Compile Include="Entitron\DB\DBConnection.cs" />
+    <Compile Include="Entitron\DB\DBForeignKey.cs" />
+    <Compile Include="Entitron\DB\DBIndex.cs" />
+    <Compile Include="Entitron\DB\DBItem.cs" />
+    <Compile Include="Entitron\DB\DBReader.cs" />
+    <Compile Include="Entitron\DB\DBTable.cs" />
+    <Compile Include="Entitron\DB\DBView.cs" />
+    <Compile Include="Entitron\DB\Enums.cs" />
+    <Compile Include="Entitron\DB\IEntityMultiple.cs" />
+    <Compile Include="Entitron\DB\Manager.cs" />
+    <Compile Include="Entitron\DB\SqlExceptionMessage.cs" />
+    <Compile Include="Entitron\DB\Tabloid.cs" />
     <Compile Include="Entitron\Entitron.cs" />
     <Compile Include="Entitron\Entity\Athena\Graph.cs" />
     <Compile Include="Entitron\Entity\CORE\ConfigPair.cs" />
-    <Compile Include="Entitron\Entity\CORE\DataType.cs" />
     <Compile Include="Entitron\Entity\Cortex\Task.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbColumn.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbIndex.cs" />
@@ -275,7 +290,6 @@
     <Compile Include="Entitron\Entity\Mozaic\MozaicCssTemplate.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorModels.cs" />
-    <Compile Include="Entitron\Entity\Mozaic\sdfsfs.cs" />
     <Compile Include="Entitron\Entity\Nexus\AjaxTransferNexusModel.cs" />
     <Compile Include="Entitron\Entity\Nexus\extdb.cs" />
     <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
@@ -332,6 +346,23 @@
     <Compile Include="Entitron\Entity\Persona\User.cs" />
     <Compile Include="Entitron\Entity\Tapestry\WorkFlowType.cs" />
     <Compile Include="Entitron\Entity\Watchtower\LogModels.cs" />
+    <Compile Include="Entitron\IToJson.cs" />
+    <Compile Include="Entitron\JsonList.cs" />
+    <Compile Include="Entitron\Queryable\Cond\Condition.cs" />
+    <Compile Include="Entitron\Queryable\Cond\ConditionColumn.cs" />
+    <Compile Include="Entitron\Queryable\Cond\ConditionConcat.cs" />
+    <Compile Include="Entitron\Queryable\Cond\ConditionOperation.cs" />
+    <Compile Include="Entitron\Queryable\Delete.cs" />
+    <Compile Include="Entitron\Queryable\IDropStep.cs" />
+    <Compile Include="Entitron\Queryable\IGroup.cs" />
+    <Compile Include="Entitron\Queryable\IJoin.cs" />
+    <Compile Include="Entitron\Queryable\IMultiple.cs" />
+    <Compile Include="Entitron\Queryable\IOrder.cs" />
+    <Compile Include="Entitron\Queryable\IPage.cs" />
+    <Compile Include="Entitron\Queryable\IQueryable.cs" />
+    <Compile Include="Entitron\Queryable\IWhere.cs" />
+    <Compile Include="Entitron\Queryable\Manager.cs" />
+    <Compile Include="Entitron\Queryable\Select.cs" />
     <Compile Include="Entitron\Service\BackupGeneratorService.cs" />
     <Compile Include="Entitron\Service\ConditionalFilteringService.cs" />
     <Compile Include="Entitron\Service\DatabaseGenerateService.cs" />
@@ -340,78 +371,7 @@
     <Compile Include="Entitron\Service\IDatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IRecoveryService.cs" />
     <Compile Include="Entitron\Service\RecoveryService.cs" />
-    <Compile Include="Entitron\SharedTables.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Command.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_AllConstraintDrop.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_IndexColumns.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_isTableInEntitron.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_SelectCount.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_SelectSpecificDefault.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_SelectSpecificIndex.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_SelectViews.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_ViewAlter.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_ViewCreate.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_ViewDrop.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_ViewExists.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_withApp.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_withoutApp.cs" />
-    <Compile Include="Entitron\Table\Application.cs" />
-    <Compile Include="Entitron\Table\DBView.cs" />
-    <Compile Include="Entitron\Table\IToJson.cs" />
     <Compile Include="extend.cs" />
-    <Compile Include="Entitron\Sql\Conditions.cs" />
-    <Compile Include="Entitron\Sql\Condition_concat.cs" />
-    <Compile Include="Entitron\Sql\Condition_Operators.cs" />
-    <Compile Include="Entitron\Sql\SqlInitScript.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_CheckAdd.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Column_Add.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Column_Drop.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Column_Modify.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Column_Rename.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_ConstraintDisabled.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_ConstraintDrop.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_ConstraintEnable.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_DefaultAdd.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Delete.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_ForeignKeyAdd.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_GetForeignKeysForDrop.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_IndexCreate.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_IndexDrop.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Insert.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_InsertSelect.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_PrimaryKeyAdd.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Select.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Selectable.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_SelectCheckConstraints.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_SelectConstrains.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_SelectDefaultVal.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_SelectFogreignKeys.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_SelectIndexes.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_SelectPrimaryKeyName.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_SelectStringsTypes.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_SelectUniqueConstraints.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Select_ColumnList.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Select_TableList.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_TableTruncate.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Table_Create.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Table_Drop.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Table_exists.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Table_GetPrimaryKey.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Table_Rename.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_UniqueAdd.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Update.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_withAppTable.cs" />
-    <Compile Include="Entitron\Sql\SqlQueue.cs" />
-    <Compile Include="Entitron\Table\AdditionalSqlDefinition.cs" />
-    <Compile Include="Entitron\Table\DBColumn.cs" />
-    <Compile Include="Entitron\Table\DBColumns.cs" />
-    <Compile Include="Entitron\Table\DBForeignKey.cs" />
-    <Compile Include="Entitron\Table\DBForeignKeys.cs" />
-    <Compile Include="Entitron\Table\DBIndex.cs" />
-    <Compile Include="Entitron\Table\DBIndices.cs" />
-    <Compile Include="Entitron\Table\DBItem.cs" />
-    <Compile Include="Entitron\Table\DBTable.cs" />
     <Compile Include="Hermes\HermesUtils.cs" />
     <Compile Include="Hermes\IncomingEmailListener.cs" />
     <Compile Include="Hermes\Mailer.cs" />
@@ -1223,6 +1183,10 @@
     <Compile Include="Migrations\201712041556123_tableApplication.Designer.cs">
       <DependentUpon>201712041556123_tableApplication.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802160746220_Entitron2.cs" />
+    <Compile Include="Migrations\201802160746220_Entitron2.Designer.cs">
+      <DependentUpon>201802160746220_Entitron2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1264,6 +1228,7 @@
     <Compile Include="Tapestry\Actions\Entitron\Dictionary2JtokenAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetHostUrl.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetListsElementByIndexAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\InsertItemInTableAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SaveListAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\TableColumnToCSVAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GroupTableRowsAction.cs" />
@@ -2041,6 +2006,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712041556123_tableApplication.resx">
       <DependentUpon>201712041556123_tableApplication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802160746220_Entitron2.resx">
+      <DependentUpon>201802160746220_Entitron2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

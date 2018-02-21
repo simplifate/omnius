@@ -1,10 +1,8 @@
 ﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Tapestry.Actions;
 using FSS.Omnius.Modules.Watchtower;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using FSS.Omnius.Modules.Entitron.Entity;
@@ -55,7 +53,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
             if (((IEnumerable<object>)vars["DataSource"]).Count() > 0) {
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                DBEntities context = DBEntities.appInstance(core.Entitron.Application);
+                DBEntities context = DBEntities.appInstance(core.Application);
                 //List<ActionRule_Action> actions = context.ActionRule_Action.Where(a => a.VirtualParentId == actionRule_action.VirtualItemId).OrderBy(a => a.Order).ToList();
 
                 var startRule = context.ActionRules.Include("ActionRule_Actions").Where(a => a.ActionRule_Actions.Where(aa => aa.IsForeachStart == true && aa.VirtualParentId == actionRule_action.VirtualItemId).Any()).FirstOrDefault();
@@ -134,7 +132,7 @@ namespace FSS.Omnius.Modules.Tapestry
                 message.Errors.Add(ex.Message);
                 Logger.Log.Error(ex);
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                OmniusApplicationException.Log(ex, OmniusLogSource.Tapestry, core.Entitron.Application, actionRule_action.ActionRule.SourceBlock, actionRule_action, vars, core.User);
+                OmniusApplicationException.Log(ex, OmniusLogSource.Tapestry, core.Application, actionRule_action.ActionRule.SourceBlock, actionRule_action, vars, core.User);
             }
 
             return new ActionResult(outputStatus, outputVars, invertedVar, message);

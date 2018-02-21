@@ -15,6 +15,7 @@ using static System.String;
 using FSS.Omnius.Modules.Entitron;
 using System.Data.SqlClient;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Controllers.Entitron
 {
@@ -204,22 +205,9 @@ namespace FSS.Omnius.Controllers.Entitron
         [HttpPost]
         public AjaxTransferViewColumnList GetViewScheme(int appId, string viewName)
         {
-            Application app = DBEntities.instance.Applications.FirstOrDefault(a => a.Id == appId);
+            DBConnection db = Modules.Entitron.Entitron.i;
 
-            AjaxTransferViewColumnList list = new AjaxTransferViewColumnList();
-
-            using (SqlConnection connection = new SqlConnection(app.connectionString_data ?? Modules.Entitron.Entitron.connectionString)) {
-                connection.Open();
-
-                SqlCommand cmd = new SqlCommand($"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = 'Entitron_{app.Name}_{viewName}'", connection);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.HasRows) {
-                    while(reader.Read()) {
-                        list.Columns.Add(reader.GetString(0));
-                    }
-                }
-            }
+            AjaxTransferViewColumnList list = new AjaxTransferViewColumnList() { Columns = db.Tabloid(viewName).Columns.Select(c => c.Name).ToList() };
 
             return list;
         }
@@ -468,7 +456,7 @@ namespace FSS.Omnius.Controllers.Entitron
                     result.SchemeLockedForUserName = context.Users.SingleOrDefault(u => u.Id == result.SchemeLockedForUserId).DisplayName;
                 }
                 if (commitId == -1 && requestedCommit != null) {
-                    DbSchemeCommit sharedCommit = FetchDbSchemeCommit(SharedTables.AppId, commitId, context);
+                    DbSchemeCommit sharedCommit = FetchDbSchemeCommit(Application.SystemApp().Id, commitId, context);
                     AjaxTransferDbScheme sharedScheme = new AjaxTransferDbScheme();
                     
 					SetAttributesRequestCommitTables(sharedCommit, sharedScheme);

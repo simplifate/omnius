@@ -634,7 +634,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                     conversion = "(Newtonsoft.Json.Linq.JToken)";
                     break;
                 case "dbitem":
-                    conversion = "(IEnumerable<FSS.Omnius.Modules.Entitron.DBItem>)";
+                    conversion = "(IEnumerable<FSS.Omnius.Modules.Entitron.DB.DBItem>)";
                     break;
                 case "object":
                     conversion = "(List<object>)";

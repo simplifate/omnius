@@ -1,62 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Nexus.Service;
-using Newtonsoft.Json.Linq;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.Entitron.Entity;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.AuctionSystem
 {
     public class GetWSO_Users : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 5000;
-            }
-        }
+        public override int Id => 5000;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[0];
-            }
-        }
+        public override string[] InputVar => new string[0];
 
-        public override string Name
-        {
-            get
-            {
-                return "GetWsoUsers";
-            }
-        }
+        public override string Name => "GetWsoUsers";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[0];
-            }
-        }
+        public override string[] OutputVar => new string[0];
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            DBEntities db = DBEntities.appInstance(core.Entitron.Application);
+            DBEntities db = DBEntities.appInstance(core.Application);
 
             NexusWSService webService = new NexusWSService();
             object[] parameters = new[] { "Auction_User" };
@@ -115,10 +83,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.AuctionSystem
                             var roles  = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString().Split(',').Where(r => r.Substring(0,8) == "Auction_").Select(e => e.Remove(0,8));
                             foreach (string role in roles)
                             {
-                                    PersonaAppRole approle = db.AppRoles.SingleOrDefault(r => r.Name == role && r.ApplicationId == core.Entitron.AppId);
+                                    PersonaAppRole approle = db.AppRoles.SingleOrDefault(r => r.Name == role && r.ApplicationId == core.Application.Id);
                                     if (approle == null)
                                     {
-                                        db.AppRoles.Add(new PersonaAppRole() { Name = role,Application = core.Entitron.Application,Priority = 0 });
+                                        db.AppRoles.Add(new PersonaAppRole() { Name = role,Application = core.Application,Priority = 0 });
                                         db.SaveChanges();
                                     }
                                     //User_Role userRole = newUser.Roles.SingleOrDefault(ur => ur.AppRole == approle && ur.User == newUser);

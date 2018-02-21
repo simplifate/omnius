@@ -21,7 +21,6 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
         public JToken Run(string appName, string button, [FromBody]JToken body, string blockIdentify, [FromUri]int modelId = -1)
         {
             CORE core = new CORE();
-            core.Entitron.Application = core.Entitron.GetStaticTables().Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
             User currentUser = User.GetLogged(core);
             var fc = new M.FormCollection();
             var inputObject = body as JObject;
@@ -40,12 +39,12 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                 }
                 catch (FormatException)
                 {
-                    block = context.Blocks.FirstOrDefault(b => b.Name == blockIdentify && b.WorkFlow.ApplicationId == core.Entitron.AppId);
+                    block = context.Blocks.FirstOrDefault(b => b.Name == blockIdentify && b.WorkFlow.ApplicationId == core.Application.Id);
                 }
 
                 try
                 {
-                    block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null).InitBlock;
+                    block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Application.Id && w.InitBlockId != null).InitBlock;
                 }
                 catch (NullReferenceException)
                 {

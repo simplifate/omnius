@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
@@ -121,7 +122,7 @@ namespace FSS.Omnius.Modules.Tapestry
             // value
             if (input.Length > 1 && input[1] == '$')
             {
-                return Convertor.convert(input[0], input.Substring(2));
+                return DataType.ConvertTo(DataType.FromShortcut(input[0]), input.Substring(2));
             }
             // variable
             else

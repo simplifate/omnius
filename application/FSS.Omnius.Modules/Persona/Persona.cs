@@ -11,6 +11,7 @@ namespace FSS.Omnius.Modules.Persona
     using Entitron.Entity;
     using Entitron.Entity.CORE;
     using Entitron.Entity.Persona;
+    using FSS.Omnius.Modules.Entitron.DB;
 
     public class Persona : IModule
     {
@@ -28,14 +29,14 @@ namespace FSS.Omnius.Modules.Persona
         {
             _CORE = core;
 
-            ConfigPair pair = _CORE.Entitron.GetStaticTables().ConfigPairs.SingleOrDefault(c => c.Key == "UserCacheExpirationHours");
+            ConfigPair pair = DBEntities.instance.ConfigPairs.SingleOrDefault(c => c.Key == "UserCacheExpirationHours");
             _expirationTime = TimeSpan.FromHours(pair != null ? Convert.ToInt32(pair.Value) : 24); // default 24h
             _autoLogoffAfter = TimeSpan.FromHours(10);
         }
 
         public int GetLoggedCount()
         {
-            return _CORE.Entitron.GetStaticTables().Users.Where(u => u.LastLogout == null).Count();
+            return DBEntities.instance.Users.Where(u => u.LastLogout == null).Count();
         }
 
         public User AuthenticateUser(string username)
@@ -47,7 +48,7 @@ namespace FSS.Omnius.Modules.Persona
                 user.LastLogin = user.CurrentLogin;
                 user.CurrentLogin = DateTime.UtcNow;
                 user.LastLogout = null;
-                _CORE.Entitron.GetStaticTables().SaveChanges();
+                DBEntities.instance.SaveChanges();
             }
 
             return user;
@@ -58,7 +59,7 @@ namespace FSS.Omnius.Modules.Persona
             if (string.IsNullOrWhiteSpace(email))
                 return null;
             
-            DBEntities context = _CORE.Entitron.GetStaticTables();
+            DBEntities context = DBEntities.instance;
 
             User user = context.Users.FirstOrDefault(u => u.Email == email);
 
@@ -84,21 +85,21 @@ namespace FSS.Omnius.Modules.Persona
 
             // Log to activity protocol
             var app = context.Applications.Where(a => a.Name == "Aukcnisystem");
-            var currentApp = _CORE.Entitron.Application;
+            var currentApp = _CORE.Application;
 
            
         }
         public void LogOff(string username)
         {
-            User user = _CORE.Entitron.GetStaticTables().Users.Single(u => u.UserName == username);
+            User user = DBEntities.instance.Users.Single(u => u.UserName == username);
             user.LastLogout = DateTime.UtcNow;
-            _CORE.Entitron.GetStaticTables().SaveChanges();
+            DBEntities.instance.SaveChanges();
         }
         public void NotLogOff(string username)
         {
-            User user = _CORE.Entitron.GetStaticTables().Users.Single(u => u.UserName == username);
+            User user = DBEntities.instance.Users.Single(u => u.UserName == username);
             user.LastLogout = null;
-            _CORE.Entitron.GetStaticTables().SaveChanges();
+            DBEntities.instance.SaveChanges();
         }
 
         public User GetUser(string username = null, string identify = null)
@@ -107,7 +108,7 @@ namespace FSS.Omnius.Modules.Persona
             if (string.IsNullOrWhiteSpace(username) && string.IsNullOrWhiteSpace(identify))
                 return null;
             // init
-            DBEntities context = _CORE.Entitron.GetStaticTables();
+            DBEntities context = DBEntities.instance;
 
             // username
             if (!string.IsNullOrWhiteSpace(username))
@@ -135,7 +136,7 @@ namespace FSS.Omnius.Modules.Persona
         
         private Tuple<User, List<string>> GetUserFromAD(string username = null, string identify = null)
         {
-            DBEntities context = _CORE.Entitron.GetStaticTables();
+            DBEntities context = DBEntities.instance;
 
             // split username & domain
             string serverName;
@@ -214,7 +215,7 @@ namespace FSS.Omnius.Modules.Persona
 
         private void SaveToDB(User user, List<string> groups)
         {
-            DBEntities context = _CORE.Entitron.GetStaticTables();
+            DBEntities context = DBEntities.instance;
             User dbUser = context.Users.SingleOrDefault(u => u.UserName == user.UserName);
 
             // update user
@@ -256,7 +257,7 @@ namespace FSS.Omnius.Modules.Persona
 
         public static void RefreshUsersFromWSO(List<User> usersWSO, CORE core)
         {
-            var db = core.Entitron.GetStaticTables();
+            var db = DBEntities.instance;
             //iterate all users from WSO
             foreach (User user in usersWSO)
             {

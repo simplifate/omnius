@@ -1,11 +1,9 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -13,60 +11,29 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
     public class JArrayUpdateDB : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 5223;
-            }
-        }
+        public override int Id => 5223;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "JArray", "?UniqueCol", "?TableName", "?SearchInShared" };
-            }
-        }
+        public override string[] InputVar => new string[] { "JArray", "?UniqueCol", "?TableName", "?SearchInShared" };
 
-        public override string Name
-        {
-            get
-            {
-                return "JArray: Update DB";
-            }
-        }
+        public override string Name => "JArray: Update DB";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Result" };
-            }
-        }
+        public override string[] OutputVar => new string[] { "Result" };
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {          
             JArray jarray = (JArray)vars["JArray"];
             if (jarray.HasValues)
             {
-                CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+                DBConnection db = Modules.Entitron.Entitron.i;
 
                 bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
 
                 string tableName = vars.ContainsKey("TableName")
                     ? (string)vars["TableName"]
                     : (string)vars["__TableName__"];
-                DBTable table = core.Entitron.GetDynamicTable(tableName, searchInShared);
+                DBTable table = db.Table(tableName, searchInShared);
                 if (table == null)
                     throw new Exception($"Queried table not found (Tabulka: {tableName}, Akce: {Name} ({Id}))");
 
@@ -80,50 +47,44 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 else
                 {
                     uniqueCol = "ext_id";
-                    uniqueExtCol = "id";
+                    uniqueExtCol = DBCommandSet.PrimaryKey;
                 }
-                if (!table.columns.Exists(c => c.Name == uniqueCol))
+                if (!table.Columns.Any(c => c.Name == uniqueCol))
                     throw new Exception($"Table column named '{uniqueCol}' not found!");
                 foreach (JObject jo in jarray)
                 {
                     Dictionary<string, object> parsedColumns = new Dictionary<string, object>();
                     TapestryUtils.ParseJObjectRecursively(jo, parsedColumns);
-                    DBItem parsedRow = new DBItem();
-                    int colId = 0;
-                    foreach (var parsedCol in parsedColumns)
-                        parsedRow.createProperty(colId++, parsedCol.Key, parsedCol.Value);
+                    DBItem parsedRow = new DBItem(db, table, parsedColumns);
 
-                    DBItem updatedRow = table.Select().where(c => c.column(uniqueCol).Equal(parsedRow[uniqueExtCol])).FirstOrDefault();
+                    DBItem updatedRow = table.Select().Where(c => c.Column(uniqueCol).Equal(parsedRow[uniqueExtCol])).FirstOrDefault();
 
                     if (updatedRow != null) //update
                     {
                         foreach (var col in parsedRow.getColumnNames())
                         {
-                            if (updatedRow.getColumnNames().Contains(col) && col != "id" && col != uniqueCol)
+                            if (updatedRow.getColumnNames().Contains(col) && col != DBCommandSet.PrimaryKey && col != uniqueCol)
                             {
                                 updatedRow[col] = parsedRow[col];
                             }
                         }
-                        table.Update(updatedRow, (int)updatedRow["id"]);
+                        table.Update(updatedRow, (int)updatedRow[DBCommandSet.PrimaryKey]);
                     }
                     else // insert row if it does not exist 
                     {
-                        DBItem item = new DBItem();
-                        int i = 0;
-                        foreach (DBColumn col in table.columns)
+                        DBItem item = new DBItem(db, table);
+                        foreach (DBColumn col in table.Columns)
                         {
-                            if (col.Name == "id")
+                            if (col.Name == DBCommandSet.PrimaryKey)
                                 continue;
-                            string parsedColName = (col.Name == "ext_id") ? "id" : col.Name;
-                            item.createProperty(i++, col.Name, parsedRow[parsedColName]);
+                            string parsedColName = (col.Name == "ext_id") ? DBCommandSet.PrimaryKey : col.Name;
+                            item[col.Name] = parsedRow[parsedColName];
                         }
 
                         table.Add(item);
                     }
-
-
                 }
-                core.Entitron.Application.SaveChanges();
+                db.SaveChanges();
                 outputVars["Result"] = true; 
             }
             else

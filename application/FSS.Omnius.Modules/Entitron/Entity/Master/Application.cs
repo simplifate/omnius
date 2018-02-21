@@ -11,6 +11,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
     using System.Linq;
     using Mozaic.Bootstrap;
     using Hermes;
+    using FSS.Omnius.Modules.Entitron.DB;
     using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 
     [Table("Master_Applications")]
@@ -56,7 +57,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public string LaunchCommand { get; set; }
         public int TileWidth { get; set; }
         public int TileHeight { get; set; }
-        
+
         public bool IsAllowedForAll { get; set; }
         public bool IsAllowedGuests { get; set; }
 
@@ -64,9 +65,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public bool IsEnabled { get; set; }
         public bool IsSystem { get; set; }
 
-        // empty for default, database name or full connection string
-        public string connectionString_data { get; set; }
-        public string connectionString_schema { get; set; }
+        public ESqlType DB_Type { get; set; }
+        public string DB_ConnectionString { get; set; }
+        public string DBscheme_connectionString { get; set; }
 
         public bool TapestryChangedSinceLastBuild { get; set; }
         public bool MozaicChangedSinceLastBuild { get; set; }
@@ -105,7 +106,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<ColumnMetadata> ColumnMetadata { get; set; }
         // entitron - designer
         public virtual ICollection<DbSchemeCommit> DatabaseDesignerSchemeCommits { get; set; }
-        
+
         // mozaic
         public virtual ICollection<MozaicEditorPage> MozaicEditorPages { get; set; }
         public virtual ICollection<MozaicBootstrapPage> MozaicBootstrapPages { get; set; }
@@ -117,5 +118,21 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
         // Nexus
         public virtual ICollection<TCPSocketListener> TCPListeners { get; set; }
+
+        [ImportExportIgnore]
+        private Application _similarApp;
+        [ImportExportIgnore]
+        public Application similarApp
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(DBscheme_connectionString))
+                    return this;
+
+                if (_similarApp == null)
+                    _similarApp = DBEntities.appInstance(this).Applications.SingleOrDefault(a => a.Name == Name);
+                return _similarApp;
+            }
+        }
     }
 }

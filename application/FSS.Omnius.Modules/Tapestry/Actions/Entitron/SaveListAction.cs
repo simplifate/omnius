@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -19,16 +15,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            DBConnection db = Modules.Entitron.Entitron.i;
             string tableName = (string)vars["tableName"];
             IEnumerable<DBItem> list = (IEnumerable<DBItem>)vars["list"];
-            DBTable targetTable = core.Entitron.GetDynamicTable(tableName);
+            DBTable targetTable = db.Table(tableName);
 
-            foreach (DBItem item in list)
-            {
-                targetTable.Add(item);
-            }
-            core.Entitron.Application.SaveChanges();
+            targetTable.AddRange(list);
+            db.SaveChanges();
         }
     }
 }

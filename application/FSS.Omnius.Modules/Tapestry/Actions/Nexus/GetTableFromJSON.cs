@@ -1,13 +1,7 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Nexus.Service;
+﻿using System.Collections.Generic;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 {
@@ -18,52 +12,28 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
     [NexusRepository]
     public class GetTableFromJSON : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 30101;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "InputJSON"};
-            }
-        }
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Result" };
-            }
-        }
-        public override string Name
-        {
-            get
-            {
-                return "Get Table From JSON";
-            }
-        }
+        public override int Id => 30101;
+
+        public override int? ReverseActionId => null;
+
+        public override string[] InputVar => new string[] { "InputJSON"};
+
+        public override string[] OutputVar => new string[] { "Result" };
+
+        public override string Name => "Get Table From JSON";
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
+            DBConnection db = Modules.Entitron.Entitron.i;
+
             var jArray = vars["InputJSON"] as JArray;
             List<DBItem> dbItems = new List<DBItem>();
             if (jArray != null) {
                 //iterate jsonObject in the array
                 foreach (var jsonobject in jArray.Children()) {
-                    DBItem item = new DBItem();
+                    DBItem item = new DBItem(db, null);
                     foreach (JProperty property in ((JObject)jsonobject).Properties()) {
-                        item.createProperty(0, property.Name, property.Value);
+                        item[property.Name] = property.Value;
                     } //create properties for item
                     dbItems.Add(item); //add item to the list
                 }

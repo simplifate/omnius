@@ -1,5 +1,7 @@
 using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
@@ -23,5 +25,35 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 
         [ImportExportIgnore(IsParent = true)]
         public virtual DbTable DbTable { get; set; }
+
+        public string RealDefaultValue(DbType type)
+        {
+            if (string.IsNullOrEmpty(DefaultValue))
+            {
+                if (AllowNull)
+                    return "NULL";
+
+                return null;
+            }
+
+            if (type == DbType.String && string.IsNullOrEmpty(DefaultValue))
+                return "''";
+
+            if (type == DbType.Boolean)
+            {
+                if (DefaultValue.ToLower() == "null")
+                    return null;
+                if (DefaultValue.ToLower() == "true")
+                    return "'1'";
+                if (DefaultValue.ToLower() == "false")
+                    return "'0'";
+                if (DefaultValue == "1" || DefaultValue == "0")
+                    return $"'{DefaultValue}'";
+
+                return $"'{Convert.ToInt32(DefaultValue).ToString()}'";
+            }
+
+            return $"'{DefaultValue}'";
+        }
     }
 }

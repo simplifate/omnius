@@ -68,9 +68,9 @@ namespace FSS.Omnius.Controllers.Tapestry
             fc.Add(Request.Form);
             
             core = HttpContext.GetCORE();
-            core.Entitron.AppName = appName;
+            core.Application.Name = appName;
             core.User = User.GetLogged(core);
-            context = DBEntities.appInstance(core.Entitron.Application);
+            context = DBEntities.appInstance(core.Application);
             var masterContext = DBEntities.instance;
 
             if(core.User == null && !TryBasicAuth()) {
@@ -155,7 +155,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 wfName += $"_{(string)rpc["method"]}";
             }
 
-            Application app = core.Entitron.Application.similarApp;
+            Application app = core.Application.similarApp;
             Block block = getBlockWithResource(app.Id, apiName);
 
             if(block == null) {
@@ -178,7 +178,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             if (!String.IsNullOrEmpty(block.RoleWhitelist)) {
                 bool userIsAllowed = false;
                 foreach (var role in block.RoleWhitelist.Split(',').ToList()) {
-                    if (core.User.HasRole(role, core.Entitron.AppId))
+                    if (core.User.HasRole(role, core.Application.Id))
                         userIsAllowed = true;
                 }
                 if (!userIsAllowed) {

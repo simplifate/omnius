@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FSS.Omnius.Modules.CORE;
 using Newtonsoft.Json.Linq;
 
@@ -11,45 +9,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
     [OtherRepository]
     class EditJObjectAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 181111;
-            }
-        }
+        public override int Id => 181111;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "v$JObject", "PropertyName[index]", "Value[index]" };
-            }
-        }
+        public override string[] InputVar => new string[] { "v$JObject", "PropertyName[index]", "Value[index]" };
 
-        public override string Name
-        {
-            get
-            {
-                return "Edit JObject";
-            }
-        }
+        public override string Name => "Edit JObject";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Result" };
-            }
-        }
+        public override string[] OutputVar => new string[] { "Result" };
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
