@@ -68,21 +68,24 @@ namespace FSS.Omnius.FrontEnd
 
             // app
             RouteData routeData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current));
-            string appName = (string)routeData.Values["appName"];
-            if (string.IsNullOrEmpty(appName) && (routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values.ContainsKey("appName") == true)
-                appName = (string)(routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values["appName"];
-            if (!string.IsNullOrEmpty(appName))
-                Entitron.Create(appName); // run controller || api run controller
-            else
+            if (routeData != null)
             {
-                int appId = routeData.Values.ContainsKey("appId")
-                    ? Convert.ToInt32(routeData.Values["appId"])
-                    : (routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values.ContainsKey("appId") == true
-                        ? Convert.ToInt32((routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values["appId"] ?? -1)
-                        : -1;
+                string appName = (string)routeData.Values["appName"];
+                if (string.IsNullOrEmpty(appName) && (routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values.ContainsKey("appName") == true)
+                    appName = (string)(routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values["appName"];
+                if (!string.IsNullOrEmpty(appName))
+                    Entitron.Create(appName); // run controller || api run controller
+                else
+                {
+                    int appId = routeData.Values.ContainsKey("appId")
+                        ? Convert.ToInt32(routeData.Values["appId"])
+                        : (routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values.ContainsKey("appId") == true
+                            ? Convert.ToInt32((routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values["appId"] ?? -1)
+                            : -1;
 
-                if (appId != -1)
-                    Entitron.Create(appId);
+                    if (appId != -1)
+                        Entitron.Create(appId);
+                }
             }
         }
 
