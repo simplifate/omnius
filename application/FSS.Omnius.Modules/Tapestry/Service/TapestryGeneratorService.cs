@@ -632,7 +632,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                                     generatedInputVariables = ";WSName=s$" + relatedConnections.Source.Label.Substring(4);
                             }
                         }
-                        if (item.ActionId == 3004 || item.ActionId == 3005 || item.ActionId == 3006) // ExtDB Select / Insert / Update
+                        if (item.ActionId == 3004 || item.ActionId == 3005 || item.ActionId == 3006 || item.ActionId == 3007) // ExtDB Select / Insert / Update / Delete
                         {
                             foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id)) {
                                 if (relatedConnections.Source.Label?.StartsWith("ExtDB: ") ?? false)

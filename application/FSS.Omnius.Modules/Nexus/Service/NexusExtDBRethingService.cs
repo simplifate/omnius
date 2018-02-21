@@ -420,5 +420,11 @@ namespace FSS.Omnius.Modules.Nexus.Service
             var result = r.Db(dbName).Table(table).Get(id).Update(row).RunResult(c);
             return new NexusExtDBResult(result);
         }
+
+        public override NexusExtDBResult Delete(string table, object id)
+        {
+            var result = r.Db(dbName).Table(table).Get(id).Delete().RunResult(c);
+            return new NexusExtDBResult(result);
+        }
     }
 }

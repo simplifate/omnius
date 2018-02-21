@@ -149,6 +149,24 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             return result;
         }
 
+        public NexusExtDBResult Delete(string table, object id)
+        {
+            sql = sql.DELETE_FROM(table);
+            sql = sql.WHERE((string)id);
+
+            NexusExtDBResult result = new NexusExtDBResult();
+            try {
+                int affected = db.Execute(sql);
+                result.Deleted = (ulong)affected;
+            }
+            catch(Exception e) {
+                result.Errors = 1;
+                result.FirstError = e.Message;
+            }
+
+            return result;
+        }
+
         #region SqlBuilderProxy
 
         public ExtDB _(string body) { sql._(body); return this; }

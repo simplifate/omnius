@@ -74,6 +74,11 @@ namespace FSS.Omnius.Modules.Nexus.Service
             return db.Update(table, row, id);
         }
 
+        public override NexusExtDBResult Delete(string table, object id)
+        {
+            return db.Delete(table, id);
+        }
+
         #region SqlBuilderProxy
 
         public override NexusExtDBBaseService _(string body) { db._(body); return this; }
