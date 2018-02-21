@@ -52,7 +52,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 if (value is Newtonsoft.Json.Linq.JValue)
                     result.Where(c => c.Column(columnName).Equal(value.ToString()));
                 // condition is list
-                if (!(value is string) && value is IEnumerable)
+                else if (!(value is string) && value is IEnumerable)
                 {
                     // condition list is empty -> return empty list
                     if (((IEnumerable<object>)value).Count() == 0)
