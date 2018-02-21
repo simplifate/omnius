@@ -973,7 +973,6 @@ namespace FSS.Omnius.Controllers.Tapestry
         public ActionResult Index(string appName, string button, FormCollection fc, string blockIdentify = null, int modelId = -1, int deleteId = -1)
         {
             C.CORE core = HttpContext.GetCORE();
-            core.Application.Name = appName;
             DBEntities context = DBEntities.appInstance(core.Application);
             Application app = core.Application.similarApp;
             core.CrossBlockRegistry = Session["CrossBlockRegistry"] == null ? new Dictionary<string, object>() : (Dictionary<string, object>)Session["CrossBlockRegistry"];

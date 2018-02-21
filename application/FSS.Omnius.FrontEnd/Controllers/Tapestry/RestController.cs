@@ -68,7 +68,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             fc.Add(Request.Form);
             
             core = HttpContext.GetCORE();
-            core.Application.Name = appName;
+            Modules.Entitron.Entitron.Create(appName);
             core.User = User.GetLogged(core);
             context = DBEntities.appInstance(core.Application);
             var masterContext = DBEntities.instance;
