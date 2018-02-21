@@ -9,30 +9,49 @@ namespace FSS.Omnius.Modules.Entitron.DB
 {
     public class DBItem : IToJson
     {
-        public DBItem(DBConnection db, Tabloid tabloid)
+        public DBItem(DBConnection db, Tabloid tabloid = null, Dictionary<string, object> dict = null)
         {
             _db = db;
-            Tabloid = tabloid;
-            _properties = new Dictionary<string, object>();
-            _foreignKeys = new Dictionary<string, object>();
-        }
-        public DBItem(DBConnection db, Tabloid tabloid, Dictionary<string, object> dict)
-        {
-            _db = db;
-            Tabloid = tabloid;
+            _tabloid = tabloid;
             _properties = new Dictionary<string, object>();
             _foreignKeys = new Dictionary<string, object>();
 
-            foreach (var pair in dict)
+            if (dict != null)
+                foreach (var pair in dict)
+                {
+                    this[pair.Key] = pair.Value;
+                }
+        }
+
+        private Tabloid _tabloid;
+        public Tabloid Tabloid
+        {
+            get
             {
-                string key = pair.Key;
-                if (!key.Contains("."))
-                    key = $"{tabloid.Name}.{key}";
-                _properties.Add(key, pair.Value);
+                return _tabloid;
+            }
+            set
+            {
+                if (_tabloid?.Name != value?.Name)
+                {
+                    string oldTabloidName = _tabloid?.Name ?? string.Empty;
+                    string newTabloidName = value?.Name ?? string.Empty;
+
+                    List<string> keys = _properties.Keys.ToList();
+
+                    foreach (string key in keys)
+                    {
+                        if (key.StartsWith($"{oldTabloidName}."))
+                        {
+                            _properties.Add($"{newTabloidName}.{key.Split('.')[1]}", _properties[key]);
+                            _properties.Remove(key);
+                        }
+                    }
+                }
+
+                _tabloid = value;
             }
         }
-
-        public Tabloid Tabloid { get; set; }
 
         private DBConnection _db;
         private Dictionary<string, object> _properties;
