@@ -13,19 +13,30 @@ namespace FSS.Omnius.Modules.Entitron.DB
         {
             _db = db;
             Tabloid = tabloid;
+            _properties = new Dictionary<string, object>();
+            _foreignKeys = new Dictionary<string, object>();
         }
         public DBItem(DBConnection db, Tabloid tabloid, Dictionary<string, object> dict)
         {
             _db = db;
             Tabloid = tabloid;
-            _properties = dict;
+            _properties = new Dictionary<string, object>();
+            _foreignKeys = new Dictionary<string, object>();
+
+            foreach (var pair in dict)
+            {
+                string key = pair.Key;
+                if (!key.Contains("."))
+                    key = $"{tabloid.Name}.{key}";
+                _properties.Add(key, pair.Value);
+            }
         }
 
         public Tabloid Tabloid { get; set; }
 
         private DBConnection _db;
-        private Dictionary<string, object> _properties = new Dictionary<string, object>();
-        private Dictionary<string, object> _foreignKeys = new Dictionary<string, object>();
+        private Dictionary<string, object> _properties;
+        private Dictionary<string, object> _foreignKeys;
         
         public object this[string propertyName]
         {
