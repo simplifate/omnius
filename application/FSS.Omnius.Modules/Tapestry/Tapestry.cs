@@ -226,7 +226,10 @@ namespace FSS.Omnius.Modules.Tapestry
 
             // filter by rights
             List<string> roles = masterContext.Users_Roles.Where(ur => ur.UserId == core.User.Id && ur.ApplicationId == core.Application.Id).Select(ur => ur.RoleName).ToList();
-            List<ActionRule> ARs = context.ActionRules.SqlQuery($"SELECT *, ISNULL(appr.Priority, 999) as [Prior] FROM Tapestry_ActionRule ar LEFT JOIN Persona_ActionRuleRights arr ON arr.ActionRuleId = ar.Id Left JOIN Persona_AppRoles appr ON appr.Id = arr.AppRoleId WHERE SourceBlockId = @p0 AND ExecutedBy {(buttonId == null ? "IS NULL" : "= @p1")} AND(arr.AppRoleId IS NULL OR appr.Name IN ({(roles.Any() ? string.Join(", ", roles.Select(s => $"N'{s}'")) : "''")})) ORDER BY Prior", block.Id, buttonId).ToList();
+            string priorityString = context.Database.Connection.GetType().FullName == "MySql.Data.MySqlClient.MySqlConnection"
+                ? "IF(appr.Priority IS NOT NULL, appr.Priority, 999)"
+                : "ISNULL(appr.Priority, 999)";
+            List<ActionRule> ARs = context.ActionRules.SqlQuery($"SELECT *, {priorityString} Prior FROM Tapestry_ActionRule ar LEFT JOIN Persona_ActionRuleRights arr ON arr.ActionRuleId = ar.Id Left JOIN Persona_AppRoles appr ON appr.Id = arr.AppRoleId WHERE SourceBlockId = @p0 AND ExecutedBy {(buttonId == null ? "IS NULL" : "= @p1")} AND(arr.AppRoleId IS NULL OR appr.Name IN ({(roles.Any() ? string.Join(", ", roles.Select(s => $"N'{s}'")) : "''")})) ORDER BY Prior", block.Id, buttonId).ToList();
             if (!ARs.Any())
             {
                 results.Message.Errors.Add($"You are not authorized to Block [{block.Name}] with Executor[{buttonId}]");

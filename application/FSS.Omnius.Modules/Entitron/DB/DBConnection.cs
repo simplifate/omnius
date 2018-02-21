@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             _requestHash = requestHash;
             Application = null;
             _type = Entitron.DefaultDBType;
-            _connectionString = Entitron.DefaultConnectionString;
+            _connectionString = Entitron.EntitronConnectionString(_type);
 
             _tablesToSave = new HashSet<DBTable>();
             _commandSet = DBCommandSet.GetDBCommandSet(_type);
@@ -30,7 +30,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
             _connectionString = (Application != null && !string.IsNullOrEmpty(Application.DB_ConnectionString))
                     ? Application.DB_ConnectionString
-                    : Entitron.DefaultConnectionString;
+                    : Entitron.EntitronConnectionString(_type);
 
             _tablesToSave = new HashSet<DBTable>();
             _commandSet = DBCommandSet.GetDBCommandSet(_type);

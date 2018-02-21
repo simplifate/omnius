@@ -68,18 +68,24 @@
                 if (DefaultConnectionString == "DefaultConnection")
                     return DefaultConnectionString;
 
-                return $"{DefaultConnectionString}{(DefaultConnectionString.EndsWith(";") ? "" : ";")}App=EntityFramework;";
+                if (DefaultDBType == ESqlType.MSSQL)
+                    return $"{DefaultConnectionString}{(DefaultConnectionString.EndsWith(";") ? "" : ";")}App=EntityFramework;";
+
+                return DefaultConnectionString;
             }
         }
-        public static string EntitronConnectionString
+        public static string EntitronConnectionString(ESqlType dbType)
         {
-            get
-            {
-                if (DefaultConnectionString == "DefaultConnection")
-                    return DefaultConnectionString;
+            if (DefaultConnectionString == "DefaultConnection")
+                return DefaultConnectionString;
 
-                return $"{DefaultConnectionString}{(DefaultConnectionString.EndsWith(";") ? "" : ";")}App=Entitron;";
-            }
+            if (DefaultDBType == ESqlType.MSSQL)
+                return $"{DefaultConnectionString}{(DefaultConnectionString.EndsWith(";") ? "" : ";")}App=EntityFramework;";
+
+            if (DefaultDBType == ESqlType.MySQL)
+                return $"{DefaultConnectionString}{(DefaultConnectionString.EndsWith(";") ? "" : ";")}Allow User Variables=True;";
+
+            return DefaultConnectionString;
         }
 
         private static int requestHash

@@ -17,10 +17,13 @@ namespace FSS.Omnius.Controllers.Master
             User currentUser = HttpContext.GetLoggedUser();
             try
             {
-                return DBEntities.instance.Applications.Where(a =>
+                DBEntities context = DBEntities.instance;
+                var adGroupIds = context.ADgroups.Where(ad => ad.ADgroup_Users.Any(adu => adu.UserId == currentUser.Id)).Select(ad => ad.Id);
+
+                return context.Applications.Where(a =>
                     a.IsPublished
                     && a.IsEnabled
-                    && (a.IsAllowedForAll || a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.UserId == currentUser.Id))
+                    && (a.IsAllowedForAll || a.ADgroups.Any(ad => adGroupIds.Contains(ad.Id)))
                 ).ToList();
             }
             catch (Exception ex)

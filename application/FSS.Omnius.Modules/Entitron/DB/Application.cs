@@ -26,12 +26,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
         public static IQueryable<Application> getAllowed(Modules.CORE.CORE core, string userName)
         {
+            DBEntities context = DBEntities.instance;
+            var adGroupIds = context.ADgroups.Where(ad => ad.ADgroup_Users.Any(adu => adu.User.UserName == userName)).Select(ad => ad.Id);
+
             return
-                DBEntities.instance.Applications.Where(a =>
+                context.Applications.Where(a =>
                     a.IsPublished
                     && a.IsEnabled
                     && !a.IsSystem
-                    && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == userName));
+                    && a.ADgroups.Any(ad => adGroupIds.Contains(ad.Id)));
         }
 
         public static Application SystemApp()

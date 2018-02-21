@@ -24,6 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             Color = 0;
             Icon = "fa-question";
             TitleFontSize = 20;
+            DB_Type = Modules.Entitron.Entitron.DefaultDBType;
 
             WorkFlows = new HashSet<WorkFlow>();
             ADgroups = new HashSet<ADgroup>();
