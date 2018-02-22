@@ -289,7 +289,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         public abstract IDbCommand LIST_column(DBConnection db, string tabloidName);
         #endregion
         
-        public virtual string ColumnToSql(DBConnection db, DBColumn column)
+        public virtual string ColumnToSql(DBConnection db, DBColumn column, bool includeDefault)
         {
             DBForeignKey foreignKey = (column.Tabloid as DBTable).ForeignKeys.SingleOrDefault(fk => fk.SourceColumn == column.Name);
             return
@@ -297,7 +297,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 $"{DataType.FullDefinition(column.Type, Type, column.MaxLength)} " +
                 $"{(column.IsPrimary ? AutoIncrement : "")}" +
                 $"{(column.IsNullable ? " NULL" : " NOT NULL")}" +
-                $"{(!string.IsNullOrEmpty(column.DefaultValue) ? $" DEFAULT {column.DefaultValue}" : "")}";
+                $"{(includeDefault && !string.IsNullOrEmpty(column.DefaultValue) ? $" DEFAULT {column.DefaultValue}" : "")}";
         }
         public virtual string ForeignKeyToSql(DBConnection db, DBForeignKey fk)
         {
