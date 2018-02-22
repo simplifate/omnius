@@ -256,7 +256,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
             command.CommandText =
                 $"CREATE TABLE {ToRealTableName(db.Application, table.Name)} " +
-                $"({string.Join(",", table.Columns.Select(c => ColumnToSql(db, c)).Concat(table.Indexes.Select(i => IndexToSql(db, i))).Concat(table.ForeignKeys.Select(fk => ForeignKeyToSql(db, fk))))}, PRIMARY KEY ({PrimaryKey}))";
+                $"({string.Join(",", table.Columns.Select(c => ColumnToSql(db, c, true)).Concat(table.Indexes.Select(i => IndexToSql(db, i))).Concat(table.ForeignKeys.Select(fk => ForeignKeyToSql(db, fk))))}, PRIMARY KEY ({PrimaryKey}))";
 
             return command;
         }
@@ -318,7 +318,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             MySqlCommand command = new MySqlCommand();
 
             command.CommandText =
-                $"ALTER TABLE {ToRealTableName(db.Application, tableName)} ADD {ColumnToSql(db, column)}";
+                $"ALTER TABLE {ToRealTableName(db.Application, tableName)} ADD {ColumnToSql(db, column, true)}";
 
             return command;
         }
@@ -338,7 +338,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             MySqlCommand command = new MySqlCommand();
 
             command.CommandText =
-                $"ALTER TABLE {ToRealTableName(db.Application, tableName)} MODIFY COLUMN {ColumnToSql(db, column)}";
+                $"ALTER TABLE {ToRealTableName(db.Application, tableName)} MODIFY COLUMN {ColumnToSql(db, column, true)}";
 
             return command;
         }
@@ -348,7 +348,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             MySqlCommand command = new MySqlCommand();
 
             command.CommandText =
-                $"ALTER TABLE {ToRealTableName(db.Application, tableName)} CHANGE COLUMN {AddQuote(oldColumnName)} {ColumnToSql(db, newColumn)}";
+                $"ALTER TABLE {ToRealTableName(db.Application, tableName)} CHANGE COLUMN {AddQuote(oldColumnName)} {ColumnToSql(db, newColumn, true)}";
 
             return command;
         }

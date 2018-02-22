@@ -246,7 +246,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
             command.CommandText =
                 $"CREATE TABLE {ToRealTableName(db.Application, table.Name)} " +
-                $"({string.Join(",", table.Columns.Select(c => ColumnToSql(db, c)).Concat(table.Indexes.Select(i => IndexToSql(db, i))).Concat(table.ForeignKeys.Select(fk => ForeignKeyToSql(db, fk))))})";
+                $"({string.Join(",", table.Columns.Select(c => ColumnToSql(db, c, true)).Concat(table.Indexes.Select(i => IndexToSql(db, i))).Concat(table.ForeignKeys.Select(fk => ForeignKeyToSql(db, fk))))})";
 
             return command;
         }
@@ -308,7 +308,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             SqlCommand command = new SqlCommand();
 
             command.CommandText =
-                $"ALTER TABLE {ToRealTableName(db.Application, tableName)} ADD {ColumnToSql(db, column)}";
+                $"ALTER TABLE {ToRealTableName(db.Application, tableName)} ADD {ColumnToSql(db, column, true)}";
 
             return command;
         }
@@ -328,7 +328,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             SqlCommand command = new SqlCommand();
 
             command.CommandText =
-                $"ALTER TABLE {ToRealTableName(db.Application, tableName)} ALTER COLUMN {ColumnToSql(db, column)}";
+                $"ALTER TABLE {ToRealTableName(db.Application, tableName)} ALTER COLUMN {ColumnToSql(db, column, false)}";
 
             return command;
         }
@@ -619,7 +619,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         }
         #endregion
         
-        public override string ColumnToSql(DBConnection db, DBColumn column)
+        public override string ColumnToSql(DBConnection db, DBColumn column, bool includeDefault)
         {
             DBForeignKey foreignKey = (column.Tabloid as DBTable).ForeignKeys.SingleOrDefault(fk => fk.SourceColumn == column.Name);
             return
@@ -627,7 +627,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 $"{DataType.FullDefinition(column.Type, Type, column.MaxLength)} " +
                 $"{(column.IsPrimary ? AutoIncrement : "")}" +
                 $"{(column.IsNullable ? " NULL" : " NOT NULL")}" +
-                $"{(!string.IsNullOrEmpty(column.DefaultValue) ? $" CONSTRAINT {DefaultName(db.Application, column.Tabloid.Name, column.Name)} DEFAULT {column.DefaultValue}" : "")}";
+                $"{(includeDefault && !string.IsNullOrEmpty(column.DefaultValue) ? $" CONSTRAINT {DefaultName(db.Application, column.Tabloid.Name, column.Name)} DEFAULT {column.DefaultValue}" : "")}";
         }
         public override string IndexToSql(DBConnection db, DBIndex index)
         {

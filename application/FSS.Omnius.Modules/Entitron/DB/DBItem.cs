@@ -139,9 +139,9 @@ namespace FSS.Omnius.Modules.Entitron.DB
         {
             JObject result = new JObject();
 
-            foreach(var pair in _properties)
+            foreach(string columnName in getColumnNames())
             {
-                result.Add(pair.Key, new JValue(pair.Value));
+                result.Add(columnName, new JValue(this[columnName]));
             }
 
             return result;
