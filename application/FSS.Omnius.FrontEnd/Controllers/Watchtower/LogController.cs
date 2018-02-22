@@ -70,14 +70,22 @@ namespace FSS.Omnius.Controllers.Watchtower
                     ActionName = i.ActionName,
                     Message = i.Message
                 }).ToList();
+            
+            return View(filter);
+        }
 
-            var itemsToDelete = context.LogItems.Where( i => i.Timestamp < DateTime.Now.AddDays(-30));
+        public ActionResult DeleteObsolate()
+        {
+            DBEntities context = DBEntities.instance;
+
+            var olderThan = DateTime.Now.AddDays(-30);
+
+            var itemsToDelete = context.LogItems.Where(i => i.Timestamp < olderThan && i.ParentLogItem == null);
             var toDeleteList = itemsToDelete.ToList();
             context.LogItems.RemoveRange(toDeleteList);
+            context.SaveChanges();
 
-
-            return View(filter);
-
+            return new EmptyResult();
         }
 
         public JsonResult GetRow(int id)

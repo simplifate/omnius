@@ -1190,6 +1190,10 @@
     <Compile Include="Migrations\201802160746220_Entitron2.Designer.cs">
       <DependentUpon>201802160746220_Entitron2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802221413479_WatchtowerCascadeDelete.cs" />
+    <Compile Include="Migrations\201802221413479_WatchtowerCascadeDelete.Designer.cs">
+      <DependentUpon>201802221413479_WatchtowerCascadeDelete.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1405,6 +1409,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Nexus\Proxy\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201802221413479_WatchtowerCascadeDelete.resx">
+      <DependentUpon>201802221413479_WatchtowerCascadeDelete.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
