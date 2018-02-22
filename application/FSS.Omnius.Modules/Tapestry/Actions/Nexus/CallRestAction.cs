@@ -95,9 +95,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 }
 
                 string endpointPath = string.Format("{0}/{1}?{2}", service.REST_Base_Url.TrimEnd('/'), endpoint.Trim('/'), queryString);
-                //var endpointUri = new Uri(endpointPath);
+                var endpointUri = new Uri(endpointPath);
 
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(endpointPath);
 
                 httpWebRequest.Method = method.ToUpper();
@@ -111,7 +111,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 
                 if (!string.IsNullOrEmpty(service.Auth_User))
                 {
-                    httpWebRequest.Credentials = new NetworkCredential(service.Auth_User, service.Auth_Password);
+                    string authEncoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{service.Auth_User}:{service.Auth_Password}"));
+                    httpWebRequest.Headers.Add("Authorization", $"Basic {authEncoded}");
+
+                    /*NetworkCredential credentials = new NetworkCredential(, );
+                    CredentialCache cCache = new CredentialCache();
+                    cCache.Add(endpointUri, "Basic", credentials);
+
+                    httpWebRequest.PreAuthenticate = true;
+                    httpWebRequest.Credentials = cCache;*/
                 }
 
                 if (vars.ContainsKey("InputData") && method.ToUpper() != "GET")
