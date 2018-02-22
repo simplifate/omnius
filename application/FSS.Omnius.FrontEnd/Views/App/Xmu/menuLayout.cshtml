@@ -1,24 +1,24 @@
 @{ FSS.Omnius.FrontEnd.Utils.T t = new FSS.Omnius.FrontEnd.Utils.T( (string)ViewData["locale"] ); }
     <ul  id=appMenu>
-@if (Context.GetLoggedUser().canUseBlock("Admin",117)){            <li>
+@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/Overview">@(t._("Overview"))</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin",117)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/Overviewpairconfig">@(t._("OverviewPairConfig"))</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin",117)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/Categorysettingoverview">@(t._("categorySettingOverview"))</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin",117)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/CurrencyConfig">@(t._("Currency Config"))</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin",117)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/Atsrobot">@(t._("AtsRobot"))</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin",117)){            <li>
-                    <a href="/Xmu/Tradestatus">@(t._("tradeStatus"))</a>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
+                    <a href="/Xmu/TradeStatus">@(t._("Trade Status"))</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin",117)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/Bankaccountoverview">@(t._("BankAccountOverview"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("User",117)){            <li>
