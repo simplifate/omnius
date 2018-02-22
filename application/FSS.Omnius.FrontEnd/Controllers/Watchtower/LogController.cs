@@ -74,7 +74,8 @@ namespace FSS.Omnius.Controllers.Watchtower
             return View(filter);
         }
 
-        public ActionResult DeleteObsolate()
+        [AllowAnonymous]
+        public ActionResult DeleteObsolete()
         {
             DBEntities context = DBEntities.instance;
 
