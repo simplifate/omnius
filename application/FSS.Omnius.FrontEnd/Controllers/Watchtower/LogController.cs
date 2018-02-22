@@ -22,7 +22,7 @@ namespace FSS.Omnius.Controllers.Watchtower
             int page = Request.Form.AllKeys.Contains("page") ? Convert.ToInt32(Request.Form["page"]) - 1 : 0;
             page = page >= 0 ? page : 0;
 
-            
+
 
             var allItems = context.LogItems.Where(
                 i =>
@@ -51,6 +51,7 @@ namespace FSS.Omnius.Controllers.Watchtower
                 }
             );
 
+
             ViewData["perPage"] = perPage;
             ViewData["page"] = page + 1;
             ViewData["total"] = allItems.Count();
@@ -70,7 +71,13 @@ namespace FSS.Omnius.Controllers.Watchtower
                     Message = i.Message
                 }).ToList();
 
+            var itemsToDelete = context.LogItems.Where( i => i.Timestamp < DateTime.Now.AddDays(-30));
+            var toDeleteList = itemsToDelete.ToList();
+            context.LogItems.RemoveRange(toDeleteList);
+
+
             return View(filter);
+
         }
 
         public JsonResult GetRow(int id)
