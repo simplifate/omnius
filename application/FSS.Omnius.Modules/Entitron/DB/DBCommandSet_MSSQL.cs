@@ -47,6 +47,10 @@ namespace FSS.Omnius.Modules.Entitron.DB
             {
                 // origin table
                 columns.AddRange(tabloid.Columns.Select(c => new Tuple<string, string>(tabloid.Name, c.Name)));
+                // table not found - every table have some column
+                if (columns.Count == 0)
+                    throw new Exception($"Tabulka/View [{tabloid.Name}]({tabloid.RealName}) nenalezena!");
+
                 // joined tables
                 foreach (Join join in joins)
                 {

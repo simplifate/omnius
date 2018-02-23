@@ -52,7 +52,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                 NexusExtDBResult result = service.Insert(tableName, data);
 
                 if(result.Errors == 0) {
-                    outputVars["Result"] = result.GeneratedKeys[0];
+                    outputVars["Result"] = result.GeneratedKeys.Count > 0 ? result.GeneratedKeys[0] : "";
                     outputVars["Error"] = false;
                 }
                 else {
