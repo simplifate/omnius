@@ -404,7 +404,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                                     context.SaveChanges();
 
                                     workflowItemIdMapping.Add(ajaxItem.Id, item.Id);
-                                    convertConditionSets(ref item, ajaxItem);
+                                    convertConditionSets(ref item, ajaxItem, appId);
                                 }
                             }
 
@@ -430,7 +430,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                                     context.SaveChanges();
 
                                     workflowItemIdMapping.Add(ajaxItem.Id, item.Id);
-                                    convertConditionSets(ref item, ajaxItem);
+                                    convertConditionSets(ref item, ajaxItem, appId);
                                 }
 
                                 TapestryDesignerWorkflowItem virtualItem = new TapestryDesignerWorkflowItem
@@ -458,7 +458,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                                 context.SaveChanges();
 
                                 workflowItemIdMapping.Add(ajaxItem.Id, item.Id);
-                                convertConditionSets(ref item, ajaxItem);
+                                convertConditionSets(ref item, ajaxItem, appId);
                             }
                         }
                         foreach (AjaxTapestryDesignerWorkflowConnection ajaxConnection in ajaxRule.Connections)
@@ -564,11 +564,14 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
 
             return item;
         }
-        private static void convertConditionSets(ref TapestryDesignerWorkflowItem item, AjaxTapestryDesignerWorkflowItem ajaxItem)
+        private static void convertConditionSets(ref TapestryDesignerWorkflowItem item, AjaxTapestryDesignerWorkflowItem ajaxItem, int AppId)
         {
             if (ajaxItem.ConditionSets.Count > 0)
             {
-                TapestryDesignerConditionGroup conditionGroup = new TapestryDesignerConditionGroup();
+                TapestryDesignerConditionGroup conditionGroup = new TapestryDesignerConditionGroup
+                {
+                    ApplicationId = AppId
+                };
                 item.ConditionGroups.Add(conditionGroup);
                 foreach (AjaxTapestryDesignerConditionSet ajaxConditionSet in ajaxItem.ConditionSets)
                 {

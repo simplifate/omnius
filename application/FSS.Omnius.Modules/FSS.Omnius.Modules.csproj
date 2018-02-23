@@ -1194,6 +1194,10 @@
     <Compile Include="Migrations\201802221413479_WatchtowerCascadeDelete.Designer.cs">
       <DependentUpon>201802221413479_WatchtowerCascadeDelete.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802231111575_hermesUniqueness.cs" />
+    <Compile Include="Migrations\201802231111575_hermesUniqueness.Designer.cs">
+      <DependentUpon>201802231111575_hermesUniqueness.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1413,6 +1417,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201802221413479_WatchtowerCascadeDelete.resx">
       <DependentUpon>201802221413479_WatchtowerCascadeDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802231111575_hermesUniqueness.resx">
+      <DependentUpon>201802231111575_hermesUniqueness.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
