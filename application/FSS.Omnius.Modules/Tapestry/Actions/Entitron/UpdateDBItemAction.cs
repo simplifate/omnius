@@ -5,6 +5,7 @@ using System.Linq;
 using System.Globalization;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.DB;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -49,7 +50,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 else if (vars.ContainsKey(modelColumnName))
                 {
                     var inputValue = vars[modelColumnName];
-                    if (column.Type == DbType.DateTime && inputValue is string)
+                    if (inputValue is Newtonsoft.Json.Linq.JValue)
+                        row[column.Name] = ((JValue)inputValue).Value;
+                    else if (column.Type == DbType.DateTime && inputValue is string)
                     {
                         DateTime parsedDateTime = new DateTime();
                         bool parseSuccessful = DateTime.TryParseExact((string)inputValue,
