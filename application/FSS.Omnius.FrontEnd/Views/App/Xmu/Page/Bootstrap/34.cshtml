@@ -302,7 +302,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="Transactions_table" />
-</div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Errors")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class=""><ul class="nav nav-tabs mbe-active"><li class=""><a href="#tab-transactionsErrors" data-toggle="tab" class="" aria-expanded="false">@(@"Transaction")</a></li><li class="active"><a href="#tab-withdrawalErrors" data-toggle="tab" aria-expanded="true" class="">@(@"Withdrawal")</a></li></ul><div class="tab-content"><div class="tab-pane" id="tab-transactionsErrors"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Transaction")</h3>
+</div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Errors")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class=""><ul class="nav nav-tabs"><li class=""><a href="#tab-transactionsErrors" data-toggle="tab" class="" aria-expanded="false">@(@"Transaction")</a></li><li class=""><a href="#tab-withdrawalErrors" data-toggle="tab" aria-expanded="false" class="">@(@"Withdrawal")</a></li><li class="active"><a href="#tab-missingUsers" data-toggle="tab" class="" aria-expanded="true">@(@"Missing users")</a></li></ul><div class="tab-content"><div class="tab-pane" id="tab-transactionsErrors"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Transaction")</h3>
 @{ if(ViewData.ContainsKey("tableData_TransactionsErrors_table") && ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="TransactionsErrors_table" role="grid" aria-describedby="TransactionsErrors_table_info" style="">
         <thead>
@@ -334,7 +334,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="TransactionsErrors_table" />
-</div></div><div class="tab-pane active" id="tab-withdrawalErrors"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Withdrawal")</h3>
+</div></div><div class="tab-pane" id="tab-withdrawalErrors"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Withdrawal")</h3>
 @{ if(ViewData.ContainsKey("tableData_WithdrawalErrors_table") && ((System.Data.DataTable)(ViewData["tableData_WithdrawalErrors_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="WithdrawalErrors_table" role="grid" aria-describedby="WithdrawalErrors_table_info" style="">
         <thead>
@@ -366,6 +366,38 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="WithdrawalErrors_table" />
+</div></div><div class="tab-pane active" id="tab-missingUsers"><div class="col-xs-12"><h3 class="text-center mbe-active" style="margin-top: 10px;">@(@"Missing users")</h3>
+@{ if(ViewData.ContainsKey("tableData_missingUsers_table") && ((System.Data.DataTable)(ViewData["tableData_missingUsers_table"])).Rows.Count > 0) {
+    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="missingUsers_table" role="grid" aria-describedby="missingUsers_table_info" style="">
+        <thead>
+            <tr>
+            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_missingUsers_table"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                <th>Akce</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_missingUsers_table"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                <th>Akce</th>
+            </tr>
+        </tfoot>
+        <tbody>
+        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_missingUsers_table"])).Rows) {
+            <tr>@foreach (var cell in row.ItemArray) {
+                <td>@cell.ToString()</td>
+            }
+                <td class="actionIcons"></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+} else {
+    <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
+} }
+<input type="hidden" name="missingUsers_table" />
 </div></div></div></div></div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Profiles")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="clearfix"><div class="col-xs-12 col-lg-4"><div class="row"><div class="graphWrapper" id="weekly_active_hc">@Html.Raw(@"<div id=""weekly_active_hc_graph""></div><script>weekly_active_hc_graph_chart = new Highcharts.chart({
   chart: {
     renderTo: 'weekly_active_hc_graph',
