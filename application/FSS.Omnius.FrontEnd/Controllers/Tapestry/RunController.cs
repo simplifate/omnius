@@ -1192,21 +1192,20 @@ public class UnauthorizedRunController : Controller
 
             blockDependencies.Add("Translator", this.GetTranslator());
             // run
-            var result = core.Tapestry.run(core.User, block, button, modelId, new FormCollection(), -1, blockDependencies);
-
-            // redirect
-            return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString(), registry = JsonConvert.SerializeObject(result.Item3) });
-
-
-
+            if (!string.IsNullOrEmpty(button)) {
+                var result = core.Tapestry.run(core.User, block, button, modelId, new FormCollection(), -1, blockDependencies);
+                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString(), registry = JsonConvert.SerializeObject(result.Item3) });
+            }
+            else {
+                var result = core.Tapestry.innerRun(core.User, block, "INIT", modelId, new FormCollection(), -1, blockDependencies);
+                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = "", messageType = result.Item1.Type.ToString(), registry = JsonConvert.SerializeObject(new object()) });
+            }
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
-
-
     }
     public ActionResult GetJson(string appName, string button, string blockIdentify = null, int modelId = -1)
     {
@@ -1257,7 +1256,7 @@ public class UnauthorizedRunController : Controller
         return blockName != null
             ? context.Blocks
                 .Include(b => b.SourceTo_ActionRules)
-                .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Application.Id && b.Name == blockName)
+                .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Application.Id && b.Name.ToLower() == blockName.ToLower())
             : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Application.Id && b.WorkFlow.InitBlockId == b.Id);
     }
 
