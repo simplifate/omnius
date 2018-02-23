@@ -12,14 +12,14 @@
         [ImportExportIgnore(IsKey = true)]
         public int? Id { get; set; }
 
-        [Index(IsClustered = false, IsUnique = false)]
+        [Index("HermesUniqueness", IsClustered = false, IsUnique = true, Order = 1)]
         [ForeignKey("Application")]
         [ImportExportIgnore(IsParentKey = true)]
         public int? AppId { get; set; }
 
         [Required]
         [StringLength(255)]
-        [Index(IsClustered = false, IsUnique = true)]
+        [Index("HermesUniqueness", IsClustered = false, IsUnique = true, Order = 2)]
         [Display(Name = "Název")]
         public string Name { get; set; }
 
