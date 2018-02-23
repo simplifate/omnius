@@ -6,6 +6,7 @@ using FSS.Omnius.Modules.Compass;
 using System.IO;
 using FSS.Omnius.Modules.Compass.Service;
 using System.Collections.Generic;
+using System.Text;
 
 namespace FSS.Omnius.Modules.Nexus.Service
 {
@@ -21,7 +22,10 @@ namespace FSS.Omnius.Modules.Nexus.Service
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(downloadUri);
             httpWebRequest.Method = method; // WebRequestMethods.Http.Get.ToString();
             if (!file.WebDavServer.AnonymousMode)
-                httpWebRequest.Credentials = new NetworkCredential(file.WebDavServer.AuthUsername, file.WebDavServer.AuthPassword);
+            {
+                string authEncoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{file.WebDavServer.AuthUsername}:{file.WebDavServer.AuthPassword}"));
+                httpWebRequest.Headers.Add("Authorization", $"Basic {authEncoded}");
+            }
 
             return httpWebRequest;
         }
