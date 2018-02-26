@@ -193,7 +193,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             command.CommandText =
                 $"INSERT INTO {ToRealTableName(db.Application, tableName)}({string.Join(",", columnNames.Select(c => AddQuote(c)))}) " +
                 $"VALUES ({string.Join(",", columnNames.Select(c => $"@{command.AddParam(c, item[c])}"))});" +
-                $"SELECT LAST_INSERT_ID();";
+                $"SELECT LAST_INSERT_ID() {PrimaryKey};";
 
             return command;
         }

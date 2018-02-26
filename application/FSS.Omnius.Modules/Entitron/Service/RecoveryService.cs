@@ -145,7 +145,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
             foreach (var typePair in _optionalValues)
             {
                 // optional columns
-                string sql = $"UPDATE [{typePair.Key.GetCustomAttribute<TableAttribute>().Name}] SET {string.Join(",", getOptionalProperties(typePair.Key).Select(p => $"[{p.Name}] = @{p.Name}"))} WHERE [{PrimaryKey}] = @{PrimaryKey}";
+                string sql = $"UPDATE {_db.AddQuote(typePair.Key.GetCustomAttribute<TableAttribute>().Name)} SET {string.Join(",", getOptionalProperties(typePair.Key).Select(p => $"{_db.AddQuote(p.Name)} = @{p.Name}"))} WHERE {_db.AddQuote(PrimaryKey)} = @{PrimaryKey}";
 
                 // data
                 foreach (var oldIdPair in typePair.Value)
@@ -252,7 +252,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                                     connection.Open();
 
                                     IDbCommand command = _db.Command;
-                                    command.CommandText = $"UPDATE [{propType.GetCustomAttribute<TableAttribute>().Name}] SET [{parentProperty.Name}] = @{prop.Name} WHERE [{PrimaryKey}] = @{PrimaryKey}";
+                                    command.CommandText = $"UPDATE {_db.AddQuote(propType.GetCustomAttribute<TableAttribute>().Name)} SET {_db.AddQuote(parentProperty.Name)} = @{prop.Name} WHERE {_db.AddQuote(PrimaryKey)} = @{PrimaryKey}";
                                     command.Connection = connection;
                                     command.AddParam(prop.Name, oldApp.Id);
                                     command.AddParam(PrimaryKey, idPair.Value);
@@ -285,7 +285,9 @@ namespace FSS.Omnius.Modules.Entitron.Service
             IEnumerable<PropertyInfo> nonOptionalProperties = getNonOptionalProperties(currentType);
 
             /// generate sql
-            string sql = $"INSERT INTO [{currentType.GetCustomAttribute<TableAttribute>().Name}]({string.Join(",", nonOptionalProperties.Select(p => $"[{p.Name}]"))}) OUTPUT inserted.[{PrimaryKey}] VALUES({string.Join(",", nonOptionalProperties.Select(c => $"@{c.Name}"))});";
+            string sql = _db.Type == ESqlType.MSSQL
+                ? $"INSERT INTO {_db.AddQuote(currentType.GetCustomAttribute<TableAttribute>().Name)}({string.Join(",", nonOptionalProperties.Select(p => _db.AddQuote(p.Name)))}) OUTPUT inserted.{_db.AddQuote(PrimaryKey)} VALUES({string.Join(",", nonOptionalProperties.Select(c => $"@{c.Name}"))});"
+                : $"INSERT INTO {_db.AddQuote(currentType.GetCustomAttribute<TableAttribute>().Name)}({string.Join(",", nonOptionalProperties.Select(p => _db.AddQuote(p.Name)))}) VALUES({string.Join(",", nonOptionalProperties.Select(c => $"@{c.Name}"))}); SELECT LAST_INSERT_ID() {PrimaryKey}";
 
             using (IDbConnection connection = _db.Connection)
             {
@@ -367,11 +369,13 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         {
                             command.AddParam(prop.Name, jsonEntity[prop.Name].ToObject<object>() ?? DBNull.Value);
                         }
-                        IDataReader reader = command.ExecuteReader();
 
-                        /// get Id
-                        reader.Read();
-                        _ids[currentType].Add(jsonEntity[PrimaryKey].ToObject<int>(), Convert.ToInt32(reader[PrimaryKey]));
+                        using (IDataReader reader = command.ExecuteReader())
+                        {
+                            /// get Id
+                            reader.Read();
+                            _ids[currentType].Add(jsonEntity[PrimaryKey].ToObject<int>(), Convert.ToInt32(reader[PrimaryKey]));
+                        }
                     }
                     catch (NextEntity)
                     {

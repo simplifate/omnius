@@ -5,6 +5,7 @@ using System.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using FSS.Omnius.Modules.Entitron.DB;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using Newtonsoft.Json;
@@ -20,6 +21,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
         }
         
         private DBEntities _context;
+        private DBCommandSet _db;
 
         public void ExportAllDatabaseDesignerData(string filename)
         {
@@ -39,6 +41,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             string[] toExport = form.AllKeys;
 
+            _db = DBCommandSet.GetDBCommandSet(_context.Applications.Find(id).DB_Type);
             JObject result = new JObject();
             Queue<Type> queue = new Queue<Type>();
             Dictionary<Type, HashSet<int>> ids = new Dictionary<Type, HashSet<int>>();
@@ -82,14 +85,14 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     string tableName = currentType.GetCustomAttribute<TableAttribute>().Name;
                     string sqlQuery = parentAttribute.exportCount != 0
                         ? $"SELECT * " +
-                            $"FROM [{tableName}] [table1] " +
-                            $"WHERE [table1].[{parentPropKey}] IN ({string.Join(",", ids[parentType])}) AND [table1].[Id] IN " +
-                            $"(SELECT TOP({parentAttribute.exportCount}) Id FROM [{tableName}] [table2] " +
-                            $" WHERE [table2].[{parentPropKey}] = [table1].[{parentPropKey}] " +
-                            $" ORDER BY [table2].[{parentAttribute.exportOrderColumn}] {(parentAttribute.exportOrderDesc ? "DESC" : "ASC")})"
+                            $"FROM {_db.AddQuote(tableName)} {_db.AddQuote("table1")} " +
+                            $"WHERE {_db.AddQuote("table1")}.{_db.AddQuote(parentPropKey)} IN ({string.Join(",", ids[parentType])}) AND {_db.AddQuote("table1")}.{_db.AddQuote(RecoveryService.PrimaryKey)} IN " +
+                            $"(SELECT TOP({parentAttribute.exportCount}) {_db.AddQuote(RecoveryService.PrimaryKey)} FROM {_db.AddQuote(tableName)} {_db.AddQuote("table2")} " +
+                            $" WHERE {_db.AddQuote("table2")}.{_db.AddQuote(parentPropKey)} = {_db.AddQuote("table1")}.{_db.AddQuote(parentPropKey)} " +
+                            $" ORDER BY {_db.AddQuote("table2")}.{_db.AddQuote(parentAttribute.exportOrderColumn)} {(parentAttribute.exportOrderDesc ? "DESC" : "ASC")})"
                         : $"SELECT * " +
-                            $"FROM [{tableName}] " +
-                            $"WHERE [{parentPropKey}] IN ({string.Join(",", ids[parentType])})";
+                            $"FROM {_db.AddQuote(tableName)} " +
+                            $"WHERE {_db.AddQuote(parentPropKey)} IN ({string.Join(",", ids[parentType])})";
                     try
                     {
                         var query = _context.Database.SqlQuery(currentType, sqlQuery);
