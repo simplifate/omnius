@@ -339,6 +339,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
     {
         public static string AddParam(this IDbCommand command, string name, object value)
         {
+            // param name
             string finalName = name;
             int count = command.Parameters.Count;
             while (command.Parameters.Contains(finalName))
@@ -347,6 +348,10 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 count++;
             }
 
+            // param value
+            value = value ?? DBNull.Value;
+
+            // add
             if (command.GetType() == typeof(SqlCommand))
                 (command as SqlCommand).Parameters.Add(new SqlParameter(finalName, value));
             else if (command.GetType() == typeof(MySqlCommand))
