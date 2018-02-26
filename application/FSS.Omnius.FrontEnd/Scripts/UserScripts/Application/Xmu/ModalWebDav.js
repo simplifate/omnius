@@ -8,7 +8,7 @@ $(function(){
             $("#preloader_profile").css("display", "block");
             $.ajax({
                 type: 'POST',
-                url: "/Xmu/Profile?button=headingHash",
+                url: "/Xmu/WebDavUsersEdit?button=headingHash",
                 data: { 'UserHash': UserHash},
                 success: function (response) {
                     var x = $(response)
