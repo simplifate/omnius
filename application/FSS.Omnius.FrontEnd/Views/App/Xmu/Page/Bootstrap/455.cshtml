@@ -6,15 +6,15 @@
             </div>
         }
     }
-}</div><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"User level")</label><div class="col-xs-12"><input type="text" name="" value="@(formState.ContainsKey("") ? formState[""] : (ViewData.ContainsKey("inputData_") ? @ViewData["inputData_"] : ""))" class="form-control" readonly="readonly" /></div></div><div class="form-group"><label for="" class="">@(@"Select user level")</label><div class="col-xs-12">
-<select name="" class="form-control">
+}</div><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"User level")</label><div class="col-xs-12"><input type="text" name="userLevel" value="@(formState.ContainsKey("userLevel") ? formState["userLevel"] : (ViewData.ContainsKey("inputData_userLevel") ? @ViewData["inputData_userLevel"] : ""))" class="form-control" readonly="readonly" id="userLevel" /></div></div><div class="form-group"><label for="" class="">@(@"Select user level")</label><div class="col-xs-12">
+<select name="" class="form-control" id="category">
     
-    @{ if(ViewData["dropdownData_"] != null) {
-            foreach(var option in ((Dictionary<int, string>)ViewData["dropdownData_"])) {
-                <option value="@(option.Key)" @((formState.ContainsKey("") && Convert.ToInt32(formState[""]) == option.Key) || (ViewData.ContainsKey("dropdownSelection_") && ViewData["dropdownSelection_"] is int && (int)ViewData["dropdownSelection_"] == option.Key) ? "selected" : "")>
+    @{ if(ViewData["dropdownData_category"] != null) {
+            foreach(var option in ((Dictionary<int, string>)ViewData["dropdownData_category"])) {
+                <option value="@(option.Key)" @((formState.ContainsKey("category") && Convert.ToInt32(formState["category"]) == option.Key) || (ViewData.ContainsKey("dropdownSelection_category") && ViewData["dropdownSelection_category"] is int && (int)ViewData["dropdownSelection_category"] == option.Key) ? "selected" : "")>
                     @(option.Value)
                 </option>
             }
         }
     }    
-</select></div></div></div><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"User Id")</label><div class="col-xs-12"><input type="text" name="" value="@(formState.ContainsKey("") ? formState[""] : (ViewData.ContainsKey("inputData_") ? @ViewData["inputData_"] : ""))" class="form-control" readonly="readonly" /></div></div></div></div></div></div><button type="submit" class="btn btn-primary btn-lg" name="button" value="Save" id="Save" >@(@"Save")</button></div></div></div>@Html.AntiForgeryToken()</form></div>
+</select></div></div></div><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"User Id")</label><div class="col-xs-12"><input type="text" name="user_id" value="@(formState.ContainsKey("user_id") ? formState["user_id"] : (ViewData.ContainsKey("inputData_user_id") ? @ViewData["inputData_user_id"] : ""))" class="form-control mbe-active" readonly="readonly" id="user_id" /></div></div></div></div></div></div><button type="submit" class="btn btn-primary btn-lg" name="button" value="Save" id="Save" >@(@"Save")</button></div></div></div>@Html.AntiForgeryToken()</form></div>
