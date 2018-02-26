@@ -14,13 +14,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic.Bootstrap
     [Table("MozaicBootstrap_Components")]
     public class MozaicBootstrapComponent : IEntity
     {
-        public MozaicBootstrapComponent()
-        {
-            ChildComponents = new HashSet<MozaicBootstrapComponent>();
-        }
-
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public string ElmId { get; set; }
         public string Tag { get; set; }
         public string UIC { get; set; }
@@ -35,15 +30,20 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic.Bootstrap
         [DataType(DataType.Text)]
         public string Content { get; set; }
 
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.LinkChild)]
         public virtual ICollection<MozaicBootstrapComponent> ChildComponents { get; set; }
-        [ImportExportIgnore(IsLinkKey = true)]
+        [ImportExport(ELinkType.LinkOptional, typeof(MozaicBootstrapComponent))]
         public int? ParentComponentId { get; set; }
-        [ImportExportIgnore(IsLink = true)]
+        [ImportExport(ELinkType.LinkOptional)]
         public MozaicBootstrapComponent ParentComponent { get; set; }
-        [ImportExportIgnore(IsParentKey = true)]
+        [ImportExport(ELinkType.Parent, typeof(MozaicBootstrapPage))]
         public int MozaicBootstrapPageId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
-        public virtual MozaicBootstrapPage MozaicBootstrapPage { get; set; }  
+        [ImportExport(ELinkType.Parent)]
+        public virtual MozaicBootstrapPage MozaicBootstrapPage { get; set; }
+
+        public MozaicBootstrapComponent()
+        {
+            ChildComponents = new HashSet<MozaicBootstrapComponent>();
+        }
     }
 }

@@ -23,8 +23,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_MetaBlocks")]
     public class TapestryDesignerMetablock : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public string Name { get; set; }
         public int PositionX { get; set; } // For visual representation in Overview
         public int PositionY { get; set; }
@@ -32,19 +32,22 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
         public bool IsDeleted { get; set; }
-
+        
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<TapestryDesignerMetablockConnection> Connections { get; set; }
-        [ImportExportIgnore]
-        public virtual ICollection<TapestryDesignerMetablock> Metablocks { get; set; }
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<TapestryDesignerBlock> Blocks { get; set; }
-
-        [ImportExportIgnore(IsLinkKey = true)]
+        
+        [ImportExport(ELinkType.LinkOptional, typeof(TapestryDesignerMetablock))]
         public int? ParentMetablock_Id { get; set; }
-        [ImportExportIgnore(IsLink = true)]
+        [ImportExport(ELinkType.LinkOptional)]
         public virtual TapestryDesignerMetablock ParentMetablock { get; set; }
-        [ImportExportIgnore(IsParentKey = true)]
+        [ImportExport(ELinkType.LinkChild)]
+        public virtual ICollection<TapestryDesignerMetablock> Metablocks { get; set; }
+
+        [ImportExport(ELinkType.Parent, typeof(Application))]
         public int ParentAppId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
+        [ImportExport(ELinkType.Parent)]
         public virtual Application ParentApp { get; set; }
         
         public TapestryDesignerMetablock()
@@ -57,30 +60,27 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_MetablocksConnections")]
     public class TapestryDesignerMetablockConnection : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public int SourceType { get; set; }
-        public int TargetType { get; set; }
-        [LinkToEntity("SourceType", typeof(TapestryDesignerBlock), typeof(TapestryDesignerMetablock))]
-        [ImportExportIgnore(IsLinkKey = true)]
+        [ImportExport(ELinkType.LinkOptional, typeof(TapestryDesignerBlock), typeof(TapestryDesignerMetablock), KeyForMultiple_property = "SourceType")]
         public int? SourceId { get; set; }
-        [LinkToEntity("TargetType", typeof(TapestryDesignerBlock), typeof(TapestryDesignerMetablock))]
-        [ImportExportIgnore(IsLinkKey = true)]
+        public int TargetType { get; set; }
+        [ImportExport(ELinkType.LinkOptional, typeof(TapestryDesignerBlock), typeof(TapestryDesignerMetablock), KeyForMultiple_property = "TargetType")]
         public int? TargetId { get; set; }
 
-        [ImportExportIgnore(IsParentKey = true)]
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerMetablock))]
         public int TapestryDesignerMetablockId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
+        [ImportExport(ELinkType.Parent)]
         public virtual TapestryDesignerMetablock TapestryDesignerMetablock { get; set; }
     }
     [Table("TapestryDesigner_Blocks")]
     public class TapestryDesignerBlock : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public string Name { get; set; }
         public string AssociatedTableName { get; set; }
-        [LinkToEntity(typeof(Entitron.DbTable))]
         public int AssociatedTableId { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
@@ -91,15 +91,17 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsChanged { get; set; }
         public int? BuiltBlockId { get; set; } // feel free to remove
         public int? LockedForUserId { get; set; }
+
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<TapestryDesignerBlockCommit> BlockCommits { get; set; }
         public virtual TapestryDesignerToolboxState ToolboxState { get; set; }
-
-        [ImportExportIgnore(IsParentKey = true)]
-        public int ParentMetablock_Id { get; set; }
-        [ImportExportIgnore(IsParent = true)]
-        public virtual TapestryDesignerMetablock ParentMetablock { get; set; }
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.LinkChild)]
         public virtual ICollection<TapestryDesignerWorkflowItem> TargetFor { get; set; }
+
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerMetablock))]
+        public int ParentMetablock_Id { get; set; }
+        [ImportExport(ELinkType.Parent)]
+        public virtual TapestryDesignerMetablock ParentMetablock { get; set; }
 
         public TapestryDesignerBlock()
         {
@@ -109,8 +111,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_BlocksCommits")]
     public class TapestryDesignerBlockCommit : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public string Name { get; set; }
         public string AssociatedTableName { get; set; }
         public string ModelTableName { get; set; }
@@ -119,23 +121,24 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public string CommitMessage { get; set; }
         public DateTime Timestamp { get; set; }
-        [ImportExportIgnore]
         public string TimeString => Timestamp.ToString("d. M. yyyy H:mm:ss");
-
-        //public BlockToolboxState ToolboxState { get; set; }
-        public virtual ICollection<TapestryDesignerResourceRule> ResourceRules { get; set; }
-        public virtual ICollection<TapestryDesignerWorkflowRule> WorkflowRules { get; set; }
-        [LinkToEntity(typeof(MozaicEditorPage), true)]
-        public string AssociatedPageIds { get; set; }
-        [LinkToEntity(typeof(MozaicBootstrapPage), true)]
-        public string AssociatedBootstrapPageIds { get; set; }
-        [LinkToEntity(typeof(DbTable), true)]
+        [Obsolete]
         public string AssociatedTableIds { get; set; }
         public string RoleWhitelist { get; set; }
 
-        [ImportExportIgnore(IsParentKey = true)]
+        //public BlockToolboxState ToolboxState { get; set; }
+        [ImportExport(ELinkType.Child)]
+        public virtual ICollection<TapestryDesignerResourceRule> ResourceRules { get; set; }
+        [ImportExport(ELinkType.Child)]
+        public virtual ICollection<TapestryDesignerWorkflowRule> WorkflowRules { get; set; }
+        [ImportExport(ELinkType.LinkOptional, typeof(MozaicEditorPage), MultipleIdInString = true)]
+        public string AssociatedPageIds { get; set; }
+        [ImportExport(ELinkType.LinkOptional, typeof(MozaicBootstrapPage), MultipleIdInString = true)]
+        public string AssociatedBootstrapPageIds { get; set; }
+
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerBlock), exportCount = 3, exportOrderColumn = "Timestamp")]
         public int ParentBlock_Id { get; set; }
-        [ImportExportIgnore(IsParent = true)]
+        [ImportExport(ELinkType.Parent)]
         public virtual TapestryDesignerBlock ParentBlock { get; set; }
 
         public TapestryDesignerBlockCommit()
@@ -147,19 +150,21 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_ResourceRules")]
     public class TapestryDesignerResourceRule : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<TapestryDesignerResourceItem> ResourceItems { get; set; }
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<TapestryDesignerResourceConnection> Connections { get; set; }
 
-        [ImportExportIgnore(IsParentKey = true)]
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerBlockCommit))]
         public int ParentBlockCommit_Id { get; set; }
-        [ImportExportIgnore(IsParent = true)]
+        [ImportExport(ELinkType.Parent)]
         public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
 
         public TapestryDesignerResourceRule()
@@ -171,20 +176,22 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_WorkflowRules")]
     public partial class TapestryDesignerWorkflowRule : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public string Name { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
 
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<TapestryDesignerSwimlane> Swimlanes { get; set; }
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<TapestryDesignerWorkflowConnection> Connections { get; set; }
 
-        [ImportExportIgnore(IsParentKey = true)]
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerBlockCommit))]
         public int ParentBlockCommit_Id { get; set; }
-        [ImportExportIgnore(IsParent = true)]
+        [ImportExport(ELinkType.Parent)]
         public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
 
         public TapestryDesignerWorkflowRule()
@@ -196,20 +203,23 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_Swimlanes")]
     public class TapestryDesignerSwimlane : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public int SwimlaneIndex { get; set; }
         public int Height { get; set; }
         public string Roles { get; set; }
         
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<TapestryDesignerWorkflowItem> WorkflowItems { get; set; }
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<TapestryDesignerSubflow> Subflow { get; set; }
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<TapestryDesignerForeach> Foreach { get; set; }
 
-        [ImportExportIgnore(IsParent = true)]
-        public virtual TapestryDesignerWorkflowRule ParentWorkflowRule { get; set; }
-        [ImportExportIgnore(IsParentKey = true)]
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerWorkflowRule))]
         public int ParentWorkflowRule_Id { get; set; }
+        [ImportExport(ELinkType.Parent)]
+        public virtual TapestryDesignerWorkflowRule ParentWorkflowRule { get; set; }
 
         public TapestryDesignerSwimlane()
         {
@@ -222,8 +232,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_Subflow")]
     public class TapestryDesignerSubflow : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public string Name { get; set; }
         public string Comment { get; set; }
         public bool CommentBottom { get; set; }
@@ -232,12 +242,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Width { get; set; }
         public int Height { get; set; }
 
-        [ImportExportIgnore(IsParent = true)]
-        public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
-        [ImportExportIgnore(IsParentKey = true)]
-        public int ParentSwimlaneId { get; set; }
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.LinkChild)]
         public ICollection<TapestryDesignerWorkflowItem> WorkflowItems { get; set; }
+
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerSwimlane))]
+        public int ParentSwimlaneId { get; set; }
+        [ImportExport(ELinkType.Parent)]
+        public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
 
         public TapestryDesignerSubflow()
         {
@@ -248,8 +259,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_Foreach")]
     public class TapestryDesignerForeach : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public string Name { get; set; }
         public string Comment { get; set; }
         public bool CommentBottom { get; set; }
@@ -259,12 +270,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Height { get; set; }
         public string DataSource { get; set; }
 
-        [ImportExportIgnore(IsParent = true)]
-        public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
-        [ImportExportIgnore(IsParentKey = true)]
-        public int ParentSwimlaneId { get; set; }
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.LinkChild)]
         public ICollection<TapestryDesignerWorkflowItem> WorkflowItems { get; set; }
+
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerSwimlane))]
+        public int ParentSwimlaneId { get; set; }
+        [ImportExport(ELinkType.Parent)]
+        public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
 
         public TapestryDesignerForeach()
         {
@@ -276,40 +288,41 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_ResourceItems")]
     public class TapestryDesignerResourceItem : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public string Label { get; set; }
         public string TypeClass { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public int? ActionId { get; set; }
         public int? StateId { get; set; }
-        [ImportExportIgnore(IsLinkKey = true)]
-        public int? PageId { get; set; }
-        [ImportExportIgnore(IsLink = true)]
-        public virtual MozaicEditorPage Page { get; set; }
-        [ImportExportIgnore(IsLinkKey = true)]
-        public int? BootstrapPageId { get; set; }
-        [ImportExportIgnore(IsLink = true)]
-        public virtual MozaicBootstrapPage BootstrapPage { get; set; }
         public string ComponentName { get; set; }
         public bool? IsBootstrap { get; set; }
         public string TableName { get; set; }
         public bool? IsShared { get; set; }
         public string ColumnName { get; set; }
         public string ColumnFilter { get; set; }
+
+        [ImportExport(ELinkType.LinkOptional, typeof(MozaicEditorPage))]
+        public int? PageId { get; set; }
+        [ImportExport(ELinkType.LinkOptional)]
+        public virtual MozaicEditorPage Page { get; set; }
+        [ImportExport(ELinkType.LinkOptional, typeof(MozaicBootstrapPage))]
+        public int? BootstrapPageId { get; set; }
+        [ImportExport(ELinkType.LinkOptional)]
+        public virtual MozaicBootstrapPage BootstrapPage { get; set; }
+        [ImportExport(ELinkType.LinkChild)]
         public virtual ICollection<TapestryDesignerConditionGroup> ConditionGroups { get; set; }
-
-        [ImportExportIgnore(IsParentKey = true)]
-        public int ParentRuleId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
-        public virtual TapestryDesignerResourceRule ParentRule { get; set; }
-
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.LinkChild)]
         public virtual ICollection<TapestryDesignerResourceConnection> SourceToConnection { get; set; }
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.LinkChild)]
         public virtual ICollection<TapestryDesignerResourceConnection> TargetToConnection { get; set; }
 
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerResourceRule))]
+        public int ParentRuleId { get; set; }
+        [ImportExport(ELinkType.Parent)]
+        public virtual TapestryDesignerResourceRule ParentRule { get; set; }
+        
         public TapestryDesignerResourceItem()
         {
             ConditionGroups = new List<TapestryDesignerConditionGroup>();
@@ -320,28 +333,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_WorkflowItems")]
     public partial class TapestryDesignerWorkflowItem : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
         public string TypeClass { get; set; }
         public string DialogType { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
-
-        [ImportExportIgnore(IsParentKey = true)]
-        public int ParentSwimlaneId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
-        public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
-
-        [ImportExportIgnore(IsParentKey = true)]
-        public int? ParentSubflowId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
-        public virtual TapestryDesignerSubflow ParentSubflow { get; set; }
-
-        [ImportExportIgnore(IsParentKey = true)]
-        public int? ParentForeachId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
-        public virtual TapestryDesignerForeach ParentForeach { get; set; }
-
         public string Label { get; set; }
         public string Name { get; set; }
         public string Comment { get; set; }
@@ -351,7 +347,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string OutputVariables { get; set; }
         public int? StateId { get; set; }
         public string TargetName { get; set; }
-        [LinkToEntity(typeof(Page))]
+        [Obsolete]
         public int? PageId { get; set; }
         public string ComponentName { get; set; }
         public bool? IsBootstrap { get; set; }
@@ -359,18 +355,31 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool? IsForeachStart { get; set; }
         public bool? IsForeachEnd { get; set; }
         public string Condition { get; set; }
-        [ImportExportIgnore(IsLinkKey = true)]
-        public int? TargetId { get; set; }
         public string SymbolType { get; set; }
-        public virtual ICollection<TapestryDesignerConditionGroup> ConditionGroups { get; set; }
 
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.LinkOptional, typeof(TapestryDesignerSubflow))]
+        public int? ParentSubflowId { get; set; }
+        [ImportExport(ELinkType.LinkOptional)]
+        public virtual TapestryDesignerSubflow ParentSubflow { get; set; }
+        [ImportExport(ELinkType.LinkOptional, typeof(TapestryDesignerForeach))]
+        public int? ParentForeachId { get; set; }
+        [ImportExport(ELinkType.LinkOptional)]
+        public virtual TapestryDesignerForeach ParentForeach { get; set; }
+        [ImportExport(ELinkType.LinkOptional, typeof(TapestryDesignerBlock))]
+        public int? TargetId { get; set; }
+        [ImportExport(ELinkType.LinkOptional)]
         public TapestryDesignerBlock Target { get; set; }
-
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.LinkChild)]
+        public virtual ICollection<TapestryDesignerConditionGroup> ConditionGroups { get; set; }
+        [ImportExport(ELinkType.LinkChild)]
         public virtual ICollection<TapestryDesignerWorkflowConnection> SourceToConnection { get; set; }
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.LinkChild)]
         public virtual ICollection<TapestryDesignerWorkflowConnection> TargetToConnection { get; set; }
+
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerSwimlane))]
+        public int ParentSwimlaneId { get; set; }
+        [ImportExport(ELinkType.Parent)]
+        public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
 
         public TapestryDesignerWorkflowItem()
         {
@@ -382,7 +391,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_ToolboxStates")]
     public class TapestryDesignerToolboxState : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
         public virtual ICollection<ToolboxItem> Actions { get; set; }
         public virtual ICollection<ToolboxItem> Attributes { get; set; }
@@ -392,8 +400,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<ToolboxItem> Targets { get; set; }
         public virtual ICollection<ToolboxItem> Templates { get; set; }
         public virtual ICollection<ToolboxItem> Integrations { get; set; }
-
-        [ImportExportIgnore]
+        
         public TapestryDesignerBlockCommit AssociatedBlockCommit { get; set; }
 
         public TapestryDesignerToolboxState()
@@ -411,14 +418,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_ToolboxItems")]
     public class ToolboxItem : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
         public string TypeClass { get; set; }
         public string Label { get; set; }
         public int? ActionId { get; set; }
         public string TableName { get; set; }
         public string ColumnName { get; set; }
-        [LinkToEntity(typeof(Page))]
         public int? PageId { get; set; }
         public string ComponentName { get; set; }
         public bool? IsBootstrap { get; set; }
@@ -428,68 +433,77 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     }
     public abstract class TapestryDesignerConnection : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
-        [ImportExportIgnore(IsLinkKey = true)]
-        public int SourceId { get; set; }
+        public virtual int SourceId { get; set; }
         public int SourceSlot { get; set; }
-        [ImportExportIgnore(IsLinkKey = true)]
-        public int TargetId { get; set; }
+        public virtual int TargetId { get; set; }
         public int TargetSlot { get; set; }
     }
     [Table("TapestryDesigner_WorkflowConnections")]
     public partial class TapestryDesignerWorkflowConnection : TapestryDesignerConnection
     {
-        [ImportExportIgnore(IsLink = true)]
+        [ImportExport(ELinkType.LinkRequired, typeof(TapestryDesignerWorkflowItem))]
+        public override int SourceId { get ; set; }
+        [ImportExport(ELinkType.LinkRequired)]
         public virtual TapestryDesignerWorkflowItem Source { get; set; }
-        [ImportExportIgnore(IsLink = true)]
+        [ImportExport(ELinkType.LinkRequired, typeof(TapestryDesignerWorkflowItem))]
+        public override int TargetId { get; set; }
+        [ImportExport(ELinkType.LinkRequired)]
         public virtual TapestryDesignerWorkflowItem Target { get; set; }
 
-        [ImportExportIgnore(IsParentKey = true)]
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerWorkflowRule))]
         public int WorkflowRuleId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
+        [ImportExport(ELinkType.Parent)]
         public virtual TapestryDesignerWorkflowRule WorkflowRule { get; set; }
     }
     [Table("TapestryDesigner_ResourceConnections")]
     public partial class TapestryDesignerResourceConnection : TapestryDesignerConnection
     {
-        [ImportExportIgnore(IsLink = true)]
+        [ImportExport(ELinkType.LinkRequired, typeof(TapestryDesignerResourceItem))]
+        public override int SourceId { get; set; }
+        [ImportExport(ELinkType.LinkRequired)]
         public virtual TapestryDesignerResourceItem Source { get; set; }
-        [ImportExportIgnore(IsLink = true)]
+        [ImportExport(ELinkType.LinkRequired, typeof(TapestryDesignerResourceItem))]
+        public override int TargetId { get; set; }
+        [ImportExport(ELinkType.LinkRequired)]
         public virtual TapestryDesignerResourceItem Target { get; set; }
 
-        [ImportExportIgnore(IsParentKey = true)]
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerResourceRule))]
         public int ResourceRuleId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
+        [ImportExport(ELinkType.Parent)]
         public virtual TapestryDesignerResourceRule ResourceRule { get; set; }
     }
     [Table("TapestryDesigner_Conditions")]
     public class TapestryDesignerCondition : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
         public int Index { get; set; }
         public string Relation { get; set; }
         public string Variable { get; set; }
         public string Operator { get; set; }
         public string Value { get; set; }
-
-        [Required]
-        [ImportExportIgnore(IsParent = true)]
+        
+        [ForeignKey("TapestryDesignerConditionSet")]
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerConditionSet), skipItem = true)]
+        public int TapestryDesignerConditionSet_Id { get; set; }
+        [ImportExport(ELinkType.Parent)]
         public virtual TapestryDesignerConditionSet TapestryDesignerConditionSet { get; set; }
     }
     [Table("TapestryDesigner_ConditionSets")]
     public class TapestryDesignerConditionSet : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public int SetIndex { get; set; }
         public string SetRelation { get; set; }
 
-        public int ConditionGroupId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
-        public virtual TapestryDesignerConditionGroup ConditionGroup { get; set; }
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<TapestryDesignerCondition> Conditions { get; set; }
+
+        [ImportExport(ELinkType.Parent, typeof(TapestryDesignerConditionGroup), skipItem = true)]
+        public int ConditionGroupId { get; set; }
+        [ImportExport(ELinkType.Parent)]
+        public virtual TapestryDesignerConditionGroup ConditionGroup { get; set; }
 
         public TapestryDesignerConditionSet()
         {
@@ -497,31 +511,31 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
     [Table("TapestryDesigner_ConditionGroups")]
-    public class TapestryDesignerConditionGroup
+    public class TapestryDesignerConditionGroup : IEntity
     {
         public int Id { get; set; }
 
+        public virtual ICollection<ActionRule> ActionRules { get; set; }
         [Index]
-        [ImportExportIgnore(IsParentKey = true)]
         public virtual int? ResourceMappingPairId { get; set; }
+        [ImportExport(ELinkType.Child)]
+        public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
 
-        [ImportExportIgnore(IsParentKey = true)]
+        [ImportExport(ELinkType.LinkRequired, typeof(TapestryDesignerResourceItem), skipItem = true, skipPair = new string[] { "TapestryDesignerWorkflowItemId" })]
         public int? TapestryDesignerResourceItemId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
+        [ImportExport(ELinkType.LinkRequired)]
         public virtual TapestryDesignerResourceItem TapestryDesignerResourceItem { get; set; }
 
-        [ImportExportIgnore(IsParentKey = true)]
+        [ImportExport(ELinkType.LinkRequired, typeof(TapestryDesignerWorkflowItem), skipItem = true, skipPair = new string[] { "TapestryDesignerResourceItemId" })]
         public int? TapestryDesignerWorkflowItemId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
+        [ImportExport(ELinkType.LinkRequired)]
         public virtual TapestryDesignerWorkflowItem TapestryDesignerWorkflowItem { get; set; }
-        public virtual ICollection<ActionRule> ActionRules { get; set; }
 
-        [ImportExportIgnore(IsLinkKey = true)]
+        [ImportExport(ELinkType.Parent, typeof(Application))]
         public int? ApplicationId { get; set; }
-        [ImportExportIgnore(IsLink = true)]
+        [ImportExport(ELinkType.Parent)]
         public virtual Application Application { get; set; }
 
-        public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
 
         public TapestryDesignerConditionGroup()
         {
@@ -531,6 +545,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     public class TapestryDesignerMenuItem : IEntity
     {
         public int Id { get; set; }
+
         public string Name { get; set; }
         public string SubMenu { get; set; }
         public int MenuOrder { get; set; }
@@ -540,7 +555,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsInMenu { get; set; }
         public bool IsInitial { get; set; }
         public string BlockName { get; set; }
-
         public string rights { get; set; }
     }
 }

@@ -408,7 +408,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(e => e.ApplicationId);
 
             modelBuilder.Entity<Js>()
-                .HasOptional(e => e.Page)
+                .HasOptional(e => e.MozaicBootstrapPage)
                 .WithMany(e => e.Js)
                 .HasForeignKey(e => e.MozaicBootstrapPageId);
 

@@ -1,14 +1,10 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity.Master;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Entitron.Service
 {
     public interface IRecoveryService
     {
-        Application RecoverApplication(string jsonInput);
+        void RecoverApplication(string jsonInput, bool force);
     }
 }

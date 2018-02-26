@@ -9,17 +9,7 @@
     [Table("Hermes_Incoming_Email_Rule")]
     public partial class IncomingEmailRule : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int? Id { get; set; }
-
-        [Required]
-        [ImportExportIgnore(IsParentKey = true)]
-        public int IncomingEmailId { get; set; }
-
-        [Required]
-        [Display(Name = "Aplikace")]
-        [ImportExportIgnore(IsLinkKey = true)]
-        public int ApplicationId { get; set; }
 
         [Required]
         [Display(Name = "Blok")]
@@ -36,9 +26,17 @@
         [DataType(DataType.MultilineText)]
         public string Rule { get; set; }
 
-        [ImportExportIgnore(IsParent = true)]
+        [Required]
+        [ImportExport(ELinkType.LinkRequired, typeof(IncomingEmail))]
+        public int IncomingEmailId { get; set; }
+        [ImportExport(ELinkType.LinkRequired)]
         public virtual IncomingEmail IncomingEmail { get; set; }
-        [ImportExportIgnore(IsLink = true)]
+
+        [Required]
+        [Display(Name = "Aplikace")]
+        [ImportExport(ELinkType.Parent, typeof(Application))]
+        public int ApplicationId { get; set; }
+        [ImportExport(ELinkType.Parent)]
         public virtual Application Application { get; set; }
     }
 }

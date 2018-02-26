@@ -4,12 +4,9 @@ using System.Web.Mvc;
 using System.IO;
 using System.Text;
 using System.Web;
-using System.Collections.Generic;
 using FSS.Omnius.Modules.Entitron.Service;
 using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
-using Newtonsoft.Json;
 
 namespace FSS.Omnius.Controllers.Master
 {
@@ -18,17 +15,14 @@ namespace FSS.Omnius.Controllers.Master
     {
         public FileStreamResult BackupApp(int id)
         {
-            var form = Request.Form;
+            Application app = DBEntities.instance.Applications.Find(id);
 
-            var backupService = new BackupGeneratorService();
-            var context = DBEntities.instance;
-            string jsonText = backupService.ExportApplication(id, form);
-            var appName = context.Applications.SingleOrDefault(a => a.Id == id).Name;
+            var backupService = new BackupGeneratorService(DBEntities.appInstance(app));
+            string jsonText = backupService.ExportApplication(id, Request.Form);
             var byteArray = Encoding.UTF8.GetBytes(jsonText);
             var stream = new MemoryStream(byteArray);
 
-            return File(stream, "application/force-download",  appName + ".txt");
-
+            return File(stream, "application/force-download", app.Name + ".json");
         }
         public ActionResult RecoverApp()
         {
@@ -36,10 +30,10 @@ namespace FSS.Omnius.Controllers.Master
         }
 
         [HttpPost]
-        public ActionResult RecoverApp(HttpPostedFileBase file)
+        public ActionResult RecoverApp(HttpPostedFileBase file, bool overideTempApp = false)
         {
             // validate
-            if (file == null || file.ContentLength == 0 || file.ContentType != "text/plain")
+            if (file == null || file.ContentLength == 0 || (file.ContentType != "text/plain" && file.ContentType != "application/octet-stream"))
                 return View();
             
             // get data
@@ -48,37 +42,11 @@ namespace FSS.Omnius.Controllers.Master
             string result = Encoding.UTF8.GetString(binData);
 
             // transfer to object
-            var context = DBEntities.instance;
             var service = new RecoveryService();
             
             try
             {
-                // get apps
-                Application newApp = service.RecoverApplication(result);
-                Application dbApp = context.Applications.SingleOrDefault(a => a.Name == newApp.Name);
-
-                // update
-                if (dbApp != null)
-                    dbApp.UpdateDeep(newApp, context);
-                else
-                {
-                    // set basics value
-                    newApp.IsEnabled = false;
-                    newApp.IsPublished = false;
-                    newApp.DbSchemeLocked = false;
-
-                    context.Applications.Add(newApp);
-                    dbApp = newApp;
-                }
-
-                // map Id
-                var idMapping = dbApp.MapIds(newApp);
-                // link object
-                dbApp.UpdateEntityLinks(idMapping);
-                context.SaveChanges();
-                // link Id
-                dbApp.UpdateEntityIdLinks(idMapping);
-                context.SaveChanges();
+                service.RecoverApplication(result, overideTempApp);
                 
                 return RedirectToRoute("Master", new { @controller = "AppAdminManager", @action = "Index" });
             }

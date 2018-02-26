@@ -241,7 +241,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 saveWFRule(workflowRule, resultBlock, resultBlock.WorkFlow, stateColumnMapping);
             }
 
-            if (commit.AssociatedPageIds != "")
+            if (!string.IsNullOrEmpty(commit.AssociatedPageIds))
             {
                 var pageIdList = commit.AssociatedPageIds.Split(',').Select(int.Parse).ToList();
                 Page mainPage = null;
@@ -257,7 +257,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 resultBlock.EditorPageId = pageIdList[0];
                 resultBlock.MozaicPage = mainPage;
             }
-            if (commit.AssociatedBootstrapPageIds != null && commit.AssociatedBootstrapPageIds != "")
+            if (!string.IsNullOrEmpty(commit.AssociatedBootstrapPageIds))
             {
                 var pageIdList = commit.AssociatedBootstrapPageIds.Split(',').Select(int.Parse).ToList();
                 Page mainPage = null;
