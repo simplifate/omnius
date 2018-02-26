@@ -12,8 +12,7 @@
         {
             IncomingEmailRule = new List<IncomingEmailRule>();
         }
-
-        [ImportExportIgnore(IsKey = true)]
+        
         public int? Id { get; set; }
 
         [Required]
@@ -38,7 +37,7 @@
         [Display(Name = "Heslo")]
         public string Password { get; set; }
 
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.LinkChild)]
         public virtual ICollection<IncomingEmailRule> IncomingEmailRule { get; set; }
     }
 }

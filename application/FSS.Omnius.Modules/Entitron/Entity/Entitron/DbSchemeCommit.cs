@@ -9,18 +9,22 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     [Table("Entitron_DbSchemeCommit")]
     public class DbSchemeCommit : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public string CommitMessage { get; set; }
         public DateTime Timestamp { get; set; }
         public bool IsComplete { get; set; }
-        public int Application_Id { get; set; }
 
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<DbTable> Tables { get; set; }
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<DbRelation> Relations { get; set; }
+        [ImportExport(ELinkType.Child)]
         public virtual ICollection<DbView> Views { get; set; }
 
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.Parent, typeof(Application), exportCount = 3, exportOrderColumn = "Timestamp")]
+        public int Application_Id { get; set; }
+        [ImportExport(ELinkType.Parent)]
         public virtual Application Application { get; set; }
 
         public DbSchemeCommit()

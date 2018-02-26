@@ -12,24 +12,22 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
     [Table("Mozaic_Js")]
     public partial class Js : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
-
-        [ImportExportIgnore(IsParentKey = true)]
-        public int ApplicationId { get; set; }
-        [ImportExportIgnore(IsLinkKey = true)]
-        public int? MozaicBootstrapPageId { get; set; }
-
+        
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
-
         [Required]
         public string Value { get; set; }
 
-        [ImportExportIgnore(IsParent = true)]
-        public virtual Application Application { get; set; } 
-        [ImportExportIgnore(IsLink = true)]
-        public virtual MozaicBootstrapPage Page { get; set; }
+        [ImportExport(ELinkType.LinkOptional, typeof(MozaicBootstrapPage))]
+        public int? MozaicBootstrapPageId { get; set; }
+        [ImportExport(ELinkType.LinkOptional)]
+        public virtual MozaicBootstrapPage MozaicBootstrapPage { get; set; }
+
+        [ImportExport(ELinkType.Parent, typeof(Application))]
+        public int ApplicationId { get; set; }
+        [ImportExport(ELinkType.Parent)]
+        public virtual Application Application { get; set; }
     }
 }

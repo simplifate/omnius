@@ -13,8 +13,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
     [Table("MozaicEditor_Pages")]
     public class MozaicEditorPage : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public string Name { get; set; }
         public bool IsModal { get; set; }
         public int? ModalWidth { get; set; }
@@ -23,12 +23,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public int CompiledPageId { get; set; }
         public VersionEnum Version { get; set; }
         public bool IsDeleted { get; set; }
-        public virtual ICollection<MozaicEditorComponent> Components { get; set; }
 
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.Child)]
+        public virtual ICollection<MozaicEditorComponent> Components { get; set; }
+        [ImportExport(ELinkType.LinkChild)]
         public virtual ICollection<TapestryDesignerResourceItem> ResourceItems { get; set; }
 
-        [ImportExportIgnore(IsParent = true)]
+        [ImportExport(ELinkType.Parent, typeof(Application))]
+        [ForeignKey("ParentApp")]
+        public int ParentApp_Id { get; set; }
+        [ImportExport(ELinkType.Parent)]
         public virtual Application ParentApp { get; set; }
 
         public void Recompile()
@@ -777,9 +781,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         {
             ChildComponents = new HashSet<MozaicEditorComponent>();
         }
-
-        [ImportExportIgnore(IsKey = true)]
+        
         public int Id { get; set; }
+
         public string Name { get; set; }
         public string Type { get; set; }
         public string PositionX { get; set; }
@@ -799,15 +803,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public string TabIndex { get; set; }
         public string Properties { get; set; }
 
-        [ImportExportIgnore]
+        [ImportExport(ELinkType.LinkChild)]
         public virtual ICollection<MozaicEditorComponent> ChildComponents { get; set; }
-        [ImportExportIgnore(IsLinkKey = true)]
+        [ImportExport(ELinkType.LinkOptional, typeof(MozaicEditorComponent))]
         public int? ParentComponentId { get; set; }
-        [ImportExportIgnore(IsLink = true)]
+        [ImportExport(ELinkType.LinkOptional)]
         public virtual MozaicEditorComponent ParentComponent { get; set; }
-        [ImportExportIgnore(IsParentKey = true)]
+        [ImportExport(ELinkType.Parent, typeof(MozaicEditorPage))]
         public int MozaicEditorPageId { get; set; }
-        [ImportExportIgnore(IsParent = true)]
+        [ImportExport(ELinkType.Parent)]
         public virtual MozaicEditorPage MozaicEditorPage { get; set; }
     }
 

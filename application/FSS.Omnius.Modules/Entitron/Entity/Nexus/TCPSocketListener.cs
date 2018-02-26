@@ -9,35 +9,26 @@
     [Table("Nexus_TCP_Socket_Listener")]
     public partial class TCPSocketListener : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int? Id { get; set; }
         
-        [Required]
         [Display(Name = "TCP Port")]
         public int Port { get; set; }
-
-        [Required]
         [Display(Name = "Velikost bufferu")]
         public int BufferSize { get; set; }
-
-        [Required]
-        [Display(Name = "Aplikace")]
-        [ImportExportIgnore(IsParentKey = true)]
-        public int ApplicationId { get; set; }
-
         [Required]
         [Display(Name = "Blok")]
         public string BlockName { get; set; }
-
         [Required]
         [Display(Name = "Workflow")]
         public string WorkflowName { get; set; }
-        
         [Required]
         [Display(Name = "Název")]
         public string Name { get; set; }
-        
-        [ImportExportIgnore(IsParent = true)]
+
+        [Display(Name = "Aplikace")]
+        [ImportExport(ELinkType.Parent, typeof(Application))]
+        public int ApplicationId { get; set; }
+        [ImportExport(ELinkType.Parent)]
         public virtual Application Application { get; set; }
     }
 }

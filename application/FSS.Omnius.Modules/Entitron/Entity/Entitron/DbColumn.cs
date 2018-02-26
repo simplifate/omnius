@@ -8,8 +8,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     [Table("Entitron_DbColumn")]
     public class DbColumn : IEntity
     {
-        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public bool PrimaryKey { get; set; }
@@ -20,10 +20,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public bool ColumnLengthIsMax { get; set; }
         public string DefaultValue { get; set; }
 
-        [ImportExportIgnore(IsParentKey = true)]
+        [ImportExport(ELinkType.Parent, typeof(DbTable))]
         public int DbTableId { get; set; }
-
-        [ImportExportIgnore(IsParent = true)]
+        [ImportExport(ELinkType.Parent)]
         public virtual DbTable DbTable { get; set; }
 
         public string RealDefaultValue(DbType type)
