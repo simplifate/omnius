@@ -25,8 +25,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
         public void ExportAllDatabaseDesignerData(string filename)
         {
-            var context = DBEntities.instance;
-            var commits = from c in context.DBSchemeCommits orderby c.Timestamp descending select c;
+            var commits = from c in _context.DBSchemeCommits orderby c.Timestamp descending select c;
             string jsonOutput = JsonConvert.SerializeObject(commits.ToList(), Formatting.Indented,
                 new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, StringEscapeHandling = StringEscapeHandling.EscapeNonAscii });
             File.WriteAllText(filename, jsonOutput);
@@ -43,22 +42,36 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
             _db = DBCommandSet.GetDBCommandSet(_context.Applications.Find(id).DB_Type);
             JObject result = new JObject();
-            Queue<Type> queue = new Queue<Type>();
+            Queue<Type> queue = new Queue<Type>(RecoveryService.Roots);
             Dictionary<Type, HashSet<int>> ids = new Dictionary<Type, HashSet<int>>();
 
-            ids.Add(typeof(Application), new HashSet<int> { id });
-            Type currentType = typeof(Application);
+            foreach(Type root in RecoveryService.Roots)
+            {
+                // app -> by id
+                if (root == typeof(Application))
+                    ids.Add(root, new HashSet<int> { id });
+                // others -> all
+                else
+                {
+                    ids.Add(root, new HashSet<int>());
+                    foreach(IEntity ent in _context.Set(root))
+                    {
+                        ids[root].Add(ent.GetId());
+                    }
+                }
+            }
 
+            Type currentType = queue.Dequeue();
             while (currentType != null)
             {
                 string name = currentType.Name;
                 /// parent
                 string parentPropKey;
                 ImportExportAttribute parentAttribute;
-                if (currentType == typeof(Application))
+                if (RecoveryService.Roots.Contains(currentType))
                 {
                     parentPropKey = RecoveryService.PrimaryKey;
-                    parentAttribute = new ImportExportAttribute(ELinkType.Parent, typeof(Application));
+                    parentAttribute = new ImportExportAttribute(ELinkType.Parent, currentType);
                 }
                 else
                 {

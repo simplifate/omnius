@@ -14,6 +14,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
     public class RecoveryService : IRecoveryService
     {
         public const string PrimaryKey = "Id";
+        public static Type[] Roots => new Type[] { typeof(Application), typeof(Modules.Entitron.Entity.Athena.Graph) };
 
         private DBEntities _context;
         private DBCommandSet _db;
@@ -26,7 +27,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             _db = DBCommandSet.GetDBCommandSet(Entitron.DefaultDBType);
             _connectionString = Entitron.EntityConnectionString;
-            _queue = new Queue<Type>();
+            _queue = new Queue<Type>(Roots);
             _ids = new Dictionary<Type, Dictionary<int, int>>();
             _optionalValues = new Dictionary<Type, Dictionary<int, Dictionary<string, object>>>();
         }
@@ -62,7 +63,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
             }
 
             /// all types
-            Type currentType = typeof(Application);
+            Type currentType = _queue.Dequeue();
             Type cycleDetector = null;
             while (currentType != null)
             {
@@ -382,7 +383,13 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("", ex);
+                        // root unique
+                        if (Roots.Contains(currentType))
+                        {
+                            Logger.Log.Warn(ex.Message);
+                        }
+                        else
+                            throw;
                     }
                 }
             }
