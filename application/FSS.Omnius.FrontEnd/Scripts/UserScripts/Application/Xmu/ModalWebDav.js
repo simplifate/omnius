@@ -4,9 +4,7 @@ $(function(){
   $("#Profiles_table").on("click", ".fa-edit", function () {
             var UserHash = $(this).parent().parent().children("td:nth-child(3)").html();
             $("#modal_body_profile").html("");
-            $("#modal_body_cash").html("");
   			$("#modal_name_profile").html("");
-    		$("#modal_modal_profile").html("");
             $("#preloader_profile").css("display", "block");
             $.ajax({
                 type: 'POST',
@@ -16,8 +14,6 @@ $(function(){
                     var x = $(response)
                     $("#preloader_profile").css("display", "none");
                     $("#modal_body_profile").html(x.find("#modal_body_profile").html());
-                    $("#modal_modal_profile").html(x.find("#modal_modal_profile").html());
-                    $("#modal_body_cash").html(x.find("#modal_body_cash").html());
                     $("#modal_name_profile").html(x.find("#modal_name_profile").html());
                   	$("#modalProfile #Support_request_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalTicket");
                   	var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#modalProfile #pendingReuquest");
