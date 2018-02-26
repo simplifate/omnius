@@ -1,4 +1,4 @@
-@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><form class="form-horizontal" method="post"><div class="container"><div class="row"><div class="panel panel-default" ><div class="panel-heading"><div class="" id="modal_name_profile"><h3 class="panel-title">Settings of <span class="">@(@"{var1}")</span><span class="">@(@" (ID: ")</span><span class="">@(@"{var1}")</span><span class="">@(@")")</span></h3></div></div><div class="panel-body"><div class="" id="modal_body_profile"><div class="row" id="referral_id" style="padding: 15px 20px;"><div class="form-group">
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><form class="form-horizontal" method="post"><div class="container"><div class="row"><div class="panel panel-default" ><div class="panel-heading"><div class="" id="modal_name_profile"><h3 class="panel-title">@(@"WebDav Users")</h3></div></div><div class="panel-body"><div class="" id="modal_body_profile"><div class="row" id="referral_id" style="padding: 15px 20px;"><div class="form-group">
 @{ if(ViewData.ContainsKey("")) {
         foreach(var row in (IEnumerable<object>)ViewData[""]) {
             <div class="empty-element">
@@ -6,7 +6,7 @@
             </div>
         }
     }
-}</div><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"User level")</label><div class="col-xs-12"><input type="text" name="userLevel" value="@(formState.ContainsKey("userLevel") ? formState["userLevel"] : (ViewData.ContainsKey("inputData_userLevel") ? @ViewData["inputData_userLevel"] : ""))" class="form-control" readonly="readonly" id="userLevel" /></div></div><div class="form-group"><label for="" class="">@(@"Select user level")</label><div class="col-xs-12">
+}</div><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"Category")</label><div class="col-xs-12"><input type="text" name="userLevel" value="@(formState.ContainsKey("userLevel") ? formState["userLevel"] : (ViewData.ContainsKey("inputData_userLevel") ? @ViewData["inputData_userLevel"] : ""))" class="form-control" readonly="readonly" id="userLevel" /></div></div><div class="form-group"><label for="" class="">@(@"Select user level")</label><div class="col-xs-12">
 <select name="" class="form-control" id="category">
     
     @{ if(ViewData["dropdownData_category"] != null) {
@@ -17,4 +17,4 @@
             }
         }
     }    
-</select></div></div></div><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"User Id")</label><div class="col-xs-12"><input type="text" name="user_id" value="@(formState.ContainsKey("user_id") ? formState["user_id"] : (ViewData.ContainsKey("inputData_user_id") ? @ViewData["inputData_user_id"] : ""))" class="form-control mbe-active" readonly="readonly" id="user_id" /></div></div></div></div></div></div><button type="submit" class="btn btn-primary btn-lg" name="button" value="Save" id="Save" >@(@"Save")</button></div></div></div>@Html.AntiForgeryToken()</form></div>
+</select></div></div></div><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"User Id")</label><div class="col-xs-12"><input type="text" name="user_id" value="@(formState.ContainsKey("user_id") ? formState["user_id"] : (ViewData.ContainsKey("inputData_user_id") ? @ViewData["inputData_user_id"] : ""))" class="form-control" readonly="readonly" id="user_id" /></div></div></div></div></div><button type="submit" class="btn btn-primary btn-lg mbe-active" name="button" value="Save" id="Save" >@(@"Save")</button></div></div></div></div>@Html.AntiForgeryToken()</form></div>
