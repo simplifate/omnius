@@ -112,9 +112,19 @@ namespace FSS.Omnius.FrontEnd
                         rd.Values["action"] = "InternalServerError";
                         break;
                 }
-
-                IController c = new ErrorController();
-                c.Execute(new RequestContext(new HttpContextWrapper(Context), rd));
+                //Act as 400 and not 500 if api call has failed
+                if (Context.Response.StatusCode == 500 && Context.Request.Path.Contains("/rest/"))
+                {
+                    Context.Response.StatusCode = 400;
+                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes("Bad request");
+                    using (var stream = Context.Response.OutputStream)
+                        stream.Write(bytes, 0, bytes.Length);
+                }
+                else
+                {
+                    IController c = new ErrorController();
+                    c.Execute(new RequestContext(new HttpContextWrapper(Context), rd));
+                }
             }
             DBEntities.Destroy();
             Entitron.Destroy();
