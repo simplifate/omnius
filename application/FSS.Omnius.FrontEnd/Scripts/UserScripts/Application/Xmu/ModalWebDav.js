@@ -2,14 +2,13 @@ $(function(){
   $("#Profiles_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalProfile");
   
   $("#Profiles_table").on("click", ".fa-edit", function () {
-            var UserHash = $(this).parent().parent().children("td:nth-child(3)").html();
+            var userId = $(this).parent().parent().children("td:first").text();
             $("#modal_body_profile").html("");
   			$("#modal_name_profile").html("");
             $("#preloader_profile").css("display", "block");
             $.ajax({
-                type: 'POST',
-                url: "/Xmu/WebDavUsersEdit?button=headingHash",
-                data: { 'UserHash': UserHash},
+                type: 'GET',
+                url: "/Xmu/WebDavUsersEdit?modelId="+userId,
                 success: function (response) {
                     var x = $(response)
                     $("#preloader_profile").css("display", "none");
