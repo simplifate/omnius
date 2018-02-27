@@ -7,8 +7,8 @@ $(function(){
   			$("#modal_name_profile").html("");
             $("#preloader_profile").css("display", "block");
             $.ajax({
-                type: 'GET',
-                url: "/Xmu/WebDavUsersEdit?modelId="+userId,
+                type: 'POST',
+                url: "/Xmu/WebDavUsersEdit?modelId=100",//+userId,
                 success: function (response) {
                     var x = $(response)
                     $("#preloader_profile").css("display", "none");
