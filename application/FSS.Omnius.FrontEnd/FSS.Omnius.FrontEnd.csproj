@@ -811,6 +811,7 @@
     <Content Include="Scripts\UserScripts\Application\Leaderboard\leaderboardJS.js" />
     <Content Include="Scripts\UserScripts\Application\TicketSupport\highlightJS.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\ajax.js" />
+    <Content Include="Scripts\UserScripts\Application\Xmu\ModalWebDav.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\TrezorTest.js.js" />
     <Content Include="Scripts\UserScripts\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
