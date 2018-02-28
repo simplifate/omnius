@@ -93,7 +93,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<ADgroup> ADgroups { get; set; }
         [ImportExport(ELinkType.Child, Branch = "Persona")]
         public virtual ICollection<PersonaAppRole> Roles { get; set; }
-        public ICollection<User> DesignedBy { get; set; }
+        public virtual ICollection<User> DesignedBy { get; set; }
         public virtual ICollection<UsersApplications> UsersApplications { get; set; }
 
         // entitron
