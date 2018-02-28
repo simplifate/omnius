@@ -35,7 +35,7 @@ sE0FP1G8FoMc/5V0lRLGpwyUfH8rT9H/VYC4l2gM58TCmEZ4mu1ygy7mg7vhDZ4d
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             string timestamp = GetCurrentTimestamp();
-            string body = (string)vars["Data"];
+            string body = vars.ContainsKey("Data") ? (string)vars["Data"] : "";
 
             byte[] data = Encoding.UTF8.GetBytes(string.Format("{0}@{1}", body, timestamp));
 
