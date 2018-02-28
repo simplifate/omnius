@@ -1198,6 +1198,10 @@
     <Compile Include="Migrations\201802231111575_hermesUniqueness.Designer.cs">
       <DependentUpon>201802231111575_hermesUniqueness.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802281121138_cascadeTrigger.cs" />
+    <Compile Include="Migrations\201802281121138_cascadeTrigger.Designer.cs">
+      <DependentUpon>201802281121138_cascadeTrigger.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1420,6 +1424,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802231111575_hermesUniqueness.resx">
       <DependentUpon>201802231111575_hermesUniqueness.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802281121138_cascadeTrigger.resx">
+      <DependentUpon>201802281121138_cascadeTrigger.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

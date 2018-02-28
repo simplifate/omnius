@@ -1,31 +1,25 @@
 namespace FSS.Omnius.Modules.Entitron.Entity
 {
+    using System.Web;
+    using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.ModelConfiguration.Conventions;
+    using System.Data.Common;
+    using Athena;
     using CORE;
     using Master;
     using Nexus;
     using Entitron;
     using Tapestry;
     using Mozaic;
+    using Mozaic.Bootstrap;
     using Persona;
     using Hermes;
     using Watchtower;
     using Cortex;
     using System.Linq;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using System.Reflection;
-    using System;
-    using System.Web;
-    using System.Web.Mvc;
-    using System.Collections.Generic;
-    using System.Data.Entity.Core.EntityClient;
-    using System.Data.SqlClient;
-    using System.Data.Entity.Infrastructure;
-    using System.Data.Common;
-    using Service;
-    using System.Threading;
-    using Mozaic.Bootstrap;
-    using FSS.Omnius.Modules.Entitron.Entity.Athena;
 
     //michal šebela:
     //TODO: doladit zámky, bude jich potøeba víc i na jiných místech..
@@ -359,6 +353,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
             // CORE
 
             // Entitron
@@ -479,8 +476,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
             modelBuilder.Entity<ModuleAccessPermission>()
                 .HasRequired(e => e.User)
-                .WithOptional(e => e.ModuleAccessPermission)
-                .WillCascadeOnDelete();
+                .WithOptional(e => e.ModuleAccessPermission);
 
             modelBuilder.Entity<ActionRule>()
                 .HasMany<ActionRuleRight>(e => e.ActionRuleRights)
@@ -525,8 +521,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<WorkFlowType>()
                 .HasMany<WorkFlow>(e => e.WorkFlows)
                 .WithRequired(e => e.Type)
-                .HasForeignKey(e => e.TypeId)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.TypeId);
 
             modelBuilder.Entity<WorkFlow>()
                 .HasMany<WorkFlow>(e => e.Children)
@@ -561,8 +556,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<Block>()
                 .HasMany<ActionRule>(e => e.TargetTo_ActionRules)
                 .WithRequired(e => e.TargetBlock)
-                .HasForeignKey(e => e.TargetBlockId)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.TargetBlockId);
 
             modelBuilder.Entity<ActionRule>()
                 .HasMany<ActionRule_Action>(e => e.ActionRule_Actions)
@@ -572,8 +566,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<Actor>()
                 .HasMany<ActionRule>(e => e.ActionRules)
                 .WithRequired(e => e.Actor)
-                .HasForeignKey(e => e.ActorId)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.ActorId);
 
             modelBuilder.Entity<ActionRule_Action>()
                 .HasRequired<ActionRule>(a => a.ActionRule)
@@ -647,40 +640,33 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Blocks)
                 .WithRequired(s => s.ParentMetablock)
-                .HasForeignKey(x => x.ParentMetablock_Id)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(x => x.ParentMetablock_Id);
             modelBuilder.Entity<TapestryDesignerBlock>()
                 .HasMany(s => s.BlockCommits)
                 .WithRequired(s => s.ParentBlock)
-                .HasForeignKey(x => x.ParentBlock_Id)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(x => x.ParentBlock_Id);
             modelBuilder.Entity<TapestryDesignerBlockCommit>()
                 .HasMany(s => s.ResourceRules)
                 .WithRequired(s => s.ParentBlockCommit)
-                .HasForeignKey(x => x.ParentBlockCommit_Id)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(x => x.ParentBlockCommit_Id);
             modelBuilder.Entity<TapestryDesignerBlockCommit>()
                 .HasMany(s => s.WorkflowRules)
                 .WithRequired(s => s.ParentBlockCommit)
-                .HasForeignKey(x => x.ParentBlockCommit_Id)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(x => x.ParentBlockCommit_Id);
             modelBuilder.Entity<TapestryDesignerWorkflowRule>()
                 .HasMany(s => s.Swimlanes)
                 .WithRequired(s => s.ParentWorkflowRule)
-                .HasForeignKey(x => x.ParentWorkflowRule_Id)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(x => x.ParentWorkflowRule_Id);
             modelBuilder.Entity<TapestryDesignerSwimlane>()
                 .HasMany(s => s.WorkflowItems);
             modelBuilder.Entity<TapestryDesignerSwimlane>()
                 .HasMany(s => s.Subflow)
                 .WithRequired(s => s.ParentSwimlane)
-                .HasForeignKey(s => s.ParentSwimlaneId)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(s => s.ParentSwimlaneId);
             modelBuilder.Entity<TapestryDesignerSwimlane>()
                 .HasMany(s => s.Foreach)
                 .WithRequired(s => s.ParentSwimlane)
-                .HasForeignKey(s => s.ParentSwimlaneId)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(s => s.ParentSwimlaneId);
             modelBuilder.Entity<TapestryDesignerWorkflowItem>()
                 .HasOptional(s => s.ParentSubflow)
                 .WithMany(s => s.WorkflowItems)
