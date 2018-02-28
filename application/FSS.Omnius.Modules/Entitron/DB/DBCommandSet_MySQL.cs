@@ -454,7 +454,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             MySqlCommand command = new MySqlCommand();
 
             command.CommandText =
-                $"SELECT COLUMN_NAME ColumnName FROM information_schema.STATISTICS WHERE TABLE_NAME='{ToRealTableName(db.Application, tableName, false)}' AND INDEX_NAME='{indexName}'";
+                $"SELECT COLUMN_NAME ColumnName FROM information_schema.STATISTICS WHERE TABLE_SCHEMA='{databaseName(db)}' AND TABLE_NAME='{ToRealTableName(db.Application, tableName, false)}' AND INDEX_NAME='{indexName}'";
 
             return command;
         }
