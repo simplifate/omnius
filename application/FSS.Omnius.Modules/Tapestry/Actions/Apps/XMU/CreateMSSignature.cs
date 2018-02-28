@@ -16,7 +16,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
     {
         public override int Id => 1985;
 
-        public override string[] InputVar => new string[] { "s$Data","?s$Controller[][config|money]" };
+        public override string[] InputVar => new string[] { "s$Data","?s$Controller[config|money]" };
 
         public override string Name => "Create MoneyServer signature";
 
