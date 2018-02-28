@@ -136,35 +136,37 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
                     byte[] postJsonBytes = Encoding.UTF8.GetBytes(inputJson);
                     httpWebRequest.ContentLength = postJsonBytes.Length;
-                    Stream requestStream = httpWebRequest.GetRequestStream();
-                    requestStream.Write(postJsonBytes, 0, postJsonBytes.Length);
+                    using (Stream requestStream = httpWebRequest.GetRequestStream())
+                        requestStream.Write(postJsonBytes, 0, postJsonBytes.Length);
                 }
 
-                var response = httpWebRequest.GetResponse();
-                Stream responseStream = response.GetResponseStream();
-                StreamReader responseReader = new StreamReader(responseStream);
-                string outputJsonString = responseReader.ReadToEnd();
-
-                if (!string.IsNullOrEmpty(outputJsonString))
+                using (var response = httpWebRequest.GetResponse())
+                using (Stream responseStream = response.GetResponseStream())
+                using (StreamReader responseReader = new StreamReader(responseStream))
                 {
-                    var outputJToken = JToken.Parse(outputJsonString);
-                    outputVars["Result"] = outputJToken;
-                    outputVars["Error"] = false;
+                    string outputJsonString = responseReader.ReadToEnd();
 
-                    if (maxAge > 0)
+                    if (!string.IsNullOrEmpty(outputJsonString))
                     {
-                        if (cache.ContainsKey(cacheKey))
+                        var outputJToken = JToken.Parse(outputJsonString);
+                        outputVars["Result"] = outputJToken;
+                        outputVars["Error"] = false;
+
+                        if (maxAge > 0)
                         {
-                            cache[cacheKey].resultTime = DateTime.UtcNow;
-                            cache[cacheKey].data = outputJToken;
-                        }
-                        else
-                        {
-                            cache.Add(cacheKey, new CachedResult()
+                            if (cache.ContainsKey(cacheKey))
                             {
-                                resultTime = DateTime.UtcNow,
-                                data = outputJToken
-                            });
+                                cache[cacheKey].resultTime = DateTime.UtcNow;
+                                cache[cacheKey].data = outputJToken;
+                            }
+                            else
+                            {
+                                cache.Add(cacheKey, new CachedResult()
+                                {
+                                    resultTime = DateTime.UtcNow,
+                                    data = outputJToken
+                                });
+                            }
                         }
                     }
                 }
