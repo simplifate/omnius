@@ -235,7 +235,11 @@ namespace FSS.Omnius.Modules.Entitron.DB
         {
             // add items
             foreach (DBTable table in _tablesToSave)
+            {
                 table.AddRange(table._itemsToAdd);
+                table._itemsToAdd.Clear();
+            }
+            _tablesToSave.Clear();
 
             if (!_commands.Any())
                 return 0;
