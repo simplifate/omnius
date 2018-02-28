@@ -50,7 +50,9 @@ namespace FSS.Omnius.Modules.Tapestry
                 if (key.Length == 0)
                 {
                     if (pair.Value is Dictionary<string, object>)
-                        output = JToken.FromObject(pair.Value);                    
+                        output = JToken.FromObject(pair.Value);
+                    else if (pair.Value is string)
+                        output = pair.Value.ToString();
                     else
                         output = pair.Value is JToken ? (JToken)pair.Value : (pair.Value as IToJson).ToJson();
                 }
