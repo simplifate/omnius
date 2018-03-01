@@ -17730,7 +17730,8 @@ MBE.types.ui = {
                         'data-dtfilter': 'Show filter',
                         'data-dtcolumnfilter': 'Show column filter',
                         'data-dtordering': 'Enable ordering',
-                        'data-dtserverside': 'Server-side proccessing'
+                        'data-dtserverside': 'Server-side proccessing',
+                        'data-dtselect': 'Show selection checkboxes'
                     },
                     get: function (value) {
                         return $(this).attr(value) == '1';
@@ -18007,7 +18008,8 @@ MBE.types.ui = {
             'paging': $(this).attr('data-dtpaging') == '1',
             'info': $(this).attr('data-dtinfo') == '1',
             'filter': $(this).attr('data-dtfilter') == '1',
-            'ordering': $(this).attr('data-dtordering') == '1'
+            'ordering': $(this).attr('data-dtordering') == '1',
+            'select': $(this).attr('data-dtselect') == '1'
         };
 
         $(this).DataTable(settings);

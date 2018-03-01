@@ -1601,7 +1601,26 @@ var BootstrapUserInit = {
         init: function ()
         {
             var self = BootstrapUserInit;
+           
+            //předělat, vybrání checkboxu musí spustit onSearch, aby se vytvořil RigList
+            $("body").on("click", "td.select-checkbox", function () {
+                console.log("clicked");
+                var visibleRowList = "";
+                // var i = $(this).parent("table").data('dtselect') == '1' ? 1 : 0;
+                var i = 1;
+                var dataTable = $(this).parents("table").DataTable();
+                dataTable.rows({ search: 'applied', selected: true }).data().each(function (value, index) {
+                    if (index > 0)
+                        visibleRowList += ",";
+                    visibleRowList += value[i];
+                });
+                var tableName = $(this).parents("table").attr("id");
+                $('input[name="' + tableName + '"]').val(visibleRowList);
+            });
+            
 
+            
+            
             $('.data-table', self.context).each(function () {
                 var table = $(this);
                 self.DataTable.initTable(table);
@@ -1615,7 +1634,29 @@ var BootstrapUserInit = {
                     columns.push({ data: $(this).text() });
                 });
                
+
+                //Select extension init
+                if (table.data('dtselect') == '1') {
+                    table.find("thead tr").prepend("<th class='select-head'><input type='checkbox'></th>");
+                    table.find("tfoot tr").prepend("<th>Select All</th>");
+                    table.find("tbody tr").prepend("<td></td>");
+                    $("th.select-head").on("click", function () {
+                        $(this).parents("table").find("td.select-checkbox").trigger("click") //pomalé
+                    });
+                    
+                }
+
                 table.DataTable({
+                    columnDefs: table.data('dtselect') ? [ {
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets:   'select-head'
+                    } ] : '0',
+                    select: table.data('dtselect') ? {
+                        style:    'multi',
+                        selector: 'td:first-child'
+                    } : '0',
+                    //order: [[ 1, 'asc' ]],
                     paging: table.data('dtpaging') == '1',
                     pageLength: 50,
                     lengthMenu: [[10, 20, 50, 100, 200, 500, 1000, -1], [10, 20, 50, 100, 200, 500, 1000, 'Vše']],
@@ -1670,12 +1711,22 @@ var BootstrapUserInit = {
                         if (title != "Akce")
                             $(this).html('<input type="text" placeholder="" />');
                         else
+                        if (title == "Akce" || title == "Select All")
                             $(this).html("");
+                        else
+                            $(this).html('<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />');
                     });
                 }
                 else {
                     table.find('> tfoot').remove();
                 }
+
+               // if (table.data('dtselect') == '1') table.find(".select-head").addClass("select-checkbox");
+                //if (table.data('dtselect') == '1') {
+                //    table.find("thead tr").prepend("<th class='select-head'>Selection</th>");
+                //    table.find("tfoot tr").prepend("<th class='select-all'><input type='checkbox'>Select All</th>");
+                //    table.find("tbody tr").prepend("<td></td>");
+                //}
 
                 //table.DataTable().draw();
 
@@ -1753,6 +1804,21 @@ var BootstrapUserInit = {
             var colIndex = field.parent().prevAll().length;
 
             dataTable.column(colIndex).search(this.value).draw();
+        },
+
+
+        onSearch: function () {
+           // console.log("searching");
+            var visibleRowList = "";
+            var i = $(this).data('dtselect') == '1' ? 1 : 0;
+            var dataTable = $(this).DataTable();
+            dataTable.rows({ search: 'applied', selected: true}).data().each(function (value, index) {
+                if (index > 0)
+                    visibleRowList += ",";
+                visibleRowList += value[i];
+            });
+            var tableName = $(this).attr("id");
+            $('input[name="' + tableName + '"]').val(visibleRowList);
         },
 
         onAction: function()
