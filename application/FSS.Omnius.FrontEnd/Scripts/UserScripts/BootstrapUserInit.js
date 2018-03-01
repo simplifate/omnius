@@ -55,66 +55,39 @@
     /******************************************************/
     /* DATA TABLES                                        */
     /******************************************************/
-    DataTable: 
+    DataTable:
     {
-        init: function ()
-        {
+        init: function () {
             var self = BootstrapUserInit;
-           
-            //předělat, vybrání checkboxu musí spustit onSearch, aby se vytvořil RigList
-            $("body").on("click", "td.select-checkbox", function () {
-                console.log("clicked");
-                var visibleRowList = "";
-                // var i = $(this).parent("table").data('dtselect') == '1' ? 1 : 0;
-                var i = 1;
-                var dataTable = $(this).parents("table").DataTable();
-                dataTable.rows({ search: 'applied', selected: true }).data().each(function (value, index) {
-                    if (index > 0)
-                        visibleRowList += ",";
-                    visibleRowList += value[i];
-                });
-                var tableName = $(this).parents("table").attr("id");
-                $('input[name="' + tableName + '"]').val(visibleRowList);
-            });
-            
 
-            
-            
             $('.data-table', self.context).each(function () {
                 var table = $(this);
-                self.DataTable.initTable(table);
-            });
-        },
-
-        initTable: function(table) {
-           
-                var columns = [];
-                table.find('tr:eq(0) th').each(function () {
-                    columns.push({ data: $(this).text() });
-                });
-               
 
                 //Select extension init
                 if (table.data('dtselect') == '1') {
-                    table.find("thead tr").prepend("<th class='select-head'><input type='checkbox'></th>");
+                    table.find("thead tr").prepend("<th class='select-head'><input type='checkbox' id='selAll'></th>");
                     table.find("tfoot tr").prepend("<th>Select All</th>");
                     table.find("tbody tr").prepend("<td></td>");
-                    $("th.select-head").on("click", function () {
-                        $(this).parents("table").find("td.select-checkbox").trigger("click") //pomalé
+                    $("th.select-head > input[type='checkbox']").on("change", function () {
+                        var cb_checked = $("th.select-head > input[type='checkbox']").prop("checked");
+                        if (cb_checked)
+                            $(this).parents(".data-table").DataTable().rows().select();
+                        else
+                            $(this).parents(".data-table").DataTable().rows().deselect();
                     });
-                    
+
                 }
 
                 table.DataTable({
-                    columnDefs: table.data('dtselect') ? [ {
+                    columnDefs: table.data('dtselect') ? [{
                         orderable: false,
                         className: 'select-checkbox',
-                        targets:   'select-head'
-                    } ] : '0',
+                        targets: 'select-head'
+                    }] : '0',
                     select: table.data('dtselect') ? {
-                        style:    'multi',
+                        style: 'multi',
                         selector: 'td:first-child'
-                    } : '0',
+                    } : false,
                     //order: [[ 1, 'asc' ]],
                     paging: table.data('dtpaging') == '1',
                     pageLength: 50,
@@ -123,18 +96,14 @@
                     filter: table.data('dtfilter') == '1' || table.data('dtcolumnfilter') == '1',
                     ordering: table.data('dtordering') == '1',
                     order: table.data('dtorder') ? eval(table.data('dtorder')) : [[0, 'desc']],
-                    processing: table.data('dtserverside') == '1',
-                    serverSide: table.data('dtserverside') == '1',
-                    ajax: table.data('dtserverside') == '1' ? { url: "/api/run" + location.pathname + '?button=' + table.attr('id'), type: 'POST' } : null,
-                    columns: columns,
-                    language: {  
+                    language: {
                         sEmptyTable: 'Tabulka neobsahuje žádná data',
                         sInfo: 'Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů',
                         sInfoEmpty: 'Zobrazuji 0 až 0 z 0 záznamů',
                         sInfoFiltered: '(filtrováno z celkem _MAX_ záznamů)',
                         sInfoPostFix: '',
                         sInfoThousands: '',
-                        sLengthMenu: 'Zobrazovaných záznamů _MENU_',
+                        sLengthMenu: 'Zobraz záznamů _MENU_',
                         sLoadingRecords: 'Načítám...',
                         sProcessing: 'Provádím...',
                         sSearch: 'Hledat:',
@@ -167,25 +136,16 @@
 
                     table.find('tfoot th').each(function () {
                         var title = $(this).text();
-                        if (title != "Akce")
-                            $(this).html('<input type="text" placeholder="" />');
-                        else
                         if (title == "Akce" || title == "Select All")
                             $(this).html("");
                         else
-                            $(this).html('<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />');
+                            $(this).html('<input type="text" placeholder="" />');
                     });
                 }
                 else {
                     table.find('> tfoot').remove();
                 }
 
-               // if (table.data('dtselect') == '1') table.find(".select-head").addClass("select-checkbox");
-                //if (table.data('dtselect') == '1') {
-                //    table.find("thead tr").prepend("<th class='select-head'>Selection</th>");
-                //    table.find("tfoot tr").prepend("<th class='select-all'><input type='checkbox'>Select All</th>");
-                //    table.find("tbody tr").prepend("<td></td>");
-                //}
 
                 //table.DataTable().draw();
 
@@ -252,12 +212,14 @@
                         }
                     });
                 }*/
-           
- 
+                table.css("background-image", "initial");
+                table.children("thead").css("visibility", "visible");
+                table.children("tbody").css("visibility", "visible");
+                table.children("tfoot").css("visibility", "visible");
+            });
         },
 
-        filter: function ()
-        {
+        filter: function () {
             var field = $(this);
             var dataTable = field.parents('.data-table').DataTable();
             var colIndex = field.parent().prevAll().length;
@@ -265,13 +227,11 @@
             dataTable.column(colIndex).search(this.value).draw();
         },
 
-
         onSearch: function () {
-           // console.log("searching");
             var visibleRowList = "";
             var i = $(this).data('dtselect') == '1' ? 1 : 0;
             var dataTable = $(this).DataTable();
-            dataTable.rows({ search: 'applied', selected: true}).data().each(function (value, index) {
+            dataTable.rows({ search: 'applied', selected: true }).data().each(function (value, index) {
                 if (index > 0)
                     visibleRowList += ",";
                 visibleRowList += value[i];
@@ -280,13 +240,10 @@
             $('input[name="' + tableName + '"]').val(visibleRowList);
         },
 
-        onAction: function()
-        {
+        onAction: function () {
             var button = $(this);
             var confirm = button.data('confirm');
 
-            if (button.attr("title") == "modal")
-                return;
             if (confirm && confirm.length) {
                 while (match = /(\{col_(\d)\})/.exec(confirm)) {
                     var colIndex = match[2];
@@ -302,19 +259,20 @@
             }
         },
 
-        doAction: function()
-        {
+        doAction: function () {
             var button = $(this);
             var rowId = parseInt(button.parents('tr').find('td:first').text());
             var tableName = button.parents('table').eq(0).attr('id');
-            
+
             if (button.hasClass('fa-download')) {
-                window.ignoreUnload = true; 
+                window.ignoreUnload = true;
             }
 
             $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="' + button.data('idparam') + '" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_' + button.data('action') + '" /></form>').appendTo('body').submit();
-        }
-    },
+        },
+
+    }
+    ,
     loadValidators: function () {
         $.extend($.validator.methods, {
             auditNumber: function (value, element, attr) {
