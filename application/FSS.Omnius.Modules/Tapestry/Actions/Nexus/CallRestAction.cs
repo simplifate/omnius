@@ -169,6 +169,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                             }
                         }
                     }
+                    else
+                    {
+                        outputVars["Result"] = "";
+                        outputVars["Error"] = false;
+                    }
                 }
             }
             catch (Exception e)
@@ -176,7 +181,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 string errorMsg = e.Message;
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
                 OmniusException.Log(e, OmniusLogSource.Nexus, core.Application, core.User);
-                outputVars["Result"] = String.Empty;
+                outputVars["Result"] = errorMsg;
                 outputVars["Error"] = true;
             }
         }
