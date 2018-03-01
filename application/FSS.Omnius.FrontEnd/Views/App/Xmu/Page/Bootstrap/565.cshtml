@@ -1,23 +1,23 @@
-@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><p class="" style="font-size: 50px;">@(@"Logs")</p><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Errors")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class=""><ul class="nav nav-tabs mbe-active"><li class=""><a href="#tab-transactionsErrors" data-toggle="tab" class="" aria-expanded="false">@(@"Transaction")</a></li><li class=""><a href="#tab-withdrawalErrors" data-toggle="tab" aria-expanded="false" class="">@(@"Withdrawal")</a></li><li class=""><a href="#tab-missingUsers" data-toggle="tab" class="" aria-expanded="false">@(@"Missing users")</a></li><li class="active"><a href="#tab-transactionsErrors" data-toggle="tab" class="" aria-expanded="true">@(@"Money server")</a></li></ul><div class="tab-content"><div class="tab-pane active" id="tab-transactionsErrors"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Money server")</h3>
-@{ if(ViewData.ContainsKey("tableData_TransactionsErrors_table") && ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="TransactionsErrors_table" role="grid" aria-describedby="TransactionsErrors_table_info" style="">
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><p class="" style="font-size: 50px;">@(@"Logs")</p><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Errors")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class=""><ul class="nav nav-tabs"><li class="active"><a href="#tab-transactionsErrors" data-toggle="tab" class="mbe-active" aria-expanded="true">@(@"Transaction")</a></li><li class=""><a href="#tab-withdrawalErrors" data-toggle="tab" aria-expanded="false" class="">@(@"Withdrawal")</a></li><li class=""><a href="#tab-missingUsers" data-toggle="tab" class="" aria-expanded="false">@(@"Missing users")</a></li><li class=""><a href="#tab-transactionsErrors" data-toggle="tab" class="" aria-expanded="false">@(@"Money server")</a></li></ul><div class="tab-content"><div class="tab-pane active" id="tab-transactionsErrors"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Money server")</h3>
+@{ if(ViewData.ContainsKey("tableData_MoneyServer_table") && ((System.Data.DataTable)(ViewData["tableData_MoneyServer_table"])).Rows.Count > 0) {
+    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="MoneyServer_table" role="grid" aria-describedby="TransactionsErrors_table_info" style="">
         <thead>
             <tr>
-            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Columns) {
+            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_MoneyServer_table"])).Columns) {
                 <th>@col.Caption</th>
             }
                 <th>Akce</th>
             </tr>
         </thead>
         <tfoot>
-            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Columns) {
+            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_MoneyServer_table"])).Columns) {
                 <th>@col.Caption</th>
             }
                 <th>Akce</th>
             </tr>
         </tfoot>
         <tbody>
-        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Rows) {
+        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_MoneyServer_table"])).Rows) {
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
@@ -29,7 +29,7 @@
 } else {
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
-<input type="hidden" name="TransactionsErrors_table" />
+<input type="hidden" name="MoneyServer_table" />
 </div></div><div class="tab-pane" id="tab-withdrawalErrors"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Withdrawal")</h3>
 @{ if(ViewData.ContainsKey("tableData_WithdrawalErrors_table") && ((System.Data.DataTable)(ViewData["tableData_WithdrawalErrors_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="WithdrawalErrors_table" role="grid" aria-describedby="WithdrawalErrors_table_info" style="">
@@ -96,7 +96,7 @@
 <input type="hidden" name="missingUsers_table" />
 </div></div><div class="tab-pane" id="tab-moneyServer"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Missing users")</h3>
 @{ if(ViewData.ContainsKey("tableData_moneyServer_table") && ((System.Data.DataTable)(ViewData["tableData_moneyServer_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="moneyServer_table" role="grid" aria-describedby="missingUsers_table_info" style="">
+    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="moneyServer_table" role="grid" aria-describedby="moneyServer_table_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_moneyServer_table"])).Columns) {
@@ -158,7 +158,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="deviants_table" />
-</div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Log")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class=""><ul class="nav nav-tabs"><li class="active"><a href="#tab-activityLog" data-toggle="tab" class="" aria-expanded="true">@(@"Activity")</a></li><li class=""><a href="#tab-userLog" data-toggle="tab" aria-expanded="false" class="">@(@"User")</a></li></ul><div class="tab-content"><div class="tab-pane active" id="tab-activityLog"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Activity")</h3>
+</div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Log")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class=""><ul class="nav nav-tabs"><li class=""><a href="#tab-activityLog" data-toggle="tab" class="" aria-expanded="false">@(@"Activity")</a></li><li class="active"><a href="#tab-userLog" data-toggle="tab" aria-expanded="true" class="">@(@"User")</a></li></ul><div class="tab-content"><div class="tab-pane" id="tab-activityLog"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Activity")</h3>
 @{ if(ViewData.ContainsKey("tableData_activityLog_table") && ((System.Data.DataTable)(ViewData["tableData_activityLog_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="activityLog_table" role="grid" aria-describedby="activityLog_table_info" style="">
         <thead>
@@ -190,7 +190,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="activityLog_table" />
-</div></div><div class="tab-pane" id="tab-userLog"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"User")</h3>
+</div></div><div class="tab-pane active" id="tab-userLog"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"User")</h3>
 @{ if(ViewData.ContainsKey("tableData_userLog_table") && ((System.Data.DataTable)(ViewData["tableData_userLog_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="userLog_table" role="grid" aria-describedby="userLog_table_info" style="">
         <thead>
