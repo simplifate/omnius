@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public IQueryable<User_Role> getUsers_roles(DBEntities e = null)
         {
             e = e ?? DBEntities.instance;
-            return e.Users_Roles.Where(r => r.RoleName == Name);
+            return e.Users_Roles.Where(r => r.RoleName == Name && r.ApplicationId == ApplicationId);
         }
 
         [ImportExport(ELinkType.Parent, typeof(Application))]

@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Data.Entity;
-
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
-using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Data.Entity.Validation;
 
@@ -18,14 +14,12 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
     {
 
         // GET: Roles
-        public ActionResult App(int? Id)
+        public ActionResult App(int Id)
         {
             ViewBag.Saved = false;
 
             DBEntities masterContext = DBEntities.instance;
-            Application masterApp = Id != null
-                ? masterContext.Applications.Find(Id)
-                : masterContext.Applications.First();
+            Application masterApp = masterContext.Applications.Find(Id);
             DBEntities context = DBEntities.appInstance(masterApp);
             Application app = masterApp.similarApp;
 
@@ -76,7 +70,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 data.Add(boolColumn);
                 #endregion
 
-                colHeaders.Add(new ColumnHeaderAppRolesForTable(role.Id, role.Name,role.Priority));
+                colHeaders.Add(new ColumnHeaderAppRolesForTable(role.Id, role.Name, role.Priority));
 
                 #region Data
                 List<int> MemberList = role.getUsers_roles(masterContext).Select(u => u.UserId).ToList();
@@ -184,142 +178,140 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             #endregion
 
             #region Save model
-            using (var context = DBEntities.instance)
+            var context = DBEntities.instance;
+            Application app = context.Applications.Find(model.AppID);
+
+            #region Column headers + data
+            IQueryable<PersonaAppRole> roles = context.AppRoles.Where(c => c.ApplicationId == app.Id);
+
+            #region Save columns
+            int x = 0;
+            foreach (ColumnHeaderAppRolesForTable colHeader in model.ColHeaders)
             {
-                Application app = context.Applications.Find(model.AppID);
-
-                #region Column headers + data
-                IQueryable<PersonaAppRole> roles = context.AppRoles.Where(c => c.ApplicationId == app.Id);
-
-                #region Save columns
-                int x = 0;
-                foreach (ColumnHeaderAppRolesForTable colHeader in model.ColHeaders)
+                if (model.DeletedCols == null || !model.DeletedCols.Contains(x))
                 {
-                    if (model.DeletedCols == null || !model.DeletedCols.Contains(x))
+                    #region Add or update column
+                    #region New users IDs - Data for this column
+                    List<int> NewUsersIDsList = new List<int>();
+                    for (int y = 0; y < model.RowHeaders.Count; y++)
                     {
-                        #region Add or update column
-                        #region New users IDs - Data for this column
-                        List<int> NewUsersIDsList = new List<int>();
-                        for (int y = 0; y < model.RowHeaders.Count; y++)
+                        if (model.Data[x][y] == true)
                         {
-                            if (model.Data[x][y] == true)
-                            {
-                                NewUsersIDsList.Add(model.RowHeaders[y].Id);
-                            }
+                            NewUsersIDsList.Add(model.RowHeaders[y].Id);
                         }
-                        #endregion
+                    }
+                    #endregion
 
-                        if (colHeader.Id != -1)
+                    if (colHeader.Id != -1)
+                    {
+                        #region Update role
+                        PersonaAppRole realRole = roles.FirstOrDefault(a => a.Id == colHeader.Id);
+
+                        if (realRole != null)
                         {
-                            #region Update role
-                            PersonaAppRole realRole = roles.FirstOrDefault(a => a.Id == colHeader.Id);
-
-                            if (realRole != null)
+                            #region Role name
+                            if (realRole.Name != colHeader.Name)
                             {
-                                #region Role name
-                                if (realRole.Name != colHeader.Name)
-                                {
-                                    realRole.Name = colHeader.Name;
-                                }
-                                if (realRole.Priority != colHeader.Priority)
-                                {
-                                    realRole.Priority = colHeader.Priority;
-                                }
-                                #endregion
-
-                                context.Users_Roles.RemoveRange(context.Users_Roles.Where(r => r.RoleName == realRole.Name && r.ApplicationId == realRole.ApplicationId));
-
-                                foreach (int id in NewUsersIDsList)
-                                {
-                                    context.Users_Roles.Add(new User_Role() { RoleName = realRole.Name, Application = realRole.Application, UserId = id });
-                                }
-
-                                context.SaveChanges();
+                                realRole.Name = colHeader.Name;
+                            }
+                            if (realRole.Priority != colHeader.Priority)
+                            {
+                                realRole.Priority = colHeader.Priority;
                             }
                             #endregion
-                        }
-                        else
-                        {
-                            #region New role
-                            PersonaAppRole realRole = new PersonaAppRole();
 
-                            realRole.Application = app;
-                            realRole.Name = colHeader.Name;
-                            realRole.Priority = colHeader.Priority;
-                            if (realRole.Name == "Nová role")
-                            {
+                            context.Users_Roles.RemoveRange(context.Users_Roles.Where(r => r.RoleName == realRole.Name && r.ApplicationId == realRole.ApplicationId));
 
-                            }
-
-                            #region Fill realRole with users
                             foreach (int id in NewUsersIDsList)
                             {
                                 context.Users_Roles.Add(new User_Role() { RoleName = realRole.Name, Application = realRole.Application, UserId = id });
                             }
-                            #endregion
 
-                            realRole = context.AppRoles.Add(realRole);
-
-                            try
-                            {
-                                context.SaveChanges();
-                            }
-                            catch (DbEntityValidationException e)
-                            {
-                                foreach (var eve in e.EntityValidationErrors)
-                                {
-                                    string text = "Entity of type \"" + eve.Entry.Entity.GetType().Name + "\" in state \"" + eve.Entry.State + "\" has the following validation errors:";
-                                    foreach (var ve in eve.ValidationErrors)
-                                    {
-                                        string message = "- Property: \"" + ve.PropertyName + "\", Error: \"" + ve.ErrorMessage + "\"";
-                                    }
-                                }
-                                throw;
-                            }
-                            #endregion
-
-                            colHeader.Id = realRole.Id;
-                            #endregion
-                        } 
-                        #endregion
-                    }
-                    else
-                    {
-                        #region Delete column (role)
-                        if (colHeader.Id != -1)
-                        {
-                            PersonaAppRole role = context.AppRoles.First(a => a.Id == colHeader.Id);
-
-                            context.AppRoles.Remove(role);
                             context.SaveChanges();
                         }
                         #endregion
                     }
-
-                    x++;
-                }
-                #endregion
-
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException e)
-                {
-                    foreach (var eve in e.EntityValidationErrors)
+                    else
                     {
-                        string text = "Entity of type \""+ eve.Entry.Entity.GetType().Name + "\" in state \""+ eve.Entry.State + "\" has the following validation errors:";
-                        foreach (var ve in eve.ValidationErrors)
-                        {
-                            string message = "- Property: \"" + ve.PropertyName + "\", Error: \"" + ve.ErrorMessage + "\"";
-                        }
-                    }
-                    throw;
-                }
-                #endregion
+                        #region New role
+                        PersonaAppRole realRole = new PersonaAppRole();
 
-                ViewBag.Saved = true;
+                        realRole.Application = app;
+                        realRole.Name = colHeader.Name;
+                        realRole.Priority = colHeader.Priority;
+                        if (realRole.Name == "Nová role")
+                        {
+
+                        }
+
+                        #region Fill realRole with users
+                        foreach (int id in NewUsersIDsList)
+                        {
+                            context.Users_Roles.Add(new User_Role() { RoleName = realRole.Name, Application = realRole.Application, UserId = id });
+                        }
+                        #endregion
+
+                        realRole = context.AppRoles.Add(realRole);
+
+                        try
+                        {
+                            context.SaveChanges();
+                        }
+                        catch (DbEntityValidationException e)
+                        {
+                            foreach (var eve in e.EntityValidationErrors)
+                            {
+                                string text = "Entity of type \"" + eve.Entry.Entity.GetType().Name + "\" in state \"" + eve.Entry.State + "\" has the following validation errors:";
+                                foreach (var ve in eve.ValidationErrors)
+                                {
+                                    string message = "- Property: \"" + ve.PropertyName + "\", Error: \"" + ve.ErrorMessage + "\"";
+                                }
+                            }
+                            throw;
+                        }
+                        #endregion
+
+                        colHeader.Id = realRole.Id;
+                        #endregion
+                    } 
+                    #endregion
+                }
+                else
+                {
+                    #region Delete column (role)
+                    if (colHeader.Id != -1)
+                    {
+                        PersonaAppRole role = context.AppRoles.First(a => a.Id == colHeader.Id);
+
+                        context.AppRoles.Remove(role);
+                        context.SaveChanges();
+                    }
+                    #endregion
+                }
+
+                x++;
             }
+            #endregion
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    string text = "Entity of type \""+ eve.Entry.Entity.GetType().Name + "\" in state \""+ eve.Entry.State + "\" has the following validation errors:";
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        string message = "- Property: \"" + ve.PropertyName + "\", Error: \"" + ve.ErrorMessage + "\"";
+                    }
+                }
+                throw;
+            }
+            #endregion
+
+            ViewBag.Saved = true;
 
             return RedirectToAction("App", "Roles", new { @Id = model.AppID });//App(model.AppID);
         }
