@@ -433,7 +433,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             SqlCommand command = new SqlCommand();
 
             command.CommandText =
-                $"SELECT * FROM sys.indexes WHERE is_primary_key=0 AND object_id=object_id('{ToRealTableName(db.Application, tableName, false)}')";
+                $"SELECT * FROM sys.indexes WHERE is_primary_key=0 AND type_desc != 'HEAP' AND object_id=object_id('{ToRealTableName(db.Application, tableName, false)}')";
 
             return command;
         }
