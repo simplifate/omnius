@@ -331,7 +331,6 @@
     <Compile Include="Entitron\Entity\Entitron\RelationTypes.cs" />
     <Compile Include="Entitron\Entity\Nexus\ldap.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Page.cs" />
-    <Compile Include="Entitron\Entity\Entitron\Table.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AjaxTransferActivity.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AjaxTransferCommitHeader.cs" />
@@ -1204,6 +1203,10 @@
     <Compile Include="Migrations\201802281121138_cascadeTrigger.Designer.cs">
       <DependentUpon>201802281121138_cascadeTrigger.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803011217358_removeEntitronMeta.cs" />
+    <Compile Include="Migrations\201803011217358_removeEntitronMeta.Designer.cs">
+      <DependentUpon>201803011217358_removeEntitronMeta.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -2038,6 +2041,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802281121138_cascadeTrigger.resx">
       <DependentUpon>201802281121138_cascadeTrigger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803011217358_removeEntitronMeta.resx">
+      <DependentUpon>201803011217358_removeEntitronMeta.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
