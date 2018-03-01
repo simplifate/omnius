@@ -331,7 +331,6 @@
     <Compile Include="Entitron\Entity\Entitron\RelationTypes.cs" />
     <Compile Include="Entitron\Entity\Nexus\ldap.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Page.cs" />
-    <Compile Include="Entitron\Entity\Entitron\Table.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AjaxTransferActivity.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AjaxTransferCommitHeader.cs" />
@@ -466,6 +465,8 @@
     <Compile Include="Migrations\201512281522191_greatherMappingLimit.Designer.cs">
       <DependentUpon>201512281522191_greatherMappingLimit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512281607535_local-rename-permission-table.Designer.cs" />
+    <Compile Include="Migrations\201512291359312_local-required.cs" />
     <Compile Include="Migrations\201512291444190_Module access permissions.cs" />
     <Compile Include="Migrations\201512291444190_Module access permissions.Designer.cs">
       <DependentUpon>201512291444190_Module access permissions.cs</DependentUpon>
@@ -510,10 +511,6 @@
     <Compile Include="Migrations\201601130939278_addNameToDbRelation.Designer.cs">
       <DependentUpon>201601130939278_addNameToDbRelation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601131308063_generateDatabase.cs" />
-    <Compile Include="Migrations\201601131308063_generateDatabase.Designer.cs">
-      <DependentUpon>201601131308063_generateDatabase.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201601131033150_addConfigPairs.cs" />
     <Compile Include="Migrations\201601131033150_addConfigPairs.Designer.cs">
       <DependentUpon>201601131033150_addConfigPairs.cs</DependentUpon>
@@ -521,6 +518,10 @@
     <Compile Include="Migrations\201601131043302_groupsFromAD.cs" />
     <Compile Include="Migrations\201601131043302_groupsFromAD.Designer.cs">
       <DependentUpon>201601131043302_groupsFromAD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601131308063_generateDatabase.cs" />
+    <Compile Include="Migrations\201601131308063_generateDatabase.Designer.cs">
+      <DependentUpon>201601131308063_generateDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201601131603195_Overview-connections.cs" />
     <Compile Include="Migrations\201601131603195_Overview-connections.Designer.cs">
@@ -750,13 +751,13 @@
     <Compile Include="Migrations\201603101916094_Mozaic nested components.Designer.cs">
       <DependentUpon>201603101916094_Mozaic nested components.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603141104422_Cortex-Task.cs" />
-    <Compile Include="Migrations\201603141104422_Cortex-Task.Designer.cs">
-      <DependentUpon>201603141104422_Cortex-Task.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201603140933283_UniqueAndIndexForUsersApplications.cs" />
     <Compile Include="Migrations\201603140933283_UniqueAndIndexForUsersApplications.Designer.cs">
       <DependentUpon>201603140933283_UniqueAndIndexForUsersApplications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603141104422_Cortex-Task.cs" />
+    <Compile Include="Migrations\201603141104422_Cortex-Task.Designer.cs">
+      <DependentUpon>201603141104422_Cortex-Task.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201603141129547_Fix cortex conflict.cs" />
     <Compile Include="Migrations\201603141129547_Fix cortex conflict.Designer.cs">
@@ -1162,13 +1163,13 @@
     <Compile Include="Migrations\201707281231548_athena.Designer.cs">
       <DependentUpon>201707281231548_athena.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708141059461_Dev_Grid_Work_Merge.cs" />
-    <Compile Include="Migrations\201708141059461_Dev_Grid_Work_Merge.Designer.cs">
-      <DependentUpon>201708141059461_Dev_Grid_Work_Merge.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201708140808177_Alias for External DBs.cs" />
     <Compile Include="Migrations\201708140808177_Alias for External DBs.Designer.cs">
       <DependentUpon>201708140808177_Alias for External DBs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708141059461_Dev_Grid_Work_Merge.cs" />
+    <Compile Include="Migrations\201708141059461_Dev_Grid_Work_Merge.Designer.cs">
+      <DependentUpon>201708141059461_Dev_Grid_Work_Merge.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201708141312346_Merge.cs" />
     <Compile Include="Migrations\201708141312346_Merge.Designer.cs">
@@ -1201,6 +1202,10 @@
     <Compile Include="Migrations\201802281121138_cascadeTrigger.cs" />
     <Compile Include="Migrations\201802281121138_cascadeTrigger.Designer.cs">
       <DependentUpon>201802281121138_cascadeTrigger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803011217358_removeEntitronMeta.cs" />
+    <Compile Include="Migrations\201803011217358_removeEntitronMeta.Designer.cs">
+      <DependentUpon>201803011217358_removeEntitronMeta.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
@@ -1419,6 +1424,615 @@
     <Folder Include="Nexus\Proxy\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\201511301834451_init.resx">
+      <DependentUpon>201511301834451_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511302216543_applicationAttr.resx">
+      <DependentUpon>201511302216543_applicationAttr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512031302475_add-nexus-ws.resx">
+      <DependentUpon>201512031302475_add-nexus-ws.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512041443397_userAttributes.resx">
+      <DependentUpon>201512041443397_userAttributes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512041505231_UniqueUsername.resx">
+      <DependentUpon>201512041505231_UniqueUsername.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512071351124_ws-type.resx">
+      <DependentUpon>201512071351124_ws-type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512071429383_actionRule.resx">
+      <DependentUpon>201512071429383_actionRule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512081245349_App properties.resx">
+      <DependentUpon>201512081245349_App properties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512081250576_nexus-extdb.resx">
+      <DependentUpon>201512081250576_nexus-extdb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512081321277_App properties 2.resx">
+      <DependentUpon>201512081321277_App properties 2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512141524186_hermes-smtp.resx">
+      <DependentUpon>201512141524186_hermes-smtp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512141602551_hermes-smtp-2.resx">
+      <DependentUpon>201512141602551_hermes-smtp-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512141700362_hermes-email-templates.resx">
+      <DependentUpon>201512141700362_hermes-email-templates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512161325143_Watchtower_log.resx">
+      <DependentUpon>201512161325143_Watchtower_log.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512161418357_repair.resx">
+      <DependentUpon>201512161418357_repair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512161558233_UniqueSeed.resx">
+      <DependentUpon>201512161558233_UniqueSeed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512211057430_repairTapestry.resx">
+      <DependentUpon>201512211057430_repairTapestry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512211246554_BlockWorkflowRelation.resx">
+      <DependentUpon>201512211246554_BlockWorkflowRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512211547114_BlockWorkFlowStep2.resx">
+      <DependentUpon>201512211547114_BlockWorkFlowStep2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512251241115_WebDAV.resx">
+      <DependentUpon>201512251241115_WebDAV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512281031045_addPreBlockRun.resx">
+      <DependentUpon>201512281031045_addPreBlockRun.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512281522191_greatherMappingLimit.resx">
+      <DependentUpon>201512281522191_greatherMappingLimit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512291444190_Module access permissions.resx">
+      <DependentUpon>201512291444190_Module access permissions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601061539404_Hermes-Template-Content.resx">
+      <DependentUpon>201601061539404_Hermes-Template-Content.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601071052182_Overview Metablocks.resx">
+      <DependentUpon>201601071052182_Overview Metablocks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601071236503_addDataType.resx">
+      <DependentUpon>201601071236503_addDataType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601071621315_Hermes-email-log.resx">
+      <DependentUpon>201601071621315_Hermes-email-log.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601111302087_Hermes-log-update.resx">
+      <DependentUpon>201601111302087_Hermes-log-update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601111323025_actionRigthsToActionRuleRights.resx">
+      <DependentUpon>201601111323025_actionRigthsToActionRuleRights.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601111431229_Hermes-queue.resx">
+      <DependentUpon>201601111431229_Hermes-queue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601111502028_AddActions.resx">
+      <DependentUpon>201601111502028_AddActions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601111538327_ActionWithoutIdentity.resx">
+      <DependentUpon>201601111538327_ActionWithoutIdentity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601130939278_addNameToDbRelation.resx">
+      <DependentUpon>201601130939278_addNameToDbRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601131033150_addConfigPairs.resx">
+      <DependentUpon>201601131033150_addConfigPairs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601131043302_groupsFromAD.resx">
+      <DependentUpon>201601131043302_groupsFromAD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601131308063_generateDatabase.resx">
+      <DependentUpon>201601131308063_generateDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601131603195_Overview-connections.resx">
+      <DependentUpon>201601131603195_Overview-connections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601181334425_hermes-email-attachment.resx">
+      <DependentUpon>201601181334425_hermes-email-attachment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601181552255_actionSequence.resx">
+      <DependentUpon>201601181552255_actionSequence.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601191221159_App roles.resx">
+      <DependentUpon>201601191221159_App roles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601191401555_hermes-email-plain-template.resx">
+      <DependentUpon>201601191401555_hermes-email-plain-template.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601201400125_appRights.resx">
+      <DependentUpon>201601201400125_appRights.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601221000214_ADgroups.resx">
+      <DependentUpon>201601221000214_ADgroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601221627553_hermes-queue-status.resx">
+      <DependentUpon>201601221627553_hermes-queue-status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601271825013_dropPages.resx">
+      <DependentUpon>201601271825013_dropPages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601291003556_logout.resx">
+      <DependentUpon>201601291003556_logout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601291108499_update tapestry designer models.resx">
+      <DependentUpon>201601291108499_update tapestry designer models.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601291246147_pageOldRelation.resx">
+      <DependentUpon>201601291246147_pageOldRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602081506423_sharedTables.resx">
+      <DependentUpon>201602081506423_sharedTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602091209188_isLocalUser.resx">
+      <DependentUpon>201602091209188_isLocalUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602101151279_IdentityUser.resx">
+      <DependentUpon>201602101151279_IdentityUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602120828421_requiredModulePermissions.resx">
+      <DependentUpon>201602120828421_requiredModulePermissions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602131234533_Mozaic editor and app profiles.resx">
+      <DependentUpon>201602131234533_Mozaic editor and app profiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602151623596_Overview isInitial property.resx">
+      <DependentUpon>201602151623596_Overview isInitial property.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602160832402_removeOldWFDesignerModels.resx">
+      <DependentUpon>201602160832402_removeOldWFDesignerModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602161059316_Mozaic editor properties.resx">
+      <DependentUpon>201602161059316_Mozaic editor properties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602170920573_renameType_WorkFlowItem.resx">
+      <DependentUpon>201602170920573_renameType_WorkFlowItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181028549_DataTypeExtend.resx">
+      <DependentUpon>201602181028549_DataTypeExtend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181722051_page IDs for UI components.resx">
+      <DependentUpon>201602181722051_page IDs for UI components.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602182123313_removeOldTapestryDesignerApp.resx">
+      <DependentUpon>201602182123313_removeOldTapestryDesignerApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602182208021_addExecuteByToActionRule.resx">
+      <DependentUpon>201602182208021_addExecuteByToActionRule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602191012213_ComponentId in Tapestry.resx">
+      <DependentUpon>201602191012213_ComponentId in Tapestry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602211130175_Associated page IDs for Tapestry blocks.resx">
+      <DependentUpon>201602211130175_Associated page IDs for Tapestry blocks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602220920500_dbColumn-displayName.resx">
+      <DependentUpon>201602220920500_dbColumn-displayName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221139352_Column filter in resource rules.resx">
+      <DependentUpon>201602221139352_Column filter in resource rules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221229387_Add TableId property.resx">
+      <DependentUpon>201602221229387_Add TableId property.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221348193_Hermes-template-appId.resx">
+      <DependentUpon>201602221348193_Hermes-template-appId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221415130_Hermes-template-appId2.resx">
+      <DependentUpon>201602221415130_Hermes-template-appId2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221447359_hermes-appid3.resx">
+      <DependentUpon>201602221447359_hermes-appid3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221641534_Tapestry-block-isInMenu.resx">
+      <DependentUpon>201602221641534_Tapestry-block-isInMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221837391_Tapestry-block-isInMenu2.resx">
+      <DependentUpon>201602221837391_Tapestry-block-isInMenu2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602241608308_Tapestry-menu-order.resx">
+      <DependentUpon>201602241608308_Tapestry-menu-order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602241930322_Tapestry designer attributes.resx">
+      <DependentUpon>201602241930322_Tapestry designer attributes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602251931211_Mozaic - modal settings.resx">
+      <DependentUpon>201602251931211_Mozaic - modal settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602260939055_index.resx">
+      <DependentUpon>201602260939055_index.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261106254_Tapestry - ResourceMappingPairs.resx">
+      <DependentUpon>201602261106254_Tapestry - ResourceMappingPairs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261107177_actionId.resx">
+      <DependentUpon>201602261107177_actionId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261157443_removingWorkFlow.resx">
+      <DependentUpon>201602261157443_removingWorkFlow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261557034_Column filter.resx">
+      <DependentUpon>201602261557034_Column filter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261618180_app_metablock.resx">
+      <DependentUpon>201602261618180_app_metablock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261918013_Action variables.resx">
+      <DependentUpon>201602261918013_Action variables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602271145300_states.resx">
+      <DependentUpon>201602271145300_states.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602271658212_stateId_condition.resx">
+      <DependentUpon>201602271658212_stateId_condition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602280928491_TargetIdAdded.resx">
+      <DependentUpon>201602280928491_TargetIdAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603011128489_DbScheme lock.resx">
+      <DependentUpon>201603011128489_DbScheme lock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603021243591_rememberUserApp.resx">
+      <DependentUpon>201603021243591_rememberUserApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603021938431_Column metadata.resx">
+      <DependentUpon>201603021938431_Column metadata.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603080945413_adGroup_isAdmin.resx">
+      <DependentUpon>201603080945413_adGroup_isAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603081428441_UsersApplications.resx">
+      <DependentUpon>201603081428441_UsersApplications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603081701163_Tapestry - attribute names.resx">
+      <DependentUpon>201603081701163_Tapestry - attribute names.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603091107525_isSystemCOlumnMasterApplication.resx">
+      <DependentUpon>201603091107525_isSystemCOlumnMasterApplication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603091902486_Tapestry designer foreign keys.resx">
+      <DependentUpon>201603091902486_Tapestry designer foreign keys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603101916094_Mozaic nested components.resx">
+      <DependentUpon>201603101916094_Mozaic nested components.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603140933283_UniqueAndIndexForUsersApplications.resx">
+      <DependentUpon>201603140933283_UniqueAndIndexForUsersApplications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603141104422_Cortex-Task.resx">
+      <DependentUpon>201603141104422_Cortex-Task.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603141129547_Fix cortex conflict.resx">
+      <DependentUpon>201603141129547_Fix cortex conflict.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603171030577_BlockDisplayName.resx">
+      <DependentUpon>201603171030577_BlockDisplayName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603181026526_cascadeDelete.resx">
+      <DependentUpon>201603181026526_cascadeDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603181106522_splitConnections.resx">
+      <DependentUpon>201603181106522_splitConnections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603181127565_splitConnectionsRepair.resx">
+      <DependentUpon>201603181127565_splitConnectionsRepair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603191225115_Conditions and condition sets.resx">
+      <DependentUpon>201603191225115_Conditions and condition sets.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603191237383_Conditions 2.resx">
+      <DependentUpon>201603191237383_Conditions 2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603191359417_Revert DbRelations %28temporary%29.resx">
+      <DependentUpon>201603191359417_Revert DbRelations %28temporary%29.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603210942175_addedPriorityToPersonaAppRoles.resx">
+      <DependentUpon>201603210942175_addedPriorityToPersonaAppRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603211040585_blockTemp.resx">
+      <DependentUpon>201603211040585_blockTemp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603221517303_cortex-db-update.resx">
+      <DependentUpon>201603221517303_cortex-db-update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603231121543_ActionRuleCascade.resx">
+      <DependentUpon>201603231121543_ActionRuleCascade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603241521464_addAjaxToWFItem.resx">
+      <DependentUpon>201603241521464_addAjaxToWFItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603261504456_Add ActionId to resource rules.resx">
+      <DependentUpon>201603261504456_Add ActionId to resource rules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603281221022_Mozaic editor parent component.resx">
+      <DependentUpon>201603281221022_Mozaic editor parent component.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603281407051_WFitemMergeStep1.resx">
+      <DependentUpon>201603281407051_WFitemMergeStep1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603281452451_WFitemMergeStep2.resx">
+      <DependentUpon>201603281452451_WFitemMergeStep2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603281818163_ConnectionSplitStep1.resx">
+      <DependentUpon>201603281818163_ConnectionSplitStep1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603282059441_ConnectionSplitStep2.resx">
+      <DependentUpon>201603282059441_ConnectionSplitStep2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603282201536_addIdToModel.resx">
+      <DependentUpon>201603282201536_addIdToModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603290102436_identityWorkflow.resx">
+      <DependentUpon>201603290102436_identityWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603291050130_Add TargetName.resx">
+      <DependentUpon>201603291050130_Add TargetName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603291528171_Add pageId.resx">
+      <DependentUpon>201603291528171_Add pageId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603301510267_blockUnique.resx">
+      <DependentUpon>201603301510267_blockUnique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603310847502_Add DataSourceParams.resx">
+      <DependentUpon>201603310847502_Add DataSourceParams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603311101178_tempWorkflow.resx">
+      <DependentUpon>201603311101178_tempWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603311320176_mappingPairs.resx">
+      <DependentUpon>201603311320176_mappingPairs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604010915108_repairTriggerRules.resx">
+      <DependentUpon>201604010915108_repairTriggerRules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604011034314_targetRelation.resx">
+      <DependentUpon>201604011034314_targetRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604011055555_requiredParent.resx">
+      <DependentUpon>201604011055555_requiredParent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604011145470_repairTrigger.resx">
+      <DependentUpon>201604011145470_repairTrigger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604041141371_Tapestry role whitelist.resx">
+      <DependentUpon>201604041141371_Tapestry role whitelist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604042210534_pageRelation.resx">
+      <DependentUpon>201604042210534_pageRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604042336288_componentParent.resx">
+      <DependentUpon>201604042336288_componentParent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604050708595_repairTriggerComponentParent.resx">
+      <DependentUpon>201604050708595_repairTriggerComponentParent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604060906502_Allow multiple sources, add variables to resource items.resx">
+      <DependentUpon>201604060906502_Allow multiple sources, add variables to resource items.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604061859547_Tapestry - save toolbox state.resx">
+      <DependentUpon>201604061859547_Tapestry - save toolbox state.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604081157582_Remove resoure mapping pair source array.resx">
+      <DependentUpon>201604081157582_Remove resoure mapping pair source array.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604110911042_Add StateId to ResourceItem.resx">
+      <DependentUpon>201604110911042_Add StateId to ResourceItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604121231256_cortex-montly-type.resx">
+      <DependentUpon>201604121231256_cortex-montly-type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604130808394_actionRule_Action_Id.resx">
+      <DependentUpon>201604130808394_actionRule_Action_Id.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.resx">
+      <DependentUpon>201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604131344422_appRoleRelation.resx">
+      <DependentUpon>201604131344422_appRoleRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604210802463_dropModules.resx">
+      <DependentUpon>201604210802463_dropModules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605020810435_overviewTrash.resx">
+      <DependentUpon>201605020810435_overviewTrash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605041236075_Add condition sets to gateways.resx">
+      <DependentUpon>201605041236075_Add condition sets to gateways.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605041320457_TapestryAdvanceConditions.resx">
+      <DependentUpon>201605041320457_TapestryAdvanceConditions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605170940531_conditionSetCascade.resx">
+      <DependentUpon>201605170940531_conditionSetCascade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606061241384_Cortex-Repeat.resx">
+      <DependentUpon>201606061241384_Cortex-Repeat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606210930404_RelationColumnRename.resx">
+      <DependentUpon>201606210930404_RelationColumnRename.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606211001175_DBRelationFK.resx">
+      <DependentUpon>201606211001175_DBRelationFK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606291006426_changed-since-last-save-bools.resx">
+      <DependentUpon>201606291006426_changed-since-last-save-bools.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606291203568_fourth-bool.resx">
+      <DependentUpon>201606291203568_fourth-bool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607120948457_removeDataType.resx">
+      <DependentUpon>201607120948457_removeDataType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607140838442_add tabindex to component properties.resx">
+      <DependentUpon>201607140838442_add tabindex to component properties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607151241382_mozaic-editor-page-version.resx">
+      <DependentUpon>201607151241382_mozaic-editor-page-version.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607181414222_AddMozaicEditorPageIsDeletedColumn.resx">
+      <DependentUpon>201607181414222_AddMozaicEditorPageIsDeletedColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607211141272_add-bootstrap-classes.resx">
+      <DependentUpon>201607211141272_add-bootstrap-classes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607250917494_AddUserIsActiveColumn2.resx">
+      <DependentUpon>201607250917494_AddUserIsActiveColumn2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608110907187_AddCSSTemplateTable.resx">
+      <DependentUpon>201608110907187_AddCSSTemplateTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608150811297_ChangeMozaicCssTemplatesCssColumnToUrl.resx">
+      <DependentUpon>201608150811297_ChangeMozaicCssTemplatesCssColumnToUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608161238551_AddRoleWhitelistAttributeToBlock.resx">
+      <DependentUpon>201608161238551_AddRoleWhitelistAttributeToBlock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609081823076_Merge Mozaic build from AS.resx">
+      <DependentUpon>201609081823076_Merge Mozaic build from AS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610131145516_AppConnectionString.resx">
+      <DependentUpon>201610131145516_AppConnectionString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610261315588_FileMetadata_webdaventityuploadaction.resx">
+      <DependentUpon>201610261315588_FileMetadata_webdaventityuploadaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611132038327_IsChangedParameterAddedToBlock.resx">
+      <DependentUpon>201611132038327_IsChangedParameterAddedToBlock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611181020083_ResourceMappingPairUpgrade1.resx">
+      <DependentUpon>201611181020083_ResourceMappingPairUpgrade1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611181120487_ResourceMappingPairUpgrade2.resx">
+      <DependentUpon>201611181120487_ResourceMappingPairUpgrade2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611181522498_conditionSetMappingPairRelationRemoved.resx">
+      <DependentUpon>201611181522498_conditionSetMappingPairRelationRemoved.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611231456099_addBlockBuildLink.resx">
+      <DependentUpon>201611231456099_addBlockBuildLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612141429553_MozaicBootstrapEditorModels.resx">
+      <DependentUpon>201612141429553_MozaicBootstrapEditorModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701021100138_MozaicBootstrapModelsUpdate.resx">
+      <DependentUpon>201701021100138_MozaicBootstrapModelsUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701021412417_DbSchemeCommit - add IsComplete boolean.resx">
+      <DependentUpon>201701021412417_DbSchemeCommit - add IsComplete boolean.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701031039386_checkContext.resx">
+      <DependentUpon>201701031039386_checkContext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701051017339_NexusWsModelUpdate.resx">
+      <DependentUpon>201701051017339_NexusWsModelUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701051042291_NexusWsModelUpdate2.resx">
+      <DependentUpon>201701051042291_NexusWsModelUpdate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701121450310_TapestryModelsBootstrapPageSupport.resx">
+      <DependentUpon>201701121450310_TapestryModelsBootstrapPageSupport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701301106083_VirtualBlockLink.resx">
+      <DependentUpon>201701301106083_VirtualBlockLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701310858552_PageUpdate.resx">
+      <DependentUpon>201701310858552_PageUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701311034441_BootstrapComponentNumOrder.resx">
+      <DependentUpon>201701311034441_BootstrapComponentNumOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701311449079_ResourceItemBootstrapPageId.resx">
+      <DependentUpon>201701311449079_ResourceItemBootstrapPageId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702060918128_AppSchemeConnectionString.resx">
+      <DependentUpon>201702060918128_AppSchemeConnectionString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702070835205_JsEditor.resx">
+      <DependentUpon>201702070835205_JsEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702070915546_JsModelUpdate.resx">
+      <DependentUpon>201702070915546_JsModelUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702091237139_IncomingEmail.resx">
+      <DependentUpon>201702091237139_IncomingEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702091354293_IncomingEmail-UseSLL.resx">
+      <DependentUpon>201702091354293_IncomingEmail-UseSLL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702101119192_IncomingEmailRule-Name.resx">
+      <DependentUpon>201702101119192_IncomingEmailRule-Name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702101332222_addedLocaleId.resx">
+      <DependentUpon>201702101332222_addedLocaleId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702101553507_IsSharedTable.resx">
+      <DependentUpon>201702101553507_IsSharedTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.resx">
+      <DependentUpon>201702101634102_SharedResourcesInResourcesPairs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702211247252_addedColumnToUser.resx">
+      <DependentUpon>201702211247252_addedColumnToUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702231120106_addedLockedForUserIdColumn.resx">
+      <DependentUpon>201702231120106_addedLockedForUserIdColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702231414120_TapestryWorkflowItems-Name-and-Comments.resx">
+      <DependentUpon>201702231414120_TapestryWorkflowItems-Name-and-Comments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702240918341_Fix IsShared problem.resx">
+      <DependentUpon>201702240918341_Fix IsShared problem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704131111235_add isAllowedForAll.resx">
+      <DependentUpon>201704131111235_add isAllowedForAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706120733572_ApplicationDB.resx">
+      <DependentUpon>201706120733572_ApplicationDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706191130508_WatchtowerException.resx">
+      <DependentUpon>201706191130508_WatchtowerException.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706201036161_Add DeletedBySync column to Persona_Users.resx">
+      <DependentUpon>201706201036161_Add DeletedBySync column to Persona_Users.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706271059315_omnius-api-models.resx">
+      <DependentUpon>201706271059315_omnius-api-models.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707030938552_babylon.resx">
+      <DependentUpon>201707030938552_babylon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707281231548_athena.resx">
+      <DependentUpon>201707281231548_athena.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708140808177_Alias for External DBs.resx">
+      <DependentUpon>201708140808177_Alias for External DBs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708141059461_Dev_Grid_Work_Merge.resx">
+      <DependentUpon>201708141059461_Dev_Grid_Work_Merge.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708141312346_Merge.resx">
+      <DependentUpon>201708141312346_Merge.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709011206320_EmailQueueOptionalApp.resx">
+      <DependentUpon>201709011206320_EmailQueueOptionalApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710191356205_Add AbsoluteURL to file metadata.resx">
+      <DependentUpon>201710191356205_Add AbsoluteURL to file metadata.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712041556123_tableApplication.resx">
+      <DependentUpon>201712041556123_tableApplication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802160746220_Entitron2.resx">
+      <DependentUpon>201802160746220_Entitron2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802221413479_WatchtowerCascadeDelete.resx">
       <DependentUpon>201802221413479_WatchtowerCascadeDelete.cs</DependentUpon>
     </EmbeddedResource>
@@ -1427,6 +2041,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802281121138_cascadeTrigger.resx">
       <DependentUpon>201802281121138_cascadeTrigger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803011217358_removeEntitronMeta.resx">
+      <DependentUpon>201803011217358_removeEntitronMeta.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

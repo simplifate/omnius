@@ -261,7 +261,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<ConfigPair> ConfigPairs { get; set; }
 
         // Entitron
-        public virtual DbSet<Table> Tables { get; set; }
         public virtual DbSet<DbSchemeCommit> DBSchemeCommits { get; set; }
         public virtual DbSet<DbTable> DbTables { get; set; }
         public virtual DbSet<DbColumn> DbColumn { get; set; }

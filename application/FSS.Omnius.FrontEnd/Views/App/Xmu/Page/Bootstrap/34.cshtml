@@ -366,22 +366,22 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="WithdrawalErrors_table" />
-</div></div><div class="tab-pane active" id="tab-missingUsers"><div class="col-xs-12"><h3 class="text-center mbe-active" style="margin-top: 10px;">@(@"Missing users")</h3>
+</div></div><div class="tab-pane active" id="tab-missingUsers"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Missing users")</h3>
 @{ if(ViewData.ContainsKey("tableData_missingUsers_table") && ((System.Data.DataTable)(ViewData["tableData_missingUsers_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="missingUsers_table" role="grid" aria-describedby="missingUsers_table_info" style="">
+    <table class="table data-table no-footer dataTable mbe-active" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="missingUsers_table" role="grid" aria-describedby="missingUsers_table_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_missingUsers_table"])).Columns) {
                 <th>@col.Caption</th>
             }
-                <th>Akce</th>
+                
             </tr>
         </thead>
         <tfoot>
             <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_missingUsers_table"])).Columns) {
                 <th>@col.Caption</th>
             }
-                <th>Akce</th>
+                
             </tr>
         </tfoot>
         <tbody>
@@ -389,7 +389,7 @@
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
-                <td class="actionIcons"></td>
+                
             </tr>
         }
         </tbody>
