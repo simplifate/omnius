@@ -2,6 +2,7 @@
 using System.Linq;
 using FSS.Omnius.Modules.CORE;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -23,7 +24,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             JArray list = (JArray)vars["List"];
             if (list.Count > 0)
             {
-                int index = (int)vars["Index"];
+                var indexParam = vars["Index"];
+                int index = indexParam is JValue ? ((JValue)indexParam).ToObject<int>() : Convert.ToInt32(indexParam);
                 var result = list.ElementAt(index);
                 outputVars["Result"] = result;
             }
