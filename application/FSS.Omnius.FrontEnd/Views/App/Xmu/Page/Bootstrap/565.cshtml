@@ -95,25 +95,25 @@
 } }
 <input type="hidden" name="missingUsers_table" />
 </div></div><div class="tab-pane active" id="tab_ms_errors"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Missing users")</h3>
-@{ if(ViewData.ContainsKey("tableData_msErrors_table") && ((System.Data.DataTable)(ViewData["tableData_msErrors_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable mbe-active" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="msErrors_table" role="grid" aria-describedby="msErrors_table_info" style="">
+@{ if(ViewData.ContainsKey("tableData_Profiles_table") && ((System.Data.DataTable)(ViewData["tableData_Profiles_table"])).Rows.Count > 0) {
+    <table class="table data-table no-footer dataTable mbe-active" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Profiles_table" role="grid" aria-describedby="msErrors_table_info" style="">
         <thead>
             <tr>
-            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_msErrors_table"])).Columns) {
+            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Profiles_table"])).Columns) {
                 <th>@col.Caption</th>
             }
                 <th>Akce</th>
             </tr>
         </thead>
         <tfoot>
-            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_msErrors_table"])).Columns) {
+            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Profiles_table"])).Columns) {
                 <th>@col.Caption</th>
             }
                 <th>Akce</th>
             </tr>
         </tfoot>
         <tbody>
-        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_msErrors_table"])).Rows) {
+        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_Profiles_table"])).Rows) {
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
@@ -125,7 +125,7 @@
 } else {
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
-<input type="hidden" name="msErrors_table" />
+<input type="hidden" name="Profiles_table" />
 </div></div></div></div></div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Deviants")</h3></div><div class="panel-body collapse in" aria-expanded="true">
 @{ if(ViewData.ContainsKey("tableData_deviants_table") && ((System.Data.DataTable)(ViewData["tableData_deviants_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="deviants_table" role="grid" aria-describedby="deviants_table_info" style="">
