@@ -53,13 +53,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     socket.Receive(receiveInitBytes, receiveBytes.Length, SocketFlags.None);
                 }
                 socket.Send(Encoding.ASCII.GetBytes(json + "\n"));
-                while (socket.Available > 0)
+
+                do
                 {
                     socket.Receive(receiveBytes, receiveBytes.Length, SocketFlags.Partial);
 
                     responseJson += Encoding.ASCII.GetString(receiveBytes);
                     receiveBytes = new byte[receivedBufferSize];
                 }
+                while (socket.Available > 0);
 
                 socket.Shutdown(SocketShutdown.Both);
             }
