@@ -2,7 +2,7 @@ $(function(){
   $("#Profiles_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalProfile");
   
   $("#Profiles_table").on("click", ".fa-edit", function () {
-            var userId = $(this).parent().parent().children("td:first").text();
+            var userId = $(this).parent().parent().children("td:nth-child(2)").text();
             $("#modal_body_profile").html("");
   			$("#modal_name_profile").html("");
             $("#preloader_profile").css("display", "block");
