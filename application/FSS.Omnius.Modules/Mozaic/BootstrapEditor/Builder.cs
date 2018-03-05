@@ -579,7 +579,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
     {GetContent(c, properties)}
     @{{ if(ViewData[""dropdownData_{c.ElmId}""] != null) {{
             foreach(var option in ((Dictionary<int, string>)ViewData[""dropdownData_{c.ElmId}""]){sort}) {{
-                <option value=""@(option.Key)"" @((formState.ContainsKey(""{c.ElmId}"") && Convert.ToInt32(formState[""{c.ElmId}""]) == option.Key) || (ViewData.ContainsKey(""dropdownSelection_{ c.ElmId}"") && ViewData[""dropdownSelection_{c.ElmId}""] is int && (int)ViewData[""dropdownSelection_{c.ElmId}""] == option.Key) ? ""selected"" : """")>
+                <option value=""@(option.Key)"" @(ViewData.ContainsKey(""dropdownSelection_{ c.ElmId}"") && (string)ViewData[""dropdownSelection_{c.ElmId}""] == option.Key.ToString() ? ""selected"" : """")>
                     @(option.Value)
                 </option>
             }}
