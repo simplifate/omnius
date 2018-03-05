@@ -7,7 +7,7 @@ $(function(){
   			$("#modal_name_profile").html("");
             $("#preloader_profile").css("display", "block");
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 url: "/Xmu/LogMSDetail?modelId="+userId,
                 success: function (response) {
                     var x = $(response)
