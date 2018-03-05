@@ -3,7 +3,7 @@
     
     @{ if(ViewData["dropdownData_select"] != null) {
             foreach(var option in ((Dictionary<int, string>)ViewData["dropdownData_select"])) {
-                <option value="@(option.Key)" @((formState.ContainsKey("select") && Convert.ToInt32(formState["select"]) == option.Key) || (ViewData.ContainsKey("dropdownSelection_select") && ViewData["dropdownSelection_select"] is int && (int)ViewData["dropdownSelection_select"] == option.Key) ? "selected" : "")>
+                <option value="@(option.Key)" @(ViewData.ContainsKey("dropdownSelection_select") && (string)ViewData["dropdownSelection_select"] == option.Key.ToString() ? "selected" : "")>
                     @(option.Value)
                 </option>
             }

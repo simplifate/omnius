@@ -735,7 +735,7 @@
     
     @{ if(ViewData["dropdownData_ColdCurrencyCode"] != null) {
             foreach(var option in ((Dictionary<int, string>)ViewData["dropdownData_ColdCurrencyCode"])) {
-                <option value="@(option.Key)" @((formState.ContainsKey("ColdCurrencyCode") && Convert.ToInt32(formState["ColdCurrencyCode"]) == option.Key) || (ViewData.ContainsKey("dropdownSelection_ColdCurrencyCode") && ViewData["dropdownSelection_ColdCurrencyCode"] is int && (int)ViewData["dropdownSelection_ColdCurrencyCode"] == option.Key) ? "selected" : "")>
+                <option value="@(option.Key)" @(ViewData.ContainsKey("dropdownSelection_ColdCurrencyCode") && (string)ViewData["dropdownSelection_ColdCurrencyCode"] == option.Key.ToString() ? "selected" : "")>
                     @(option.Value)
                 </option>
             }
