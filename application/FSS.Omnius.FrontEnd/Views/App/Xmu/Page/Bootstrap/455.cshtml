@@ -2,12 +2,12 @@
 @{ if(ViewData.ContainsKey("foreachimage")) {
         foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DB.DBItem>)ViewData["foreachimage"]) {
             <div class="" style="text-align: center;">
-                <form class="form-horizontal" method="post"><input type="hidden" name="" value="@(formState.ContainsKey("") ? formState[""] : (ViewData.ContainsKey("inputData_") ? @ViewData["inputData_"] : ""))" class="mbe-active" /><button type="submit" class="btn btn-danger pull-right" name="button" id="deleteImage" value="deleteImage" ><span class="fa fa-remove"></span></button>@Html.AntiForgeryToken()</form><a href="@(Convert.ToString(row["url"]))" target="_blank" class=""><img src="@(Convert.ToString(row["url"]))" width="70%" alt="" class="" id="image"></img><p class="" style="margin-top: 10px;">@(row["type"].ToString())</p><p class="">@(row["orig_name"].ToString())</p></a>   
+                <input type="hidden" name="" value="@(formState.ContainsKey("") ? formState[""] : (ViewData.ContainsKey("inputData_") ? @ViewData["inputData_"] : ""))" class="" /><button type="submit" class="btn btn-danger pull-right" name="button" id="deleteImage" value="deleteImage" ><span class="fa fa-remove"></span></button><a href="@(Convert.ToString(row["url"]))" target="_blank" class=""><img src="@(Convert.ToString(row["url"]))" width="70%" alt="" class="" id="image"></img><p class="" style="margin-top: 10px;">@(row["type"].ToString())</p><p class="">@(row["orig_name"].ToString())</p></a>   
             </div>
         }
     }
-}</div></div></div><div class="row" style="padding: 0 15px;"><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"Category")</label><div class="col-xs-12"><input type="text" name="userLevel" value="@(formState.ContainsKey("userLevel") ? formState["userLevel"] : (ViewData.ContainsKey("inputData_userLevel") ? @ViewData["inputData_userLevel"] : ""))" class="form-control" readonly="readonly" id="userLevel" /></div></div><div class="form-group"><label for="" class="">@(@"Select user level")</label><div class="col-xs-12">
-<select name="" class="form-control" id="category">
+}</div></div></div>@Html.AntiForgeryToken()</form><div class="row" style="padding: 0 15px;"><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"Category")</label><div class="col-xs-12"><input type="text" name="userLevel" value="@(formState.ContainsKey("userLevel") ? formState["userLevel"] : (ViewData.ContainsKey("inputData_userLevel") ? @ViewData["inputData_userLevel"] : ""))" class="form-control" readonly="readonly" id="userLevel" /></div></div><div class="form-group"><label for="" class="">@(@"Select user level")</label><div class="col-xs-12">
+<select name="category" class="form-control mbe-active" id="category">
     
     @{ if(ViewData["dropdownData_category"] != null) {
             foreach(var option in ((Dictionary<int, string>)ViewData["dropdownData_category"])) {
@@ -17,4 +17,4 @@
             }
         }
     }    
-</select></div></div><button type="submit" class="btn btn-primary btn-lg" name="button" value="Save" id="Save" >@(@"Save")</button></div><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"User Id")</label><div class="col-xs-12"><input type="text" name="user_id" value="@(formState.ContainsKey("user_id") ? formState["user_id"] : (ViewData.ContainsKey("inputData_user_id") ? @ViewData["inputData_user_id"] : ""))" class="form-control" readonly="readonly" id="user_id" /></div></div></div></div>@Html.AntiForgeryToken()</form></div></div></div></div></div></div>
+</select></div></div><button type="submit" class="btn btn-primary btn-lg" name="button" value="Save" id="Save" >@(@"Save")</button></div><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"User Id")</label><div class="col-xs-12"><input type="text" name="user_id" value="@(formState.ContainsKey("user_id") ? formState["user_id"] : (ViewData.ContainsKey("inputData_user_id") ? @ViewData["inputData_user_id"] : ""))" class="form-control" readonly="readonly" id="user_id" /></div></div></div></div></div></div></div></div></div></div>
