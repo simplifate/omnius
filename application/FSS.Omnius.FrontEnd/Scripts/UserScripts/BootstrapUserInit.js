@@ -10,8 +10,7 @@
             .on('keyup change', '.data-table > tfoot input', self.DataTable.filter)
             .on('click', '.data-table i.fa[data-action]', self.DataTable.onAction)
             .on('search.dt', '.data-table', self.DataTable.onSearch)
-            .on('select.dt deselect.dt', '.data-table', self.DataTable.onSearch)
-            ;
+            .on('select.dt deselect.dt', '.data-table', self.DataTable.onSearch);
 
         self.DataTable.init();
         self.loadValidators();
