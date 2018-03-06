@@ -130,6 +130,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     using (BinaryWriter bw = new BinaryWriter(requestStream))
                     {
                         inputData = inputData.Replace("%3D","=");
+                        inputData = inputData.Replace("\r\n", "");
+                        inputData = inputData.Replace("\n","");
                         bw.Write(Convert.FromBase64String(inputData));
                     }
                 }
