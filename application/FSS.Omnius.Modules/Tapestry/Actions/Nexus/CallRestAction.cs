@@ -27,7 +27,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override int Id => 3002;
 
-        public override string[] InputVar => new string[] { "Endpoint", "Method", "?WSName", "?InputData", "?InputFromJSON", "?MaxAge", "?v$CustomHeaders" };
+        public override string[] InputVar => new string[] { "Endpoint", "Method", "?WSName", "?InputData", "?InputFromJSON", "?isFromBase64", "?MaxAge", "?v$CustomHeaders" };
 
         public override string Name => "Call REST";
 
@@ -46,6 +46,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 List<string> customHeaders = vars.ContainsKey("CustomHeaders") ? (List<string>)vars["CustomHeaders"] : new List<string>(); 
                 int maxAge = vars.ContainsKey("MaxAge") ? (int)vars["MaxAge"] : 0;
                 bool inputFromJSON = vars.ContainsKey("InputFromJSON") ? (bool)vars["InputFromJSON"] : false;
+                bool isFromBase64 = vars.ContainsKey("isFromBase64") ? (bool)vars["isFromBase64"] : false;
 
                 string keyData = string.Format("{0}_{1}_{2}_{3}_{4}_{5}",
                             endpoint,
@@ -53,7 +54,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                             wsName,
                             inputData,
                             maxAge.ToString(),
-                            inputFromJSON ? "1" : "0"
+                            inputFromJSON ? "1" : "0",
+                            isFromBase64 ? "1" : "0"
                         );
                 string cacheKey = CalculateMD5(keyData);
 
@@ -122,7 +124,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     httpWebRequest.Credentials = cCache;*/
                 }
 
-                if (vars.ContainsKey("InputData") && method.ToUpper() != "GET")
+                if (isFromBase64 && vars.ContainsKey("InputData") && method.ToUpper() == "PUT")
+                {
+                    using (Stream requestStream = httpWebRequest.GetRequestStream())
+                    using (BinaryWriter bw = new BinaryWriter(requestStream))
+                    {
+                        inputData = inputData.Replace("%3D","=");
+                        bw.Write(Convert.FromBase64String(inputData));
+                    }
+                }
+                else if (vars.ContainsKey("InputData") && method.ToUpper() != "GET")
                 {
                     string inputJson;
                     if (inputFromJSON)
