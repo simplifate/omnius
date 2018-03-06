@@ -2,7 +2,7 @@
 @{ if(ViewData.ContainsKey("foreachimage")) {
         foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DB.DBItem>)ViewData["foreachimage"]) {
             <div class="" style="text-align: center;">
-                <span class="mbe-active" id="imageUrl" style="display:none;">@(row["url"].ToString())</span><button type="submit" class="btn btn-danger pull-right" name="button" id="deleteImage" value="deleteImage" ><span class="fa fa-remove"></span></button><a href="@(Convert.ToString(row["url"]))" target="_blank" class=""><img src="@(Convert.ToString(row["url"]))" alt="" class="" id="image" width="70%"></img><p class="" style="margin-top: 10px;">@(row["type"].ToString())</p><p class="">@(row["orig_name"].ToString())</p></a>   
+                <span class="" id="imageUrl" style="display:none;">@(row["url"].ToString())</span><button type="submit" class="btn btn-danger pull-right" name="button" id="deleteImage" value="deleteImage" ><span class="fa fa-remove"></span></button><a href="@(Convert.ToString(row["url"]))" target="_blank" class=""><img src="@(Convert.ToString(row["url"]))" alt="" class="" id="image" width="70%"></img><p class="" style="margin-top: 10px;">@(row["type"].ToString())</p><p class="">@(row["orig_name"].ToString())</p></a>   
             </div>
         }
     }
@@ -17,4 +17,4 @@
             }
         }
     }    
-</select></div></div><button type="submit" class="btn btn-primary btn-lg" name="button" value="Save" id="Save" >@(@"Save")</button></div><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"User Id")</label><div class="col-xs-12"><input name="user_id" value="@(formState.ContainsKey("user_id") ? formState["user_id"] : (ViewData.ContainsKey("inputData_user_id") ? @ViewData["inputData_user_id"] : ""))" class="form-control" readonly="readonly" id="user_id" type="text" /></div></div></div></div></div></div></div></div>@Html.AntiForgeryToken()</form></div></div></div>
+</select></div></div><button type="submit" class="btn btn-primary btn-lg" name="button" value="Save" id="Save" >@(@"Save")</button></div><div class="col-xs-6"><div class="form-group"><label for="" class="">@(@"User Id")</label><div class="col-xs-12"><input name="user_id" value="@(formState.ContainsKey("user_id") ? formState["user_id"] : (ViewData.ContainsKey("inputData_user_id") ? @ViewData["inputData_user_id"] : ""))" class="form-control" readonly="readonly" id="user_id" type="text" /><input name="hiddenUserId" value="@(formState.ContainsKey("hiddenUserId") ? formState["hiddenUserId"] : (ViewData.ContainsKey("inputData_hiddenUserId") ? @ViewData["inputData_hiddenUserId"] : ""))" class="mbe-active" id="hiddenUserId" type="hidden" /></div></div></div></div></div></div></div></div>@Html.AntiForgeryToken()</form></div></div></div>
