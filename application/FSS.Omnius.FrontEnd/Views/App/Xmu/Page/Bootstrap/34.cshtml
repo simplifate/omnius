@@ -543,7 +543,7 @@
     
     @{ if(ViewData["dropdownData_ColdCurrencyCode"] != null) {
             foreach(var option in ((Dictionary<int, string>)ViewData["dropdownData_ColdCurrencyCode"])) {
-                <option value="@(option.Key)" @(ViewData.ContainsKey("dropdownSelection_ColdCurrencyCode") && (string)ViewData["dropdownSelection_ColdCurrencyCode"] == option.Key.ToString() ? "selected" : "")>
+                <option value="@(option.Key)" @(ViewData.ContainsKey("dropdownSelection_ColdCurrencyCode") && ViewData["dropdownSelection_ColdCurrencyCode"].ToString() == option.Key.ToString() ? "selected" : "")>
                     @(option.Value)
                 </option>
             }
