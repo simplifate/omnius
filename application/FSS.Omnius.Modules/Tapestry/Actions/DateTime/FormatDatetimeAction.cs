@@ -14,7 +14,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override string Name => "Format DateTime";
 
-        public override string[] OutputVar => new string[] { "Result","Error"};
+        public override string[] OutputVar => new string[] { "Result"};
 
         public override int? ReverseActionId => null;
 
@@ -22,18 +22,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             DateTime dateTime = (DateTime)vars["Input"];
             string format = vars.ContainsKey("Format") ? (string)vars["Format"] : "o";
-            CultureInfo provider = CultureInfo.InvariantCulture;
-
-            try
-            {
-                outputVars["Result"] = DateTime.ParseExact(vars["Input"].ToString(), format, provider).ToString();
-                outputVars["Error"] = false;
-            }
-            catch (FormatException)
-            {
-                outputVars["Result"] = null;
-                outputVars["Error"] = true;
-            }
+            outputVars["Result"] = dateTime.ToLocalTime().ToString(format);
 
 
         }
