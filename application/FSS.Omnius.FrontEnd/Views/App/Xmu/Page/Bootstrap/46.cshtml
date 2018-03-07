@@ -3,7 +3,7 @@
     
     @{ if(ViewData["dropdownData_assetSign_input"] != null) {
             foreach(var option in ((Dictionary<int, string>)ViewData["dropdownData_assetSign_input"])) {
-                <option value="@(option.Key)" @(ViewData.ContainsKey("dropdownSelection_assetSign_input") && (string)ViewData["dropdownSelection_assetSign_input"] == option.Key.ToString() ? "selected" : "")>
+                <option value="@(option.Key)" @(ViewData.ContainsKey("dropdownSelection_assetSign_input") && ViewData["dropdownSelection_assetSign_input"].ToString() == option.Key.ToString() ? "selected" : "")>
                     @(option.Value)
                 </option>
             }
@@ -14,7 +14,7 @@
     
     @{ if(ViewData["dropdownData_currencySign_input"] != null) {
             foreach(var option in ((Dictionary<int, string>)ViewData["dropdownData_currencySign_input"])) {
-                <option value="@(option.Key)" @(ViewData.ContainsKey("dropdownSelection_currencySign_input") && (string)ViewData["dropdownSelection_currencySign_input"] == option.Key.ToString() ? "selected" : "")>
+                <option value="@(option.Key)" @(ViewData.ContainsKey("dropdownSelection_currencySign_input") && ViewData["dropdownSelection_currencySign_input"].ToString() == option.Key.ToString() ? "selected" : "")>
                     @(option.Value)
                 </option>
             }
