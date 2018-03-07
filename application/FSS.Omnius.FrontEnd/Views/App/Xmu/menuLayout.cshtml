@@ -24,10 +24,10 @@
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Grand Vizier",117)){            <li>
                     <a href="/Xmu/BroadcastMessages">@(t._("Broadcast messages"))</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin,Grand Vizier",117)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Grand Vizier,SupportKyc",117)){            <li>
                     <a href="/Xmu/Webdavusers">@(t._("WebDavUsers"))</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin,Grand Vizier",117)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/Log">@(t._("Log"))</a>
             </li>
 }    </ul>

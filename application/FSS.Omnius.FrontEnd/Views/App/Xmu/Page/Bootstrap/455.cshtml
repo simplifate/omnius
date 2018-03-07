@@ -11,7 +11,7 @@
     
     @{ if(ViewData["dropdownData_category"] != null) {
             foreach(var option in ((Dictionary<int, string>)ViewData["dropdownData_category"])) {
-                <option value="@(option.Key)" @(ViewData.ContainsKey("dropdownSelection_category") && (string)ViewData["dropdownSelection_category"] == option.Key.ToString() ? "selected" : "")>
+                <option value="@(option.Key)" @(ViewData.ContainsKey("dropdownSelection_category") && ViewData["dropdownSelection_category"].ToString() == option.Key.ToString() ? "selected" : "")>
                     @(option.Value)
                 </option>
             }

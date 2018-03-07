@@ -3,7 +3,7 @@
     @(@"<option selected="""" disabled="""" class=""text-hide"">Select the status</option>")
     @{ if(ViewData["dropdownData_"] != null) {
             foreach(var option in ((Dictionary<int, string>)ViewData["dropdownData_"])) {
-                <option value="@(option.Key)" @(ViewData.ContainsKey("dropdownSelection_") && (string)ViewData["dropdownSelection_"] == option.Key.ToString() ? "selected" : "")>
+                <option value="@(option.Key)" @(ViewData.ContainsKey("dropdownSelection_") && ViewData["dropdownSelection_"].ToString() == option.Key.ToString() ? "selected" : "")>
                     @(option.Value)
                 </option>
             }
