@@ -101,6 +101,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     addressOverride == null ? service.REST_Base_Url.TrimEnd('/') : addressOverride.TrimEnd('/'),
                     endpoint.Trim('/'), 
                     queryString);
+                endpointPath = endpointPath.TrimEnd('?');
+                endpointPath = endpointPath.TrimEnd('/');
                 var endpointUri = new Uri(endpointPath);
 
                 //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
