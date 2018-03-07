@@ -2225,6 +2225,7 @@
     <Content Include="Views\App\Xmu\Page\Bootstrap\564.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\565.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\566.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\567.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
