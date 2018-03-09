@@ -30,4 +30,7 @@
 }@if (Context.GetLoggedUser().canUseBlock("Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/Log">@(t._("Log"))</a>
             </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Vizier,Grand Vizier",117)){            <li>
+                    <a href="/Xmu/Tmfeeusers">@(t._("TMFeeUsers"))</a>
+            </li>
 }    </ul>
