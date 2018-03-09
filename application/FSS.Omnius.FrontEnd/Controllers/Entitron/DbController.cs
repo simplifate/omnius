@@ -6,11 +6,66 @@ using System.Data;
 using System.Collections.Generic;
 using FSS.Omnius.Modules.Entitron;
 using System.Diagnostics;
+using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
+using System.Linq;
+using FSS.Omnius.Modules.Entitron.Entity.Entitron;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Entitron
 {
     public class DbController : Controller
     {
+        //public string ViewsToMySQL(int id)
+        //{
+        //    DBEntities context = DBEntities.instance;
+        //    Application application = context.Applications.Find(id);
+        //    DbSchemeCommit commit = application.DatabaseDesignerSchemeCommits.OrderByDescending(sc => sc.Timestamp).First();
+
+        //    StringBuilder result = new StringBuilder();
+        //    foreach(DbView view in commit.Views)
+        //    {
+        //        string aa = MsSqlToMySql(view.Query);
+        //        result.AppendLine(view.Name);
+        //        result.AppendLine(view.Query);
+        //        if (aa != view.Query)
+        //        {
+        //            result.AppendLine("->");
+        //            result.AppendLine(aa);
+        //        }
+        //        result.AppendLine();
+        //    }
+
+        //    return result.ToString();
+        //    //context.SaveChanges();
+        //}
+        //private string MsSqlToMySql(string query)
+        //{
+        //    // []
+        //    query = query.Replace('[', '`');
+        //    query = query.Replace(']', '`');
+
+        //    // ISNULL
+        //    query = Regex.Replace(query, "ISNULL[(]", "IFNULL(", RegexOptions.IgnoreCase);
+
+        //    // LIMIT
+        //    var match = Regex.Match(query, "^SELECT TOP[( ]?(\\d+)[)]? ", RegexOptions.IgnoreCase);
+        //    if (match.Success)
+        //    {
+        //        query = Regex.Replace(query, "^SELECT TOP[( ]?\\d+[)]? ", "SELECT ", RegexOptions.IgnoreCase);
+        //        query += $" LIMIT {match.Groups[1]}";
+        //    }
+
+        //    // NOW
+        //    query = Regex.Replace(query, "GETDATE[(][)]", "NOW()", RegexOptions.IgnoreCase);
+
+        //    // ADDDATE
+        //    query = Regex.Replace(query, "DATEADD[(]S,", "DATEADD(SECOND,", RegexOptions.IgnoreCase);
+        //    query = Regex.Replace(query, "DATEADD[(]([^,)]*),([^,)]*),([^,)]*)[)]", "ADDDATE($3, INTERVAL $2 $1)", RegexOptions.IgnoreCase);
+
+        //    return query;
+        //}
         // GET: Db
         public int ClearOldPool()
         {
@@ -50,6 +105,11 @@ namespace FSS.Omnius.FrontEnd.Controllers.Entitron
                 Modules.Watchtower.OmniusException.Log(ex, Modules.Watchtower.OmniusLogSource.Entitron);
                 return -1;
             }
+        }
+        public string ClearCache()
+        {
+            Modules.Entitron.Entitron.ClearCache();
+            return "ok";
         }
         //public string TestInsert(int id)
         //{
