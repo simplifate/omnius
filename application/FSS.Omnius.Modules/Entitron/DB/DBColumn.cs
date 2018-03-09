@@ -220,17 +220,17 @@ namespace FSS.Omnius.Modules.Entitron.DB
         }
         private void dropColumnConstraints(string columnName, IEnumerable<DBForeignKey> fks, IEnumerable<DBIndex> indexes, IEnumerable<DBItem> checks, string defaultValue)
         {
-            foreach (DBForeignKey fk in fks)
+            foreach (DBForeignKey fk in fks.ToList())
             {
                 (Tabloid as DBTable).ForeignKeys.Remove(fk);
             }
 
-            foreach (DBIndex index in indexes)
+            foreach (DBIndex index in indexes.ToList())
             {
                 (Tabloid as DBTable).Indexes.Remove(index);
             }
 
-            foreach (DBItem check in checks)
+            foreach (DBItem check in checks.ToList())
             {
                 _db.Commands.Enqueue(_db.CommandSet.DROP_check(_db, Tabloid.Name, (string)check["name"]));
             }
