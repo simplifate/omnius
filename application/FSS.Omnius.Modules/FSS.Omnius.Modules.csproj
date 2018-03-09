@@ -1211,6 +1211,10 @@
     <Compile Include="Migrations\201803011217358_removeEntitronMeta.Designer.cs">
       <DependentUpon>201803011217358_removeEntitronMeta.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803091647177_UserUpdate.cs" />
+    <Compile Include="Migrations\201803091647177_UserUpdate.Designer.cs">
+      <DependentUpon>201803091647177_UserUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -2051,6 +2055,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803011217358_removeEntitronMeta.resx">
       <DependentUpon>201803011217358_removeEntitronMeta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803091647177_UserUpdate.resx">
+      <DependentUpon>201803091647177_UserUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

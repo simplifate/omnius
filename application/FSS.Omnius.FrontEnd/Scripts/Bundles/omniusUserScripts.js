@@ -1812,7 +1812,13 @@ var BootstrapUserInit = {
                 window.ignoreUnload = true;
             }
 
-            $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="' + button.data('idparam') + '" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_' + button.data('action') + '" /></form>').appendTo('body').submit();
+            var form = $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="' + button.data('idparam') + '" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_' + button.data('action') + '" /></form>');
+            var csrfTokenInput = button.closest('form').find("[name=__RequestVerificationToken]").clone();
+            if (csrfTokenInput !== null) {
+                form.append(csrfTokenInput);
+            }
+
+            form.appendTo('body').submit();
         },
 
     }

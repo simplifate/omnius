@@ -11,6 +11,8 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Controllers.Tapestry;
 using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Entitron.DB;
+using System.Web.Helpers;
+using FSS.Omnius.FrontEnd.Controllers;
 
 namespace FSS.Omnius.FrontEnd
 {
@@ -33,6 +35,8 @@ namespace FSS.Omnius.FrontEnd
             Entitron.DefaultDBType = DBCommandSet.GetSqlType(ConfigurationManager.ConnectionStrings["DefaultConnection"].ProviderName);
             App_Start.AppStart.AppInitialize();
             Logger.Log.Info("Omnius starts");
+
+            AntiForgeryConfig.AdditionalDataProvider = new AntiforgeryStrategyOneTime();
         }
 
         protected void Application_Error(object sender, EventArgs e)

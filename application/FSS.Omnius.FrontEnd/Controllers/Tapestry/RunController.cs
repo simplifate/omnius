@@ -968,7 +968,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             return new T(this.GetLocaleNameById(HttpContext.GetCORE().User.LocaleId));
         }
 
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Index(string appName, string button, FormCollection fc, string blockIdentify = null, int modelId = -1, int deleteId = -1)
         {

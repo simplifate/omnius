@@ -22,6 +22,7 @@ using FSS.Omnius.Modules.Watchtower;
 using Newtonsoft.Json.Linq;
 using FSS.Omnius.Modules.Nexus.Service;
 using System.Collections.Generic;
+using System.Web.Helpers;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Persona
 {
@@ -129,7 +130,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Account/Login
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
@@ -142,8 +143,16 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                case SignInStatus.Success: {
+                        /*DBEntities context = DBEntities.instance;
+
+                        User user = UserManager.FindByName(User.Identity.Name);
+                        user.LastIp = HttpContext.Request.UserHostAddress;
+                        user.LastAppCookie = Crypto.SHA256(HttpContext.Response.Cookies[".AspNet.ApplicationCookie"].Value);
+                        context.SaveChanges();
+                        */
+                        return RedirectToLocal(returnUrl);
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -475,9 +484,15 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-
+            
             CORE core = HttpContext.GetCORE();
             core.Persona.LogOff(User.Identity.Name);
+
+            Session.Clear();
+            Session.Abandon();
+            for(var i = 0; i < Response.Cookies.Count; i++) {
+                Response.Cookies[i].Expires = DateTime.Now.AddDays(-1);
+            }
 
             return RedirectToAction("Index", "Home");
         }

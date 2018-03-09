@@ -43,6 +43,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public DateTime? LastAction { get; set; }
         public DateTime? DeletedBySync { get; set; }
 
+        [StringLength(50)]
+        public string LastIp { get; set; }
+        public string LastAppCookie { get; set; }
+
         [Required]
         public DateTime? localExpiresAt { get; set; }
 
