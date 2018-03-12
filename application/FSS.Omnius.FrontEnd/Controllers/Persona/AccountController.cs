@@ -23,6 +23,8 @@ using Newtonsoft.Json.Linq;
 using FSS.Omnius.Modules.Nexus.Service;
 using System.Collections.Generic;
 using System.Web.Helpers;
+using System.Web.Configuration;
+using reCAPTCHA.MVC;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Persona
 {
@@ -30,6 +32,12 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
+        public static bool watchBadLogins = bool.Parse(WebConfigurationManager.AppSettings["PersonaWatchBadLoginAtempts"]);
+        public static int captchaLimit = int.Parse(WebConfigurationManager.AppSettings["PersonaBadLoginCaptchaLimit"]);
+        public static int waitInterval = int.Parse(WebConfigurationManager.AppSettings["PersonaBadLoginWaitInterval"]);
+        public static int waitTimeout = int.Parse(WebConfigurationManager.AppSettings["PersonaBadLoginWaitTimeout"]);
+        public static bool allowRegistration = bool.Parse(WebConfigurationManager.AppSettings["PersonaAllowRegistration"]);
 
         public AccountController()
         {
@@ -70,6 +78,22 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+            ViewData["showCaptcha"] = false;
+            ViewData["allowRegistration"] = allowRegistration;
+
+            if(watchBadLogins) {
+                BadLoginCount record = DBEntities.instance.BadLoginCounts.SingleOrDefault(a => a.IP == HttpContext.Request.UserHostAddress);
+                if(record != null) {
+                    ViewData["showCaptcha"] = record.AttemptsCount >= captchaLimit;
+                    if(record.AttemptsCount >= waitInterval) {
+                        int timeout = (int)Math.Floor((double)record.AttemptsCount / waitInterval) * waitTimeout;
+                        if (record.LastAtempt >= DateTime.Now.AddSeconds(-timeout)) {
+                            ModelState.AddModelError("", string.Format("Please wait {0} seconds before next attempt", timeout));
+                        }
+                    }
+                }
+            }
+
             return View();
         }
 
@@ -131,10 +155,42 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         // POST: /Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomCaptchaValidator]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            // Security checks
+            string userIp = HttpContext.Request.UserHostAddress;
+            DBEntities context = DBEntities.instance;
+            BadLoginCount record = null;
+
+            ViewData["showCaptcha"] = false;
+            ViewData["allowRegistration"] = allowRegistration;
+                
+            // Check if bruteforce countermeasures are enabled
+            if (watchBadLogins) {
+                record = context.BadLoginCounts.SingleOrDefault(a => a.IP == userIp) ?? new BadLoginCount() { AttemptsCount = 0, IP = userIp };
+                if(record.AttemptsCount == 0) { context.BadLoginCounts.Add(record); }
+                
+                // Show captcha?
+                ViewData["showCaptcha"] = record.AttemptsCount >= captchaLimit;
+                
+                // Too fast attempts?
+                if (record.AttemptsCount >= waitInterval) {
+                    int timeout = (int)Math.Floor((double)record.AttemptsCount / waitInterval) * waitTimeout;
+                    if(record.LastAtempt >= DateTime.Now.AddSeconds(-timeout)) {
+                        ModelState.AddModelError("", string.Format("Please wait {0} seconds before next attempt", timeout));
+                    }
+                }
+            }
+
             if (!ModelState.IsValid)
             {
+                if (watchBadLogins) {
+                    record.LastAtempt = DateTime.Now;
+                    record.AttemptsCount++;
+                    context.SaveChanges();
+                }
+
                 return View(model);
             }
 
@@ -144,13 +200,9 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             switch (result)
             {
                 case SignInStatus.Success: {
-                        /*DBEntities context = DBEntities.instance;
-
-                        User user = UserManager.FindByName(User.Identity.Name);
-                        user.LastIp = HttpContext.Request.UserHostAddress;
-                        user.LastAppCookie = Crypto.SHA256(HttpContext.Response.Cookies[".AspNet.ApplicationCookie"].Value);
+                        context.BadLoginCounts.Remove(record);
                         context.SaveChanges();
-                        */
+
                         return RedirectToLocal(returnUrl);
                     }
                 case SignInStatus.LockedOut:
@@ -158,9 +210,26 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                default: {
+                        // Check if bruteforce countermeasures are enabled
+                        if (watchBadLogins) {
+                            record.AttemptsCount++;
+                            record.LastAtempt = DateTime.Now;
+                            context.SaveChanges();
+                        
+                            // Show captcha?
+                            ViewData["showCaptcha"] = record.AttemptsCount >= captchaLimit;
+                            
+                            // Warn before too fast attempts?
+                            if (record.AttemptsCount >= waitInterval) {
+                                int timeout = (int)Math.Floor((double)record.AttemptsCount / waitInterval) * waitTimeout;
+                                ModelState.AddModelError("", string.Format("Please wait {0} seconds before next attempt", timeout));
+                            }
+                        }
+
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                        return View(model);
+                }
             }
         }
 
@@ -209,6 +278,10 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         // GET: /Account/Register
         public ActionResult Register()
         {
+            if(!allowRegistration) {
+                return new HttpNotFoundResult();
+            }
+
             return View();
         }
 
@@ -218,6 +291,10 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            if (!allowRegistration) {
+                return new HttpNotFoundResult();
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new User
@@ -486,8 +563,14 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             
             CORE core = HttpContext.GetCORE();
-            core.Persona.LogOff(User.Identity.Name);
 
+            // Remove last app cookie and ip form database
+            core.User.LastIp = "";
+            core.User.LastAppCookie = "";
+            DBEntities.instance.SaveChanges();
+            
+            core.Persona.LogOff(User.Identity.Name);
+            
             Session.Clear();
             Session.Abandon();
             for(var i = 0; i < Response.Cookies.Count; i++) {
