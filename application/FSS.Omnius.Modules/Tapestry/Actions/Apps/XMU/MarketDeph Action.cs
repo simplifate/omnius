@@ -75,6 +75,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 while (socket.Available > 0);
 
                 socket.Shutdown(SocketShutdown.Both);
+                socket.Close();
             }
 
             JObject Parsed = string.IsNullOrEmpty(responseJson) ? new JObject() : JObject.Parse(responseJson);
