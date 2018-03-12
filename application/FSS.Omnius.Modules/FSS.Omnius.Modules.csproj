@@ -308,6 +308,7 @@
     <Compile Include="Entitron\Entity\Persona\ADgroup_User.cs" />
     <Compile Include="Entitron\Entity\Persona\AjaxPersonaAppRoles.cs" />
     <Compile Include="Entitron\Entity\Persona\AjaxUsers.cs" />
+    <Compile Include="Entitron\Entity\Persona\BadLoginCount.cs" />
     <Compile Include="Entitron\Entity\Persona\Iden_Role.cs" />
     <Compile Include="Entitron\Entity\Persona\Iden_User_Role.cs" />
     <Compile Include="Entitron\Entity\Persona\ModuleAccessPermission.cs" />
@@ -1215,6 +1216,10 @@
     <Compile Include="Migrations\201803091647177_UserUpdate.Designer.cs">
       <DependentUpon>201803091647177_UserUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803121532238_BadLoginCount.cs" />
+    <Compile Include="Migrations\201803121532238_BadLoginCount.Designer.cs">
+      <DependentUpon>201803121532238_BadLoginCount.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -2058,6 +2063,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803091647177_UserUpdate.resx">
       <DependentUpon>201803091647177_UserUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803121532238_BadLoginCount.resx">
+      <DependentUpon>201803121532238_BadLoginCount.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
