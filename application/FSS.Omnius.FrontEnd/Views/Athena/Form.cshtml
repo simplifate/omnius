@@ -39,8 +39,10 @@
                         <label for="Library" class="control-label">Library:</label>
                         <div class="input-group input-group-sm">
                             <select class="form-control" id="Library" name="Library">
+                                <option value="grafana" @(Model != null && Model.Library == "grafana" ? " selected" : "")>Grafana</option>
                                 <option value="d3"@(Model != null && Model.Library == "d3" ? " selected" : "")>D3</option>
                                 <option value="highcharts"@(Model != null && Model.Library == "highcharts" ? " selected" : "")>Highcharts</option>
+
                             </select>
                             <div class="input-group-btn">
                                 <button type="button" id="BtnWizzard" class="btn btn-default" title="Wizzard"><span class="fa fa-magic"></span></button>
@@ -62,517 +64,529 @@
 </div>
 
 <div class="hide" id="GraphDefinition">
-    <div id="d3">
-        <div class="item" data-icon="fa-line-chart" data-name="Line chart" id="D3_lineChartDef">
-            <div class="dataSource">
-                date,close
-                24-Apr-07,93.24
-                25-Apr-07,95.35
-                26-Apr-07,98.84
-                27-Apr-07,99.92
-                30-Apr-07,99.80
-                1-May-07,99.47
-                2-May-07,100.39
-                3-May-07,100.40
-                4-May-07,100.81
-                7-May-07,103.92
-                8-May-07,105.06
-                9-May-07,106.88
+        <div id="grafana">
+            <div class="item" data-icon="fa-line-chart" data-name="Grafana Chart" id="grafana_chart">
+                <div class="htmlSource"><div id="{ident}"></div></div>
+                <div class="jsSource"> ;</div>
+                <div class="cssSource"></div>
+
+             </div>
+        </div>
+            <div id="d3">
+                <div class="item" data-icon="fa-line-chart" data-name="Line chart" id="D3_lineChartDef">
+                    <div class="dataSource">
+                        date,close
+                        24-Apr-07,93.24
+                        25-Apr-07,95.35
+                        26-Apr-07,98.84
+                        27-Apr-07,99.92
+                        30-Apr-07,99.80
+                        1-May-07,99.47
+                        2-May-07,100.39
+                        3-May-07,100.40
+                        4-May-07,100.81
+                        7-May-07,103.92
+                        8-May-07,105.06
+                        9-May-07,106.88
+                    </div>
+                    <div class="cssSource"></div>
+                    <div class="jsSource">
+                        var svg = d3.select("#{ident} svg"),
+                        margin = { top: 20, right: 20, bottom: 30, left: 50 },
+                        width = $('#{ident}').width() - margin.left - margin.right,
+                        height = $('#{ident}').height() - margin.top - margin.bottom,
+                        g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                        var parseTime = d3.timeParse("%d-%b-%y");
+
+                        var x = d3.scaleTime().rangeRound([0, width]);
+                        var y = d3.scaleLinear().rangeRound([height, 0]);
+
+                        var line = d3.line()
+                        .x(function (d) { return x(d.date); })
+                        .y(function (d) { return y(d.close); });
+
+                        var data = d3.csvParse(
+                        "{data}",
+                        function (d) {
+                        d.date = parseTime(d.date);
+                        d.close = +d.close;
+                        return d;
+                        }
+                        );
+
+                        x.domain(d3.extent(data, function (d) { return d.date; }));
+                        y.domain(d3.extent(data, function (d) { return d.close; }));
+
+                        g.append("g")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(d3.axisBottom(x))
+                        .select(".domain")
+                        .remove();
+
+                        g.append("g")
+                        .call(d3.axisLeft(y))
+                        .append("text")
+                        .attr("fill", "#000")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", "0.71em")
+                        .attr("text-anchor", "end")
+                        .text("Price ($)");
+
+                        g.append("path")
+                        .datum(data)
+                        .attr("fill", "none")
+                        .attr("stroke", "steelblue")
+                        .attr("stroke-linejoin", "round")
+                        .attr("stroke-linecap", "round")
+                        .attr("stroke-width", 1.5)
+                        .attr("d", line);
+                    </div>
+                </div>
+
+                <div class="item" data-icon="fa-bar-chart" data-name="Bar chart" id="D3_barChartDef">
+                    <div class="dataSource">
+                        letter,frequency
+                        A,.08167
+                        B,.01492
+                        C,.02782
+                        D,.04253
+                        E,.12702
+                        F,.02288
+                        G,.02015
+                        H,.06094
+                        I,.06966
+                        J,.00153
+                        K,.00772
+                        L,.04025
+                        M,.02406
+                        N,.06749
+                        O,.07507
+                        P,.01929
+                        Q,.00095
+                        R,.05987
+                        S,.06327
+                        T,.09056
+                        U,.02758
+                        V,.00978
+                        W,.02360
+                        X,.00150
+                        Y,.01974
+                        Z,.00074
+                    </div>
+                    <div class="cssSource"></div>
+                    <div class="jsSource">
+                        var svg = d3.select("#{ident} svg"),
+                        margin = {top: 20, right: 20, bottom: 30, left: 40},
+                        width = $('#{ident}').width() - margin.left - margin.right,
+                        height = $('#{ident}').height() - margin.top - margin.bottom;
+
+                        var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+                        y = d3.scaleLinear().rangeRound([height, 0]);
+
+                        var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                        var data = d3.csvParse(
+                        "{data}",
+                        function (d) {
+                        d.frequency = +d.frequency;
+                        return d;
+                        }
+                        );
+
+                        x.domain(data.map(function(d) { return d.letter; }));
+                        y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+
+                        g.append("g")
+                        .attr("class", "axis axis--x")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(d3.axisBottom(x));
+
+                        g.append("g")
+                        .attr("class", "axis axis--y")
+                        .call(d3.axisLeft(y).ticks(10, "%"))
+                        .append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", "0.71em")
+                        .attr("text-anchor", "end")
+                        .text("Frequency");
+
+                        g.selectAll(".bar")
+                        .data(data)
+                        .enter().append("rect")
+                        .attr("class", "bar")
+                        .attr("x", function(d) { return x(d.letter); })
+                        .attr("y", function(d) { return y(d.frequency); })
+                        .attr("width", x.bandwidth())
+                        .attr("height", function(d) { return height - y(d.frequency); });
+                    </div>
+                </div>
+
+                <div class="item" data-icon="fa-area-chart" data-name="Area chart" id="D3_areaChartDef">
+                    <div class="dataSource">
+                        date,close
+                        24-Apr-07,93.24
+                        25-Apr-07,95.35
+                        26-Apr-07,98.84
+                        27-Apr-07,99.92
+                        30-Apr-07,99.80
+                        1-May-07,99.47
+                        2-May-07,100.39
+                        3-May-07,100.40
+                        4-May-07,100.81
+                        7-May-07,103.92
+                        8-May-07,105.06
+                        9-May-07,106.88
+                    </div>
+                    <div class="cssSource"></div>
+                    <div class="jsSource">
+                        var svg = d3.select("#{ident} svg"),
+                        margin = {top: 20, right: 20, bottom: 30, left: 50},
+                        width = $('#{ident}').width() - margin.left - margin.right,
+                        height = $('#{ident}').height() - margin.top - margin.bottom,
+                        g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                        var parseTime = d3.timeParse("%d-%b-%y");
+
+                        var x = d3.scaleTime().rangeRound([0, width]);
+                        var y = d3.scaleLinear().rangeRound([height, 0]);
+
+                        var area = d3.area()
+                        .x(function(d) { return x(d.date); })
+                        .y1(function(d) { return y(d.close); });
+
+                        var data = d3.csvParse(
+                        "{data}",
+                        function (d) {
+                        d.date = parseTime(d.date);
+                        d.close = +d.close;
+                        return d;
+                        }
+                        );
+
+                        x.domain(d3.extent(data, function(d) { return d.date; }));
+                        y.domain([0, d3.max(data, function(d) { return d.close; })]);
+                        area.y0(y(0));
+
+                        g.append("path")
+                        .datum(data)
+                        .attr("fill", "steelblue")
+                        .attr("d", area);
+
+                        g.append("g")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(d3.axisBottom(x));
+
+                        g.append("g")
+                        .call(d3.axisLeft(y))
+                        .append("text")
+                        .attr("fill", "#000")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", "0.71em")
+                        .attr("text-anchor", "end")
+                        .text("Price ($)");
+                    </div>
+                </div>
+
+                <div class="item" data-icon="fa-pie-chart" data-name="Donut chart" id="D3_donutChartDef">
+                    <div class="cssSource">
+                        #{ident} svg {
+                        background-color: #2a3039;
+                        }
+                        .arc text {
+                        font: 10px sans-serif;
+                        text-anchor: middle;
+                        fill: #fff;
+                        }
+
+                        .arc path {
+                        }
+                    </div>
+                    <div class="dataSource">
+                        status,count
+                        online,492
+                        offline,8
+                    </div>
+                    <div class="jsSource">
+                        var svg = d3.select("#{ident} svg");
+
+                        var width = $('#{ident}').width();
+                        var height = $('#{ident}').height();
+                        var radius = Math.min(width, height) / 2;
+
+                        svg.attr('viewBox','0 0 '+Math.min(width,height) +' '+Math.min(width,height) )
+                        .attr('preserveAspectRatio','xMinYMin');
+
+                        var g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+                        var color = d3.scaleOrdinal(["#6b8699", "#d04343"]);
+
+                        var path = d3.arc()
+                        .outerRadius(radius - 10)
+                        .innerRadius(radius - 70);
+
+                        var pie = d3.pie()
+                        .sort(null)
+                        .value(function(d) { return d.count; });
+
+                        var data = d3.csvParse(
+                        "{data}",
+                        function (d) {
+                        d.count = +d.count;
+                        return d;
+                        }
+                        );
+
+                        var arc = g.selectAll(".arc")
+                        .data(pie(data))
+                        .enter().append("g")
+                        .attr("class", "arc");
+
+                        arc.append("path")
+                        .attr("d", path)
+                        .attr("fill", function(d) { return color(d.data.status); });
+
+                        arc.append("text")
+                        .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+                        .attr("dy", ".35em")
+                        .text(function(d) { return d.data.count; });
+                    </div>
+                </div>
             </div>
-            <div class="cssSource"></div>
-            <div class="jsSource">
-                var svg = d3.select("#{ident} svg"),
-                margin = { top: 20, right: 20, bottom: 30, left: 50 },
-                width = $('#{ident}').width() - margin.left - margin.right,
-                height = $('#{ident}').height() - margin.top - margin.bottom,
-                g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            <div id="highcharts">
+                <div class="item" data-icon="fa-pie-chart" data-name="Donut chart" id="HC_donutChartDef">
+                    <div class="cssSource">
+                    </div>
+                    <div class="dataSource">
+                        status,count
+                        online,492
+                        offline,8
+                    </div>
+                    <div class="htmlSource"><div id="{ident}"></div></div>
+                    <div class="jsSource">
+                        Highcharts.chart('{ident}', {
+                        chart: {
+                        type: 'pie'
+                        },
+                        title: {
+                        text: 'Graph title'
+                        },
+                        yAxis: {
+                        title: {
+                        text: 'Total percent market share'
+                        }
+                        },
+                        plotOptions: {
+                        pie: {
+                        shadow: false,
+                        center: ['50%', '50%']
+                        }
+                        },
+                        data: {
+                        csv: '{data}'
+                        },
+                        series: [{
+                        name: 'Browsers',
+                        size: '60%',
+                        innerSize: '20%',
+                        dataLabels: {
+                        formatter: function () {
+                        return this.y > 5 ? this.point.name : null;
+                        },
+                        color: '#ffffff',
+                        distance: -30
+                        },
+                        id: 'Browsers'
+                        }]
+                        });
+                    </div>
+                </div>
+                <div id="HC_areaChartDef" class="item" data-icon="fa-area-chart" data-name="Area chart">
+                    <div class="cssSource"></div>
+                    <div class="dataSource">
+                        dateTime,Balance_LTC
+                        2017-04-26 12:00:00,93.24
+                        2017-04-27 12:00:00,95.35
+                        2017-04-28 12:00:00,98.84
+                        2017-04-29 12:00:00,99.92
+                        2017-04-30 12:00:00,99.80
+                        2017-05-01 12:00:00,99.47
+                        2017-05-02 12:00:00,100.39
+                        2017-05-03 12:00:00,100.40
+                        2017-05-04 12:00:00,100.81
+                        2017-05-05 12:00:00,103.92
+                        2017-05-06 12:00:00,105.06
+                        2017-05-07 12:00:00,106.88
+                    </div>
+                    <div class="htmlSource"><div id="{ident}"></div></div>
+                    <div class="jsSource">
+                        {ident}_chart = new Highcharts.chart({
+                        chart: {
+                        renderTo: '{ident}'
+                        },
+                        title: {
+                        text: 'Graph title'
+                        },
+                        credits: {
+                        enabled: false
+                        },
+                        xAxis: {
+                        type: 'datetime'
+                        },
+                        yAxis: {
+                        title: {
+                        text: 'Exchange rate'
+                        }
+                        },
+                        legend: {
+                        enabled: false
+                        },
+                        plotOptions: {
+                        area: {
+                        fillColor: {
+                        linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                        },
+                        stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                        },
+                        marker: {
+                        radius: 2
+                        },
+                        lineWidth: 1,
+                        states: {
+                        hover: {
+                        lineWidth: 1
+                        }
+                        },
+                        threshold: null
+                        }
+                        },
+                        data: {
+                        csv: '{data}'
+                        },
+                        series: [{
+                        type: 'area',
+                        name: 'USD to EUR',
+                        }]
+                        });
 
-                var parseTime = d3.timeParse("%d-%b-%y");
-
-                var x = d3.scaleTime().rangeRound([0, width]);
-                var y = d3.scaleLinear().rangeRound([height, 0]);
-
-                var line = d3.line()
-                .x(function (d) { return x(d.date); })
-                .y(function (d) { return y(d.close); });
-
-                var data = d3.csvParse(
-                "{data}",
-                function (d) {
-                d.date = parseTime(d.date);
-                d.close = +d.close;
-                return d;
-                }
-                );
-
-                x.domain(d3.extent(data, function (d) { return d.date; }));
-                y.domain(d3.extent(data, function (d) { return d.close; }));
-
-                g.append("g")
-                .attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(x))
-                .select(".domain")
-                .remove();
-
-                g.append("g")
-                .call(d3.axisLeft(y))
-                .append("text")
-                .attr("fill", "#000")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", "0.71em")
-                .attr("text-anchor", "end")
-                .text("Price ($)");
-
-                g.append("path")
-                .datum(data)
-                .attr("fill", "none")
-                .attr("stroke", "steelblue")
-                .attr("stroke-linejoin", "round")
-                .attr("stroke-linecap", "round")
-                .attr("stroke-width", 1.5)
-                .attr("d", line);
+                    </div>
+                </div>
+                <div id="HC_gaugeChartDef" class="item" data-icon="fa-tachometer" data-name="Solid guage">
+                    <div class="htmlSource"><div id="{ident}"></div></div>
+                    <div class="cssSource"></div>
+                    <div class="dataSource">80</div>
+                    <div class="jsSource">
+                        {ident}_gauge = Highcharts.chart({
+                        chart: {
+                        renderTo: '{ident}',
+                        type: 'solidgauge',
+                        backgroundColor: '#fff'
+                        },
+                        plotOptions: {
+                        solidgauge: {
+                        dataLabels: {
+                        y: 5,
+                        borderWidth: 0,
+                        useHTML: true
+                        }
+                        }
+                        },
+                        title: {
+                        text: ''
+                        },
+                        pane: {
+                        center: ['50%', '85%'],
+                        size: '100%',
+                        startAngle: -90,
+                        endAngle: 90,
+                        background: {
+                        backgroundColor: Highcharts.theme.chart.backgroundColor,
+                        innerRadius: '60%',
+                        outerRadius: '100%',
+                        shape: 'arc'
+                        }
+                        },
+                        yAxis: {
+                        stops: [
+                        [0.1, Highcharts.theme.colors[2]], // green
+                        [0.5, Highcharts.theme.colors[3]], // yellow
+                        [0.9, Highcharts.theme.colors[4]] // red
+                        ],
+                        lineWidth: 0,
+                        minorTickInterval: null,
+                        tickAmount: 2,
+                        tickInterval: 35,
+                        tickLength: 0,
+                        labels: {
+                        enabled: false,
+                        },
+                        min: 0,
+                        max: 275,
+                        minPadding: 0,
+                        maxPadding: 0,
+                        title: {
+                        text: 'Consumption',
+                        style: {
+                        color: Highcharts.theme.chart.backgroundColor
+                        },
+                        y: 10
+                        }
+                        },
+                        series: [{
+                        name: 'Consuption',
+                        data: [{data}],
+                        dataLabels: {
+                        format: '<div style="text-align:center">
+                            '
+                            + '<span style="font-size:25px;color:' + (Highcharts.theme.chart.backgroundColor) + '">{y}</span><br />'
+                            + '<span style="font-size:12px;color:#888">kW</span>'
+                            + '
+                        </div>'
+                        }
+                        }],
+                        tooltip: {
+                        enabled: false
+                        }
+                        });
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="item" data-icon="fa-bar-chart" data-name="Bar chart" id="D3_barChartDef">
-            <div class="dataSource">
-                letter,frequency
-                A,.08167
-                B,.01492
-                C,.02782
-                D,.04253
-                E,.12702
-                F,.02288
-                G,.02015
-                H,.06094
-                I,.06966
-                J,.00153
-                K,.00772
-                L,.04025
-                M,.02406
-                N,.06749
-                O,.07507
-                P,.01929
-                Q,.00095
-                R,.05987
-                S,.06327
-                T,.09056
-                U,.02758
-                V,.00978
-                W,.02360
-                X,.00150
-                Y,.01974
-                Z,.00074
-            </div>
-            <div class="cssSource"></div>
-            <div class="jsSource">
-                var svg = d3.select("#{ident} svg"),
-                margin = {top: 20, right: 20, bottom: 30, left: 40},
-                width = $('#{ident}').width() - margin.left - margin.right,
-                height = $('#{ident}').height() - margin.top - margin.bottom;
+        <link href="~/Scripts/cm/lib/codemirror.css" rel="stylesheet" />
+        <link href="~/Scripts/cm/addon/hint/show-hint.css" rel="stylesheet" />
+        <link href="~/Scripts/cm/addon/fold/foldgutter.css" rel="stylesheet" />
 
-                var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-                y = d3.scaleLinear().rangeRound([height, 0]);
+        <script src="~/Scripts/cm/lib/codemirror.js"></script>
 
-                var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        <script src="~/Scripts/cm/mode/css/css.js"></script>
+        <script src="~/Scripts/cm/mode/xml/xml.js"></script>
+        <script src="~/Scripts/cm/mode/javascript/javascript.js"></script>
+        <script src="~/Scripts/cm/mode/htmlmixed/htmlmixed.js"></script>
 
-                var data = d3.csvParse(
-                "{data}",
-                function (d) {
-                d.frequency = +d.frequency;
-                return d;
-                }
-                );
+        <script src="~/Scripts/cm/addon/fold/foldcode.js"></script>
+        <script src="~/Scripts/cm/addon/fold/foldgutter.js"></script>
+        <script src="~/Scripts/cm/addon/fold/brace-fold.js"></script>
+        <script src="~/Scripts/cm/addon/fold/indent-fold.js"></script>
+        <script src="~/Scripts/cm/addon/fold/comment-fold.js"></script>
 
-                x.domain(data.map(function(d) { return d.letter; }));
-                y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+        <script src="~/Scripts/cm/addon/edit/closebrackets.js"></script>
+        <script src="~/Scripts/cm/addon/edit/matchbrackets.js"></script>
+        <script src="~/Scripts/cm/addon/edit/closetag.js"></script>
+        <script src="~/Scripts/cm/addon/edit/matchtags.js"></script>
 
-                g.append("g")
-                .attr("class", "axis axis--x")
-                .attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(x));
-
-                g.append("g")
-                .attr("class", "axis axis--y")
-                .call(d3.axisLeft(y).ticks(10, "%"))
-                .append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", "0.71em")
-                .attr("text-anchor", "end")
-                .text("Frequency");
-
-                g.selectAll(".bar")
-                .data(data)
-                .enter().append("rect")
-                .attr("class", "bar")
-                .attr("x", function(d) { return x(d.letter); })
-                .attr("y", function(d) { return y(d.frequency); })
-                .attr("width", x.bandwidth())
-                .attr("height", function(d) { return height - y(d.frequency); });
-            </div>
-        </div>
-
-        <div class="item" data-icon="fa-area-chart" data-name="Area chart" id="D3_areaChartDef">
-            <div class="dataSource">
-                date,close
-                24-Apr-07,93.24
-                25-Apr-07,95.35
-                26-Apr-07,98.84
-                27-Apr-07,99.92
-                30-Apr-07,99.80
-                1-May-07,99.47
-                2-May-07,100.39
-                3-May-07,100.40
-                4-May-07,100.81
-                7-May-07,103.92
-                8-May-07,105.06
-                9-May-07,106.88
-            </div>
-            <div class="cssSource"></div>
-            <div class="jsSource">
-                var svg = d3.select("#{ident} svg"),
-                margin = {top: 20, right: 20, bottom: 30, left: 50},
-                width = $('#{ident}').width() - margin.left - margin.right,
-                height = $('#{ident}').height() - margin.top - margin.bottom,
-                g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-                var parseTime = d3.timeParse("%d-%b-%y");
-
-                var x = d3.scaleTime().rangeRound([0, width]);
-                var y = d3.scaleLinear().rangeRound([height, 0]);
-
-                var area = d3.area()
-                .x(function(d) { return x(d.date); })
-                .y1(function(d) { return y(d.close); });
-
-                var data = d3.csvParse(
-                "{data}",
-                function (d) {
-                d.date = parseTime(d.date);
-                d.close = +d.close;
-                return d;
-                }
-                );
-
-                x.domain(d3.extent(data, function(d) { return d.date; }));
-                y.domain([0, d3.max(data, function(d) { return d.close; })]);
-                area.y0(y(0));
-
-                g.append("path")
-                .datum(data)
-                .attr("fill", "steelblue")
-                .attr("d", area);
-
-                g.append("g")
-                .attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(x));
-
-                g.append("g")
-                .call(d3.axisLeft(y))
-                .append("text")
-                .attr("fill", "#000")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", "0.71em")
-                .attr("text-anchor", "end")
-                .text("Price ($)");
-            </div>
-        </div>
-
-        <div class="item" data-icon="fa-pie-chart" data-name="Donut chart" id="D3_donutChartDef">
-            <div class="cssSource">
-                #{ident} svg {
-                background-color: #2a3039;
-                }
-                .arc text {
-                font: 10px sans-serif;
-                text-anchor: middle;
-                fill: #fff;
-                }
-
-                .arc path {
-                }
-            </div>
-            <div class="dataSource">
-                status,count
-                online,492
-                offline,8
-            </div>
-            <div class="jsSource">
-                var svg = d3.select("#{ident} svg");
-
-                var width = $('#{ident}').width();
-                var height = $('#{ident}').height();
-                var radius = Math.min(width, height) / 2;
-
-                svg.attr('viewBox','0 0 '+Math.min(width,height) +' '+Math.min(width,height) )
-                .attr('preserveAspectRatio','xMinYMin');
-
-                var g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-                var color = d3.scaleOrdinal(["#6b8699", "#d04343"]);
-
-                var path = d3.arc()
-                .outerRadius(radius - 10)
-                .innerRadius(radius - 70);
-
-                var pie = d3.pie()
-                .sort(null)
-                .value(function(d) { return d.count; });
-
-                var data = d3.csvParse(
-                "{data}",
-                function (d) {
-                d.count = +d.count;
-                return d;
-                }
-                );
-
-                var arc = g.selectAll(".arc")
-                .data(pie(data))
-                .enter().append("g")
-                .attr("class", "arc");
-
-                arc.append("path")
-                .attr("d", path)
-                .attr("fill", function(d) { return color(d.data.status); });
-
-                arc.append("text")
-                .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-                .attr("dy", ".35em")
-                .text(function(d) { return d.data.count; });
-            </div>
-        </div>
-    </div>
-    <div id="highcharts">
-        <div class="item" data-icon="fa-pie-chart" data-name="Donut chart" id="HC_donutChartDef">
-            <div class="cssSource">
-            </div>
-            <div class="dataSource">
-status,count
-online,492
-offline,8
-            </div>
-            <div class="htmlSource"><div id="{ident}"></div></div>
-            <div class="jsSource">
-Highcharts.chart('{ident}', {
-    chart: {
-        type: 'pie'
-    },
-    title: {
-        text: 'Graph title'
-    },
-    yAxis: {
-        title: {
-            text: 'Total percent market share'
-        }
-    },
-    plotOptions: {
-        pie: {
-            shadow: false,
-            center: ['50%', '50%']
-        }
-    },
-    data: {
-        csv: '{data}'
-    },
-    series: [{
-        name: 'Browsers',
-        size: '60%',
-        innerSize: '20%',
-        dataLabels: {
-            formatter: function () {
-                return this.y > 5 ? this.point.name : null;
-            },
-            color: '#ffffff',
-            distance: -30
-        },
-        id: 'Browsers'
-    }]
-});
-            </div>
-        </div>
-        <div id="HC_areaChartDef" class="item" data-icon="fa-area-chart" data-name="Area chart">
-            <div class="cssSource"></div>
-            <div class="dataSource">
-dateTime,Balance_LTC
-2017-04-26 12:00:00,93.24
-2017-04-27 12:00:00,95.35
-2017-04-28 12:00:00,98.84
-2017-04-29 12:00:00,99.92
-2017-04-30 12:00:00,99.80
-2017-05-01 12:00:00,99.47
-2017-05-02 12:00:00,100.39
-2017-05-03 12:00:00,100.40
-2017-05-04 12:00:00,100.81
-2017-05-05 12:00:00,103.92
-2017-05-06 12:00:00,105.06
-2017-05-07 12:00:00,106.88
-            </div>
-            <div class="htmlSource"><div id="{ident}"></div></div>
-            <div class="jsSource">{ident}_chart = new Highcharts.chart({
-  chart: {
-    renderTo: '{ident}'
-  },
-  title: {
-    text: 'Graph title'
-  },
-  credits: {
-    enabled: false
-  },
-  xAxis: {
-    type: 'datetime'
-  },
-  yAxis: {
-    title: {
-      text: 'Exchange rate'
-    }
-  },
-  legend: {
-    enabled: false
-  },
-  plotOptions: {
-    area: {
-      fillColor: {
-        linearGradient: {
-          x1: 0,
-          y1: 0,
-          x2: 0,
-          y2: 1
-        },
-        stops: [
-          [0, Highcharts.getOptions().colors[0]],
-          [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-        ]
-      },
-      marker: {
-        radius: 2
-      },
-      lineWidth: 1,
-      states: {
-        hover: {
-          lineWidth: 1
-        }
-      },
-      threshold: null
-    }
-  },
-  data: {
-    csv: '{data}'
-  },
-  series: [{
-    type: 'area',
-    name: 'USD to EUR',
-  }]
-});
-
-            </div>
-        </div>
-        <div id="HC_gaugeChartDef" class="item" data-icon="fa-tachometer" data-name="Solid guage">
-            <div class="htmlSource"><div id="{ident}"></div></div>
-            <div class="cssSource"></div>
-            <div class="dataSource">80</div>
-            <div class="jsSource">{ident}_gauge = Highcharts.chart({
-  chart: {
-    renderTo: '{ident}',
-    type: 'solidgauge',
-    backgroundColor: '#fff'
-  },
-  plotOptions: {
-    solidgauge: {
-      dataLabels: {
-        y: 5,
-        borderWidth: 0,
-        useHTML: true
-      }
-    }
-  },
-  title: {
-    text: ''
-  },
-  pane: {
-    center: ['50%', '85%'],
-    size: '100%',
-    startAngle: -90,
-    endAngle: 90,
-    background: {
-      backgroundColor: Highcharts.theme.chart.backgroundColor,
-      innerRadius: '60%',
-      outerRadius: '100%',
-      shape: 'arc'
-    }
-  },
-  yAxis: {
-    stops: [
-      [0.1, Highcharts.theme.colors[2]], // green
-      [0.5, Highcharts.theme.colors[3]], // yellow
-      [0.9, Highcharts.theme.colors[4]] // red
-    ],
-    lineWidth: 0,
-    minorTickInterval: null,
-    tickAmount: 2,
-    tickInterval: 35,
-    tickLength: 0,
-    labels: {
-      enabled: false,
-    },
-    min: 0,
-    max: 275,
-    minPadding: 0,
-    maxPadding: 0,
-    title: {
-      text: 'Consumption',
-      style: {
-        color: Highcharts.theme.chart.backgroundColor
-      },
-      y: 10
-    }
-  },
-  series: [{
-    name: 'Consuption',
-    data: [{data}],
-    dataLabels: {
-      format: '<div style="text-align:center">'
-                + '<span style="font-size:25px;color:' + (Highcharts.theme.chart.backgroundColor) + '">{y}</span><br />' 
-                + '<span style="font-size:12px;color:#888">kW</span>'
-            + '</div>'
-    }
-  }],
-  tooltip: {
-    enabled: false
-  }
-});
-            </div>
-        </div>
-    </div>
-</div>
-
-<link href="~/Scripts/cm/lib/codemirror.css" rel="stylesheet" />
-<link href="~/Scripts/cm/addon/hint/show-hint.css" rel="stylesheet" />
-<link href="~/Scripts/cm/addon/fold/foldgutter.css" rel="stylesheet" />
-
-<script src="~/Scripts/cm/lib/codemirror.js"></script>
-
-<script src="~/Scripts/cm/mode/css/css.js"></script>
-<script src="~/Scripts/cm/mode/xml/xml.js"></script>
-<script src="~/Scripts/cm/mode/javascript/javascript.js"></script>
-<script src="~/Scripts/cm/mode/htmlmixed/htmlmixed.js"></script>
-
-<script src="~/Scripts/cm/addon/fold/foldcode.js"></script>
-<script src="~/Scripts/cm/addon/fold/foldgutter.js"></script>
-<script src="~/Scripts/cm/addon/fold/brace-fold.js"></script>
-<script src="~/Scripts/cm/addon/fold/indent-fold.js"></script>
-<script src="~/Scripts/cm/addon/fold/comment-fold.js"></script>
-
-<script src="~/Scripts/cm/addon/edit/closebrackets.js"></script>
-<script src="~/Scripts/cm/addon/edit/matchbrackets.js"></script>
-<script src="~/Scripts/cm/addon/edit/closetag.js"></script>
-<script src="~/Scripts/cm/addon/edit/matchtags.js"></script>
-
-<script src="~/Scripts/cm/addon/hint/show-hint.js"></script>
-<script src="~/Scripts/cm/addon/hint/css-hint.js"></script>
-<script src="~/Scripts/cm/addon/hint/javascript-hint.js"></script>
-<script src="~/Scripts/cm/addon/hint/xml-hint.js"></script>
-<script src="~/Scripts/cm/addon/hint/html-hint.js"></script>
+        <script src="~/Scripts/cm/addon/hint/show-hint.js"></script>
+        <script src="~/Scripts/cm/addon/hint/css-hint.js"></script>
+        <script src="~/Scripts/cm/addon/hint/javascript-hint.js"></script>
+        <script src="~/Scripts/cm/addon/hint/xml-hint.js"></script>
+        <script src="~/Scripts/cm/addon/hint/html-hint.js"></script>

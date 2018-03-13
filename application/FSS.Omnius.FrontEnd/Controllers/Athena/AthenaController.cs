@@ -57,7 +57,7 @@ namespace FSS.Omnius.Controllers.Athena
 
             item.Name = model.Name;
             item.Ident = model.Ident;
-            item.Js = model.Js;
+            item.Js = model.Js == null ? " ;" : model.Js;
             item.Css = model.Css;
             item.DemoData = model.DemoData;
             item.Html = model.Html;
