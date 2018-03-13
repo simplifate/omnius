@@ -104,9 +104,6 @@
       <HintPath>..\packages\RazorEngine.3.8.2\lib\net45\RazorEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="reCAPTCHA.MVC, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\reCAPTCH.MVC.1.0.1\lib\net45\reCAPTCHA.MVC.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
@@ -253,7 +250,6 @@
     <Compile Include="Controllers\Athena\AthenaController.cs" />
     <Compile Include="Controllers\Athena\AthenaApiController.cs" />
     <Compile Include="Controllers\Compass\CompassController.cs" />
-    <Compile Include="Controllers\CustomCaptchaValidator.cs" />
     <Compile Include="Controllers\Entitron\DbController.cs" />
     <Compile Include="Controllers\Hermes\IncomingController.cs" />
     <Compile Include="Controllers\Hermes\IncomingRuleController.cs" />

@@ -316,7 +316,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
         public virtual DbSet<User_Role> Users_Roles { get; set; }
         public virtual DbSet<PersonaAppRole> AppRoles { get; set; }
-        public virtual DbSet<BadLoginCount> BadLoginCounts { get; set; }
 
         // Tapestry
         public virtual DbSet<ActionRule> ActionRules { get; set; }

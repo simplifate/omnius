@@ -8,7 +8,6 @@ using Microsoft.AspNet.Identity.Owin;
 using OneLogin.Saml;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Configuration;
 
 namespace System.Web.Mvc
 {
@@ -44,18 +43,9 @@ namespace System.Web.Mvc
                     return;
             }
 
-            // Check cookie and ip
-            bool isCookieAndIPSame = true;
-            bool isCheckIpAndCookieEnabled = bool.Parse(WebConfigurationManager.AppSettings["PersonaCheckIpAndCookie"]);
-            if (user != null && isCheckIpAndCookieEnabled) {
-                if(user.LastIp != filterContext.HttpContext.Request.UserHostAddress || user.LastAppCookie != filterContext.HttpContext.Request.Cookies[".AspNet.ApplicationCookie"].Value) {
-                    isCookieAndIPSame = false;
-                }
-            }
-
            
             // not logged -> redirect
-            if (user == null || !isCookieAndIPSame)
+            if (user == null)
             {
                 // Otherwise, perform auth over IDS
                 //SAML Authentication

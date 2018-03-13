@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -14,8 +13,6 @@ using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Entitron.DB;
 using System.Web.Helpers;
 using FSS.Omnius.FrontEnd.Controllers;
-using FSS.Omnius.Modules.Entitron.Entity.Persona;
-using System.Text.RegularExpressions;
 
 namespace FSS.Omnius.FrontEnd
 {
@@ -98,31 +95,8 @@ namespace FSS.Omnius.FrontEnd
 
         protected void Application_EndRequest()
         {
-            if(Request.Url.AbsolutePath.ToLower().EndsWith("/core/account/login") 
-                && Request.HttpMethod.ToLower() == "post"
-                && Context.Response.Headers.AllKeys.Contains("Set-Cookie")
-                && Context.Response.Headers["Set-Cookie"].Contains(".AspNet.ApplicationCookie")
-                && Request.Form.AllKeys.Contains("UserName")
-                && !string.IsNullOrEmpty(Request.Form["UserName"])
-            ) {
-                DBEntities db = DBEntities.instance;
-                string userName = Request.Form["UserName"];
-                User user = db.Users.Single(u => u.UserName == userName);
-
-                string cookies = Context.Response.Headers["Set-Cookie"];
-                var m = Regex.Match(cookies, ".AspNet.ApplicationCookie=(?<AppCookie>.*?);");
-
-                string appCookie = m.Groups["AppCookie"].Value;
-
-                user.LastIp = Request.UserHostAddress;
-                user.LastAppCookie = appCookie;
-
-                db.SaveChanges();
-            }
-
-
             // error
-                if (new int[] { 403, 404, 500 }.Contains(Context.Response.StatusCode) && !Request.Url.AbsolutePath.StartsWith("/rest/"))
+            if (new int[] { 403, 404, 500 }.Contains(Context.Response.StatusCode) && !Request.Url.AbsolutePath.StartsWith("/rest/"))
             {
                 Response.Clear();
 
