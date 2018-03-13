@@ -1,4 +1,4 @@
-@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><form class="form-horizontal" method="post"><div class="container"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title">@(@"Bank Account")</h3></div><div class="panel-body">
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><form class="form-horizontal" method="post"><div class="container mbe-active"><h1 class="">@(@"Bank account")</h1><button class="btn btn-lg btn-primary" type="submit" name="button" id="new_bank_account" value="new_bank_account" style="margin-bottom: 30px; margin-top: 15px;" >@(@"New Bank account")</button><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title">@(@"Bank Account")</h3></div><div class="panel-body">
 @{ if(ViewData.ContainsKey("tableData_bank_accounts") && ((System.Data.DataTable)(ViewData["tableData_bank_accounts"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="0" data-dtfilter="0" data-dtordering="0" data-dtcolumnfilter="0" id="bank_accounts" role="grid" aria-describedby="DataTables_Table_0_info">
         <thead>
@@ -30,4 +30,4 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="bank_accounts" />
-</div></div><div class="row"><div class="col-xs-12"><button class="btn btn-lg btn-primary" type="submit" name="button" id="new_bank_account" value="new_bank_account" style="margin-bottom: 30px; margin-top: 15px;" >@(@"New bank account")</button></div></div></div>@Html.AntiForgeryToken()</form></div>
+</div></div></div>@Html.AntiForgeryToken()</form></div>
