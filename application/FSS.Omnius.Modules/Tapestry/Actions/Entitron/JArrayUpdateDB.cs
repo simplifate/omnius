@@ -36,6 +36,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 DBTable table = db.Table(tableName, searchInShared);
                 if (table == null)
                     throw new Exception($"Queried table not found (Tabulka: {tableName}, Akce: {Name} ({Id}))");
+                var listDbItem = table.Select().ToList();
+                //check if table has column (IsDeleted),if no , the result is null
+                var columnIsDeletedExist = table.Columns.SingleOrDefault(c => c.Name == "IsDeleted");
+           
 
                 string uniqueCol;
                 string uniqueExtCol; //basicly foreign key
@@ -53,6 +57,19 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     throw new Exception($"Table column named '{uniqueCol}' not found!");
                 foreach (JObject jo in jarray)
                 {
+                    if (columnIsDeletedExist != null)
+                    {
+                        //if theres column IsDeleted, check if the entity is in rising, if not, set isDeleted to true.
+                        for(int i =0;i < listDbItem.Count;i++)
+                        {
+                            if(!jarray.Any(j=> j["id"].ToString() != listDbItem[i]["ext_id"].ToString()))
+                            {
+                                DBItem foundItem = listDbItem[i];
+                                foundItem["IsDeleted"] = true;
+                                table.Update(foundItem, (int)foundItem["ext_id"]);
+                            }
+                        }
+                    }
                     Dictionary<string, object> parsedColumns = new Dictionary<string, object>();
                     TapestryUtils.ParseJObjectRecursively(jo, parsedColumns);
                     DBItem parsedRow = new DBItem(db, table, parsedColumns);
