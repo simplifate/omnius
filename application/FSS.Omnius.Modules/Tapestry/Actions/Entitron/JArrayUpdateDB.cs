@@ -62,11 +62,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                         //if theres column IsDeleted, check if the entity is in rising, if not, set isDeleted to true.
                         for(int i =0;i < listDbItem.Count;i++)
                         {
-                            if(!jarray.Any(j=> j["id"].ToString() != listDbItem[i]["ext_id"].ToString()))
+                            if(!jarray.Any(j=> j["id"].ToString() == listDbItem[i]["ext_id"].ToString()))
                             {
                                 DBItem foundItem = listDbItem[i];
                                 foundItem["IsDeleted"] = true;
-                                table.Update(foundItem, (int)foundItem["ext_id"]);
+                                table.Update(foundItem, (int)foundItem["id"]);
                             }
                         }
                     }
