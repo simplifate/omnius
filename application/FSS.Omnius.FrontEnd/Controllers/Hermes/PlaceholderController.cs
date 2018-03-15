@@ -43,10 +43,16 @@ namespace FSS.Omnius.Controllers.Hermes
                 throw new Exception("Došlo k neoèekávané chybì");
 
             DBEntities e = DBEntities.instance;
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid && model.Id != 0)
+            {
+                return View("~/Views/Hermes/Placeholder/Form.cshtml", model);
+
+               
+            }
+            else
             {
                 // Záznam již existuje - pouze upravujeme
-                if (!model.Id.Equals(null))
+                if (!model.Id.Equals(0))
                 {
                     EmailPlaceholder row = e.EmailPlaceholders.Single(m => m.Id == model.Id);
                     row.Prop_Name = model.Prop_Name;
@@ -57,10 +63,12 @@ namespace FSS.Omnius.Controllers.Hermes
                 else
                 {
                     model.Hermes_Email_Template_Id = emailId;
-                    if (e.EmailPlaceholders.Where(p => p.Hermes_Email_Template_Id == emailId).Count() == 0) {
+                    if (e.EmailPlaceholders.Where(p => p.Hermes_Email_Template_Id == emailId).Count() == 0)
+                    {
                         model.Num_Order = 1;
                     }
-                    else {
+                    else
+                    {
                         model.Num_Order = e.EmailPlaceholders.Where(p => p.Hermes_Email_Template_Id == emailId).OrderByDescending(p => p.Num_Order).First().Num_Order + 1;
                     }
 
@@ -68,10 +76,6 @@ namespace FSS.Omnius.Controllers.Hermes
                     e.SaveChanges();
                 }
                 return RedirectToRoute("HermesPlaceholders", new { @action = "Index", @emailId = emailId });
-            }
-            else
-            {
-                return View("~/Views/Hermes/Placeholder/Form.cshtml", model);
             }
         }
         

@@ -40,10 +40,15 @@ namespace FSS.Omnius.Controllers.Hermes
         public ActionResult Save(EmailTemplate model)
         {
             DBEntities e = DBEntities.instance;
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid && model.Id != 0)
+            {
+                return View("~/Views/Hermes/Template/Form.cshtml", model);
+
+            }
+            else
             {
                 // Záznam již existuje - pouze upravujeme
-                if (!model.Id.Equals(null))
+                if (!model.Id.Equals(0))
                 {
                     EmailTemplate row = e.EmailTemplates.Single(m => m.Id == model.Id);
                     row.Name = model.Name;
@@ -58,10 +63,6 @@ namespace FSS.Omnius.Controllers.Hermes
                     e.SaveChanges();
                 }
                 return RedirectToRoute("Hermes", new { @action = "Index" });
-            }
-            else
-            {
-                return View("~/Views/Hermes/Template/Form.cshtml", model);
             }
         }
 
