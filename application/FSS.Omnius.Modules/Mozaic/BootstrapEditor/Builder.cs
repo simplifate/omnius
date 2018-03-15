@@ -27,6 +27,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
         {
             e = context;
             destination = viewFolder;
+            Directory.CreateDirectory(Path.Combine(destination, "Bootstrap"));
         }
 
         public void BuildPage(MozaicBootstrapPage page)
