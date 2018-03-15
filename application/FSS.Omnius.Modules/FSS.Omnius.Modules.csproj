@@ -1220,6 +1220,10 @@
     <Compile Include="Migrations\201803121532238_BadLoginCount.Designer.cs">
       <DependentUpon>201803121532238_BadLoginCount.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803150800222_removeEntitronMetaCascade.cs" />
+    <Compile Include="Migrations\201803150800222_removeEntitronMetaCascade.Designer.cs">
+      <DependentUpon>201803150800222_removeEntitronMetaCascade.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -2066,6 +2070,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803121532238_BadLoginCount.resx">
       <DependentUpon>201803121532238_BadLoginCount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803150800222_removeEntitronMetaCascade.resx">
+      <DependentUpon>201803150800222_removeEntitronMetaCascade.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
