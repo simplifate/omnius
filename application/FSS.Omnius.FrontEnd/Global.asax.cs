@@ -96,42 +96,17 @@ namespace FSS.Omnius.FrontEnd
             }
         }
 
-        protected void Application_EndRequest()
+        protected void Application_PostRequestHandlerExecute()
         {
-            if(Request.Url.AbsolutePath.ToLower().EndsWith("/core/account/login") 
-                && Request.HttpMethod.ToLower() == "post"
-                && Context.Response.Headers.AllKeys.Contains("Set-Cookie")
-                && Context.Response.Headers["Set-Cookie"].Contains(".AspNet.ApplicationCookie")
-                && Request.Form.AllKeys.Contains("UserName")
-                && !string.IsNullOrEmpty(Request.Form["UserName"])
-            ) {
-                DBEntities db = DBEntities.instance;
-                string userName = Request.Form["UserName"];
-                User user = db.Users.Single(u => u.UserName == userName);
-
-                string cookies = Context.Response.Headers["Set-Cookie"];
-                var m = Regex.Match(cookies, ".AspNet.ApplicationCookie=(?<AppCookie>.*?);");
-
-                string appCookie = m.Groups["AppCookie"].Value;
-
-                user.LastIp = Request.UserHostAddress;
-                user.LastAppCookie = appCookie;
-
-                db.SaveChanges();
-            }
-
-
             // error
-                if (new int[] { 403, 404, 500 }.Contains(Context.Response.StatusCode) && !Request.Url.AbsolutePath.StartsWith("/rest/"))
-            {
+            if (new int[] { 403, 404, 500 }.Contains(Context.Response.StatusCode) && !Request.Url.AbsolutePath.StartsWith("/rest/")) {
                 Response.Clear();
 
                 var rd = new RouteData();
                 rd.DataTokens["area"] = "AreaName"; // In case controller is in another area
                 rd.Values["controller"] = "Error";
 
-                switch (Context.Response.StatusCode)
-                {
+                switch (Context.Response.StatusCode) {
                     case 403:
                         rd.Values["action"] = "UserNotAuthorized";
                         break;
@@ -143,19 +118,43 @@ namespace FSS.Omnius.FrontEnd
                         break;
                 }
                 //Act as 400 and not 500 if api call has failed
-                if (Context.Response.StatusCode == 500 && Context.Request.Path.Contains("/rest/"))
-                {
+                if (Context.Response.StatusCode == 500 && Context.Request.Path.Contains("/rest/")) {
                     Context.Response.StatusCode = 400;
                     byte[] bytes = System.Text.Encoding.UTF8.GetBytes("Bad request");
                     using (var stream = Context.Response.OutputStream)
                         stream.Write(bytes, 0, bytes.Length);
                 }
-                else
-                {
+                else {
                     IController c = new ErrorController();
                     c.Execute(new RequestContext(new HttpContextWrapper(Context), rd));
                 }
             }
+        }
+
+        protected void Application_EndRequest()
+        {
+            if(Request.Url.AbsolutePath.ToLower().EndsWith("/core/account/login") 
+                && Request.HttpMethod.ToLower() == "post"
+                && Context.Response.Headers.AllKeys.Contains("Set-Cookie")
+                && Context.Response.Headers["Set-Cookie"].Contains(".AspNet.ApplicationCookie")
+                && Request.Form.AllKeys.Contains("UserName")
+                && !string.IsNullOrEmpty(Request.Form["UserName"])
+            ) {
+                DBEntities db = DBEntities.instance;
+                string userName = Request.Form["UserName"].ToLower();
+                User user = db.Users.Single(u => u.UserName.ToLower() == userName);
+
+                string cookies = Context.Response.Headers["Set-Cookie"];
+                var m = Regex.Match(cookies, ".AspNet.ApplicationCookie=(?<AppCookie>.*?);");
+
+                string appCookie = m.Groups["AppCookie"].Value;
+
+                user.LastIp = Request.UserHostAddress;
+                user.LastAppCookie = appCookie;
+
+                db.SaveChanges();
+            }
+            
             DBEntities.Destroy();
             Entitron.Destroy();
         }
