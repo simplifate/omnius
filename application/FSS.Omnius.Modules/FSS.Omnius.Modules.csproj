@@ -1224,6 +1224,10 @@
     <Compile Include="Migrations\201803150800222_removeEntitronMetaCascade.Designer.cs">
       <DependentUpon>201803150800222_removeEntitronMetaCascade.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803150821030_athenaUniqueness.cs" />
+    <Compile Include="Migrations\201803150821030_athenaUniqueness.Designer.cs">
+      <DependentUpon>201803150821030_athenaUniqueness.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -2073,6 +2077,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803150800222_removeEntitronMetaCascade.resx">
       <DependentUpon>201803150800222_removeEntitronMetaCascade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803150821030_athenaUniqueness.resx">
+      <DependentUpon>201803150821030_athenaUniqueness.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
