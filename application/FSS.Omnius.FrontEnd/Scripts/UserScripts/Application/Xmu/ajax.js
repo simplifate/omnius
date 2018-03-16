@@ -6,6 +6,7 @@ $(function(){
             $("#modal_body_ticket").html("");
             $("#modal_name_ticket").html("");
             $("#preloader_ticket").css("display", "block");
+            
             $.ajax({
                 dataType: "html",
                 url: "/Xmu/Ticket?modelId=" + SupportID,
@@ -67,25 +68,32 @@ $(function(){
   			$("#modal_name_profile").html("");
     		$("#modal_modal_profile").html("");
             $("#preloader_profile").css("display", "block");
+
             $.ajax({
-                type: 'POST',
-                url: "/Xmu/Profile?button=headingHash",
-                data: { 'UserHash': UserHash},
-                success: function (response) {
-                    var x = $(response)
-                    $("#preloader_profile").css("display", "none");
-                    $("#modal_body_profile").html(x.find("#modal_body_profile").html());
-                    $("#modal_modal_profile").html(x.find("#modal_modal_profile").html());
-                    $("#modal_body_cash").html(x.find("#modal_body_cash").html());
-                    $("#modal_name_profile").html(x.find("#modal_name_profile").html());
-                  	$("#modalProfile #Support_request_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalTicket");
-                  	var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#modalProfile #pendingReuquest").add("#modalProfile #transactionerrors").add("#modalProfile #withdrawErrors").add("#modalProfile #LogTable");
-                    tables.each(function() {
-                      var table = $(this);
-                      BootstrapUserInit.DataTable.initTable(table);
+                url: '/Persona/Account/GetAntiForgeryToken',
+                type: 'GET',
+                success: function (token) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Xmu/Profile?button=headingHash",
+                        data: { 'UserHash': UserHash, '__RequestVerificationToken': token },
+                        success: function (response) {
+                            var x = $(response)
+                            $("#preloader_profile").css("display", "none");
+                            $("#modal_body_profile").html(x.find("#modal_body_profile").html());
+                            $("#modal_modal_profile").html(x.find("#modal_modal_profile").html());
+                            $("#modal_body_cash").html(x.find("#modal_body_cash").html());
+                            $("#modal_name_profile").html(x.find("#modal_name_profile").html());
+                            $("#modalProfile #Support_request_table").find(".fa-edit").attr("data-toggle", "modal").attr("data-target", "#modalTicket");
+                            var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#modalProfile #pendingReuquest").add("#modalProfile #transactionerrors").add("#modalProfile #withdrawErrors").add("#modalProfile #LogTable");
+                            tables.each(function () {
+                                var table = $(this);
+                                BootstrapUserInit.DataTable.initTable(table);
+                            });
+                        }
                     });
                 }
-            });
+            })
         }); 
 });
 

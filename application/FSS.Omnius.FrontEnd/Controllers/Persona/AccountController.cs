@@ -912,5 +912,19 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
 
             return new HttpStatusCodeResult(200);
         }
+
+        [HttpGet]
+        public string GetAntiforgeryToken()
+        {
+            string newCookieToken;
+            string formToken;
+            AntiForgery.GetTokens(HttpContext.Request.Cookies[AntiForgeryConfig.CookieName].Value, out newCookieToken, out formToken);
+
+            if (!string.IsNullOrEmpty(newCookieToken)) {
+                HttpContext.Response.SetCookie(new HttpCookie(AntiForgeryConfig.CookieName, newCookieToken));
+            }
+
+            return formToken;
+        }
     }
 }

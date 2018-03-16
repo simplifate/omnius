@@ -146,73 +146,7 @@
                 else {
                     table.find('> tfoot').remove();
                 }
-
-
-                //table.DataTable().draw();
-
-                /*
-                CreateCzechDataTable(table, table.hasClass("data-table-simple-mode"));
                 
-                table.on("click", ".rowEditAction", function () {
-                    var rowId = parseInt($(this).parents("tr").find("td:first").text());
-                    var tableName = table.attr("name");
-                    if ($(this).hasClass("fa-download"))
-                        window.ignoreUnload = true;
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_EditAction" /></form>').appendTo('body').submit();
-                });
-                table.on("click", ".rowDetailsAction", function () {
-                    var rowId = parseInt($(this).parents("tr").find("td:first").text());
-                    var tableName = table.attr("name");
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_DetailsAction" /></form>').appendTo('body').submit();
-                });
-                table.on("click", ".rowDeleteAction", function () {
-                    if (confirm('Jste si jistí?')) {
-                        var rowId = parseInt($(this).parents("tr").find("td:first").text());
-                        var tableName = table.attr("name");
-                        $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="deleteId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_DeleteAction" /></form>').appendTo('body').submit();
-                    }
-                });
-                table.on("click", ".row_A_Action", function () {
-                    var rowId = parseInt($(this).parents("tr").find("td:first").text());
-                    var tableName = table.attr("name");
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_A_Action" /></form>').appendTo('body').submit();
-                });
-                table.on("click", ".row_B_Action", function () {
-                    var rowId = parseInt($(this).parents("tr").find("td:first").text());
-                    var tableName = table.attr("name");
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_B_Action" /></form>').appendTo('body').submit();
-                });
-                
-                
-                if (!table.hasClass("data-table-simple-mode")) {
-                    
-                    dataTable = table.DataTable();
-                 
-                    if ($("#currentBlockName").val() == "ZakladniReport") {
-                        var currentUser = $("#currentUserName").val();
-                        dataTable
-                            .order([1, 'desc'])
-                            .column(9)
-                            .search(currentUser)
-                            .draw();
-                        table.find("tfoot th:nth-child(10) input").val(currentUser);
-                    }
-        
-                    table.find("thead th").each(function (index, element) {
-                        if ($(element).text() == "id" || $(element).text().indexOf("hidden__") == 0) {
-                            table.find("td:nth-child(" + (index + 1) + "), th:nth-child(" + (index + 1) + ")").hide();
-                        }
-                        else if ($(element).text() == "Barva") {
-                            table.find("td:nth-child(" + (index + 1) + "), th:nth-child(" + (index + 1) + ")").hide();
-    
-                            table.find("td:nth-child(" + (index + 1) + ")").each(function (tdIndex, tdElement) {
-                                var colorCode = $(tdElement).text();
-                                $(tdElement).parents("tr").find("td:nth-child(" + (index + 2) + ")")
-                                    .prepend('<div class="colorRectangle" style="background-color:' + colorCode + '"></div>');
-                            });
-                        }
-                    });
-                }*/
                 table.css("background-image", "initial");
                 table.children("thead").css("visibility", "visible");
                 table.children("tbody").css("visibility", "visible");
@@ -267,21 +201,23 @@
             var rowId = parseInt(button.parents('tr').find('td:first').text());
             var tableName = button.parents('table').eq(0).attr('id');
 
-            if (button.hasClass('fa-download')) {
-                window.ignoreUnload = true;
-            }
+            $.ajax({
+                url: '/Persona/Account/GetAntiForgeryToken',
+                type: 'GET',
+                success: function (token) {
+                    if (button.hasClass('fa-download')) {
+                        window.ignoreUnload = true;
+                    }
 
-            var form = $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="' + button.data('idparam') + '" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_' + button.data('action') + '" /></form>');
-            var csrfTokenInput = button.closest('form').find("[name=__RequestVerificationToken]").clone();
-            if (csrfTokenInput !== null) {
-                form.append(csrfTokenInput);
-            }
-
-            form.appendTo('body').submit();
+                    var form = $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="' + button.data('idparam') + '" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_' + button.data('action') + '" /></form>');
+                    form.append('<input type="hidden" name="__RequestVerificationToken" value="' + token + '" />');
+                    form.appendTo('body').submit();
+                }
+            })
         },
 
-    }
-    ,
+    },
+
     loadValidators: function () {
         $.extend($.validator.methods, {
             auditNumber: function (value, element, attr) {
