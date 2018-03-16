@@ -38,52 +38,41 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     throw new Exception($"Queried table not found! (Table: {tableName}, Action: {Name} ({Id}))");
 
                 string uniqueCol;
-                string uniqueExtCol; //basicly foreign key
                 if (vars.ContainsKey("UniqueCol"))
-                {
                     uniqueCol = (string)vars["UniqueCol"];
-                    uniqueExtCol = uniqueCol;
-                }
                 else
-                {
-                    uniqueCol = "ext_id";
-                    uniqueExtCol = DBCommandSet.PrimaryKey;
-                }
-                if (!table.Columns.Any(c => c.Name == uniqueExtCol))
-                    throw new Exception($"Table column named '{uniqueExtCol}' not found!");
+                    uniqueCol = "extid";
+                
+                if (!table.Columns.Any(c => c.Name == uniqueCol))
+                    throw new Exception($"Table column named '{uniqueCol}' not found!");
 
-                HashSet<string> tableUniques = new HashSet<string>(table.Select(uniqueCol).ToList().Select(x => x[uniqueCol].ToString()).ToList());
+                List<DBItem> currentDBItems = table.Select(uniqueCol).ToList();
+                List<DBItem> newItemsFromJArray = new List<DBItem>();
 
-                HashSet<DBItem> parsedItems = new HashSet<DBItem>();
-                foreach (JObject jo in jarray)
-                {
-                    Dictionary<string, object> parsedColumns = new Dictionary<string, object>();
-                    TapestryUtils.ParseJObjectRecursively(jo, parsedColumns);
-                    
-                    parsedItems.Add(new DBItem(db, table, parsedColumns));
-                }
-                HashSet<string> parsedExtIds = new HashSet<string>(); //ids of items from input jarray
-                foreach (var item in parsedItems)
-                    parsedExtIds.Add(item[uniqueExtCol].ToString());
-                HashSet<string> newUniqueIDs = new HashSet<string>(parsedExtIds.Except(tableUniques));
-                parsedItems.RemoveWhere(x => !newUniqueIDs.Contains(x[uniqueExtCol]));
-
-                foreach (DBItem parsedItem in parsedItems)
-                {
-                    DBItem item = new DBItem(db, table);
-                    foreach (DBColumn col in table.Columns)
+                //iterate jarray and insert data to Omnius table,if theres unique column defined and a record with duplicate data,ignore it
+                foreach (JObject j in jarray) {
+                    var duplicatedItem = currentDBItems.SingleOrDefault(c => c[uniqueCol].ToString() == j["id"].ToString());
+                    if (duplicatedItem != null)
+                        continue;
+                    DBItem item = new DBItem(db);
+                    //get all properties of jObject entity
+                    foreach(var prop in j.Properties())
                     {
-                        if (col.Name == DBCommandSet.PrimaryKey)
-                            continue;
-                        string parsedColName = (col.Name == "ext_id") ? DBCommandSet.PrimaryKey : col.Name;
-                        if (parsedItem[parsedColName] != null)//
-                            item[col.Name] = parsedItem[parsedColName];
+                        if(prop.Name == "id")
+                           item[uniqueCol] = ((JValue)j.GetValue(prop.Name)).Value;
+                        else
+                        item[prop.Name] = ((JValue)j.GetValue(prop.Name)).Value;
                     }
+                    newItemsFromJArray.Add(item);
+                }
 
+                
+                foreach(var item in newItemsFromJArray)
+                {
                     table.Add(item);
                 }
+
                 db.SaveChanges();
-                
                 outputVars["Result"] = true;
             }
             else
