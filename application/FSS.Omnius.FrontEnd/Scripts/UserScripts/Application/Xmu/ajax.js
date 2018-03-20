@@ -84,6 +84,11 @@ $(function(){
                             $("#modal_modal_profile").html(x.find("#modal_modal_profile").html());
                             $("#modal_body_cash").html(x.find("#modal_body_cash").html());
                             $("#modal_name_profile").html(x.find("#modal_name_profile").html());
+                          	$("#inputDate").datetimepicker({
+                                datepicker: true,
+                                timepicker: false,
+                                format: "d.m.Y"
+                            }).off('mousewheel');
                             $("#modalProfile #Support_request_table").find(".fa-edit").attr("data-toggle", "modal").attr("data-target", "#modalTicket");
                             var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#modalProfile #pendingReuquest").add("#modalProfile #transactionerrors").add("#modalProfile #withdrawErrors").add("#modalProfile #LogTable");
                             tables.each(function () {
@@ -107,6 +112,31 @@ $(function () {
         })
     }, 1000);
 });
+
+/*
+var transactionColors = function () {
+    setTimeout(function () {
+        $("#Transactions_table tbody tr").each(function () {
+            var flag = $(this).children("td:nth-child(3)").text();
+            if (flag == "True") {
+                $(this).css("background-color", "#ffdede")
+            }
+        })
+    }, 500);
+}
+
+$(function () {
+    $("tfoot input").on("blur", function () { transactionColors() });
+});
+
+$(function () {
+    $("#Transactions_table").parent().on("click", ".paginate_button", function () { transactionColors() });
+    $("#Transactions_table").parent().on("click", ".sorting", function () { transactionColors() });
+    $("#Transactions_table").parent().on("click", ".sorting_asc", function () { transactionColors() });
+    $("#Transactions_table").parent().on("click", ".sorting_desc", function () { transactionColors() });
+    $("#Transactions_table").parent().keyup("tfoot input", function () { transactionColors() });
+});
+*/
 
 $(function(){
   $("#ExchangeVOther_table").find(".fa-sign-in").attr("data-toggle","modal").attr("data-target","#modalPair");
