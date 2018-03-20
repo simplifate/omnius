@@ -49,7 +49,7 @@ namespace FSS.Omnius.FrontEnd
                 foreach (Exception error in Context.AllErrors)
                 {
                     Omnius.Modules.Watchtower.OmniusException.Log(
-                        $"Global: {Request?.HttpMethod} {Request?.Url.AbsoluteUri}",
+                        error.Message,
                         Omnius.Modules.Watchtower.OmniusLogSource.CORE,
                         innerException: error);
                 }
