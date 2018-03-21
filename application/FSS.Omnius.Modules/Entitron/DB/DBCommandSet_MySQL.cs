@@ -75,7 +75,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             foreach (Condition condition in conditions)
             {
                 Tuple<string, string> tuple = ColumnsToTuple(db.Application, tabloid.Name, new List<string> { condition.column }).First();
-                if (!whereColumns.Contains(tuple))
+                if (!whereColumns.Any(wc => wc.Item1.ToLower() == tuple.Item1.ToLower() && wc.Item2.ToLower() == tuple.Item2.ToLower()))
                     whereColumns.Add(tuple);
             }
 
