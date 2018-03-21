@@ -89,27 +89,9 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         cycleDetector = null;
 
                     /// Foreach entity: Get object & Change required Ids
-                    PropertyInfo recurseProp = getRecurseProperty(currentType);
                     _ids[currentType] = new Dictionary<int, int>();
                     // normal
-                    if (recurseProp == null)
-                    {
-                        createEntity(inputJson[currentType.Name], currentType);
-                    }
-                    // recurse
-                    else
-                    {
-                        IEnumerable<JToken> jsonCurrentLevel = inputJson[currentType.Name].Where(i => (i[recurseProp.Name] as JValue).Value == null);
-
-                        while (jsonCurrentLevel.Count() > 0)
-                        {
-                            createEntity(jsonCurrentLevel, currentType, recurseProp);
-
-                            /// next level
-                            var temp_jsonCurrentLevel = inputJson[currentType.Name].Where(i => jsonCurrentLevel.Select(ii => (ii[PrimaryKey] as JValue).Value).Contains((i[recurseProp.Name] as JValue).Value)).ToList();
-                            jsonCurrentLevel = temp_jsonCurrentLevel;
-                        }
-                    }
+                    createEntity(inputJson[currentType.Name], currentType);
 
                     /// Children properties
                     IEnumerable<PropertyInfo> childProperties = getChildProperties(currentType);
@@ -395,32 +377,60 @@ namespace FSS.Omnius.Modules.Entitron.Service
             }
         }
 
+        /// <summary>
+        /// get child-link properties
+        /// </summary>
         private IEnumerable<PropertyInfo> getChildProperties(Type type)
         {
             return type.GetProperties().Where(p => p.GetCustomAttribute<ImportExportAttribute>()?.Type == ELinkType.Child);
         }
+        /// <summary>
+        /// get parent & required-link properties
+        /// </summary>
         private IEnumerable<PropertyInfo> getRequiredProperties(Type type)
         {
             // ignores object link properties
-            return type.GetProperties().Where(p => { ImportExportAttribute attr = p.GetCustomAttribute<ImportExportAttribute>(); return attr != null && attr.KeyFor.Any() && (attr.Type == ELinkType.Parent || attr.Type == ELinkType.LinkRequired); });
+            return type.GetProperties().Where(p =>
+            {
+                ImportExportAttribute attr = p.GetCustomAttribute<ImportExportAttribute>();
+                return
+                    attr != null
+                    && attr.KeyFor.Any()
+                    && (attr.Type == ELinkType.Parent
+                        || attr.Type == ELinkType.LinkRequired);
+            });
         }
         /// <summary>
-        /// get optional, non-recurse properties
+        /// get optional-link properties
         /// </summary>
         private IEnumerable<PropertyInfo> getOptionalProperties(Type type)
         {
-            return type.GetProperties().Where(p => { ImportExportAttribute attr = p.GetCustomAttribute<ImportExportAttribute>(); return attr != null && attr.Type == ELinkType.LinkOptional && attr.KeyFor.Any() && !attr.KeyFor.Contains(type); });
+            return type.GetProperties().Where(p =>
+            {
+                ImportExportAttribute attr = p.GetCustomAttribute<ImportExportAttribute>();
+                return
+                    attr != null
+                    && attr.KeyFor.Any()
+                    && attr.Type == ELinkType.LinkOptional;
+            });
         }
         /// <summary>
-        /// includes recurse property
+        /// get writable non-link properties (without primary key), required-link and parent-link properties
         /// </summary>
         private IEnumerable<PropertyInfo> getNonOptionalProperties(Type type)
         {
-            return type.GetProperties().Where(p => { ImportExportAttribute attr = p.GetCustomAttribute<ImportExportAttribute>(); return p.Name != PrimaryKey && (DataType.BaseTypes.Contains(p.PropertyType) || p.PropertyType.IsEnum) && p.CanWrite && (attr == null || attr.Type != ELinkType.LinkOptional || attr.KeyFor.FirstOrDefault() == type); });
-        }
-        private PropertyInfo getRecurseProperty(Type type)
-        {
-            return type.GetProperties().SingleOrDefault(p => { ImportExportAttribute attr = p.GetCustomAttribute<ImportExportAttribute>(); return attr != null && attr.Type == ELinkType.LinkOptional && attr.KeyFor.Any() && attr.KeyFor.Contains(type); });
+            return type.GetProperties().Where(p =>
+            {
+                ImportExportAttribute attr = p.GetCustomAttribute<ImportExportAttribute>();
+                return
+                    p.Name != PrimaryKey 
+                    && (DataType.BaseTypes.Contains(p.PropertyType) 
+                        || p.PropertyType.IsEnum)
+                    && p.CanWrite 
+                    && (attr == null 
+                        || (attr.KeyFor.Any()
+                            && attr.Type != ELinkType.LinkOptional));
+            });
         }
 
         private class NextType : Exception
