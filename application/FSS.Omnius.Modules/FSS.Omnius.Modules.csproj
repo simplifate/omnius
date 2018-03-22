@@ -1378,6 +1378,7 @@
     <Compile Include="Tapestry\Actions\other\PadLeftTableColumnAction.cs" />
     <Compile Include="Tapestry\Actions\other\PassVariableAction.cs" />
     <Compile Include="Tapestry\Actions\other\RedirectToUrlAction.cs" />
+    <Compile Include="Tapestry\Actions\other\SetResponseStatusCodeAction.cs" />
     <Compile Include="Tapestry\Actions\other\SubstringAction.cs" />
     <Compile Include="Tapestry\Actions\other\UnescapeStringAction.cs" />
     <Compile Include="Tapestry\Actions\other\ValidateInput.cs" />
