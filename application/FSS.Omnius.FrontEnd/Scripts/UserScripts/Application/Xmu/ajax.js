@@ -1,5 +1,4 @@
 $(function(){
-  alert("tvoje máma");
   $("#Profiles_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalProfile");
   
   $("#Profiles_table").on("click", ".fa-edit", function () {
@@ -122,7 +121,6 @@ $(function(){
 
 $(function(){
     var reloadImage = function () {
-      alert("2etčdrgfx");
             var UserHash = $("#headingHash").html();
             $("#modal_body_profile").html("");
             $("#modal_body_cash").html("");
@@ -170,18 +168,17 @@ $(function(){
         bui.confirm(
           message, 
           function () {
-            alert("1");
+
             var Image = $(this).parent().children("#imageUrl").html();
 			$.ajax({
     			url: '/Persona/Account/GetAntiForgeryToken',
     			type: 'GET',
     			success: function (token) {
-                  alert("2");
                   setTimeout(reloadImage,1000);
                   
         			$.ajax({	
             			type: 'POST',
-            			url: '/userskyc' + '/?button=deleteImage',
+            			url: '/Xmu/' + '/userskyc' + '/?button=deleteImage',
             			data: { 'deleteUrl': Image, '__RequestVerificationToken': token }
                      
         			});
