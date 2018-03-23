@@ -41,7 +41,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 if (vars.ContainsKey("UniqueCol"))
                     uniqueCol = (string)vars["UniqueCol"];
                 else
-                    uniqueCol = "extid";
+                    uniqueCol = "ext_id";
                 
                 if (!table.Columns.Any(c => c.Name == uniqueCol))
                     throw new Exception($"Table column named '{uniqueCol}' not found!");
