@@ -1,5 +1,5 @@
 $(function(){
-  alert("tvoje m·ma");
+  alert("tvoje m√°ma");
   $("#Profiles_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalProfile");
   
   $("#Profiles_table").on("click", ".fa-edit", function () {
@@ -122,7 +122,7 @@ $(function(){
 
 $(function(){
     var reloadImage = function () {
-      alert("2etËdrgfx");
+      alert("2etƒçdrgfx");
             var UserHash = $("#headingHash").html();
             $("#modal_body_profile").html("");
             $("#modal_body_cash").html("");
@@ -181,7 +181,7 @@ $(function(){
                   
         			$.ajax({	
             			type: 'POST',
-            			url: '/Xmu/' + $('#currentBlockName').val() + '/?button=deleteImage',
+            			url: '/userskyc' + '/?button=deleteImage',
             			data: { 'deleteUrl': Image, '__RequestVerificationToken': token }
                      
         			});
