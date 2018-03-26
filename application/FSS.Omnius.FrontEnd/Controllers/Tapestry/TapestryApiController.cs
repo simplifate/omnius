@@ -165,16 +165,12 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                 using (var context = DBEntities.instance)
                 {
                     TapestryDesignerBlock requestedBlock = context.TapestryDesignerBlocks.Find(blockId);
-                    if (requestedBlock.LockedForUserId == null)
-                    {
+                    
                         requestedBlock.LockedForUserId = userId;
                         context.SaveChanges();
 
                         return true;
-                    }
-                    else {
-                        return false;
-                    }
+                 
                 }
             }
             catch (Exception ex)

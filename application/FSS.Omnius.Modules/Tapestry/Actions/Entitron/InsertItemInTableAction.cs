@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override string[] InputVar => new string[] { "?TableName", "?Item" };
 
-        public override string Name => "Create DB Item";
+        public override string Name => "Insert DB Item";
 
         public override string[] OutputVar => new string[] { "AssignedId" };
 
