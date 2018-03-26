@@ -1,6 +1,6 @@
 ﻿TB.lock = {
 
-    isLocked : false,
+    isLocked: false,
     isLockedForCurrentUser: false,
     currentCommitId: null,
     lockStatusId: null,
@@ -37,7 +37,7 @@
             type: 'GET',
             url: url,
             dataType: 'json',
-           
+
             success: function (result) {
                 TB.lock.currentCommitId = result;
             }
@@ -50,11 +50,7 @@
         var appId = $('#currentAppId').val();
         var blockId = $('#currentBlockId').val();
         var userId = $('#currentUserId').val();
-        var cCommitId = -1;
-        if (TB.lock.currentCommitId != null) {
-            cCommitId = TB.lock.currentCommitId;
-        }
-        var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '' + '/isBlockLocked/' + userId + '/commits/' + cCommitId;
+        var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '' + '/isBlockLocked/' + userId + '/commits/' + TB.lock.currentCommitId;
 
 
         $.ajax({
@@ -65,7 +61,7 @@
             success: TB.lock._lockTheBlock
         });
     },
-     
+
     _lockTheBlock: function (result) {
         pageSpinner.show();
         var appId = $('#currentAppId').val();
@@ -84,7 +80,7 @@
             alert("This block has been successfully locked");
         }
 
-        else if (result.lockStatusId == 2) { //if block is locked and id = currentuserId and lockBUttonText= Odemknout
+        else if (result.lockStatusId == 2 && $('#btnLock').text() == 'Odemknout') { //if block is locked and id = currentuserId and lockBUttonText= Odemknout
             var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '' + '/unlockBlock/';
 
             $.ajax({
@@ -98,12 +94,38 @@
 
         }
 
-        else if (result.lockStatusId == 3)
-        {
+        else if (result.lockStatusId == 3) {
             alert('This block has been recently updated,please reload the latest version of it and try again');
         }
         else {
-            alert('This block has been locked by ' + result.lockedForUserName + ' ,please wait untill this user unlocks it');
+            //alert('This block has been locked by ' + result.lockedForUserName + ' ,please wait untill this user unlocks it');
+            var msg = ('The block is currently locked by user ' + result.lockedForUserName + ',are you sure you want to force locking this block? It can cause overwriting ' + result.lockedForUserName + '\'s work');
+
+            $('<div></div>').appendTo('body')
+                .html('<div><h6>' + msg + '</h6></div>')
+                .dialog({
+                    modal: true, title: 'Force Lock', zIndex: 10000, autoOpen: true,
+                    width: 'auto', resizable: false,
+                    buttons: {
+                        Yes: function () {
+                            // $(obj).removeAttr('onclick');                                
+                            // $(obj).parents('.Parent').remove();
+
+                            //dosmth
+                            TB.lock._lock();
+
+                            $(this).dialog("close");
+                        },
+                        No: function () {
+                            //do smth
+
+                            $(this).dialog("close");
+                        }
+                    },
+                    close: function (event, ui) {
+                        $(this).remove();
+                    }
+                });
 
         }
     },
@@ -112,7 +134,7 @@
         if (result) {
             $('#btnLock').html('Odemknout');
             TB.lock.isLockedForCurrentUser = true;
-        }else{
+        } else {
             $('#btnLock').html('Zamknout');
             TB.lock.isLockedForCurrentUser = false;
         }
@@ -151,7 +173,7 @@
 
         return this.lockStatusId == 2;
     },
-    
+
     _checkLockBeforeSave: function (result) {
         this.lockStatusId = result.lockStatusId;
         switch (this.lockStatusId) {
@@ -163,16 +185,51 @@
                 break;
             }
             case 1: {
-                alert('The block is currently locked by user ' + result.lockedForUserName + ',please wait until this user unlock this block');
+                var msg = 'The block is currently locked by user ' + result.lockedForUserName + ',but u can press Lock button to Force Locking and overwrite his/her work';
+                alert(msg);
+
                 break;
             }
             default: {
-                alert('The block is not locked,please lock the block before saving it');
-                break;
+
+                var appId = $('#currentAppId').val();
+                var blockId = $('#currentBlockId').val();
+                var userId = $('#currentUserId').val();
+                if (this.currentCommitId == null) {
+                    this.currentCommitId = -1;
+                }
+                var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '' + '/lockBlock/' + userId;
+
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    dataType: 'json',
+                    complete: pageSpinner.hide,
+                    success: TB.lock._onLock
+                });
+                TB.lock._beforeSave();
             }
         }
     },
 
+    _lock: function () {
+        var appId = $('#currentAppId').val();
+        var blockId = $('#currentBlockId').val();
+        var userId = $('#currentUserId').val();
+        if (this.currentCommitId == null) {
+            this.currentCommitId = -1;
+        }
+        var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '' + '/lockBlock/' + userId;
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            complete: pageSpinner.hide,
+            success: TB.lock._onLock
+        });
+    }
+    ,
     _afterSave: function (lastCommitId) {
         $('#btnLock').html('Zamknout');
         this.isLockedForCurrentUser = false;
@@ -181,4 +238,3 @@
 };
 
 TB.onInit.push(TB.lock.init);
-
