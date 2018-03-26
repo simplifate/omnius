@@ -1,0 +1,33 @@
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><form class="form-horizontal" method="post"><div class="container mbe-active"><header class=""><h1 class="" style="color: #000000;">@(@"User messages overview")</h1></header><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title">@(@"New user messages")</h3></div><div class="panel-body"><div class="form-group"><label for="uuid_input" class="col-xs-2" pull-left="pull-left">@(@"uuid")</label><div class="col-md-9"><input type="text" name="uuid_input" value="@(formState.ContainsKey("uuid_input") ? formState["uuid_input"] : (ViewData.ContainsKey("inputData_uuid_input") ? @ViewData["inputData_uuid_input"] : ""))" class="form-control" id="uuid_input" /></div></div><div class="form-group"><label for="message_input" class="col-xs-2" pull-left="pull-left">@(@"Message")</label><div class="col-md-9"><textarea class="form-control input-lg empty-element" name="message_input" value="" required="required" id="message_input" style="resize: vertical; min-height: 50px">@(formState.ContainsKey("message_input") ? formState["message_input"] : ViewData["inputData_message_input"])</textarea></div></div><button class="btn btn-lg btn-primary" type="submit" name="button" id="createMessage_button" value="createMessage_button" >@(@"Create user message")</button></div></div><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title">@(@"User messages")</h3></div><div class="panel-body">
+@{ if(ViewData.ContainsKey("tableData_userMessages_dataTable") && ((System.Data.DataTable)(ViewData["tableData_userMessages_dataTable"])).Rows.Count > 0) {
+    <table class="table data-table dataTable no-footer" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="userMessages_dataTable" role="grid" aria-describedby="DataTables_Table_0_info">
+        <thead>
+            <tr>
+            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_userMessages_dataTable"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_userMessages_dataTable"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                
+            </tr>
+        </tfoot>
+        <tbody>
+        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_userMessages_dataTable"])).Rows) {
+            <tr>@foreach (var cell in row.ItemArray) {
+                <td>@cell.ToString()</td>
+            }
+                
+            </tr>
+        }
+        </tbody>
+    </table>
+} else {
+    <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
+} }
+<input type="hidden" name="userMessages_dataTable" />
+</div></div></div>@Html.AntiForgeryToken()</form></div>
