@@ -86,7 +86,7 @@
     },
 
     onKeyDown: function(event) {
-        if (event.which == 46) {
+        if (event.which == 46 && $('.dialog-options').length == 0) {
             MBE.deleteItem();   
         }
     },
