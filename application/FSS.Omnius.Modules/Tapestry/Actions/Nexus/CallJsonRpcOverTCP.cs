@@ -17,25 +17,36 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 
         public override string Name => "Call JsonRPC Over TCP";
 
-        public override string[] OutputVar => new string[] { "Result" };
+        public override string[] OutputVar => new string[] { "Result","Error" };
 
         public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            string pair = vars.ContainsKey("CurencyPair") ? vars["CurencyPair"].ToString() : "";
-            string method = vars["Method"].ToString();
-            string parameters = vars.ContainsKey("Params") ? vars["Params"].ToString() : "";
-            bool skipInit = vars.ContainsKey("SkipInit") ? (bool)vars["SkipInit"] : false;
+            try
+            {
+                string pair = vars.ContainsKey("CurencyPair") ? vars["CurencyPair"].ToString() : "";
+                string method = vars["Method"].ToString();
+                string parameters = vars.ContainsKey("Params") ? vars["Params"].ToString() : "";
+                bool skipInit = vars.ContainsKey("SkipInit") ? (bool)vars["SkipInit"] : false;
 
-            string initJson = skipInit ? "" : $"{{\"jsonrpc\": \"2.0\", \"method\": \"init\", \"params\": {{\"market\" : \"{pair}\"}}, \"id\": {requestId++}}}";
-            string inputJson =
-                    $"{{\"jsonrpc\": \"2.0\", \"method\": \"{method}\", \"params\": {parameters}, \"id\": {requestId++ + 1}}}";
-            string ipAddress = vars["IpAddress"].ToString();
-            int port = Convert.ToInt32(vars["Port"]);
+                string initJson = skipInit ? "" : $"{{\"jsonrpc\": \"2.0\", \"method\": \"init\", \"params\": {{\"market\" : \"{pair}\"}}, \"id\": {requestId++}}}";
+                string inputJson =
+                        $"{{\"jsonrpc\": \"2.0\", \"method\": \"{method}\", \"params\": {parameters}, \"id\": {requestId++ + 1}}}";
+                string ipAddress = vars["IpAddress"].ToString();
+                int port = Convert.ToInt32(vars["Port"]);
 
-            var result = SendJsonOverTCP(ipAddress, port, initJson, inputJson, skipInit);
-            outputVars["Result"] = result;
+                var result = SendJsonOverTCP(ipAddress, port, initJson, inputJson, skipInit);
+                outputVars["Result"] = result;
+                outputVars["Error"] = false;
+
+            }
+            catch (Exception)
+            {
+                outputVars["Result"] = null;
+                outputVars["Error"] = true;
+
+            }
         }
         public JObject SendJsonOverTCP(string host, int port, string initJson, string json, bool skipInit = false, int receivedBufferSize = 20060)
         {
