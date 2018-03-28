@@ -65,6 +65,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     httpWebRequest.Headers.Add(header);
                 }
 
+                if (service != null && !string.IsNullOrEmpty(service.Auth_User))
+                {
+                    string authEncoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{service.Auth_User}:{service.Auth_Password}"));
+                    httpWebRequest.Headers.Add("Authorization", $"Basic {authEncoded}");
+                }
+
                 // Build inputJson
                 // Example form of the request: {"jsonrpc": "2.0", "method": "subtract", "params": {"minuend": 42, "subtrahend": 23}, "id": 3}
                 string inputJson =
