@@ -143,6 +143,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         break;
                 }
             }
+            db.SaveChanges();
         }
 
         private JToken GetResponse(string url)
