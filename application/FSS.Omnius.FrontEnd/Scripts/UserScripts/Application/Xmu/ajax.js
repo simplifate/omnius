@@ -171,6 +171,7 @@ $(function(){
         var btn = $(this);
         var message = btn.data('confirm');
 
+
         bui.confirm(
           message, 
           function () {
@@ -194,5 +195,6 @@ $(function(){
           null, 
           this
         );
+		document.getElementById("modalProfile").style.overflowY = "auto";
     });
 });
