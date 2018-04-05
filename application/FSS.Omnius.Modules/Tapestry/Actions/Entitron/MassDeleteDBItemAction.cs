@@ -14,9 +14,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
     {
         public override int Id => 1010121;
 
-        public override int? ReverseActionId => 1004; //not sure .. need consult
-
-        public override string[] InputVar => new string[] { "?ItemList", "?TableName", "?SearchInShared" };
+        public override int? ReverseActionId
+        {
+            get
+            {
+                return null;
+            }
+        }
+        public override string[] InputVar => new string[] { "?ItemIDList", "?TableName", "?SearchInShared" };
 
         public override string Name => "Mass Delete DBItem";
 
@@ -37,10 +42,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if (table == null)
                 throw new Exception($"Požadovaná tabulka nebyla nalezena (Tabulka: {tableName}, Akce: {Name} ({Id}))");
 
-            List<DBItem> deleteItemList = (List<DBItem>)vars["ItemList"];
-            foreach (DBItem item in deleteItemList)
+            List<int> deleteItemList = (List<int>)vars["ItemIDList"];
+            foreach (int id in deleteItemList)
             {
-                table.Delete(item);
+                table.Delete(id);
             }
 
             db.SaveChanges();
