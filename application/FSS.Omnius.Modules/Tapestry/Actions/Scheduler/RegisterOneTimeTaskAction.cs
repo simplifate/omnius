@@ -12,7 +12,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
     {
         public override int Id => 186;
         public override int? ReverseActionId => null;
-        public override string[] InputVar => new string[] { "TaskName", "Block", "Minutes", "?Button", "?ModelId", "?StartTime", "?b$UseUtc" };
+        public override string[] InputVar => new string[] { "TaskName", "Block", "Minutes", "?Button", "?ModelId", "?StartTime", "?b$InputIsUtc" };
         public override string Name => "Register one-time task";
         public override string[] OutputVar => new string[] { "TaskId" };
 
@@ -20,7 +20,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
 
-            bool useutc = vars.ContainsKey("UseUtc") ? (bool)vars["UseUtc"] : false;
+            bool isutc = vars.ContainsKey("InputIsUtc") ? (bool)vars["InputIsUtc"] : false;
             string hostname = TapestryUtils.GetServerHostName();
             string appName = core.Application.Name;
             string blockName = (string)vars["Block"];
@@ -43,7 +43,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if(vars.ContainsKey("StartTime"))
             {
                 var localTime = (DateTime)vars["StartTime"];
-                if (!useutc)
+                if (!isutc)
                 {
                     time = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(localTime, DateTimeKind.Unspecified),
                     TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time"));
