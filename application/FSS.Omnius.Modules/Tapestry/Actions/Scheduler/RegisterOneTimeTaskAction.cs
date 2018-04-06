@@ -42,8 +42,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if(vars.ContainsKey("StartTime"))
             {
                 var localTime = (DateTime)vars["StartTime"];
-                time = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(localTime, DateTimeKind.Unspecified),
+                if (localTime.Kind != DateTimeKind.Utc)
+                {
+                    time = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(localTime, DateTimeKind.Unspecified),
                     TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time"));
+                }
+                else
+                {
+                    time = localTime;
+                }
             }
             else
             {
