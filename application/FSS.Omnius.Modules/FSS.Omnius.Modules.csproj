@@ -1267,6 +1267,7 @@
     <Compile Include="Tapestry\Actions\DateTime\ParseDateTimeAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToJArray.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToListAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\CreateTableAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\Dictionary2JtokenAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetHostUrl.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetListsElementByIndexAction.cs" />
