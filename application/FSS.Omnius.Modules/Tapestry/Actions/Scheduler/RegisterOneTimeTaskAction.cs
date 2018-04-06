@@ -33,7 +33,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             string targetUrl;
 
-            targetUrl = $"{hostname}/{appName}/{blockName}/Get?modelId={modelId}&User=Scheduler&Password=194GsQwd/AgB4ZZnf_uF";
+            targetUrl = $"{hostname}/{appName}/{blockName}/Get?modelId={modelId}&User=scheduler&Password=194GsQwd/AgB4ZZnf_uF";
 
             if (button != "")
                 targetUrl += $"&button={button}";
