@@ -6569,7 +6569,7 @@ TB.wizard = {
         var vars = [];
         if (source) {
             for (var i = 0; i < source.length; i++) {
-                var m = source[i].match(/^(\?)?([a-z]\$)?([a-z0-9]+)(\[(index)?\])?(\[([^\]]*)\])?$/i);
+                var m = source[i].match(/^(\?)?([a-z]\$)?([a-zA-Z0-9_]+)(\[(index)?\])?(\[([^\]]*)\])?$/i);
                 // 1 = ?    = volitelná?
                 // 2 = s$   = typ
                 // 3 = název
