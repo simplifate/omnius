@@ -30,8 +30,8 @@ $(function(){
                                 format: "d.m.Y"
                             }).off('mousewheel');
                             $("#modalProfile #Support_request_table").find(".fa-edit").attr("data-toggle", "modal").attr("data-target", "#modalTicket");
-                            var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#modalProfile #pendingReuquest").add("#modalProfile #transactionerrors").add("#modalProfile #withdrawErrors").add("#modalProfile #LogTable");
-                            tables.each(function () {
+                            var tables = $("#actualTransactions table");                   
+                          	tables.each(function () {
                                 var table = $(this);
                                 BootstrapUserInit.DataTable.initTable(table);
                             });
@@ -155,7 +155,7 @@ $(function(){
                                 format: "d.m.Y"
                             }).off('mousewheel');
                             $("#modalProfile #Support_request_table").find(".fa-edit").attr("data-toggle", "modal").attr("data-target", "#modalTicket");
-                            var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#modalProfile #pendingReuquest").add("#modalProfile #transactionerrors").add("#modalProfile #withdrawErrors").add("#modalProfile #LogTable");
+                            var tables = $("#actualTransactions table");
                             tables.each(function () {
                                 var table = $(this);
                                 BootstrapUserInit.DataTable.initTable(table);

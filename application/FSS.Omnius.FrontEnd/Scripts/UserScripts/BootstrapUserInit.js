@@ -63,6 +63,10 @@
 
             $('.data-table', self.context).each(function () {
                 var table = $(this);
+                self.DataTable.initTable(table);
+            });
+        },
+        initTable: function(table) {
 
                 //Select extension init
                 if (table.data('dtselect') == '1') {
@@ -151,7 +155,6 @@
                 table.children("thead").css("visibility", "visible");
                 table.children("tbody").css("visibility", "visible");
                 table.children("tfoot").css("visibility", "visible");
-            });
         },
 
         filter: function () {
