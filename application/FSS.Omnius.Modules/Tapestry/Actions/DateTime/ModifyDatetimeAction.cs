@@ -9,7 +9,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
     {
         public override int Id => 188;
 
-        public override string[] InputVar => new string[] { "Input", "?AddMinutes", "?AddDays", "?SetToLastDayOfMonth" };
+        public override string[] InputVar => new string[] { "Input", "?AddMinutes", "?AddDays", "?SetToLastDayOfMonth", "?b$ToUtc" };
 
         public override string Name => "Modify DateTime";
 
@@ -19,6 +19,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
+            if (vars["Input"] == null || vars["Input"] == DBNull.Value)
+            {
+                outputVars["Result"] = null;
+                return;
+            }
             DateTime dateTime;
 
             try
@@ -42,9 +47,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 dateTime = newDate;
             }
 
-            // TODO: Other modifications: add hours, days, etc. + add timespan
+            if ((bool)vars["ToUtc"] == true)
+            {
+                dateTime = TimeZoneInfo.ConvertTimeToUtc(dateTime);
+            }
 
             outputVars["Result"] = dateTime;
+
+            // TODO: Other modifications: add hours, days, etc. + add timespan
         }
     }
 }

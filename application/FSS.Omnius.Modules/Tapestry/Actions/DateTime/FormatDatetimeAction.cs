@@ -20,11 +20,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            DateTime dateTime = (DateTime)vars["Input"];
-            string format = vars.ContainsKey("Format") ? (string)vars["Format"] : "o";
-            outputVars["Result"] = dateTime.ToLocalTime().ToString(format);
-
-
+            if (!(vars["Input"].GetType() == typeof(DBNull)))
+            {
+                DateTime dateTime = (DateTime)vars["Input"];
+                string format = vars.ContainsKey("Format") ? (string)vars["Format"] : "o";
+                outputVars["Result"] = dateTime.ToLocalTime().ToString(format);
+            }
+            else
+            {
+                outputVars["Result"] = "";
+            }
         }
     }
 }

@@ -532,6 +532,7 @@
     },
 
     getCustomAttributes: function (value, opt) {
+        console.log('calling get attributes');
         var t = $(MBE.options.target);
         var customAttributes = t.attr('data-custom-attributes');
         if (customAttributes && customAttributes.length) {
@@ -543,7 +544,10 @@
                 
                 data.push(attrName + '=' + attrValue + '');
             }
+            console.log(data);
+
             return data.join(';');
+
         }
         else {
             return '';
@@ -551,6 +555,8 @@
     },
 
     setCustomAttributes: function (opt) {
+        var loadedCustAtt = MBE.options.getCustomAttributes();
+        
         var customAttributes = new Array();
         if (opt.value.length) {
             var data = opt.value.split(/; */g);
@@ -562,6 +568,18 @@
             }
         }
         $(this).attr('data-custom-attributes', customAttributes.join(','));
+        //check if any attribute is deleted
+        console.log('calling save attributes');
+
+        for (var i = 0; i < loadedCustAtt.split(/; */g).length; i++){
+            var customAttKey = loadedCustAtt.split(/; */g)[i].split(/=/)[0];
+            console.log(customAttKey);
+            if (customAttKey != "" && jQuery.inArray(customAttKey, customAttributes) == -1) { //if new custAttr arrat has not this attr. we will delete it!
+                $(this).removeAttr(customAttKey);
+            }
+        }
+        
+        console.log(customAttributes);
     }
 };
 

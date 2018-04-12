@@ -12,7 +12,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
     {
         public override int Id => 186;
         public override int? ReverseActionId => null;
-        public override string[] InputVar => new string[] { "TaskName", "Block", "Minutes", "?Button", "?ModelId", "?StartTime" };
+        public override string[] InputVar => new string[] { "TaskName", "Block", "Minutes", "?Button", "?ModelId", "?StartTime", "?b$InputIsUtc" };
         public override string Name => "Register one-time task";
         public override string[] OutputVar => new string[] { "TaskId" };
 
@@ -20,6 +20,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
 
+            bool isutc = vars.ContainsKey("InputIsUtc") ? (bool)vars["InputIsUtc"] : false;
             string hostname = TapestryUtils.GetServerHostName();
             string appName = core.Application.Name;
             string blockName = (string)vars["Block"];
@@ -32,7 +33,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             string targetUrl;
 
-            targetUrl = $"{hostname}/{appName}/{blockName}/Get?modelId={modelId}&User=Scheduler&Password=194GsQwd/AgB4ZZnf_uF";
+            targetUrl = $"{hostname}/{appName}/{blockName}/Get?modelId={modelId}&User=scheduler&Password=194GsQwd/AgB4ZZnf_uF";
 
             if (button != "")
                 targetUrl += $"&button={button}";
@@ -42,8 +43,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if(vars.ContainsKey("StartTime"))
             {
                 var localTime = (DateTime)vars["StartTime"];
-                time = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(localTime, DateTimeKind.Unspecified),
+                if (!isutc)
+                {
+                    time = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(localTime, DateTimeKind.Unspecified),
                     TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time"));
+                }
+                else
+                {
+                    time = localTime;
+                }
             }
             else
             {

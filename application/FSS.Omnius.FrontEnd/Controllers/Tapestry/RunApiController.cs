@@ -39,7 +39,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                 }
                 catch (FormatException)
                 {
-                    block = context.Blocks.FirstOrDefault(b => b.Name == blockIdentify && b.WorkFlow.ApplicationId == core.Application.Id);
+                    block = context.Blocks.FirstOrDefault(b => b.Name.ToLower() == blockIdentify.ToLower() && b.WorkFlow.ApplicationId == core.Application.Id);
                 }
 
                 try

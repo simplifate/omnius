@@ -30,8 +30,8 @@ $(function(){
                                 format: "d.m.Y"
                             }).off('mousewheel');
                             $("#modalProfile #Support_request_table").find(".fa-edit").attr("data-toggle", "modal").attr("data-target", "#modalTicket");
-                            var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#modalProfile #pendingReuquest").add("#modalProfile #transactionerrors").add("#modalProfile #withdrawErrors").add("#modalProfile #LogTable");
-                            tables.each(function () {
+                            var tables = $("#actualTransactions table");                   
+                          	tables.each(function () {
                                 var table = $(this);
                                 BootstrapUserInit.DataTable.initTable(table);
                             });
@@ -85,19 +85,25 @@ $(function(){
             var Pair = $(this).parent().parent().children("td:nth-child(3)").html();
             $("#exchange_heading").html("");
             $("#exchange_body").html("");
-            $("#preloader_pair").css("display", "block");
-            $.ajax({
-                type: 'POST',
-                url: "/Xmu/Exchange?button=headingExchange",
-                data: { 'pairCurr': Pair},
-                success: function (response) {
-                    var x = $(response)
-                    $("#preloader_pair").css("display", "none");
-                    $("#exchange_body").html(x.find("#exchange_body").html());
-                    $("#exchange_heading").html(x.find("#exchange_heading").html());
-                }
-            });
-        }); 
+            $("#preloader_pair").css("display", "block");            
+    		$.ajax({
+                url: '/Persona/Account/GetAntiForgeryToken',
+                type: 'GET',
+                success: function (token) {
+                  $.ajax({
+                    type: 'POST',
+                    url: "/Xmu/Exchange?button=headingExchange",
+                    data: { 'pairCurr': Pair,'__RequestVerificationToken': token},
+                    success: function (response) {
+                        var x = $(response)
+                        $("#preloader_pair").css("display", "none");
+                        $("#exchange_body").html(x.find("#exchange_body").html());
+                        $("#exchange_heading").html(x.find("#exchange_heading").html());
+                    }
+                  });
+            }
+        });
+  });
 });
 
 $(function(){
@@ -149,7 +155,7 @@ $(function(){
                                 format: "d.m.Y"
                             }).off('mousewheel');
                             $("#modalProfile #Support_request_table").find(".fa-edit").attr("data-toggle", "modal").attr("data-target", "#modalTicket");
-                            var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#modalProfile #pendingReuquest").add("#modalProfile #transactionerrors").add("#modalProfile #withdrawErrors").add("#modalProfile #LogTable");
+                            var tables = $("#actualTransactions table");
                             tables.each(function () {
                                 var table = $(this);
                                 BootstrapUserInit.DataTable.initTable(table);
@@ -164,6 +170,7 @@ $(function(){
       	var bui = BootstrapUserInit;
         var btn = $(this);
         var message = btn.data('confirm');
+
 
         bui.confirm(
           message, 
@@ -188,5 +195,6 @@ $(function(){
           null, 
           this
         );
+		document.getElementById("modalProfile").style.overflowY = "auto";
     });
 });

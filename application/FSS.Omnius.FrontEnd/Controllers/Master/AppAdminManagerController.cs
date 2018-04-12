@@ -253,7 +253,7 @@ namespace FSS.Omnius.Controllers.Master
                     {
                         Send(Json.Encode(new { id = "mozaic", type = "info", message = "probíhá aktualizace uživatelského rozhraní" }));
 
-                        foreach (var editorPage in masterApp.MozaicEditorPages)
+                        foreach (var editorPage in masterApp.MozaicEditorPages.Where(x => x.IsDeleted != true))
                         {
                             editorPage.Recompile();
                             string requestedPath = $"{applicationPageViewPath}\\{editorPage.Id}.cshtml";

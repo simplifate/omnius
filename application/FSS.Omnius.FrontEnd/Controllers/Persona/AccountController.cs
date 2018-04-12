@@ -750,6 +750,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             {
                 DBEntities e = DBEntities.instance;
                 User user = e.Users.SingleOrDefault(x => x.Id == model.Id);
+                model.PasswordHash = user.PasswordHash;
+                model.SecurityStamp = user.SecurityStamp;
                 e.Users.AddOrUpdate(user, model);
                 e.SaveChanges();
                 ViewBag.ShowTable = false;

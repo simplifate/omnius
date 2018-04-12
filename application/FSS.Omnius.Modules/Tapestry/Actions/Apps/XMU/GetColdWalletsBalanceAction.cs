@@ -102,7 +102,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         break;
                     case "xvg":
                         var resultXvg = GetResponse(string.Format("https://verge-blockchain.info/ext/getbalance/{0}", coldWallet["address"].ToString()));
-                        if (resultXvg != null)
+                        if (resultXvg != null && resultXvg is JValue)
                         {
                             coldWallet["balance"] = ((JValue)resultXvg).ToObject<double>();
                             hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
@@ -143,6 +143,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         break;
                 }
             }
+            db.SaveChanges();
         }
 
         private JToken GetResponse(string url)

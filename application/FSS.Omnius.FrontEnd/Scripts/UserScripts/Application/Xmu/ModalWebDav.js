@@ -34,7 +34,7 @@ $(function(){
                         $("#modal_name_profile").html(x.find("#modal_name_profile").html());
                     }
                 });
-            }
+            };
 
     $(document).on("click", "#deleteImage", function (e) {
       	var bui = BootstrapUserInit;
@@ -63,5 +63,6 @@ $(function(){
           null, 
           this
         );
+        document.getElementById("modalProfile").style.overflowY = "auto";
     });
 });
