@@ -308,6 +308,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<WS> WSs { get; set; }
         public virtual DbSet<API> APIs { get; set; }
         public virtual DbSet<TCPSocketListener> TCPListeners { get; set; }
+        public virtual DbSet<RabbitMQ> RabbitMQs { get; set; }
 
         // Persona
         public virtual DbSet<ActionRuleRight> ActionRuleRights { get; set; }
@@ -466,6 +467,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<TCPSocketListener>()
                 .HasRequired(r => r.Application)
                 .WithMany(a => a.TCPListeners)
+                .HasForeignKey(r => r.ApplicationId);
+
+            modelBuilder.Entity<RabbitMQ>()
+                .HasRequired(r => r.Application)
+                .WithMany(a => a.RabbitMQs)
                 .HasForeignKey(r => r.ApplicationId);
 
             // Persona

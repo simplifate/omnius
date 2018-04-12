@@ -39,6 +39,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             EmailTemplates = new HashSet<EmailTemplate>();
             IncomingEmailRule = new List<IncomingEmailRule>();
             TCPListeners = new List<TCPSocketListener>();
+            RabbitMQs = new List<RabbitMQ>();
         }
         
         public int Id { get; set; }
@@ -120,7 +121,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         // Nexus
         //[ImportExport(ELinkType.Child, Branch = "Nexus")]
         public virtual ICollection<TCPSocketListener> TCPListeners { get; set; }
-        
+
+        //[ImportExport(ELinkType.Child, Branch = "Nexus")]
+        public virtual ICollection<RabbitMQ> RabbitMQs { get; set; }
+
         private Application _similarApp;
         public Application similarApp
         {

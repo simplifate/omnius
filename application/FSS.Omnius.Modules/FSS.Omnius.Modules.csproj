@@ -94,6 +94,9 @@
       <HintPath>..\packages\Microsoft.Azure.Common.2.0.4\lib\net45\Microsoft.Azure.Common.NetFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net40\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=2.26.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.26.305102204\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
       <Private>True</Private>
@@ -142,6 +145,9 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.5.0.1\lib\net451\RabbitMQ.Client.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveSockets, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ReactiveSockets.0.2.6\lib\net40\ReactiveSockets.dll</HintPath>
@@ -301,6 +307,7 @@
     <Compile Include="Entitron\Entity\Nexus\extdb.cs" />
     <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
     <Compile Include="Entitron\Entity\Nexus\api.cs" />
+    <Compile Include="Entitron\Entity\Nexus\RabbitMQ.cs" />
     <Compile Include="Entitron\Entity\Nexus\TCPSocketListener.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
     <Compile Include="Entitron\Entity\Persona\ActionRuleRight.cs" />
@@ -1228,6 +1235,10 @@
     <Compile Include="Migrations\201803150821030_athenaUniqueness.Designer.cs">
       <DependentUpon>201803150821030_athenaUniqueness.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804121453288_rabbitmq.cs" />
+    <Compile Include="Migrations\201804121453288_rabbitmq.Designer.cs">
+      <DependentUpon>201804121453288_rabbitmq.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1241,6 +1252,8 @@
     <Compile Include="Nexus\Service\NexusExtDBBaseService.cs" />
     <Compile Include="Nexus\Service\NexusExtDBResult.cs" />
     <Compile Include="Nexus\Service\NexusExtDBRethingService.cs" />
+    <Compile Include="Nexus\Service\RabbitMQListenerService.cs" />
+    <Compile Include="Nexus\Service\RabbitMQService.cs" />
     <Compile Include="Nexus\Service\TCPSocketListenerService.cs" />
     <Compile Include="Nexus\Service\INexusLdapService.cs" />
     <Compile Include="Nexus\Service\INexusExtDBService.cs" />
@@ -2081,6 +2094,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803150821030_athenaUniqueness.resx">
       <DependentUpon>201803150821030_athenaUniqueness.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804121453288_rabbitmq.resx">
+      <DependentUpon>201804121453288_rabbitmq.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

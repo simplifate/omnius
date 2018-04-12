@@ -1,0 +1,180 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.RabbitMQ
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+
+@using (Html.BeginRouteForm("Nexus", new { @action = "Save" }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "Úprava RabbitMQ" : "Nový RabbitMQ")</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.HostName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.HostName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.HostName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.QueueName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.QueueName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.QueueName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ApplicationId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.ApplicationId, (List<SelectListItem>)ViewData["ApplicationList"], "-- vyberte --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ApplicationId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.BlockName, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.BlockName, new List<SelectListItem>(), Model != null ? "-- vyberte --" : "-- vyberte aplikaci --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.BlockName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.WorkflowName, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.WorkflowName, new List<SelectListItem>(), Model != null ? "-- vyberte --" : "-- vyberte blok --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.BlockName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Uložit" class="btn btn-omnius-blue" />
+        </div>
+    </div>
+</div>
+}
+
+<script type="text/javascript">
+
+    var RabbitMQ = {
+
+        selectedBlockName: '@(Model != null ? Model.BlockName : "")',
+        selectedWorkflowName: '@(Model != null ? Model.WorkflowName : "")',
+
+        init: function ()
+        {
+            var self = RabbitMQ;
+            
+            $('#ApplicationId').change(self.loadBlockList);
+            $('#BlockName').change(self.loadWorkflowList);
+            
+            $('#ApplicationId').change();
+        },
+
+        loadBlockList: function()
+        {
+            var self = RabbitMQ;
+            self.clearBlockList();
+
+            if (this.value.length) {
+                $.ajax('/Nexus/RabbitMQ/LoadBlockList', {
+                    type: 'post',
+                    dataType: 'json',
+                    data: { appId: this.value, selectedBlockName: self.selectedBlockName },
+                    success: self.setBlockList
+                });
+            }
+        },
+
+        clearBlockList: function()
+        {
+            $('#BlockName > option').remove();
+            $('#BlockName').append('<option value="">' + ($('#ApplicationId').val().length ? '-- vyberte --' : '-- vyberte aplikaci --') + '</option>');
+        },
+
+        setBlockList: function(data)
+        {
+            var self = RabbitMQ;
+            self.setBlockItem(data);
+            $('#BlockName').change();
+        },
+
+        setBlockItem: function(item)
+        {
+            var opt = $('<option></option>');
+            opt.html("---------------------".substr(0, item.Level * 2) + (item.Level == 0 ? '' : ' ') + item.Name);
+            opt.attr('value', item.Value);
+
+            if (item.IsMetablock) opt.attr({ 'disabled': true, 'style': 'font-weight: bold; font-style: italic' });
+            if (item.Selected) opt.attr('selected', true);
+
+            $('#BlockName').append(opt);
+
+            if (item.ChildBlocks && item.ChildBlocks.length) {
+                for (var i = 0; i < item.ChildBlocks.length; i++) {
+                    RabbitMQ.setBlockList(item.ChildBlocks[i]);
+                }
+            }
+        },
+
+        loadWorkflowList: function () {
+            var self = RabbitMQ;
+            self.clearWorkflowList();
+
+            if (this.value.length) {
+                $.ajax('/Nexus/RabbitMQ/LoadWorkflowList', {
+                    type: 'post',
+                    dataType: 'json',
+                    data: { blockName: this.value, appId: $('#ApplicationId').val(), selectedWorkflowName: self.selectedWorkflowName },
+                    success: self.setWorkflowList
+                });
+            }
+        },
+
+        clearWorkflowList: function () {
+            $('#WorkflowName > option').remove();
+            $('#WorkflowName').append('<option value="">' + ($('#BlockName').val().length ? '-- vyberte --' : '-- vyberte blok --') + '</option>');
+        },
+
+        setWorkflowList: function (data) {
+            for (var i in data) {
+                var item = data[i];
+                var opt = $('<option></option>');
+                opt.html(item.Text);
+                opt.attr('value', item.Value);
+
+                if (item.Selected) opt.attr('selected', true);
+
+                $('#WorkflowName').append(opt);
+            }
+        }
+    };
+
+    $(RabbitMQ.init);
+
+
+</script>
+
+
+

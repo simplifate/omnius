@@ -63,6 +63,12 @@ namespace FSS.Omnius.FrontEnd.Controllers.Nexus
                             Name = item.DB_Alias,
                         });
                     }
+                    foreach(RabbitMQ item in context.RabbitMQs.Where(q => q.Type == ChannelType.SEND).OrderBy(q => q.Name)) {
+                        result.RabbitMQ.Add(new AjaxTransferRabbitMQ() {
+                            Id = item.Id,
+                            Name = item.Name,
+                        });
+                    }
 
                     return result;
                 }

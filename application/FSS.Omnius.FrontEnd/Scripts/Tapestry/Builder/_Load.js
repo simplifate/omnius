@@ -452,6 +452,18 @@
                 TB.toolbox.createItem(libId, 'Integrations', 'integrationItem', params, label);
             }
         }
+
+        // RabbitMQ
+        for (var i = 0; i < data.RabbitMQ.length; i++) {
+            var params = {};
+            var label = 'RabbitMQ: ' + data.RabbitMQ[i].Name;
+            var isUsed = state.filter(function (value) { return value.Label == label; }).length;
+
+            var libId = TB.library.createItem('Integration', 'RabbitMQ', params, label, '', isUsed);
+            if (isUsed) {
+                TB.toolbox.createItem(libId, 'Integrations', 'integrationItem', params, label);
+            }
+        }
     },
 
     librarySetPage: function(data)

@@ -12,7 +12,7 @@ using FSS.Omnius.Modules.Nexus.Service;
 namespace FSS.Omnius.Controllers.Nexus
 {
     [PersonaAuthorize(NeedsAdmin = true, Module = "Nexus")]
-    public class TCPSocketController : Controller
+    public class RabbitMQController : Controller
     {
         public ActionResult Index()
         {
@@ -26,7 +26,7 @@ namespace FSS.Omnius.Controllers.Nexus
             ViewData["TCPSocketCount"] = e.TCPListeners.Count();
             ViewData["RabbitMQCount"] = e.RabbitMQs.Count();
 
-            return View(e.TCPListeners.ToList());
+            return View(e.RabbitMQs.ToList());
         }
 
         #region configuration methods
@@ -41,11 +41,11 @@ namespace FSS.Omnius.Controllers.Nexus
             }
             ViewData["ApplicationList"] = appList;
 
-            return View("~/Views/Nexus/TCPSocket/Form.cshtml");
+            return View("~/Views/Nexus/RabbitMQ/Form.cshtml");
         }
 
         [HttpPost]
-        public ActionResult Save(TCPSocketListener model, int? id)
+        public ActionResult Save(RabbitMQ model, int? id)
         {
             DBEntities e = DBEntities.instance;
             if (ModelState.IsValid)
@@ -53,36 +53,31 @@ namespace FSS.Omnius.Controllers.Nexus
                 // Záznam ji. existuje - pouze upravujeme
                 if (!model.Id.Equals(null))
                 {
-                    TCPSocketListener row = e.TCPListeners.Single(m => m.Id == model.Id);
-                    row.ApplicationId = model.ApplicationId;
-                    row.BlockName = model.BlockName;
-                    row.WorkflowName = model.WorkflowName;
-                    row.Name = model.Name;
-                    row.Port = model.Port;
-                    row.BufferSize = model.BufferSize;
-
-                    e.SaveChanges();
+                    RabbitMQ row = e.RabbitMQs.Single(m => m.Id == model.Id);
+                    e.Entry(row).CurrentValues.SetValues(model);
                 }
                 else
                 {
-                    e.TCPListeners.Add(model);
+                    e.RabbitMQs.Add(model);
                     e.SaveChanges();
                 }
 
-                TCPSocketListenerService.AddListener(model);
+                e.SaveChanges();
+
+                RabbitMQListenerService.AddListener(model);
 
                 return RedirectToRoute("Nexus", new { @action = "Index" });
             }
             else
             {
-                return View("~/Views/Nexus/TCPSocket/Form.cshtml", model);
+                return View("~/Views/Nexus/RabbitMQ/Form.cshtml", model);
             }
         }
         
         public ActionResult Edit(int? id)
         {
             DBEntities e = DBEntities.instance;
-            TCPSocketListener model = e.TCPListeners.Single(l => l.Id == id);
+            RabbitMQ model = e.RabbitMQs.Single(l => l.Id == id);
 
             List<SelectListItem> appList = new List<SelectListItem>();
             foreach (Application a in e.Applications.OrderBy(a => a.Name)) {
@@ -91,18 +86,18 @@ namespace FSS.Omnius.Controllers.Nexus
             
             ViewData["ApplicationList"] = appList;
             
-            return View("~/Views/Nexus/TCPSocket/Form.cshtml", model);
+            return View("~/Views/Nexus/RabbitMQ/Form.cshtml", model);
         }
 
         public ActionResult Delete(int? id)
         {
             DBEntities e = DBEntities.instance;
-            TCPSocketListener row = e.TCPListeners.Single(l => l.Id == id);
+            RabbitMQ row = e.RabbitMQs.Single(l => l.Id == id);
 
             if (row == null)
                 throw new Exception("Došlo k neoèekávané chybì");
 
-            e.TCPListeners.Remove(row);
+            e.RabbitMQs.Remove(row);
             e.SaveChanges(); 
 
             return RedirectToRoute("Nexus", new { @action = "Index" });
@@ -179,15 +174,5 @@ namespace FSS.Omnius.Controllers.Nexus
 
 
         #endregion
-    }
-
-    class BlockJsonResponse
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }
-        public bool Selected { get; set; }
-        public bool IsMetablock { get; set; }
-        public int Level { get; set; }
-        public List<BlockJsonResponse> ChildBlocks { get; set; }
     }
 }

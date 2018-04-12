@@ -37,6 +37,9 @@ namespace FSS.Omnius.FrontEnd.App_Start
 
             // Start TCP socket listeners if any
             TCPSocketListenerService.Refresh();
+
+            // Start RabbitMQ listeners if any
+            RabbitMQListenerService.Refresh();
         }
     }
 }

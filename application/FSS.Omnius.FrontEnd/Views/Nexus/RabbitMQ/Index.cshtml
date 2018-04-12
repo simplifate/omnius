@@ -1,0 +1,69 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Nexus
+@model List<RabbitMQ>
+@{
+    Page.Title = "Omnius Nexus";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "nexusModule";
+}
+@Html.Partial("~/Views/Nexus/Nexus/Header.cshtml")
+<div id="lowerPanel">
+    @Html.Partial("~/Views/Nexus/Nexus/Decoration.cshtml")
+    <div id="ldapMenuArea" class="moduleSubMenuArea">
+        @Ajax.RouteLink("Přidat RabbitMQ", "Nexus", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
+    </div>
+    <div id="lowerPanelContainer">
+        <h4 class="variableListTitle">Seznam TCP socketů</h4>
+        <table id="socketTable" class="table table-bordered table-striped table-responsive table-omnius">
+-            <colgroup>
+                <col>
+                <col>           
+                <col>
+                <col>   
+                <col>  
+                <col>
+                <col width="80">
+                <col width="80">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Aplikace</th>
+                    <th>Blok</th>
+                    <th>Workflow</th>
+                    <th>Hostname</th>
+                    <th>Název fronty</th>
+                    <th>Název</th>
+                    <th>Typ</th>
+                    <th>Akce</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    foreach (RabbitMQ q in Model.OrderBy(m => m.Application.Name).ThenBy(m => m.BlockName).ThenBy(m => m.WorkflowName).ThenBy(m => m.Name))
+                    {
+                        <tr>
+                            <td>@q.Application.Name</td>
+                            <td>@q.BlockName</td>
+                            <td>@q.WorkflowName</td>
+                            <td>@q.HostName</td>
+                            <td>@q.QueueName</td>
+                            <td>@q.Name</td>
+                            <td>@(q.Type == ChannelType.SEND ? "send" : "receive")</td>
+                            <td class="table-row-action">
+                                @Ajax.RouteLink(" ", "Nexus", new { @action = "Edit", @id = q.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
+                                @Html.RouteLink(" ", "Nexus", new { @action = "Delete", @id = q.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete RabbitMQ smazat?')" })
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8">Nemáte nakonfigurovány žádné RabbitMQ</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div id="ContentContainer"></div>
+    </div>
+</div>

@@ -281,6 +281,7 @@
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
+    <Compile Include="Controllers\Nexus\RabbitMQController.cs" />
     <Compile Include="Controllers\Nexus\TCPSocketController.cs" />
     <Compile Include="Controllers\Nexus\NexusApiController.cs" />
     <Compile Include="Controllers\Nexus\WebDAVController.cs" />
@@ -2238,6 +2239,10 @@
     <Content Include="Views\App\Xmu\Page\Bootstrap\565.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\566.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\567.cshtml" />
+    <Content Include="Views\Nexus\TCPSocket\Form.cshtml" />
+    <Content Include="Views\Nexus\TCPSocket\Index.cshtml" />
+    <Content Include="Views\Nexus\RabbitMQ\Form.cshtml" />
+    <Content Include="Views\Nexus\RabbitMQ\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
