@@ -6581,7 +6581,7 @@ TB.wizard = {
         var vars = [];
         if (source) {
             for (var i = 0; i < source.length; i++) {
-                var m = source[i].match(/^(\?)?([a-z]\$)?([a-z0-9]+)(\[(index)?\])?(\[([^\]]*)\])?$/i);
+                var m = source[i].match(/^(\?)?([a-z]\$)?([a-zA-Z0-9_]+)(\[(index)?\])?(\[([^\]]*)\])?$/i);
                 // 1 = ?    = volitelná?
                 // 2 = s$   = typ
                 // 3 = název
@@ -10203,11 +10203,11 @@ DD.lock = {
 
     appId: null, //current app id
     currentUserId: null, //current user id
-    currentUserName:null, //currentUserName
+    currentUserName: null, //currentUserName
     isLockedForCurrentUser: false,
     isLocked: false,
     CurrentSchemeCommitId: null,
-    
+
     init: function () {
         pageSpinner.show();
         var self = DD.lock;
@@ -10249,10 +10249,7 @@ DD.lock = {
         pageSpinner.show();
         var appId = self.appId;
         var userId = self.currentUserId;
-        var CurrentSchemeCommitId = -1;
-        if (DD.lock.CurrentSchemeCommitId != null) {
-            CurrentSchemeCommitId = DD.lock.CurrentSchemeCommitId;
-        }
+        var CurrentSchemeCommitId = DD.lock.CurrentSchemeCommitId;
 
         var url = "/api/database/apps/" + appId + "/isSchemeLocked/" + userId + "/" + CurrentSchemeCommitId;
 
@@ -10266,14 +10263,14 @@ DD.lock = {
 
     },
 
-    _lockScheme: function(result){
+    _lockScheme: function (result) {
         if (result.lockStatusId == 0) //if scheme is not locked
         {
             pageSpinner.show();
             var appId = self.appId;
             var userId = self.currentUserId;
 
-            var url = "/api/database/apps/" + appId + "/LockScheme/" + userId  ;
+            var url = "/api/database/apps/" + appId + "/LockScheme/" + userId;
 
             $.ajax({
                 type: 'GET',
@@ -10307,8 +10304,33 @@ DD.lock = {
             alert('Application scheme has been recently updated,please reload the latest version of it and try again');
         }
         else {
-            alert('Applicaton scheme has been locked by ' + result.lockedForUserName + ' ,please wait untill this user unlocks it');
+            var msg = ('The scheme is currently locked by user ' + result.lockedForUserName + ',are you sure you want to force locking this scheme? It can cause overwriting ' + result.lockedForUserName + '\'s work');
 
+            $('<div></div>').appendTo('body')
+                .html('<div><h6>' + msg + '</h6></div>')
+                .dialog({
+                    modal: true, title: 'Force Lock', zIndex: 10000, autoOpen: true,
+                    width: 'auto', resizable: false,
+                    buttons: {
+                        Yes: function () {
+                            // $(obj).removeAttr('onclick');                                
+                            // $(obj).parents('.Parent').remove();
+
+                            //dosmth
+                            DD.lock._lock();
+
+                            $(this).dialog("close");
+                        },
+                        No: function () {
+                            //do smth
+
+                            $(this).dialog("close");
+                        }
+                    },
+                    close: function (event, ui) {
+                        $(this).remove();
+                    }
+                });
         }
     },
 
@@ -10316,7 +10338,7 @@ DD.lock = {
 
         if (result) {
             $('#btnLockScheme').html('Unlock scheme');
-        } 
+        }
     },
     _onUnlock: function (result) {
 
@@ -10350,17 +10372,37 @@ DD.lock = {
         }
         else if (result.lockStatusId == 2) {  // mohu uložit kdyz lockedUserid == muj id
             saveDialog.dialog("open");
-          
+
         }
         else if (result.lockStatusId == 1) {
-            alert('The scheme is currently locked by user ' + result.lockedForUserName + ',please wait until this user unlock it');
+            var msg = 'The scheme is currently locked by user ' + result.lockedForUserName + ',but u can press Lock button to Force Locking and overwrite his/her work';
+            alert(msg);
         }
         else {
-            alert('The scheme is not locked,please lock the scheme before saving it');
+            //if scheme is not locked, we will lock the scheme for user and show the saving dialog(Update for convenience)
+            DD.lock._lock();
+            saveDialog.dialog("open");
         }
 
+    },
+    _afterSave: function (commitId) {
+        DD.lock.CurrentSchemeCommitId = commitId;
+    },
+
+    _lock: function () {
+        var appId = $('#currentAppId').val();
+        var userId = $('#currentUserId').val();
+
+        var url = "/api/database/apps/" + appId + "/LockScheme/" + userId;
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            complete: pageSpinner.hide,
+            success: DD.lock._onLock
+        });
     }
-  
 };
 
 DD.onInit.push(DD.lock.init);
@@ -13474,6 +13516,7 @@ MBE.options = {
     },
 
     getCustomAttributes: function (value, opt) {
+        console.log('calling get attributes');
         var t = $(MBE.options.target);
         var customAttributes = t.attr('data-custom-attributes');
         if (customAttributes && customAttributes.length) {
@@ -13485,7 +13528,10 @@ MBE.options = {
                 
                 data.push(attrName + '=' + attrValue + '');
             }
+            console.log(data);
+
             return data.join(';');
+
         }
         else {
             return '';
@@ -13493,6 +13539,8 @@ MBE.options = {
     },
 
     setCustomAttributes: function (opt) {
+        var loadedCustAtt = MBE.options.getCustomAttributes();
+        
         var customAttributes = new Array();
         if (opt.value.length) {
             var data = opt.value.split(/; */g);
@@ -13504,6 +13552,18 @@ MBE.options = {
             }
         }
         $(this).attr('data-custom-attributes', customAttributes.join(','));
+        //check if any attribute is deleted
+        console.log('calling save attributes');
+
+        for (var i = 0; i < loadedCustAtt.split(/; */g).length; i++){
+            var customAttKey = loadedCustAtt.split(/; */g)[i].split(/=/)[0];
+            console.log(customAttKey);
+            if (customAttKey != "" && jQuery.inArray(customAttKey, customAttributes) == -1) { //if new custAttr arrat has not this attr. we will delete it!
+                $(this).removeAttr(customAttKey);
+            }
+        }
+        
+        console.log(customAttributes);
     }
 };
 

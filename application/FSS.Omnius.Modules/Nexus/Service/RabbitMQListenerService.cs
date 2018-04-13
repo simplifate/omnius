@@ -62,23 +62,23 @@ namespace FSS.Omnius.Modules.Nexus.Service
                         try {
                             PersonaAppRole role = db.AppRoles.FirstOrDefault(r => r.Name == "System" && r.ApplicationId == listener.ApplicationId);
                             core.User = db.Users.FirstOrDefault(u => u.Users_Roles.Any(r => r.RoleName == role.Name && r.ApplicationId == role.ApplicationId));
+
+                            OmniusInfo.Log($"Začátek zpracování RabbitMQ: {listener.Name} / Blok {listener.BlockName} / Button {listener.WorkflowName}", OmniusLogSource.Nexus, listener.Application, core.User);
+
+                            FormCollection fc = new FormCollection();
+                            Dictionary<string, object> vars = new Dictionary<string, object>();
+                            vars.Add("__RabbitMQMessage__", message);
+
+                            var runResult = core.Tapestry.run(core.User, block, listener.WorkflowName, -1, fc, 0, null, vars);
+
+                            OmniusInfo.Log($"Konec zpracování RabbitMQ: {listener.Name} / Blok {listener.BlockName} / Button {listener.WorkflowName}", OmniusLogSource.Hermes, listener.Application, core.User);
+
+                            if (runResult.Item1.Errors.Count == 0) {
+                                listeners[args.ConsumerTag].Channel.BasicAck(args.DeliveryTag, false);
+                            }
                         }
                         catch (Exception e) {
                             OmniusInfo.Log($"Chyba při zpracování RabbitMQ: {args.ConsumerTag} ({e})", OmniusLogSource.Nexus, null, null);
-                        }
-
-                        OmniusInfo.Log($"Začátek zpracování RabbitMQ: {listener.Name} / Blok {listener.BlockName} / Button {listener.WorkflowName}", OmniusLogSource.Nexus, listener.Application, core.User);
-
-                        FormCollection fc = new FormCollection();
-                        Dictionary<string, object> vars = new Dictionary<string, object>();
-                        vars.Add("__RabbitMQMessage__", message);
-
-                        var runResult = core.Tapestry.run(core.User, block, listener.WorkflowName, -1, fc, 0, null, vars);
-
-                        OmniusInfo.Log($"Konec zpracování RabbitMQ: {listener.Name} / Blok {listener.BlockName} / Button {listener.WorkflowName}", OmniusLogSource.Hermes, listener.Application, core.User);
-
-                        if(runResult.Item1.Errors.Count == 0) {
-                            listeners[args.ConsumerTag].Channel.BasicAck(args.DeliveryTag, false);
                         }
                     }
                 }
@@ -98,8 +98,13 @@ namespace FSS.Omnius.Modules.Nexus.Service
             }
 
             RabbitMQListener listener = new RabbitMQListener() {
-                Factory = new ConnectionFactory() { HostName = model.HostName }
+                Factory = new ConnectionFactory() { HostName = model.HostName, Port = model.Port }
             };
+
+            if(!string.IsNullOrEmpty(model.Password) && !string.IsNullOrEmpty(model.UserName)) {
+                listener.Factory.UserName = model.UserName;
+                listener.Factory.Password = model.Password;
+            }
 
             listener.Connection = listener.Factory.CreateConnection();
             listener.Channel = listener.Connection.CreateModel();

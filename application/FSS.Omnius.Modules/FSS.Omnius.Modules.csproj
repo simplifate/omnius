@@ -1239,6 +1239,14 @@
     <Compile Include="Migrations\201804121453288_rabbitmq.Designer.cs">
       <DependentUpon>201804121453288_rabbitmq.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804130850131_rabbitmq2.cs" />
+    <Compile Include="Migrations\201804130850131_rabbitmq2.Designer.cs">
+      <DependentUpon>201804130850131_rabbitmq2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804130900224_rabbitmq3.cs" />
+    <Compile Include="Migrations\201804130900224_rabbitmq3.Designer.cs">
+      <DependentUpon>201804130900224_rabbitmq3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -2100,6 +2108,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804121453288_rabbitmq.resx">
       <DependentUpon>201804121453288_rabbitmq.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804130850131_rabbitmq2.resx">
+      <DependentUpon>201804130850131_rabbitmq2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804130900224_rabbitmq3.resx">
+      <DependentUpon>201804130900224_rabbitmq3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

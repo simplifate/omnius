@@ -10,55 +10,71 @@
     </svg>
     <img class="decorationWatcheye" src="~/Content/Images/watcheye_small.png" />
     <div class="tileMenuArea">
-        <a href="/Nexus/LDAP">
-            <div id="nexusMenuLDAP" class="tileMenuItem">
-                <div class="buttonLabel">LDAP</div>
-                <div class="fa fa-book"></div>
-                <div class="itemCount">@ViewData["LdapServersCount"]</div>
+        <div class="tile-justified">
+            <div class="tile-cell">
+                <a href="/Nexus/LDAP">
+                    <div id="nexusMenuLDAP" class="tileMenuItem">
+                        <div class="buttonLabel">LDAP</div>
+                        <div class="fa fa-book"></div>
+                        <div class="itemCount">@ViewData["LdapServersCount"]</div>
+                    </div>
+                </a>
             </div>
-        </a>
-        <a href="/Nexus/WS">
-            <div id="nexusMenuWebServices" class="tileMenuItem">
-                <div class="buttonLabel">WebServices</div>
-                <div class="fa fa-globe"></div>
-                <div class="itemCount">@ViewData["WebServicesCount"]</div>
+            <div class="tile-cell">
+                <a href="/Nexus/WS">
+                    <div id="nexusMenuWebServices" class="tileMenuItem">
+                        <div class="buttonLabel">WebServices</div>
+                        <div class="fa fa-globe"></div>
+                        <div class="itemCount">@ViewData["WebServicesCount"]</div>
+                    </div>
+                </a>
             </div>
-        </a>
-        <a href="/Nexus/ExtDB">
-            <div id="nexusMenuExtDB" class="tileMenuItem">
-                <div class="buttonLabel">Externí databáze</div>
-                <div class="fa fa-database"></div>
-                <div class="itemCount">@ViewData["ExtDatabasesCount"]</div>
+            <div class="tile-cell">
+                <a href="/Nexus/ExtDB">
+                    <div id="nexusMenuExtDB" class="tileMenuItem">
+                        <div class="buttonLabel">Externí databáze</div>
+                        <div class="fa fa-database"></div>
+                        <div class="itemCount">@ViewData["ExtDatabasesCount"]</div>
+                    </div>
+                </a>
             </div>
-        </a>
-        <a href="/Nexus/WebDAV">
-            <div id="nexusMenuWebDav" class="tileMenuItem">
-                <div class="buttonLabel">WebDAV</div>
-                <div class="fa fa-folder"></div>
-                <div class="itemCount">@ViewData["WebDavServersCount"]</div>
+            <div class="tile-cell">
+                <a href="/Nexus/WebDAV">
+                    <div id="nexusMenuWebDav" class="tileMenuItem">
+                        <div class="buttonLabel">WebDAV</div>
+                        <div class="fa fa-folder"></div>
+                        <div class="itemCount">@ViewData["WebDavServersCount"]</div>
+                    </div>
+                </a>
             </div>
-        </a>
-        <a href="/Nexus/API">
-            <div id="nexusMenuAPI" class="tileMenuItem">
-                <div class="buttonLabel">API</div>
-                <div class="fa fa-cloud-upload"></div>
-                <div class="itemCount">@ViewData["APICount"]</div>
+            <div class="tile-cell">
+                <a href="/Nexus/API">
+                    <div id="nexusMenuAPI" class="tileMenuItem">
+                        <div class="buttonLabel">API</div>
+                        <div class="fa fa-cloud-upload"></div>
+                        <div class="itemCount">@ViewData["APICount"]</div>
+                    </div>
+                </a>
             </div>
-        </a>
-        <a href="/Nexus/TCPSocket">
-            <div id="nexusTCPSocket" class="tileMenuItem">
-                <div class="buttonLabel">TCP sockets</div>
-                <div class="fa fa-play-circle-o fa-rotate-270"></div>
-                <div class="itemCount">@ViewData["TCPSocketCount"]</div>
+            <div class="tile-cell">
+                <a href="/Nexus/TCPSocket">
+                    <div id="nexusTCPSocket" class="tileMenuItem">
+                        <div class="buttonLabel">TCP sockets</div>
+                        <div class="fa fa-play-circle-o fa-rotate-270"></div>
+                        <div class="itemCount">@ViewData["TCPSocketCount"]</div>
+                    </div>
+                </a>
             </div>
-        </a>
-        <a href="/Nexus/RabbitMQ">
-            <div id="nexusRabbitMQ" class="tileMenuItem">
-                <div class="buttonLabel">RabbitMQ</div>
-                <div class="fa fa-list-alt fa-rotate-270"></div>
-                <div class="itemCount">@ViewData["RabbitMQ"]</div>
+            <div class="tile-cell">
+                <a href="/Nexus/RabbitMQ">
+                    <div id="nexusRabbitMQ" class="tileMenuItem">
+                        <div class="buttonLabel">RabbitMQ</div>
+                        <div class="fa fa-list-alt"></div>
+                        <div class="itemCount">@ViewData["RabbitMQCount"]</div>
+                    </div>
+                </a>
             </div>
-        </a>
+        </div>
     </div>
     <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
 </div>

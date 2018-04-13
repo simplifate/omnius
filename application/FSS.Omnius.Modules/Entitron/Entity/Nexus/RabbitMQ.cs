@@ -23,12 +23,22 @@
         public string HostName { get; set; }
 
         [Required]
+        [Display(Name = "Port")]
+        public int Port { get; set; }
+
+        [Required]
         [Display(Name = "Queue name")]
         public string QueueName { get; set; }
 
         [Required]
         [Display(Name = "Type")]
         public ChannelType Type { get; set; }
+
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
+        
+        [Display(Name = "Password")]
+        public string Password { get; set; }
 
         [Required]
         [Display(Name = "Block")]
