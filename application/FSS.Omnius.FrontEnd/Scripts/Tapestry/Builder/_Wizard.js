@@ -323,7 +323,6 @@
             var index = $(this).find('.control-label').data('index');
             var dataType = $(this).find('select[name=var_type]').val();
             var value = $(this).find('input[name=var_value], select[name=var_value]').not(':disabled').val();
-
             if (value.length) {
                 inputVars.push(variable + (typeof index != 'undefined' ? '[' + index + ']' : '') + '=' + (dataType == '_var_' ? '' : dataType) + value);
             }
@@ -497,7 +496,7 @@
             add.click(TB.wizard._addArrayItem);
             del.click(TB.wizard._deleteArrayItem);
 
-            label.attr('data-index', index);
+            label.data('index', index);
         }
 
         if (inputVar.required) {
@@ -855,7 +854,7 @@
         var newGroup = lastGroup.clone(true);
         var newLabel = newGroup.find('.control-label')
         
-        newLabel.attr('data-index', newIndex).html(newLabel.html().replace(/\[\d+\]/, '[' + newIndex + ']'));
+        newLabel.data('index', newIndex).html(newLabel.html().replace(/\[\d+\]/, '[' + newIndex + ']'));
         newGroup.find('[name=var_value]').val('');
         newGroup.insertAfter(lastGroup);
 
@@ -871,7 +870,7 @@
         group.remove();
 
         $('.control-label[data-invar=' + inputVar + ']').each(function (index) {
-            $(this).attr('data-index', index).html(this.innerHTML.replace(/\[\d+\]/, '[' + index + ']'));
+            $(this).data('index', index).html(this.innerHTML.replace(/\[\d+\]/, '[' + index + ']'));
         });
     }
 };
