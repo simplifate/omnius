@@ -1247,6 +1247,10 @@
     <Compile Include="Migrations\201804130900224_rabbitmq3.Designer.cs">
       <DependentUpon>201804130900224_rabbitmq3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804130946190_rabbitmq4.cs" />
+    <Compile Include="Migrations\201804130946190_rabbitmq4.Designer.cs">
+      <DependentUpon>201804130946190_rabbitmq4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -2114,6 +2118,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804130900224_rabbitmq3.resx">
       <DependentUpon>201804130900224_rabbitmq3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804130946190_rabbitmq4.resx">
+      <DependentUpon>201804130946190_rabbitmq4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

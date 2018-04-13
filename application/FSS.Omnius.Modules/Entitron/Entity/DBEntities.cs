@@ -470,7 +470,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(r => r.ApplicationId);
 
             modelBuilder.Entity<RabbitMQ>()
-                .HasRequired(r => r.Application)
+                .HasOptional(r => r.Application)
                 .WithMany(a => a.RabbitMQs)
                 .HasForeignKey(r => r.ApplicationId);
 

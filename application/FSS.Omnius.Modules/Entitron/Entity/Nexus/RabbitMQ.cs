@@ -40,17 +40,15 @@
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Required]
         [Display(Name = "Block")]
         public string BlockName { get; set; }
 
-        [Required]
         [Display(Name = "Workflow")]
         public string WorkflowName { get; set; }
 
         [Display(Name = "Application")]
         [ImportExport(ELinkType.Parent, typeof(Application))]
-        public int ApplicationId { get; set; }
+        public int? ApplicationId { get; set; }
 
         [ImportExport(ELinkType.Parent)]
         public virtual Application Application { get; set; }

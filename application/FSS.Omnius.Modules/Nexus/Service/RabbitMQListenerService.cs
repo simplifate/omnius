@@ -53,7 +53,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
             using (DBEntities db = new DBEntities()) {
                 Entitron.Entity.Nexus.RabbitMQ listener = db.RabbitMQs.Where(q => q.Name == args.ConsumerTag).FirstOrDefault();
                 if (listener != null) {
-                    Block block = GetBlockWithWF(db, listener.ApplicationId, listener.BlockName.RemoveDiacritics());
+                    Block block = GetBlockWithWF(db, listener.ApplicationId.Value, listener.BlockName.RemoveDiacritics());
 
                     if (block != null) {
                         var core = new CORE.CORE();
