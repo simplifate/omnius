@@ -1441,7 +1441,7 @@ $(function () {
                         if ($(".tapestryToolbox .toolboxCategoryHeader_Templates").hasClass("hiddenCategory"))
                             newToolboxLi.hide();
                     }
-                    else if (["ldap", "ws", "smtp", "webdav", "ExtDB"].indexOf(libType) != -1) {
+                    else if (["ldap", "ws", "smtp", "webdav", "ExtDB", "RabbitMQ"].indexOf(libType) != -1) {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>')
                         $(".tapestryToolbox").append(newToolboxLi);
@@ -13104,9 +13104,14 @@ MBE.options = {
 
         var lb = $('<label class="control-label col-xs-2">' + opt.label + '</label>');
         var sel = $('<select class="form-control input-sm"></select>');
-        for (var k in opt.options) {
-            sel.append('<option value="' + k + '"' + (opt.get.apply(MBE.options.target, [k, opt]) ? ' selected' : '') + '>' + opt.options[k] + '</option>');
-        };
+        if (typeof opt.options == 'function') {
+            opt.options.apply(sel, [opt]);
+        }
+        else {
+            for (var k in opt.options) {
+                sel.append('<option value="' + k + '"' + (opt.get.apply(MBE.options.target, [k, opt]) ? ' selected' : '') + '>' + opt.options[k] + '</option>');
+            };
+        }
 
         if(typeof opt.attr != 'undefined') {
             sel.data('attr', opt.attr);

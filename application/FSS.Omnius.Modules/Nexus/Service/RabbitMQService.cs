@@ -13,22 +13,25 @@ namespace FSS.Omnius.Modules.Nexus.Service
     {
         private IConnection connection;
         private IModel channel;
-        private string queueName;
+        private Entitron.Entity.Nexus.RabbitMQ mq;
 
-        public RabbitMQService(string hostName, string queueName)
+        public RabbitMQService(Entitron.Entity.Nexus.RabbitMQ mq)
         {
-            var factory = new ConnectionFactory() { HostName = hostName };
+            this.mq = mq;
+
+            var factory = new ConnectionFactory() { HostName = mq.HostName, Port = mq.Port };
+            if(!string.IsNullOrEmpty(mq.UserName) && !string.IsNullOrEmpty(mq.Password)) {
+                factory.UserName = mq.UserName;
+                factory.Password = mq.Password;
+            }
+
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
-            
-            this.queueName = queueName;
         }
 
-        ~RabbitMQService()
+        public void Close()
         {
-            channel.Close();
-            channel.Dispose();
-            connection.Close();
+            connection.Close(0);
             connection.Dispose();
         }
 
@@ -38,7 +41,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
             var properties = channel.CreateBasicProperties();
             properties.Persistent = true;
 
-            channel.BasicPublish("amq.direct", queueName, properties, body);
+            channel.BasicPublish("", mq.QueueName, properties, body);
         }
     }
 }

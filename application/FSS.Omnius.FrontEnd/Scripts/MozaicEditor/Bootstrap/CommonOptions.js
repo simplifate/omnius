@@ -120,9 +120,14 @@
 
         var lb = $('<label class="control-label col-xs-2">' + opt.label + '</label>');
         var sel = $('<select class="form-control input-sm"></select>');
-        for (var k in opt.options) {
-            sel.append('<option value="' + k + '"' + (opt.get.apply(MBE.options.target, [k, opt]) ? ' selected' : '') + '>' + opt.options[k] + '</option>');
-        };
+        if (typeof opt.options == 'function') {
+            opt.options.apply(sel, [opt]);
+        }
+        else {
+            for (var k in opt.options) {
+                sel.append('<option value="' + k + '"' + (opt.get.apply(MBE.options.target, [k, opt]) ? ' selected' : '') + '>' + opt.options[k] + '</option>');
+            };
+        }
 
         if(typeof opt.attr != 'undefined') {
             sel.data('attr', opt.attr);

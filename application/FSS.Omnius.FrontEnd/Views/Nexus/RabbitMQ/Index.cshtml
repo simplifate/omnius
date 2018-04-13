@@ -39,12 +39,12 @@
             <tbody>
                 @if (Model.Count() > 0)
                 {
-                    foreach (RabbitMQ q in Model.OrderBy(m => m.Application.Name).ThenBy(m => m.BlockName).ThenBy(m => m.WorkflowName).ThenBy(m => m.Name))
+                    foreach (RabbitMQ q in Model.OrderBy(m => m.Name))
                     {
                         <tr>
-                            <td>@q.Application.Name</td>
-                            <td>@q.BlockName</td>
-                            <td>@q.WorkflowName</td>
+                            <td>@(q.Application?.Name ?? "")</td>
+                            <td>@(q.BlockName ?? "")</td>
+                            <td>@(q.WorkflowName ?? "")</td>
                             <td>@q.HostName</td>
                             <td>@q.QueueName</td>
                             <td>@q.Name</td>

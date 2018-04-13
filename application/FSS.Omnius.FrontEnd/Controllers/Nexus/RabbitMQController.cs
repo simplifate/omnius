@@ -64,7 +64,9 @@ namespace FSS.Omnius.Controllers.Nexus
 
                 e.SaveChanges();
 
-                RabbitMQListenerService.AddListener(model);
+                if (model.Type == ChannelType.RECEIVE) {
+                    RabbitMQListenerService.AddListener(model);
+                }
 
                 return RedirectToRoute("Nexus", new { @action = "Index" });
             }
