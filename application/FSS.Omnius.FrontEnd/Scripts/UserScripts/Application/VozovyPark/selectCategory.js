@@ -8,7 +8,7 @@ $(function () {
         $("#preloader_profile").css("display", "block");
         $.ajax({
             type: 'GET',
-            url: "/Vozovypark/VozovyParkNew?modelId=" + userId,
+            url: "/VozovyPark,
             success: function (response) {
                 var x = $(response)
                 $("#preloader_profile").css("display", "none");
@@ -26,7 +26,7 @@ $(function () {
         $("#preloader_profile").css("display", "block");
         $.ajax({
             dataType: "html",
-            url: "/Vozovypark/VozovyParkNew?modelId=" + userId,
+            url: "/VozovyPark,
             success: function (response) {
                 var x = $(response)
                 $("#preloader_profile").css("display", "none");
