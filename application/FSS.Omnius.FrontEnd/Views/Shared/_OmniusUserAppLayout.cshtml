@@ -7,6 +7,8 @@
     T t = new T((string)ViewData["locale"]);
     int currentTimestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
     string jsTranslations = JsTranslationsCollection.GetJson(t);
+    Message message = (Message)ViewData["Message"];
+
 }
 <!DOCTYPE html>
 <html lang="@ViewData["locale"]">
@@ -86,7 +88,65 @@
             document.body.classList.add("leftBarHidden");
         }
     </script>
-    <div id="appNotificationArea"></div>
+    <div id="appNotificationArea">
+        @if (message.Success.Count > 0)
+        {
+            foreach (var mes in message.Success)
+            {
+                <div class="app-alert app-alert-success">
+                    <i class="fa fa-check alertSymbol"></i>
+                    <span>
+                        @mes
+                    </span>
+                    <div class="fa fa-times closeAlertIcon">
+                    </div>
+                </div>
+            }
+        }
+        @if (message.Errors.Count > 0)
+        {
+            foreach (var mes in message.Errors)
+            {
+                <div class="app-alert app-alert-error">
+                    <i class="fa fa-exclamation-circle alertSymbol"></i>
+                    <span>
+                        @mes
+                    </span>
+                    <div class="fa fa-times closeAlertIcon">
+                    </div>
+                </div>
+            }
+        }
+        @if (message.Warnings.Count > 0)
+        {
+            foreach (var mes in message.Warnings)
+            {
+                <div class="app-alert app-alert-warning">
+                    <i class="fa fa-exclamation alertSymbol"></i>
+                    <span>
+                        @mes
+                    </span>
+                    <div class="fa fa-times closeAlertIcon">
+                    </div>
+                </div>
+            }
+        }
+        @if (message.Info.Count > 0)
+        {
+            foreach (var mes in message.Info)
+            {
+                <div class="app-alert app-alert-info">
+                    <i class="fa fa-check alertSymbol"></i>
+                    <span>
+                        @mes
+                    </span>
+                    <div class="fa fa-times closeAlertIcon">
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
     <div id="userContentArea">
         @RenderBody()
     </div>

@@ -1555,6 +1555,16 @@ var BootstrapUserInit = {
 
         self.DataTable.init();
         self.loadValidators();
+        $(".closeAlertIcon").on("click", function () {
+            //$("#upperPanel, #lowerPanel, #minimizedUpperPanel, #userContentArea").css({ top: "-=" + newNotification.outerHeight() + "px" });
+            $(this).parents(".app-alert").remove();
+            if (CurrentModuleIs("tapestryModule")) {
+                RecalculateToolboxHeight();
+            } else if (CurrentModuleIs("mozaicEditorModule")) {
+                RecalculateMozaicToolboxHeight();
+            }
+        });
+
     },
 
     confirm: function(message, callbackTrue, callbackFalse, context)

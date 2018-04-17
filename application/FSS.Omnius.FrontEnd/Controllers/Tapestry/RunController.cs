@@ -114,6 +114,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 modelId = Convert.ToInt32(tapestryVars["__ModelId__"]);
 
             // fill data
+            ViewData["Message"] = result.Item1.Message;
             ViewData["appName"] = core.Application.DisplayName;
             ViewData["appSystemName"] = core.Application.Name;
             ViewData["appIcon"] = core.Application.Icon;
