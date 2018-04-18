@@ -303,18 +303,21 @@ $(function () {
             datepicker: true,
             timepicker: false,
             format: "d.m.Y"
-        }).off('mousewheel');
+        });
         $(".input-with-timepicker").datetimepicker({
             datepicker: false,
             timepicker: true,
             step: 5,
             format: "H:i:00"
-        }).off('mousewheel');
+        });
         $(".input-with-datetimepicker").datetimepicker({
             datepicker: true,
             timepicker: true,
             step: 5,
             format: "d.m.Y H:i:00"
-        }).off('mousewheel');
+        });
+
+        $("input").on('mousewheel', (e) => { e.preventDefault(e) });
+        $("input").off('mousewheel');
     }
 });
