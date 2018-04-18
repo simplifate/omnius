@@ -295,6 +295,7 @@
 
 $(function () {
     var bc = $('.mozaicBootstrapPage');
+
     if(bc.length)
     {
         BootstrapUserInit.init(bc);
@@ -317,7 +318,7 @@ $(function () {
             format: "d.m.Y H:i:00"
         });
 
-        $("input").on('mousewheel', (e) => { e.preventDefault(e) });
+        $("input").on('wheel', function(e){ e.preventDefault(e) });
         $("input").off('mousewheel');
     }
 });
