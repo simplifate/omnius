@@ -43,3 +43,14 @@ var CarCategorySelect = {
 };
 
 $($.proxy(CarCategorySelect.init, CarCategorySelect));
+
+$(function () {
+    setTimeout(function () {
+        $("#Cars").each(function () {
+            var STKWarning = $(this).children("td:nth-child(3)").text();
+            if (STKWarning == "True") {
+                $(this).css("background-color", "#ffdede")
+            }
+        })
+    }, 1000);
+});
