@@ -134,7 +134,12 @@ namespace FSS.Omnius.Modules.Tapestry
             ActionRule actionRule = null;
             ActionRule nextRule = GetActionRule(block, _results, buttonId);
             if (nextRule == null)
+            {
+                if (buttonId == "INIT")
+                    _results.Message.Errors.Clear();
+
                 return new Tuple<ActionResult, Block>(_results, block);
+            }
 
             // get inputs
             if (fc != null)
