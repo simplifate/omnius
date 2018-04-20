@@ -52,7 +52,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             var resultEth = GetResponse(string.Format("http://api.etherscan.io/api?module=account&action=balance&address={0}&tag=latest", coldWallet["address"].ToString()));
                             if (resultEth != null)
                             {
-                                coldWallet["balance"] = ((JValue)resultEth["result"]).ToObject<double>() / 1000000000000000000.0;
+                                coldWallet["balance"] = ((JValue)resultEth["result"]).ToObject<double>();
                                 hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
                             }
                             break;
