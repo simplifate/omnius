@@ -1,7 +1,7 @@
 $(dpcument).ready(function(){
   var datum = new Date()
   var date = datum.getDate()
-  if($("input:text#STKWarning").val() >=  date){
-    $("input:text#STKWarning").css("background" , "FF0000");
+  if($("input:text#datumstk").val() >=  date){
+    $("input:text#datumstk").css("background" , "FF0000");
   }
 });
