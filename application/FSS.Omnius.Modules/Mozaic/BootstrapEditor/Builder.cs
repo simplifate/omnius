@@ -574,6 +574,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             }
 
             string sort = sortMode == "value" ? ".OrderBy(p => p.Value)" : "";
+            properties.Add("raw", "true");
 
             html.Append($@"
 <{c.Tag} {attrs}>
