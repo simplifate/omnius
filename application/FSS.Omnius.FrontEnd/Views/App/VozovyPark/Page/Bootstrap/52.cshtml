@@ -2,7 +2,7 @@
 @if((ViewData.ContainsKey("addCar") && (bool)ViewData["addCar"]) == true) {
 <div class="" data-varname="addCar"><div class="row"><div class="col-xs-12"><button type="submit" class="btn btn-primary btn-lg" name="button" value="New_car_button" id="New_car_button" style="margin-bottom: 30px; margin-top: 15px;" >@(@"Přidat vozidlo")</button></div></div></div>
 }<div class="form-group"><label for="" class="col-xs-2">@(@"Kategorie")</label><div class="col-xs-12 col-sm-10">
-<select name="kategorie" class="form-control mbe-active" id="kategorie">
+<select name="kategorie" class="form-control" id="kategorie">
     @(@"<option value="""">None</option>")
     @{ if(ViewData["dropdownData_kategorie"] != null) {
             foreach(var option in ((Dictionary<int, string>)ViewData["dropdownData_kategorie"])) {
