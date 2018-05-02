@@ -38,7 +38,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 
                 var result = SendJsonOverTCP(ipAddress, port, initJson, inputJson, skipInit);
                 outputVars["Result"] = result;
-                outputVars["Error"] = false;
+                outputVars["Error"] = result["error"] == null ? false : true;
 
             }
             catch (Exception)

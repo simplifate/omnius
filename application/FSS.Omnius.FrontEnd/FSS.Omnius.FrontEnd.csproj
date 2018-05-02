@@ -2243,6 +2243,12 @@
     <Content Include="Views\Nexus\TCPSocket\Index.cshtml" />
     <Content Include="Views\Nexus\RabbitMQ\Form.cshtml" />
     <Content Include="Views\Nexus\RabbitMQ\Index.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\568.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\569.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\570.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\576.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\579.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\580.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
