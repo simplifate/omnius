@@ -1,7 +1,7 @@
-$(dpcument).ready(function(){
+$(document).ready(function(){
   var datum = new Date()
   var date = datum.getDate()
-  if($("input:text#datumstk").val() >=  date){
-    $("input:text#datumstk").css("background" , "FF0000");
+  if($("input:date#datumstk").val() >=  date){
+    $("input:date#datumstk").css("background" , "FF0000");
   }
 });
