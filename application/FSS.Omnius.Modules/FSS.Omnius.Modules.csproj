@@ -1293,6 +1293,7 @@
     <Compile Include="Tapestry\Actions\Entitron\AddToJArray.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToListAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AlterTableAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\ImportRethinkDiffAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateTableAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\Dictionary2JtokenAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetHostUrl.cs" />
