@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
@@ -25,7 +26,10 @@ namespace FSS.Omnius.Modules.Nexus.Service
     public class RabbitMQListenerService
     {
         private static Dictionary<string, RabbitMQListener> listeners = new Dictionary<string, RabbitMQListener>();
-        
+        private static List<Entitron.Entity.Nexus.RabbitMQ> failedConnetionList = new List<Entitron.Entity.Nexus.RabbitMQ>();
+        private static bool reconnectIntervalSet = false;
+        private static Timer reconnectTimer;
+
         public RabbitMQListenerService()
         {
             var context = DBEntities.instance;
@@ -106,15 +110,55 @@ namespace FSS.Omnius.Modules.Nexus.Service
                 listener.Factory.Password = model.Password;
             }
 
-            listener.Connection = listener.Factory.CreateConnection();
-            listener.Channel = listener.Connection.CreateModel();
-            listener.Consumer = new EventingBasicConsumer(listener.Channel);
-            listener.Consumer.Received += onNewMessage;
+            try {
+                listener.Connection = listener.Factory.CreateConnection();
+                listener.Channel = listener.Connection.CreateModel();
+                listener.Consumer = new EventingBasicConsumer(listener.Channel);
+                listener.Consumer.Received += onNewMessage;
 
-            listener.Channel.BasicConsume(model.QueueName, false, model.Name, listener.Consumer);
-            listener.Channel.BasicQos(0, 1, false);
+                listener.Channel.BasicConsume(model.QueueName, false, model.Name, listener.Consumer);
+                listener.Channel.BasicQos(0, 1, false);
 
-            listeners.Add(model.Name, listener);
+                listeners.Add(model.Name, listener);
+
+                if(failedConnetionList.Contains(model)) {
+                    failedConnetionList.Remove(model);
+                }
+            }
+            catch(Exception) {
+                if (!failedConnetionList.Contains(model)) {
+                    failedConnetionList.Add(model);
+                }
+            }
+
+            if(failedConnetionList.Count > 0 && !reconnectIntervalSet) {
+                SetInterval();
+            }
+        }
+
+        private static void TryReconnect(Object source, ElapsedEventArgs args)
+        {
+            List<Entitron.Entity.Nexus.RabbitMQ> tempList = new List<Entitron.Entity.Nexus.RabbitMQ>();
+            tempList.AddRange(failedConnetionList);
+
+            foreach(var model in tempList) {
+                AddListener(model);
+            }
+
+            if(failedConnetionList.Count == 0) {
+                reconnectIntervalSet = false;
+                reconnectTimer.Enabled = false;
+            }
+        }
+
+        private static void SetInterval()
+        {
+            reconnectTimer = new Timer(600000);
+
+            reconnectTimer.Elapsed += TryReconnect;
+            reconnectTimer.AutoReset = true;
+            reconnectTimer.Enabled = true;
+            reconnectIntervalSet = true;
         }
 
         public static void RemoveListener(string name)
