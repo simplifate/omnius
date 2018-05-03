@@ -1,4 +1,144 @@
-@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Exchange Balance")</h3></div><div class="panel-body collapse in" aria-expanded="true" style="overflow-x: auto;"><div class="row"><div class="col-xs-12"><p class="text-center" style="font-size: 50px;" id="total_balance">@(@"Total Balance: {var1} €".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("total_balance")).Value ?? "").ToString()))</p></div></div><div class="row">
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Overview")</h3></div><div class="panel-body collapse in" aria-expanded="true" style="overflow-x: auto;"><div class="row"><div class="col-xs-12 col-md-4 col-sm-6"><h3 class="text-center" style="margin-top:0;">@(@"Withdrawals")</h3><div style="height: 150px;" class="graphWrapper" id="hc_withdrawals">@Html.Raw(@"<div id=""hc_withdrawals_graph""></div><style type=""text/css"" rel=""stylesheet"">                    </style><script>hc_withdrawals_graph_chart = new Highcharts.chart({
+  chart: {
+    renderTo: 'hc_withdrawals_graph',
+    backgroundColor: ""#fff"",
+    type: 'pie',
+    events: {
+      render: function() {
+        function getSize(chart, mod) {
+          var box = this.getBBox(),
+              radius = (Math.min(chart.plotWidth, chart.plotHeight)*0.35),
+              scale = Math.min(radius/box.width, radius/box.height);
+          return Math.floor(scale * mod * 10) + 'px';
+        };
+        
+        if(typeof hc_withdrawals_graph_text != 'undefined' && hc_withdrawals_graph_text.element) {
+          hc_withdrawals_graph_text.element.remove();
+          hc_withdrawals_graph_text2.element.remove();
+        }
+		
+        var rigAll = this.series[0].data[0].y;
+        hc_withdrawals_graph_text = this.renderer.text(rigAll).add();
+        hc_withdrawals_graph_text.element.style.fill = '#444';
+        hc_withdrawals_graph_text.element.style.fontSize = '10px';
+        hc_withdrawals_graph_text.element.style.fontSize = getSize.apply(hc_withdrawals_graph_text, [this, 0.8]);
+
+        var textBBox = hc_withdrawals_graph_text.element.getBBox();
+        var x = this.plotLeft + (this.plotWidth  * 0.5) - (textBBox.width * 0.5);
+        var y = this.plotTop  + (this.plotHeight * 0.5);
+        hc_withdrawals_graph_text.attr({x: x, y: y});
+
+        hc_withdrawals_graph_text2 = this.renderer.text('Pending').add();
+        hc_withdrawals_graph_text2.element.style.fill = '#555';
+        hc_withdrawals_graph_text2.element.style.fontSize = '7px';
+        hc_withdrawals_graph_text2.element.style.fontSize = getSize.apply(hc_withdrawals_graph_text2, [this, 0.7]);
+
+        var text2BBox = hc_withdrawals_graph_text2.element.getBBox();
+        var x2 = this.plotLeft + (this.plotWidth * 0.5) - (text2BBox.width * 0.5);
+        var y2 = this.plotTop + (this.plotHeight * 0.5) + (text2BBox.height * 1.1);
+        hc_withdrawals_graph_text2.attr({x: x2, y: y2});
+      }
+    }
+  },
+  credits: {
+    enabled: false
+  },
+  exporting: {
+    enabled: false
+  },
+  title: {
+    text: ''
+  },
+  plotOptions: {
+    pie: {
+      shadow: false,
+      center: ['50%', '50%'],
+      colors: [Highcharts.getOptions().colors[1], Highcharts.getOptions().colors[2],Highcharts.getOptions().colors[4],],
+      borderWidth: 0
+    }
+  },
+  data: {
+    csv: '{var1}'
+  },
+  series: [{
+    name: 'Status',
+    size: '100%',
+    innerSize: '65%',
+    dataLabels: {
+      enabled: false
+    }
+  }]
+});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_withdrawals")).Value ?? "").ToString()))</div></div><div class="col-xs-12 col-md-4 col-sm-6"><h3 class="text-center" style="margin-top:0;">@(@"Deposits")</h3><div style="height: 150px;" class="graphWrapper" id="hc_deposits">@Html.Raw(@"<div id=""hc_deposits_graph""></div><style type=""text/css"" rel=""stylesheet"">                    </style><script>hc_deposits_graph_chart = new Highcharts.chart({
+  chart: {
+    renderTo: 'hc_deposits_graph',
+    backgroundColor: ""#fff"",
+    type: 'pie',
+    events: {
+      render: function() {
+        function getSize(chart, mod) {
+          var box = this.getBBox(),
+              radius = (Math.min(chart.plotWidth, chart.plotHeight)*0.35),
+              scale = Math.min(radius/box.width, radius/box.height);
+          return Math.floor(scale * mod * 10) + 'px';
+        };
+        
+        if(typeof hc_deposits_graph_text != 'undefined' && hc_deposits_graph_text.element) {
+          hc_deposits_graph_text.element.remove();
+          hc_deposits_graph_text2.element.remove();
+        }
+		
+        var rigAll = this.series[0].data[0].y;
+        hc_deposits_graph_text = this.renderer.text(rigAll).add();
+        hc_deposits_graph_text.element.style.fill = '#444';
+        hc_deposits_graph_text.element.style.fontSize = '10px';
+        hc_deposits_graph_text.element.style.fontSize = getSize.apply(hc_deposits_graph_text, [this, 0.8]);
+
+        var textBBox = hc_deposits_graph_text.element.getBBox();
+        var x = this.plotLeft + (this.plotWidth  * 0.5) - (textBBox.width * 0.5);
+        var y = this.plotTop  + (this.plotHeight * 0.5);
+        hc_deposits_graph_text.attr({x: x, y: y});
+
+        hc_deposits_graph_text2 = this.renderer.text('Pending').add();
+        hc_deposits_graph_text2.element.style.fill = '#555';
+        hc_deposits_graph_text2.element.style.fontSize = '7px';
+        hc_deposits_graph_text2.element.style.fontSize = getSize.apply(hc_deposits_graph_text2, [this, 0.7]);
+
+        var text2BBox = hc_deposits_graph_text2.element.getBBox();
+        var x2 = this.plotLeft + (this.plotWidth * 0.5) - (text2BBox.width * 0.5);
+        var y2 = this.plotTop + (this.plotHeight * 0.5) + (text2BBox.height * 1.1);
+        hc_deposits_graph_text2.attr({x: x2, y: y2});
+      }
+    }
+  },
+  credits: {
+    enabled: false
+  },
+  exporting: {
+    enabled: false
+  },
+  title: {
+    text: ''
+  },
+  plotOptions: {
+    pie: {
+      shadow: false,
+      center: ['50%', '50%'],
+      colors: [Highcharts.getOptions().colors[1], Highcharts.getOptions().colors[2],Highcharts.getOptions().colors[4],],
+      borderWidth: 0
+    }
+  },
+  data: {
+    csv: '{var1}'
+  },
+  series: [{
+    name: 'Status',
+    size: '100%',
+    innerSize: '65%',
+    dataLabels: {
+      enabled: false
+    }
+  }]
+});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_deposits")).Value ?? "").ToString()))</div></div><div class="col-xs-12 col-md-4 col-sm-6"><h3 class="text-center" style="margin-top:0;">@(@"Users")</h3><div class="row" style="margin-bottom: 15px;"><div class="col-xs-4"><span class="fa fa-user-plus" style="font-size: 50px; border: 1px solid #555; padding: 15px; border-radius: 50%; color: #fff; background-color: #555;"></span></div><div class="col-xs-8"><p class="" style="font-size: 25px" id="new_users">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("new_users")).Value ?? "").ToString()))</p><p class="">@(@"New")</p></div></div><div class="row"><div class="col-xs-4"><span class="fa fa-users" style="font-size: 50px; border: 1px solid #555; padding: 15px; border-radius: 50%; color: #fff; background-color: #555;"></span></div><div class="col-xs-8"><p class="" style="font-size: 25px" id="kyc_users">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("kyc_users")).Value ?? "").ToString()))</p><p class="mbe-active">@(@"Waiting for approval")</p></div></div></div></div></div></div><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Exchange Balance")</h3></div><div class="panel-body collapse in" aria-expanded="true" style="overflow-x: auto;"><div class="row"><div class="col-xs-12"><p class="text-center" style="font-size: 50px;" id="total_balance">@(@"Total Balance: {var1} €".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("total_balance")).Value ?? "").ToString()))</p></div></div><div class="row">
 @{ if(ViewData.ContainsKey("currency_foreach")) {
         foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DB.DBItem>)ViewData["currency_foreach"]) {
             <div class="">
@@ -70,7 +210,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="Withdrawal_request_table" />
-</div><div class="col-xs-12 col-md-12 mbe-active"><h3 class="text-center" style="margin-top: 10px;">@(@"Transfers")</h3><div class="graphWrapper" id="transfers_highchart" style="height: 400px;">@Html.Raw(@"<div id=""transfers_highchart_graph""></div><script>transfers_highchart_graph_chart = new Highcharts.stockChart({
+</div><div class="col-xs-12 col-md-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Transfers")</h3><div class="graphWrapper" id="transfers_highchart" style="height: 400px;">@Html.Raw(@"<div id=""transfers_highchart_graph""></div><script>transfers_highchart_graph_chart = new Highcharts.stockChart({
   rangeSelector: {
   	selected: $.cookie('transfers_highchart_graph_chart_selectedRange') || 0
   },
