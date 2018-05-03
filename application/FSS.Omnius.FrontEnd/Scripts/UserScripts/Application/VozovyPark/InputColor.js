@@ -4,7 +4,7 @@ $(function() {
         var item = $(this);
         $.ajax({
           type: 'GET',
-          url: '/VozovyPark/EditaceAuta?modelId=' + modelId,
+          url: '/VozovyPark/DataMesic?modelId=' + modelId,
           data: {},
           success: function (data) {
             var x = $(data)
