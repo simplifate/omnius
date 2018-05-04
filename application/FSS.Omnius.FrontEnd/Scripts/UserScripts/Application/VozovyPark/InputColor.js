@@ -1,4 +1,19 @@
 $(function() {
+      $(".notesu").each(function() {
+        var modelId = $(this).attr('date');
+        var item = $(this);
+        $.ajax({
+          type: 'GET',
+          url: '/VozovyPark/DateDate?modelId=' + modelId,
+          data: {},
+          success: function (data) {
+            var x = $(data)
+            $(item).html(x.find("#accordio-1").html());
+      }
+    });
+      });
+			});
+$(function() {
       $(".notes").each(function() {
         var modelId = $(this).attr('month');
         var item = $(this);
