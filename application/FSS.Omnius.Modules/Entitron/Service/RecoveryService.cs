@@ -48,7 +48,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
             /// get context
             _context = DBEntities.appInstance(DBEntities.instance.Applications.SingleOrDefault(a => a.Name == applicationName));
-            
+
             /// if temp app exists
             Application tempApp = _context.Applications.SingleOrDefault(a => a.Name == tempAppName);
             if (tempApp != null)
@@ -185,7 +185,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         }
                         catch (Exception ex)
                         {
-                            throw ex;
+                            throw new Exception($"Exception in Type[{typePair.Key.FullName}], optional param[{prop.Name}], {(oldIdPair.Value.ContainsKey(prop.Name) ? $"value[{oldIdPair.Value[prop.Name]}]" : "no value")}", ex);
                         }
                     }
 
@@ -260,7 +260,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
             _context.SaveChanges();
         }
 
-        private void createEntity(IEnumerable<JToken> jsonEntities, Type currentType, PropertyInfo recurseProp = null)
+        private void createEntity(IEnumerable<JToken> jsonEntities, Type currentType)
         {
             /// init
             IEnumerable<PropertyInfo> currentRequiredProperties = getRequiredProperties(currentType);
@@ -287,37 +287,44 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         HashSet<string> propertiesWithCorrectValues = new HashSet<string>();
                         foreach (PropertyInfo prop in currentRequiredProperties)
                         {
-                            ImportExportAttribute attr = prop.GetCustomAttribute<ImportExportAttribute>();
-
-                            int? originId = jsonEntity[prop.Name].ToObject<int?>();
-                            // skip items without required items
-                            // this item has null or invalid FK
-                            if (attr.skipItem && (originId == null || !_ids[attr.KeyFor.Single()].ContainsKey(originId.Value)))
+                            try
                             {
-                                bool otherPropHasValue = false;
-                                foreach (string pairPropName in attr.skipPair)
+                                ImportExportAttribute attr = prop.GetCustomAttribute<ImportExportAttribute>();
+
+                                int? originId = jsonEntity[prop.Name].ToObject<int?>();
+                                // skip items without required items
+                                // this item has null or invalid FK
+                                if (attr.skipItem && (originId == null || !_ids[attr.KeyFor.Single()].ContainsKey(originId.Value)))
                                 {
-                                    PropertyInfo pairProp = currentType.GetProperty(pairPropName);
-                                    int? otherPropValue = jsonEntity[pairPropName].ToObject<int?>();
-                                    if (propertiesWithCorrectValues.Contains(pairPropName) || (otherPropValue != null && _ids[pairProp.GetCustomAttribute<ImportExportAttribute>().KeyFor.Single()].ContainsKey(otherPropValue.Value)))
+                                    bool otherPropHasValue = false;
+                                    foreach (string pairPropName in attr.skipPair)
                                     {
-                                        otherPropHasValue = true;
-                                        break;
+                                        PropertyInfo pairProp = currentType.GetProperty(pairPropName);
+                                        int? otherPropValue = jsonEntity[pairPropName].ToObject<int?>();
+                                        if (propertiesWithCorrectValues.Contains(pairPropName) || (otherPropValue != null && _ids[pairProp.GetCustomAttribute<ImportExportAttribute>().KeyFor.Single()].ContainsKey(otherPropValue.Value)))
+                                        {
+                                            otherPropHasValue = true;
+                                            break;
+                                        }
                                     }
-                                }
 
-                                // has pair property correct value?
-                                if (otherPropHasValue)
-                                    jsonEntity[prop.Name] = null;
-                                // any pair property hasn't correct value -> skip
+                                    // has pair property correct value?
+                                    if (otherPropHasValue)
+                                        jsonEntity[prop.Name] = null;
+                                    // any pair property hasn't correct value -> skip
+                                    else
+                                        throw new NextEntity();
+                                }
+                                // property has correct value || you shouldn't skip it
                                 else
-                                    throw new NextEntity();
+                                {
+                                    jsonEntity[prop.Name] = _ids[attr.KeyFor.Single()][originId.Value];
+                                    propertiesWithCorrectValues.Add(prop.Name);
+                                }
                             }
-                            // property has correct value || you shouldn't skip it
-                            else
+                            catch (Exception ex)
                             {
-                                jsonEntity[prop.Name] = _ids[attr.KeyFor.Single()][originId.Value];
-                                propertiesWithCorrectValues.Add(prop.Name);
+                                throw new Exception($"Exception in Type[{currentType.FullName}], optional param[{prop.Name}], entity", ex);
                             }
                         }
 
@@ -334,14 +341,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
                             _optionalValues[currentType][oldId].Add(prop.Name, originValue);
                             //}
-                        }
-
-                        if (recurseProp != null)
-                        {
-                            /// change recurse-parent
-                            int? value = jsonEntity[recurseProp.Name].ToObject<int?>();
-                            if (value != null)
-                                jsonEntity[recurseProp.Name] = _ids[currentType][value.Value];
                         }
 
                         /// insert
@@ -371,7 +370,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                             Logger.Log.Warn(ex.Message);
                         }
                         else
-                            throw;
+                            throw new Exception($"Exception in Type[{currentType.FullName}], entity", ex);
                     }
                 }
             }
@@ -423,11 +422,11 @@ namespace FSS.Omnius.Modules.Entitron.Service
             {
                 ImportExportAttribute attr = p.GetCustomAttribute<ImportExportAttribute>();
                 return
-                    p.Name != PrimaryKey 
-                    && (DataType.BaseTypes.Contains(p.PropertyType) 
+                    p.Name != PrimaryKey
+                    && (DataType.BaseTypes.Contains(p.PropertyType)
                         || p.PropertyType.IsEnum)
-                    && p.CanWrite 
-                    && (attr == null 
+                    && p.CanWrite
+                    && (attr == null
                         || (attr.KeyFor.Any()
                             && attr.Type != ELinkType.LinkOptional));
             });
