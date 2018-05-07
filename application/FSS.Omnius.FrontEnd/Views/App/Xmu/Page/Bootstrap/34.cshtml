@@ -1,8 +1,9 @@
-@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Overview")</h3></div><div class="panel-body collapse in" aria-expanded="true" style="overflow-x: auto;"><div class="row"><div class="col-xs-12 col-md-4 col-sm-6"><h3 class="text-center" style="margin-top:0;">@(@"Withdrawals")</h3><div style="height: 150px;" class="graphWrapper" id="hc_withdrawals">@Html.Raw(@"<div id=""hc_withdrawals_graph""></div><style type=""text/css"" rel=""stylesheet"">                    </style><script>hc_withdrawals_graph_chart = new Highcharts.chart({
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Overview")</h3></div><div class="panel-body collapse in mbe-active" aria-expanded="true"><div class="row"><div class="col-xs-12 col-md-4 col-sm-6"><h3 class="text-center" style="margin-top:0;">@(@"Withdrawals")</h3><div style="height: 200px;" class="graphWrapper" id="hc_withdrawals">@Html.Raw(@"<div id=""hc_withdrawals_graph""></div><style type=""text/css"" rel=""stylesheet"">                    </style><script>hc_withdrawals_graph_chart = new Highcharts.chart({
   chart: {
     renderTo: 'hc_withdrawals_graph',
-    backgroundColor: ""#fff"",
+    backgroundColor: 'rgba(255, 255, 255, 0.0)',
     type: 'pie',
+    height: 220,
     events: {
       render: function() {
         function getSize(chart, mod) {
@@ -68,11 +69,12 @@
       enabled: false
     }
   }]
-});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_withdrawals")).Value ?? "").ToString()))</div></div><div class="col-xs-12 col-md-4 col-sm-6"><h3 class="text-center" style="margin-top:0;">@(@"Deposits")</h3><div style="height: 150px;" class="graphWrapper" id="hc_deposits">@Html.Raw(@"<div id=""hc_deposits_graph""></div><style type=""text/css"" rel=""stylesheet"">                    </style><script>hc_deposits_graph_chart = new Highcharts.chart({
+});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_withdrawals")).Value ?? "").ToString()))</div></div><div class="col-xs-12 col-md-4 col-sm-6"><h3 class="text-center" style="margin-top:0;">@(@"Deposits")</h3><div style="height: 200px;" class="graphWrapper" id="hc_deposits">@Html.Raw(@"<div id=""hc_deposits_graph""></div><style type=""text/css"" rel=""stylesheet"">                    </style><script>hc_deposits_graph_chart = new Highcharts.chart({
   chart: {
     renderTo: 'hc_deposits_graph',
-    backgroundColor: ""#fff"",
+    backgroundColor: 'rgba(255, 255, 255, 0.0)',
     type: 'pie',
+    height: 220,
     events: {
       render: function() {
         function getSize(chart, mod) {
@@ -138,7 +140,7 @@
       enabled: false
     }
   }]
-});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_deposits")).Value ?? "").ToString()))</div></div><div class="col-xs-12 col-md-4 col-sm-6"><h3 class="text-center" style="margin-top:0;">@(@"Users")</h3><div class="row" style="margin-bottom: 15px;"><div class="col-xs-4"><span class="fa fa-user-plus" style="font-size: 50px; border: 1px solid #555; padding: 15px; border-radius: 50%; color: #fff; background-color: #555;"></span></div><div class="col-xs-8"><p class="" style="font-size: 25px" id="new_users">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("new_users")).Value ?? "").ToString()))</p><p class="">@(@"New")</p></div></div><div class="row"><div class="col-xs-4"><span class="fa fa-users" style="font-size: 50px; border: 1px solid #555; padding: 15px; border-radius: 50%; color: #fff; background-color: #555;"></span></div><div class="col-xs-8"><p class="" style="font-size: 25px" id="kyc_users">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("kyc_users")).Value ?? "").ToString()))</p><p class="mbe-active">@(@"Waiting for approval")</p></div></div></div></div></div></div><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Exchange Balance")</h3></div><div class="panel-body collapse in" aria-expanded="true" style="overflow-x: auto;"><div class="row"><div class="col-xs-12"><p class="text-center" style="font-size: 50px;" id="total_balance">@(@"Total Balance: {var1} €".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("total_balance")).Value ?? "").ToString()))</p></div></div><div class="row">
+});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_deposits")).Value ?? "").ToString()))</div></div><div class="col-xs-12 col-md-4 col-sm-6"><h3 class="text-center" style="margin-top:0;">@(@"Users")</h3><div class="row" style="margin-bottom: 15px;"><div class="col-xs-4"><span class="fa fa-user-plus" style="font-size: 50px; border: 1px solid #555; padding: 15px; border-radius: 50%; color: #fff; background-color: #555;"></span></div><div class="col-xs-8"><p class="" style="font-size: 25px" id="new_users">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("new_users")).Value ?? "").ToString()))</p><p class="">@(@"New")</p></div></div><div class="row"><div class="col-xs-4"><span class="fa fa-users" style="font-size: 50px; border: 1px solid #555; padding: 15px; border-radius: 50%; color: #fff; background-color: #555;"></span></div><div class="col-xs-8"><p class="" style="font-size: 25px" id="kyc_users">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("kyc_users")).Value ?? "").ToString()))</p><p class="">@(@"Waiting for approval")</p></div></div></div></div></div></div><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Exchange Balance")</h3></div><div class="panel-body collapse in" aria-expanded="true" style="overflow-x: auto;"><div class="row"><div class="col-xs-12"><p class="text-center" style="font-size: 50px;" id="total_balance">@(@"Total Balance: {var1} €".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("total_balance")).Value ?? "").ToString()))</p></div></div><div class="row">
 @{ if(ViewData.ContainsKey("currency_foreach")) {
         foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DB.DBItem>)ViewData["currency_foreach"]) {
             <div class="">
