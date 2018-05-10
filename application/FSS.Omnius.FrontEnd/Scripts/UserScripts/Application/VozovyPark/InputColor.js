@@ -8,7 +8,7 @@ $(function() {
           data: {},
           success: function (data) {
             var x = $(data)
-            $(item).html(x.find("#accordion-2).html());
+            $(item).html(x.find("#accordion-1).html());
       }
     });
       });
