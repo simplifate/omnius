@@ -1,10 +1,10 @@
 $(function() {
-      $(".notesu").each(function() {
-        var modelId = $(this).attr('date');
+      $(".notes").each(function() {
+        var modelId = $(this).attr('year');
         var item = $(this);
         $.ajax({
           type: 'GET',
-          url: '/VozovyPark/DateDate?modelId=' + modelId,
+          url: '/VozovyPark/DataMonth?modelId=' + modelId,
           data: {},
           success: function (data) {
             var x = $(data)
