@@ -1,6 +1,6 @@
 $(function() {
       $(".notesu").each(function() {
-        var modelId = $(this).attr('id');
+        var modelId = $(this).attr('month');
         var item = $(this);
         $.ajax({
           type: 'GET',
