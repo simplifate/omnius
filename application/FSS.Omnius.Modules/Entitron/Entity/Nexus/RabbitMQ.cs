@@ -2,6 +2,7 @@
 {
     using Master;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public enum ChannelType
     {
@@ -9,6 +10,7 @@
         RECEIVE
     }
 
+    [Table("Nexus_RabbitMQ")]
     public class RabbitMQ : IEntity
     {
         [Key]
