@@ -443,8 +443,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
 
             //
-            var splitItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TypeClass == "symbol" && _splitGateways.Contains(i.SymbolType) && i.ParentForeach == null).ToList();
-            var joinItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TargetToConnection.Count() > 1 && i.ParentForeach == null).ToList();
+            var splitItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TypeClass == "symbol" && _splitGateways.Contains(i.SymbolType) && (i.ParentForeach == null || i.SymbolType == "foreach")).ToList();
+            var joinItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TargetToConnection.Count() > 1 && (i.ParentForeach == null || i.SymbolType == "foreach")).ToList();
 
             foreach (var splitItem in splitItems)
             {
@@ -737,8 +737,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                                 rule.ActionRule_Actions.Add(feResult);
 
                                 // Uložíme akce uvnitř cyklu
-                                var splitItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TypeClass == "symbol" && _splitGateways.Contains(i.SymbolType) && i.ParentForeachId == item.ParentForeachId).ToList();
-                                var joinItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && (i.TargetToConnection.Count() > 1 || i.IsForeachStart == true) && i.ParentForeachId == item.ParentForeachId).ToList();
+                                var splitItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TypeClass == "symbol" && _splitGateways.Contains(i.SymbolType) && i.ParentForeachId == item.ParentForeachId && i.Id != item.Id).ToList();
+                                var joinItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && (i.TargetToConnection.Count() > 1 || i.IsForeachStart == true) && i.ParentForeachId == item.ParentForeachId && i.Id != item.Id).ToList();
 
                                 foreach (var splitItem in splitItems) {
                                     // block mapping
