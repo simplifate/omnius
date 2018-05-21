@@ -1633,6 +1633,10 @@ var BootstrapUserInit = {
                     });
 
                 }
+                var columns = [];
+                table.find('tr:eq(0) th').each(function () {
+                    columns.push({ data: $(this).text() });
+                });
 
                 table.DataTable({
                     columnDefs: table.data('dtselect') ? [{
@@ -1652,6 +1656,10 @@ var BootstrapUserInit = {
                     filter: table.data('dtfilter') == '1' || table.data('dtcolumnfilter') == '1',
                     ordering: table.data('dtordering') == '1',
                     order: table.data('dtorder') ? eval(table.data('dtorder')) : [[0, 'desc']],
+                    processing: table.data('dtserverside') == '1',
+                    serverSide: table.data('dtserverside') == '1',
+                    ajax: table.data('dtserverside') == '1' ? { url: "/api/run" + location.pathname + '?button=' + table.attr('id'), type: 'POST' } : null,
+                    columns: columns,
                     language: {
                         sEmptyTable: 'Tabulka neobsahuje žádná data',
                         sInfo: 'Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů',
