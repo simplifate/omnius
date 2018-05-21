@@ -21,6 +21,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Athena
         [StringLength(255)]
         [Display(Name = "Identifikátor")]
         [Index(IsUnique = true)]
+        [ImportExportProperty(IsKey = true)]
         public string Ident { get; set; }
 
         [Required]

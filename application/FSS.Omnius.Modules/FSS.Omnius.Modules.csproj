@@ -291,6 +291,7 @@
     <Compile Include="Entitron\Entity\Hermes\EmailTemplateContent.cs" />
     <Compile Include="Entitron\Entity\Hermes\Smtp.cs" />
     <Compile Include="Entitron\Entity\ImportExportAttribute.cs" />
+    <Compile Include="Entitron\Entity\ImportExportPropertyAttribute.cs" />
     <Compile Include="Entitron\Entity\Master\MasterAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Master\UsersApplications.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Bootstrap\MozaicBootstrapAjaxPage.cs" />

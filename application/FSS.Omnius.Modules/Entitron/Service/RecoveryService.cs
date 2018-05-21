@@ -14,7 +14,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
     public class RecoveryService : IRecoveryService
     {
         public const string PrimaryKey = "Id";
-        public static Type[] Roots => new Type[] { typeof(Application), typeof(Modules.Entitron.Entity.Athena.Graph) };
+        public static Type[] Roots => new Type[] { typeof(Application), typeof(Entity.Athena.Graph) };
 
         private DBEntities _context;
         private DBCommandSet _db;
@@ -267,11 +267,57 @@ namespace FSS.Omnius.Modules.Entitron.Service
             IEnumerable<PropertyInfo> optionalProperties = getOptionalProperties(currentType);
             IEnumerable<PropertyInfo> nonOptionalProperties = getNonOptionalProperties(currentType);
 
-            /// generate sql
-            string sql = _db.Type == ESqlType.MSSQL
-                ? $"INSERT INTO {_db.AddQuote(currentType.GetCustomAttribute<TableAttribute>().Name)}({string.Join(",", nonOptionalProperties.Select(p => _db.AddQuote(p.Name)))}) OUTPUT inserted.{_db.AddQuote(PrimaryKey)} VALUES({string.Join(",", nonOptionalProperties.Select(c => $"@{c.Name}"))});"
-                : $"INSERT INTO {_db.AddQuote(currentType.GetCustomAttribute<TableAttribute>().Name)}({string.Join(",", nonOptionalProperties.Select(p => _db.AddQuote(p.Name)))}) VALUES({string.Join(",", nonOptionalProperties.Select(c => $"@{c.Name}"))}); SELECT LAST_INSERT_ID() {PrimaryKey}";
+            List<object> rootKeyPropertyValues = null;
+            PropertyInfo keyProperty = currentType.GetProperties().SingleOrDefault(p => p.GetCustomAttribute<ImportExportPropertyAttribute>()?.IsKey == true);
 
+            /// generate sql
+            string tableName = _db.AddQuote(currentType.GetCustomAttribute<TableAttribute>().Name);
+            string sql = _db.Type == ESqlType.MSSQL
+                ? $"INSERT INTO {tableName}({string.Join(",", nonOptionalProperties.Select(p => _db.AddQuote(p.Name)))}) OUTPUT inserted.{_db.AddQuote(PrimaryKey)} VALUES({string.Join(",", nonOptionalProperties.Select(c => $"@{c.Name}"))});"
+                : $"INSERT INTO {tableName}({string.Join(",", nonOptionalProperties.Select(p => _db.AddQuote(p.Name)))}) VALUES({string.Join(",", nonOptionalProperties.Select(c => $"@{c.Name}"))}); SELECT LAST_INSERT_ID() {PrimaryKey}";
+            string updateSql = keyProperty == null
+                ? ""
+                : _db.Type == ESqlType.MSSQL
+                    ? $"UPDATE {tableName} SET {string.Join(",", nonOptionalProperties.Select(p => $"{_db.AddQuote(p.Name)} = @{p.Name}"))} OUTPUT inserted.{_db.AddQuote(PrimaryKey)} WHERE {_db.AddQuote(keyProperty.Name)} = @{keyProperty.Name}"
+                    : $"UPDATE {tableName} SET {string.Join(",", nonOptionalProperties.Select(p => $"{_db.AddQuote(p.Name)} = @{p.Name}"))} WHERE {_db.AddQuote(keyProperty.Name)} = @{keyProperty.Name}; SELECT {PrimaryKey} FROM {tableName} WHERE {_db.AddQuote(keyProperty.Name)} = @{keyProperty.Name}";
+
+            /// updating Root entity
+            if (Roots.Contains(currentType) && keyProperty != null)
+            {
+                // read from json
+                var jsonValues = jsonEntities.Select(e => e[keyProperty.Name].ToObject(keyProperty.PropertyType));
+
+                // read from db
+                using (IDbConnection connection = _db.Connection)
+                {
+                    connection.ConnectionString = _connectionString;
+                    connection.Open();
+                    IDbCommand command = _db.Command;
+
+                    List<string> paramNames = new List<string>();
+                    int i = 0;
+                    foreach (var jsonValue in jsonValues)
+                    {
+                        string param = $"param{i}";
+                        command.AddParam(param, jsonValue);
+                        paramNames.Add(param);
+                        i++;
+                    }
+
+                    command.CommandText = $"SELECT {_db.AddQuote(keyProperty.Name)} FROM {_db.AddQuote(currentType.GetCustomAttribute<TableAttribute>().Name)} WHERE {_db.AddQuote(keyProperty.Name)} IN ({string.Join(",", paramNames.Select(p => $"@{p}"))})";
+                    command.Connection = connection;
+                    using (var reader = command.ExecuteReader())
+                    {
+                        rootKeyPropertyValues = new List<object>();
+                        while (reader.Read())
+                        {
+                            rootKeyPropertyValues.Add(reader[keyProperty.Name]);
+                        }
+                    }
+                }
+            }
+
+            /// create entity
             using (IDbConnection connection = _db.Connection)
             {
                 connection.ConnectionString = _connectionString;
@@ -343,10 +389,13 @@ namespace FSS.Omnius.Modules.Entitron.Service
                             //}
                         }
 
+                        
                         /// insert
                         IDbCommand command = _db.Command;
-                        command.CommandText = sql;
                         command.Connection = connection;
+                        command.CommandText = (rootKeyPropertyValues != null && rootKeyPropertyValues.Contains(jsonEntity[keyProperty.Name].ToObject(keyProperty.PropertyType)))
+                            ? updateSql // update root
+                            : sql; // insert
                         foreach (PropertyInfo prop in nonOptionalProperties)
                         {
                             command.AddParam(prop.Name, jsonEntity[prop.Name].ToObject<object>() ?? DBNull.Value);
@@ -361,16 +410,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     }
                     catch (NextEntity)
                     {
-                    }
-                    catch (Exception ex)
-                    {
-                        // root unique
-                        if (Roots.Contains(currentType))
-                        {
-                            Logger.Log.Warn(ex.Message);
-                        }
-                        else
-                            throw new Exception($"Exception in Type[{currentType.FullName}], entity", ex);
                     }
                 }
             }
