@@ -72,55 +72,63 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
 
         private TimeSpan GetSleepTime()
         {
-            /// after
-            if (Schedule.StartsWith("after "))
+            try
             {
-                DateTime now = DateTime.UtcNow;
-                DateTime result = now;
-
-                foreach(string part in Schedule.Substring("after ".Length).Split(' '))
+                /// after
+                if (Schedule.StartsWith("after "))
                 {
-                    var match = Regex.Match(part, "(\\d+)(\\D+)");
-                    string unit = match.Groups[2].Value;
-                    int count = Convert.ToInt32(match.Groups[1].Value);
-                    
-                    if (part.EndsWith("sec") || part.EndsWith("s"))
-                        result = result.AddSeconds(count);
+                    DateTime now = DateTime.UtcNow;
+                    DateTime result = now;
 
-                    else if (part.EndsWith("min") || part.EndsWith("m"))
-                        result = result.AddMinutes(count);
+                    foreach (string part in Schedule.Substring("after ".Length).Split(' '))
+                    {
+                        var match = Regex.Match(part, "(\\d+)(\\D+)");
+                        string unit = match.Groups[2].Value;
+                        int count = Convert.ToInt32(match.Groups[1].Value);
 
-                    else if (part.EndsWith("hour") || part.EndsWith("h"))
-                        result = result.AddHours(count);
+                        if (part.EndsWith("sec") || part.EndsWith("s"))
+                            result = result.AddSeconds(count);
 
-                    else if (part.EndsWith("day") || part.EndsWith("d"))
-                        result = result.AddDays(count);
+                        else if (part.EndsWith("min") || part.EndsWith("m"))
+                            result = result.AddMinutes(count);
 
-                    else if (part.EndsWith("week") || part.EndsWith("w"))
-                        result = result.AddDays(count * 7);
+                        else if (part.EndsWith("hour") || part.EndsWith("h"))
+                            result = result.AddHours(count);
 
-                    else if (part.EndsWith("month") || part.EndsWith("M"))
-                        result = result.AddMonths(count);
+                        else if (part.EndsWith("day") || part.EndsWith("d"))
+                            result = result.AddDays(count);
 
-                    else if (part.EndsWith("year") || part.EndsWith("y"))
-                        result = result.AddYears(count);
+                        else if (part.EndsWith("week") || part.EndsWith("w"))
+                            result = result.AddDays(count * 7);
+
+                        else if (part.EndsWith("month") || part.EndsWith("M"))
+                            result = result.AddMonths(count);
+
+                        else if (part.EndsWith("year") || part.EndsWith("y"))
+                            result = result.AddYears(count);
+                    }
+
+                    return result - now;
                 }
 
-                return result - now;
-            }
+                /// At
+                if (Schedule.StartsWith("at "))
+                {
+                    return
+                        DateTime.Parse(Schedule.Substring("at ".Length)) - DateTime.UtcNow;
+                }
 
-            /// At
-            if (Schedule.StartsWith("at "))
-            {
-                return 
-                    DateTime.Parse(Schedule.Substring("at ".Length)) - DateTime.UtcNow;
+                /// crontab
+                else
+                {
+                    return
+                        CrontabSchedule.Parse(Schedule).GetNextOccurrence(DateTime.UtcNow) - DateTime.UtcNow;
+                }
             }
-
-            /// crontab
-            else
+            catch(Exception ex)
             {
-                return 
-                    CrontabSchedule.Parse(Schedule).GetNextOccurrence(DateTime.UtcNow) - DateTime.UtcNow;
+                Modules.Watchtower.OmniusException.Log(ex, Modules.Watchtower.OmniusLogSource.Cortex, Application);
+                return TimeSpan.FromSeconds(-1);
             }
         }
 
