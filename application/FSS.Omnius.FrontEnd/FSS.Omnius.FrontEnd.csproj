@@ -262,6 +262,7 @@
     <Compile Include="Controllers\CORE\Utilities.cs" />
     <Compile Include="Controllers\CORE\ErrorController.cs" />
     <Compile Include="Controllers\Cortex\CortexController.cs" />
+    <Compile Include="Controllers\Cortex\CrontabController.cs" />
     <Compile Include="Controllers\Hermes\HermesApiController.cs" />
     <Compile Include="Controllers\Hermes\PlaceholderController.cs" />
     <Compile Include="Controllers\Hermes\LogController.cs" />
@@ -2261,6 +2262,10 @@
     <Content Include="Views\App\Xmu\Page\Bootstrap\580.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\587.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\588.cshtml" />
+    <Content Include="Views\Cortex\Crontab\Create.cshtml" />
+    <Content Include="Views\Cortex\Crontab\Index.cshtml" />
+    <Content Include="Views\Cortex\Crontab\Update.cshtml" />
+    <Content Include="Views\Cortex\Crontab\_form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

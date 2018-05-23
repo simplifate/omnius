@@ -282,6 +282,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         // Cortex
         public virtual DbSet<Task> Tasks { get; set; }
+        public virtual DbSet<CrontabTask> CrontabTask { get; set; }
 
         // Master
         public virtual DbSet<Application> Applications { get; set; }

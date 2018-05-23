@@ -16,6 +16,7 @@ using System.Web.Helpers;
 using FSS.Omnius.FrontEnd.Controllers;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using System.Text.RegularExpressions;
+using FSS.Omnius.Modules.Entitron.Entity.Cortex;
 
 namespace FSS.Omnius.FrontEnd
 {
@@ -37,6 +38,7 @@ namespace FSS.Omnius.FrontEnd
             Entitron.DefaultConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             Entitron.DefaultDBType = DBCommandSet.GetSqlType(ConfigurationManager.ConnectionStrings["DefaultConnection"].ProviderName);
             App_Start.AppStart.AppInitialize();
+            CrontabTask.StartAll();
             Logger.Log.Info("Omnius starts");
 
             AntiForgeryConfig.AdditionalDataProvider = new AntiforgeryStrategyOneTime();

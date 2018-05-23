@@ -1,0 +1,43 @@
+﻿@model IEnumerable<FSS.Omnius.Modules.Entitron.Entity.Cortex.CrontabTask>
+@{
+    Page.Title = "Omnius :: Crontab";
+    Page.ModuleClass = "Cortex";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+}
+@Html.Partial("~/Views/Cortex/Cortex/Header.cshtml")
+<div id="lowerPanel" style="top:360px;">
+    @Html.RouteLink("New", "Cortex", new { controller = "Crontab", action = "Create" }, new { @class = "btn btn-primary" })
+    <table class="table table-bordered table-striped table-omnius">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Schedule</th>
+                <th scope="col">Is active</th>
+                <th scope="col">Schedule start</th>
+                <th scope="col">Block name</th>
+                <th scope="col">Executor</th>
+                <th scope="col">Model id</th>
+                <th scope="col">Application name</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var crontabTask in Model)
+            {
+            <tr>
+                <td>@crontabTask.Name</td>
+                <td>@crontabTask.Schedule</td>
+                <td>@(crontabTask.IsActive ? "Active" : "Non-active")</td>
+                <td>@crontabTask.ScheduleStart</td>
+                <td>@crontabTask.BlockName</td>
+                <td>@crontabTask.Executor</td>
+                <td>@crontabTask.ModelId</td>
+                <td>@crontabTask.Application.Name</td>
+                <td>@Html.RouteLink("Edit", "Cortex", new { controller = "Crontab", action = "Update", id = crontabTask.Id }), @using(Html.BeginRouteForm("Cortex", new { controller = "Crontab", action = "Delete", id = crontabTask.Id })){<button>Delete</button>}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

@@ -66,7 +66,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             Type t = thisEntity.GetType();
             foreach(PropertyInfo property in t.GetProperties())
             {
-                if (DataType.BaseTypes.Contains(property.PropertyType) && (skip == null || !skip.Contains(property.Name)))
+                if ((DataType.BaseTypes.Contains(property.PropertyType) || property.PropertyType.IsEnum) && (skip == null || !skip.Contains(property.Name)))
                     property.SetValue(thisEntity, property.GetValue(from));
             }
         }

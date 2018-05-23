@@ -1,0 +1,16 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Cortex.CrontabTask
+@{
+    Page.Title = "Omnius :: Crontab - Update";
+    Page.ModuleClass = "Cortex";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+}
+@Html.Partial("~/Views/Cortex/Cortex/Header.cshtml")
+<div id="lowerPanel" style="top:360px;">
+    @using (var form = Html.BeginForm())
+    {
+        @Html.ValidationSummary()
+        @Html.Partial("_form", Model, ViewData);
+        <button>Update</button>
+        @Html.RouteLink("Back", "Cortex", new { controller = "Crontab", action = "Index" })
+    }
+</div>

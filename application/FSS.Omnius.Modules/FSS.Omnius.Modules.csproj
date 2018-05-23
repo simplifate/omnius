@@ -138,6 +138,9 @@
     <Reference Include="NCalc, Version=1.3.8.0, Culture=neutral, PublicKeyToken=973cde3f1cafed03, processorArchitecture=MSIL">
       <HintPath>..\packages\ncalc.1.3.8\lib\NCalc.dll</HintPath>
     </Reference>
+    <Reference Include="NCrontab, Version=3.2.20120.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ncrontab.3.3.0\lib\net35\NCrontab.dll</HintPath>
+    </Reference>
     <Reference Include="Nest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
       <HintPath>..\packages\NEST.2.4.6\lib\net45\Nest.dll</HintPath>
       <Private>True</Private>
@@ -248,6 +251,7 @@
     <Compile Include="Cortex\Cortex.cs" />
     <Compile Include="Cortex\CortexAzureScheduler.cs" />
     <Compile Include="Cortex\CortexSchtasks.cs" />
+    <Compile Include="Cortex\Crontab\CrontabTask.cs" />
     <Compile Include="Cortex\Interface\ICortexAPI.cs" />
     <Compile Include="Entitron\DAL\DefaultEFRepository.cs" />
     <Compile Include="Entitron\DAL\IRepository.cs" />
@@ -272,6 +276,7 @@
     <Compile Include="Entitron\Entitron.cs" />
     <Compile Include="Entitron\Entity\Athena\Graph.cs" />
     <Compile Include="Entitron\Entity\CORE\ConfigPair.cs" />
+    <Compile Include="Entitron\Entity\Cortex\CrontabTask.cs" />
     <Compile Include="Entitron\Entity\Cortex\Task.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbColumn.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbIndex.cs" />
@@ -1256,6 +1261,10 @@
     <Compile Include="Migrations\201805161042186_RabbbitMqMove.Designer.cs">
       <DependentUpon>201805161042186_RabbbitMqMove.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807230854247_addCrontab.cs" />
+    <Compile Include="Migrations\201807230854247_addCrontab.Designer.cs">
+      <DependentUpon>201807230854247_addCrontab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -2131,6 +2140,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805161042186_RabbbitMqMove.resx">
       <DependentUpon>201805161042186_RabbbitMqMove.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807230854247_addCrontab.resx">
+      <DependentUpon>201807230854247_addCrontab.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

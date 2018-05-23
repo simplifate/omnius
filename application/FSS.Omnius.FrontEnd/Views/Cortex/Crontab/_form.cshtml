@@ -1,0 +1,74 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Cortex.CrontabTask
+
+@Html.HiddenFor(m => m.Id)
+
+<div class="input-group mb-3">
+    @Html.ValidationMessageFor(m => m.Name)
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Name</span>
+    </div>
+    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+</div>
+
+<div class="input-group mb-3">
+    @Html.ValidationMessageFor(m => m.Schedule)
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Schedule</span>
+    </div>
+    <div>
+        after x(sec|min|hour|day|week|month|year) y(sec|min|hour|day|week|month|year) ...<br />
+        at yyyy-MM-dd hh-mm-ss<br />
+        min[0 - 59] hour[0 - 23] dayOfMonth[1 - 31] month[1 - 31] dayOfWeek[0-6, 0=sunday] --- */2 | 1,2 | 1-4 <br />
+        more info at <a href="https://github.com/atifaziz/NCrontab">here</a>
+    </div>
+    @Html.TextBoxFor(m => m.Schedule, new { @class = "form-control" })
+</div>
+
+<div class="input-group mb-3">
+    @Html.ValidationMessageFor(m => m.IsActive)
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">IsActive</span>
+    </div>
+    @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-control" })
+</div>
+
+<div class="input-group mb-3">
+    @Html.ValidationMessageFor(m => m.ScheduleStart)
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">ScheduleStart</span>
+    </div>
+    @Html.EnumDropDownListFor(m => m.ScheduleStart, new { @class = "form-control" })
+</div>
+
+<div class="input-group mb-3">
+    @Html.ValidationMessageFor(m => m.BlockName)
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">BlockName</span>
+    </div>
+    @Html.TextBoxFor(m => m.BlockName, new { @class = "form-control" })
+</div>
+
+<div class="input-group mb-3">
+    @Html.ValidationMessageFor(m => m.Executor)
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Executor</span>
+    </div>
+    @Html.TextBoxFor(m => m.Executor, new { @class = "form-control" })
+</div>
+
+<div class="input-group mb-3">
+    @Html.ValidationMessageFor(m => m.ModelId)
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">ModelId</span>
+    </div>
+    @Html.TextBoxFor(m => m.ModelId, new { @class = "form-control" })
+</div>
+
+<div class="input-group mb-3">
+    @Html.ValidationMessageFor(m => m.ApplicationId)
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Application</span>
+    </div>
+    @Html.DropDownListFor(m => m.ApplicationId, (IEnumerable<SelectListItem>)ViewData["apps"], new { @class = "form-control" })
+</div>
+

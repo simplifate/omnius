@@ -68,7 +68,7 @@ namespace FSS.Omnius.FrontEnd
             // Cortex
             routes.MapRoute(
                 name: "Cortex",
-                url: "Cortex/{action}/{id}",
+                url: "Cortex/{controller}/{action}/{id}",
                 defaults: new { controller = "Cortex", action = "Index", id = UrlParameter.Optional },
                 namespaces: new string[] { "FSS.Omnius.Controllers.Cortex" }
             );
