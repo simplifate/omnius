@@ -62,7 +62,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
                 var block = context.Blocks.Single(b => b.WorkFlow.ApplicationId == ApplicationId && b.Name == BlockName);
 
                 var tapestry = new Modules.Tapestry.Tapestry(core);
-                tapestry.innerRun(core.User, block, Executor, ModelId ?? -1, null, -1);
+                tapestry.innerRun(core.User, block, Executor ?? "INIT", ModelId ?? -1, null, -1);
             }
             catch(Exception ex)
             {
