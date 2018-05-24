@@ -58,7 +58,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
             {
                 var core = new Modules.CORE.CORE();
                 var context = DBEntities.instance;
-                core.User = context.Users.Single(u => u.UserName == "system");
+                core.User = context.Users.Single(u => u.UserName == "scheduler");
                 var block = context.Blocks.Single(b => b.WorkFlow.ApplicationId == ApplicationId && b.Name == BlockName);
 
                 var tapestry = new Modules.Tapestry.Tapestry(core);
