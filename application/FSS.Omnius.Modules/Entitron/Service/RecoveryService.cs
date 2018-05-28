@@ -368,6 +368,10 @@ namespace FSS.Omnius.Modules.Entitron.Service
                                     propertiesWithCorrectValues.Add(prop.Name);
                                 }
                             }
+                            catch (NextEntity)
+                            {
+                                throw;
+                            }
                             catch (Exception ex)
                             {
                                 throw new Exception($"Exception in Type[{currentType.FullName}], optional param[{prop.Name}], entity", ex);
