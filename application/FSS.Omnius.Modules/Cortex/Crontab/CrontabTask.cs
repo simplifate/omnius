@@ -40,6 +40,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
                 Thread.Sleep(sleepTime);
 
                 /// Run
+                Modules.Watchtower.OmniusInfo.Log($"Task[{Id}] start", Modules.Watchtower.OmniusLogSource.Cortex, Application);
+                LastStartTask = DateTime.UtcNow;
+                DBEntities.instance.SaveChanges();
                 if (ScheduleStart == ScheduleStartAt.taskStart)
                 {
                     Thread thread = new Thread(new ThreadStart(Run));
@@ -62,7 +65,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
                 var block = context.Blocks.Single(b => b.WorkFlow.ApplicationId == ApplicationId && b.Name == BlockName);
 
                 var tapestry = new Modules.Tapestry.Tapestry(core);
-                tapestry.innerRun(core.User, block, Executor ?? "INIT", ModelId ?? -1, null, -1);
+                var result = tapestry.innerRun(core.User, block, Executor ?? "INIT", ModelId ?? -1, null, -1);
+
+                if (result.Item1.Type != Modules.Tapestry.ActionResultType.Error)
+                {
+                    LastEndTask = DateTime.UtcNow;
+                    DBEntities.instance.SaveChanges();
+                }
             }
             catch(Exception ex)
             {
@@ -78,7 +87,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
                 if (Schedule.StartsWith("after "))
                 {
                     DateTime now = DateTime.UtcNow;
-                    DateTime result = now;
+                    DateTime next = now;
 
                     foreach (string part in Schedule.Substring("after ".Length).Split(' '))
                     {
@@ -87,28 +96,28 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
                         int count = Convert.ToInt32(match.Groups[1].Value);
 
                         if (part.EndsWith("sec") || part.EndsWith("s"))
-                            result = result.AddSeconds(count);
+                            next = next.AddSeconds(count);
 
                         else if (part.EndsWith("min") || part.EndsWith("m"))
-                            result = result.AddMinutes(count);
+                            next = next.AddMinutes(count);
 
                         else if (part.EndsWith("hour") || part.EndsWith("h"))
-                            result = result.AddHours(count);
+                            next = next.AddHours(count);
 
                         else if (part.EndsWith("day") || part.EndsWith("d"))
-                            result = result.AddDays(count);
+                            next = next.AddDays(count);
 
                         else if (part.EndsWith("week") || part.EndsWith("w"))
-                            result = result.AddDays(count * 7);
+                            next = next.AddDays(count * 7);
 
                         else if (part.EndsWith("month") || part.EndsWith("M"))
-                            result = result.AddMonths(count);
+                            next = next.AddMonths(count);
 
                         else if (part.EndsWith("year") || part.EndsWith("y"))
-                            result = result.AddYears(count);
+                            next = next.AddYears(count);
                     }
-
-                    return result - now;
+                    
+                    return next - now;
                 }
 
                 /// At

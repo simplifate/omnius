@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 
@@ -36,6 +37,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
         public string BlockName { get; set; }
         public string Executor { get; set; }
         public int? ModelId { get; set; }
+
+        public DateTime? LastStartTask { get; set; }
+        public DateTime? LastEndTask { get; set; }
 
         public int? ApplicationId { get; set; }
         public virtual Application Application { get; set; }

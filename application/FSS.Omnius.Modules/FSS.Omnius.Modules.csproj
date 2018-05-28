@@ -1265,6 +1265,10 @@
     <Compile Include="Migrations\201807230854247_addCrontab.Designer.cs">
       <DependentUpon>201807230854247_addCrontab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807230903210_crontabAddTimestamps.cs" />
+    <Compile Include="Migrations\201807230903210_crontabAddTimestamps.Designer.cs">
+      <DependentUpon>201807230903210_crontabAddTimestamps.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -2143,6 +2147,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807230854247_addCrontab.resx">
       <DependentUpon>201807230854247_addCrontab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807230903210_crontabAddTimestamps.resx">
+      <DependentUpon>201807230903210_crontabAddTimestamps.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
