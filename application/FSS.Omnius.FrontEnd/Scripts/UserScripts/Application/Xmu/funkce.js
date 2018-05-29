@@ -105,26 +105,6 @@ $(function(){
         });
   });
 });
-
-$(function(){
-    var reload = function () {
-                var userId = $("#hiddenUserId").val();
-                $("#modal_body_profile").html("");
-                $("#modal_name_profile").html("");
-                $("#preloader_profile").css("display", "block");
-                $.ajax({
-                    dataType: "html",
-                	url: "/Xmu/WebDavUsersEdit?modelId="+userId,
-                    success: function (response) {
-                        var x = $(response)
-                        $("#preloader_profile").css("display", "none");
-                        $("#modal_body_profile").html(x.find("#modal_body_profile").html());
-                        $("#modal_name_profile").html(x.find("#modal_name_profile").html());
-                    }
-                });
-            }
-    });
-
 $(function(){
     var reloadImage = function () {
             var UserHash = $("#headingHash").html();
