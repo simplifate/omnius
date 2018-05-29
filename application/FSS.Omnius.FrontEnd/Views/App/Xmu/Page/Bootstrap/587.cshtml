@@ -1,0 +1,173 @@
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="container mbe-active"><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Profiles")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="clearfix"><div class="col-xs-12 col-lg-4"><div class="row"><div class="graphWrapper" id="weekly_active_hc">@Html.Raw(@"<div id=""weekly_active_hc_graph""></div><script>weekly_active_hc_graph_chart = new Highcharts.chart({
+  chart: {
+    renderTo: 'weekly_active_hc_graph',
+    backgroundColor: ""#fff"",
+    type: 'pie',
+    events: {
+      render: function() {
+        function getSize(chart, mod) {
+          var box = this.getBBox(),
+              radius = (Math.min(chart.plotWidth, chart.plotHeight)*0.35),
+              scale = Math.min(radius/box.width, radius/box.height);
+          return Math.floor(scale * mod * 10) + 'px';
+        };
+        
+        if(typeof weekly_active_hc_graph_text != 'undefined' && weekly_active_hc_graph_text.element) {
+          weekly_active_hc_graph_text.element.remove();
+          weekly_active_hc_graph_text2.element.remove();
+        }
+		
+        var rigAll = this.series[0].data[0].y+this.series[0].data[1].y;
+        weekly_active_hc_graph_text = this.renderer.text(Math.round(this.series[0].data[0].y/rigAll*10000)/100 + "" %"").add();
+        weekly_active_hc_graph_text.element.style.fill = '#444';
+        weekly_active_hc_graph_text.element.style.fontSize = '10px';
+        weekly_active_hc_graph_text.element.style.fontSize = getSize.apply(weekly_active_hc_graph_text, [this, 1.4]);
+
+        var textBBox = weekly_active_hc_graph_text.element.getBBox();
+        var x = this.plotLeft + (this.plotWidth  * 0.5) - (textBBox.width * 0.5);
+        var y = this.plotTop  + (this.plotHeight * 0.5);
+        weekly_active_hc_graph_text.attr({x: x, y: y});
+
+        weekly_active_hc_graph_text2 = this.renderer.text('Weekly active').add();
+        weekly_active_hc_graph_text2.element.style.fill = '#555';
+        weekly_active_hc_graph_text2.element.style.fontSize = '7px';
+        weekly_active_hc_graph_text2.element.style.fontSize = getSize.apply(weekly_active_hc_graph_text2, [this, 0.9]);
+
+        var text2BBox = weekly_active_hc_graph_text2.element.getBBox();
+        var x2 = this.plotLeft + (this.plotWidth * 0.5) - (text2BBox.width * 0.5);
+        var y2 = this.plotTop + (this.plotHeight * 0.5) + (text2BBox.height * 1.1);
+        weekly_active_hc_graph_text2.attr({x: x2, y: y2});
+      }
+    }
+  },
+  credits: {
+    enabled: false
+  },
+  exporting: {
+    enabled: false
+  },
+  title: {
+    text: ''
+  },
+  plotOptions: {
+    pie: {
+      shadow: false,
+      center: ['50%', '50%'],
+      colors: [""#5cb85c"", ""#bcbfc4""],
+      borderWidth: 0
+    }
+  },
+  data: {
+    csv: '{var1}'
+  },
+  series: [{
+    name: 'Status',
+    size: '100%',
+    innerSize: '65%',
+    dataLabels: {
+      enabled: false
+    }
+  }]
+});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("weekly_active_hc")).Value ?? "").ToString()))</div></div><div class="row"><div class="graphWrapper" id="monthly_active_hc">@Html.Raw(@"<div id=""monthly_active_hc_graph""></div><style type=""text/css"" rel=""stylesheet"">            </style><script>monthly_active_hc_graph_chart = new Highcharts.chart({
+  chart: {
+    renderTo: 'monthly_active_hc_graph',
+    backgroundColor: ""#fff"",
+    type: 'pie',
+    events: {
+      render: function() {
+        function getSize(chart, mod) {
+          var box = this.getBBox(),
+              radius = (Math.min(chart.plotWidth, chart.plotHeight)*0.35),
+              scale = Math.min(radius/box.width, radius/box.height);
+          return Math.floor(scale * mod * 10) + 'px';
+        };
+        
+        if(typeof monthly_active_hc_graph_text != 'undefined' && monthly_active_hc_graph_text.element) {
+          monthly_active_hc_graph_text.element.remove();
+          monthly_active_hc_graph_text2.element.remove();
+        }
+		
+        var rigAll = this.series[0].data[0].y+this.series[0].data[1].y;
+        monthly_active_hc_graph_text = this.renderer.text(Math.round(this.series[0].data[0].y/rigAll*10000)/100 + "" %"").add();
+        monthly_active_hc_graph_text.element.style.fill = '#444';
+        monthly_active_hc_graph_text.element.style.fontSize = '10px';
+        monthly_active_hc_graph_text.element.style.fontSize = getSize.apply(monthly_active_hc_graph_text, [this, 1.4]);
+
+        var textBBox = monthly_active_hc_graph_text.element.getBBox();
+        var x = this.plotLeft + (this.plotWidth  * 0.5) - (textBBox.width * 0.5);
+        var y = this.plotTop  + (this.plotHeight * 0.5);
+        monthly_active_hc_graph_text.attr({x: x, y: y});
+
+        monthly_active_hc_graph_text2 = this.renderer.text('Monthly active').add();
+        monthly_active_hc_graph_text2.element.style.fill = '#555';
+        monthly_active_hc_graph_text2.element.style.fontSize = '7px';
+        monthly_active_hc_graph_text2.element.style.fontSize = getSize.apply(monthly_active_hc_graph_text2, [this, 0.9]);
+
+        var text2BBox = monthly_active_hc_graph_text2.element.getBBox();
+        var x2 = this.plotLeft + (this.plotWidth * 0.5) - (text2BBox.width * 0.5);
+        var y2 = this.plotTop + (this.plotHeight * 0.5) + (text2BBox.height * 1.1);
+        monthly_active_hc_graph_text2.attr({x: x2, y: y2});
+      }
+    }
+  },
+  credits: {
+    enabled: false
+  },
+  exporting: {
+    enabled: false
+  },
+  title: {
+    text: ''
+  },
+  plotOptions: {
+    pie: {
+      shadow: false,
+      center: ['50%', '50%'],
+      colors: [""#5cb85c"", ""#bcbfc4""],
+      borderWidth: 0
+    }
+  },
+  data: {
+    csv: '{var1}'
+  },
+  series: [{
+    name: 'Status',
+    size: '100%',
+    innerSize: '65%',
+    dataLabels: {
+      enabled: false
+    }
+  }]
+});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("monthly_active_hc")).Value ?? "").ToString()))</div></div><div class=""><span class="" id="noactionUsers" style="font-size: 25px;">@(@"No-action users: {var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("noactionUsers")).Value ?? "").ToString()))</span></div></div><div class="col-xs-12 col-lg-8">
+@{ if(ViewData.ContainsKey("tableData_Profiles_table") && ((System.Data.DataTable)(ViewData["tableData_Profiles_table"])).Rows.Count > 0) {
+    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Profiles_table" role="grid" aria-describedby="Profiles_table_info" style="">
+        <thead>
+            <tr>
+            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Profiles_table"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                <th>Akce</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Profiles_table"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                <th>Akce</th>
+            </tr>
+        </tfoot>
+        <tbody>
+        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_Profiles_table"])).Rows) {
+            <tr>@foreach (var cell in row.ItemArray) {
+                <td>@cell.ToString()</td>
+            }
+                <td class="actionIcons"><i title="modal" class="fa fa-edit" data-action="modal" data-idparam="modelId" data-confirm=""></i></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+} else {
+    <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
+} }
+<input type="hidden" name="Profiles_table" />
+</div></div></div></div></div></div></div></div></div>
