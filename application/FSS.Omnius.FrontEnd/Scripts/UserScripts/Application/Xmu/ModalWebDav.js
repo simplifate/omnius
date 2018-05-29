@@ -14,6 +14,8 @@ $(function(){
                     $("#preloader_profile").css("display", "none");
                     $("#modal_body_profile").html(x.find("#modal_body_profile").html());
                     $("#modal_name_profile").html(x.find("#modal_name_profile").html());
+                    var table = $("#TableForLogs");
+                    BootstrapUserInit.DataTable.initTable(table);
                 }
             });
         }); 
