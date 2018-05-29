@@ -822,6 +822,7 @@
     <Content Include="Scripts\UserScripts\Application\Xmu\ajax.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\broadcastMessagesJS.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\broadcastMessages_editJS.js" />
+    <Content Include="Scripts\UserScripts\Application\Xmu\funkce.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\LogMSModal.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\Modal.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\ModalWebDav.js" />
