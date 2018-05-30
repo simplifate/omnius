@@ -36,8 +36,9 @@ namespace FSS.Omnius.Modules.Entitron.Service
             return ExportApplication(id, new NameValueCollection());
         }
 
-        public string ExportApplication(int id, NameValueCollection form) 
+        public string ExportApplication(int id, NameValueCollection form)
         {
+            /// INIT
             string[] toExport = form.AllKeys;
 
             _db = DBCommandSet.GetDBCommandSet(_context.Applications.Find(id).DB_Type);
@@ -45,6 +46,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
             Queue<Type> queue = new Queue<Type>(RecoveryService.Roots);
             Dictionary<Type, HashSet<int>> ids = new Dictionary<Type, HashSet<int>>();
 
+            /// add roots
             foreach(Type root in RecoveryService.Roots)
             {
                 // app -> by id
@@ -61,10 +63,10 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 }
             }
 
+            /// each type
             Type currentType = queue.Dequeue();
             while (currentType != null)
             {
-                string name = currentType.Name;
                 /// parent
                 string parentPropKey;
                 ImportExportAttribute parentAttribute;
@@ -123,17 +125,24 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     {
                         throw new Exception($"Sql exception - Type[{currentType}]; query [{sqlQuery}]", ex);
                     }
-
-                    IEnumerable<PropertyInfo> childProperties = currentType.GetProperties().Where(p => { var attr = p.GetCustomAttribute<ImportExportAttribute>(); return attr != null && attr.Type == ELinkType.Child && (attr.Branch == null || toExport.Contains(attr.Branch)); });
-                    foreach (PropertyInfo prop in childProperties)
-                    {
-                        if (prop.PropertyType.GetGenericArguments().Count() > 0)
-                            queue.Enqueue(prop.PropertyType.GetGenericArguments()[0]);
-                        else
-                            queue.Enqueue(prop.PropertyType);
-                    }
                 }
-                
+                // insert empty array if there is no parent
+                else
+                {
+                    ids[currentType] = new HashSet<int>();
+                    result.Add(currentType.Name, new JArray());
+                }
+
+                /// child types
+                IEnumerable<PropertyInfo> childProperties = currentType.GetProperties().Where(p => { var attr = p.GetCustomAttribute<ImportExportAttribute>(); return attr != null && attr.Type == ELinkType.Child && (attr.Branch == null || toExport.Contains(attr.Branch)); });
+                foreach (PropertyInfo prop in childProperties)
+                {
+                    if (prop.PropertyType.GetGenericArguments().Count() > 0)
+                        queue.Enqueue(prop.PropertyType.GetGenericArguments()[0]);
+                    else
+                        queue.Enqueue(prop.PropertyType);
+                }
+
                 /// next item
                 try
                 {
