@@ -33,7 +33,7 @@ namespace FSS.Omnius.Controllers.Master
         public ActionResult RecoverApp(HttpPostedFileBase file, bool overideTempApp = false)
         {
             // validate
-            if (file == null || file.ContentLength == 0 || (file.ContentType != "text/plain" && file.ContentType != "application/octet-stream"))
+            if (file == null || file.ContentLength == 0 || (file.ContentType != "text/plain" && file.ContentType != "application/octet-stream" && file.ContentType != "application/json"))
                 return View();
             
             // get data
