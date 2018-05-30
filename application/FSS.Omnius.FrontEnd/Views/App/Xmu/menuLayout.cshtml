@@ -1,9 +1,6 @@
 @{ FSS.Omnius.FrontEnd.Utils.T t = new FSS.Omnius.FrontEnd.Utils.T( (string)ViewData["locale"] ); }
     <ul  id=appMenu>
-@if (Context.GetLoggedUser().canUseBlock("Admin",117)){            <li>
-                    <a href="/Xmu/Usersprofile">@(t._("UsersProfile"))</a>
-            </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
+@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/Overview">@(t._("Overview"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
@@ -38,5 +35,8 @@
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Grand Vizier",117)){            <li>
                     <a href="/Xmu/UserMessages">@(t._("User messages"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",117)){            <li>
+                    <a href="/Xmu/Usersprofile">@(t._("UsersProfile"))</a>
             </li>
 }    </ul>
