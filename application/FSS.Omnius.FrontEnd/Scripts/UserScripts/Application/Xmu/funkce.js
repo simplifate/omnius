@@ -1,5 +1,4 @@
 $(function(){
-  alert('Bramburky');
   $("#Profiles_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalProfile");
   
   $("#Profiles_table").on("click", ".fa-edit", function () {
