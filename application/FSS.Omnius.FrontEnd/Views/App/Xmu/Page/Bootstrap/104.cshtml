@@ -9,9 +9,9 @@
             }
         }
     }    
-</select></div></div></div><div class="col-xs-6"><div class="form-group"><div class="col-xs-12"><button type="submit" class="btn btn-primary btn-lg" name="button" value="SaveCategory" id="SaveCategory" >@(@"Save")</button></div></div></div></div><div class=""><ul class="nav nav-tabs"><li class="active"><a href="#tab-nove" data-toggle="tab" aria-expanded="true" class="">@(@"New / In process")</a></li><li class=""><a href="#tab-schvalene" data-toggle="tab" aria-expanded="false" class="bg-success">@(@"Approved")</a></li><li class=""><a href="#tab-zamitnute" data-toggle="tab" aria-expanded="false" class="bg-danger">@(@"Rejected")</a></li></ul><div class="tab-content"><div class="tab-pane active" id="tab-nove"><div class="col-xs-12">
+</select></div></div></div><div class="col-xs-6"><div class="form-group"><div class="col-xs-12"><button type="submit" class="btn btn-primary btn-lg" name="button" value="SaveCategory" id="SaveCategory" >@(@"Save")</button></div></div></div></div><div class=""><ul class="nav nav-tabs"><li class=""><a href="#tab-nove" data-toggle="tab" aria-expanded="false" class="">@(@"New / In process")</a></li><li class=""><a href="#tab-schvalene" data-toggle="tab" aria-expanded="false" class="bg-success">@(@"Approved")</a></li><li class="active"><a href="#tab-zamitnute" data-toggle="tab" aria-expanded="true" class="bg-danger">@(@"Rejected")</a></li></ul><div class="tab-content"><div class="tab-pane" id="tab-nove"><div class="col-xs-12">
 @{ if(ViewData.ContainsKey("tableData_Profiles_table_nove") && ((System.Data.DataTable)(ViewData["tableData_Profiles_table_nove"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Profiles_table_nove" role="grid" aria-describedby="Profiles_table_nove_info" data-dtselect="1" style="">
+    <table class="table data-table no-footer dataTable modalType" data-dtpaging="1" data-dtinfo="1" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Profiles_table_nove" role="grid" aria-describedby="Profiles_table_nove_info" data-dtselect="1" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Profiles_table_nove"])).Columns) {
@@ -32,7 +32,7 @@
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
-                <td class="actionIcons"><i title="modal_nove" class="fa fa-edit" data-action="modal_nove" data-idparam="modelId" data-confirm=""></i></td>
+                <td class="actionIcons"><i title="modal" class="fa fa-edit" data-action="modal" data-idparam="modelId" data-confirm=""></i></td>
             </tr>
         }
         </tbody>
@@ -43,7 +43,7 @@
 <input type="hidden" name="Profiles_table_nove" />
 </div></div><div class="tab-pane" id="tab-schvalene"><div class="col-xs-12">
 @{ if(ViewData.ContainsKey("tableData_Profiles_table_schvalene") && ((System.Data.DataTable)(ViewData["tableData_Profiles_table_schvalene"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Profiles_table_schvalene" role="grid" aria-describedby="Profiles_table_schvalene_info" data-dtselect="1" style="">
+    <table class="table data-table no-footer dataTable modalType" data-dtpaging="1" data-dtinfo="1" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Profiles_table_schvalene" role="grid" aria-describedby="Profiles_table_schvalene_info" data-dtselect="1" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Profiles_table_schvalene"])).Columns) {
@@ -64,7 +64,7 @@
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
-                <td class="actionIcons"><i title="modal_schvalene" class="fa fa-edit" data-action="modal_schvalene" data-idparam="modelId" data-confirm=""></i></td>
+                <td class="actionIcons"><i title="modal" class="fa fa-edit" data-action="modal" data-idparam="modelId" data-confirm=""></i></td>
             </tr>
         }
         </tbody>
@@ -73,9 +73,9 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="Profiles_table_schvalene" />
-</div></div><div class="tab-pane" id="tab-zamitnute"><div class="col-xs-12">
+</div></div><div class="tab-pane active" id="tab-zamitnute"><div class="col-xs-12">
 @{ if(ViewData.ContainsKey("tableData_Profiles_table_zamitnute") && ((System.Data.DataTable)(ViewData["tableData_Profiles_table_zamitnute"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Profiles_table_zamitnute" role="grid" aria-describedby="Profiles_table_zamitnute_info" data-dtselect="1" style="">
+    <table class="table data-table no-footer dataTable modalType" data-dtpaging="1" data-dtinfo="1" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Profiles_table_zamitnute" role="grid" aria-describedby="Profiles_table_zamitnute_info" data-dtselect="1" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Profiles_table_zamitnute"])).Columns) {
@@ -96,7 +96,7 @@
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
-                <td class="actionIcons"><i title="modal_zamitnute" class="fa fa-edit" data-action="modal_zamitnute" data-idparam="modelId" data-confirm=""></i></td>
+                <td class="actionIcons"><i title="modal" class="fa fa-edit" data-action="modal" data-idparam="modelId" data-confirm=""></i></td>
             </tr>
         }
         </tbody>
@@ -105,4 +105,4 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="Profiles_table_zamitnute" />
-</div></div></div></div></div></div></div></div></div></div>@Html.AntiForgeryToken()</form><div class="container"><div class="row"><div class="modal fade modal-large" tabindex="-1" role="dialog" id="modalProfile_nove" style="display: none;"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header" style="height: 35px"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><p class="" style="font-weight: bold;">@(@"New & In process \ ")</p><div class="empty-element" id="modal_name_profile_nove"></div><p></p></div><div class="modal-body" style="padding: 0px"><div class="row" id="preloader_profile_nove"><div class="col-xs-12"><div class="" style="text-align:center; "><img src="/Content/Images/Icons/modalpreloader.gif" alt="" class="" style="padding:50px 0;"></img></div></div></div><div class="empty-element" id="modal_body_profile_nove"></div><div class="empty-element" id="modal_body_cash_nove"></div></div></div></div></div></div></div><div class="container"><div class="row"><div class="modal fade modal-large" tabindex="-1" role="dialog" id="modalProfile_schvalene" style="display: none;"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header" style="height: 35px"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><p class="" style="font-weight: bold;">@(@"Approved \ ")</p><div class="empty-element" id="modal_name_profile_schvalene"></div><p></p></div><div class="modal-body" style="padding: 0px"><div class="row" id="preloader_profile_schvalene"><div class="col-xs-12"><div class="" style="text-align:center; "><img src="/Content/Images/Icons/modalpreloader.gif" alt="" class="" style="padding:50px 0;"></img></div></div></div><div class="empty-element" id="modal_body_profile_schvalene"></div><div class="empty-element" id="modal_body_cash_schvalene"></div></div></div></div></div></div></div><div class="container"><div class="row"><div class="modal fade modal-large" tabindex="-1" role="dialog" id="modalProfile_zamitnute" style="display: none;"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header" style="height: 35px"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><p class="" style="font-weight: bold;">@(@"Rejected \ ")</p><div class="empty-element" id="modal_name_profile_zamitnute"></div><p></p></div><div class="modal-body" style="padding: 0px"><div class="row" id="preloader_profile_zamitnute"><div class="col-xs-12"><div class="" style="text-align:center; "><img src="/Content/Images/Icons/modalpreloader.gif" alt="" class="" style="padding:50px 0;"></img></div></div></div><div class="empty-element" id="modal_body_profile_zamitnute"></div><div class="empty-element" id="modal_body_cash_zamitnute"></div></div></div></div></div></div></div></div><script type="text/javascript" src="/Scripts/UserScripts/Application/Xmu/ModalWebDav.js"></script>
+</div></div></div></div></div></div></div></div></div></div>@Html.AntiForgeryToken()</form><div class="container"><div class="row"><div class="modal fade modal-large" tabindex="-1" role="dialog" id="modalProfile" style="display: none;"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header" style="height: 35px"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><div class="empty-element" id="modal_name_profile"></div><p></p></div><div class="modal-body" style="padding: 0px"><div class="row" id="preloader_profile"><div class="col-xs-12"><div class="" style="text-align:center; "><img src="/Content/Images/Icons/modalpreloader.gif" alt="" class="" style="padding:50px 0;"></img></div></div></div><div class="empty-element" id="modal_body_profile"></div><div class="empty-element" id="modal_body_cash"></div></div></div></div></div></div></div></div><script type="text/javascript" src="/Scripts/UserScripts/Application/Xmu/ModalWebDav.js"></script>
