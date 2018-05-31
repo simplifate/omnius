@@ -1,10 +1,8 @@
 $(function(){
 $(".modalType").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalProfile");
   
-  var modal = function (type) {
-                      alert($(this));
-
-			var userId = $(this).parent().parent().children("td:nth-child(3)").text();
+  var modal = function (type, obj) {
+			var userId = obj.parent().parent().children("td:nth-child(3)").text();
             $("#modal_body_profile").html("");
   			$("#modal_name_profile").html("");
             $("#preloader_profile").css("display", "block");
@@ -28,9 +26,9 @@ $(".modalType").find(".fa-edit").attr("data-toggle","modal").attr("data-target",
           }
         })
      };
-  $("#Profiles_table_nove").on("click", ".fa-edit", function () {modal("new")});
-  $("#Profiles_table_schvalene").on("click", ".fa-edit", function () {modal("approved")});
-  $("#Profiles_table_zamitnute").on("click", ".fa-edit", function () {modal("rejected")});
+  $("#Profiles_table_nove").on("click", ".fa-edit", function () {var that = $(this); modal("new",that)});
+  $("#Profiles_table_schvalene").on("click", ".fa-edit", function () {var that = $(this); modal("approved")});
+  $("#Profiles_table_zamitnute").on("click", ".fa-edit", function () {var that = $(this); modal("rejected")});
 });
 
                         
