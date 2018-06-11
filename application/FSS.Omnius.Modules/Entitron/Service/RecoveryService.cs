@@ -216,6 +216,9 @@ namespace FSS.Omnius.Modules.Entitron.Service
                             ? prop.PropertyType.GetGenericArguments()[0]
                             : prop.PropertyType;
 
+                        // store User_Role
+                        var userRoles = _context.Users_Roles.Where(ur => ur.ApplicationId == oldApp.Id).ToList();
+
                         if (inputJson[propType.Name] != null)
                         {
                             // remove old
@@ -243,6 +246,9 @@ namespace FSS.Omnius.Modules.Entitron.Service
                                 }
                             }
                         }
+
+                        _context.Users_Roles.AddRange(userRoles);
+                        _context.SaveChanges();
                     }
                     catch (Exception ex)
                     {
