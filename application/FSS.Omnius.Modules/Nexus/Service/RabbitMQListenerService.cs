@@ -199,7 +199,9 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         private static Block GetBlockWithWF(DBEntities context, int appId, string blockName)
         {
-            return context.Blocks.FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.Name == blockName);
+            return context.Blocks
+                .Include("SourceTo_ActionRules")
+                .FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.Name.ToLower() == blockName.ToLower());
         }
 
         #endregion
