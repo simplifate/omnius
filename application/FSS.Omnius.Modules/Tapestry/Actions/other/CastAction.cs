@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if (vars.ContainsKey("CustomTargetType") && !string.IsNullOrEmpty((string)vars["CustomTargetType"])) {
                 targetType = (string)vars["CustomTargetType"];
             }
-            else if (vars.ContainsKey("s$TargetType") && !string.IsNullOrEmpty((string)vars["TargetType"])) {
+            else if (vars.ContainsKey("TargetType") && !string.IsNullOrEmpty((string)vars["TargetType"])) {
                 targetType = (string)vars["TargetType"];
             }
 
