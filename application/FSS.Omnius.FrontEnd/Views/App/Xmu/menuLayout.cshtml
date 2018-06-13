@@ -4,6 +4,9 @@
                     <a href="/Xmu/Sepa">@(t._("Sepa"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
+                    <a href="/Xmu/FeeSettings">@(t._("Fee settings"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/Overview">@(t._("Overview"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
@@ -19,9 +22,6 @@
                     <a href="/Xmu/AtsBot">@(t._("ATS Bot"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
-                    <a href="/Xmu/TradingFeeLevel">@(t._("Trading Fee Level"))</a>
-            </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/BankAccount">@(t._("Bank Account"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Grand Vizier",117)){            <li>
@@ -32,9 +32,6 @@
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/Log">@(t._("Log"))</a>
-            </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin,Grand Vizier",117)){            <li>
-                    <a href="/Xmu/FeeUser">@(t._("Fee User"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Grand Vizier",117)){            <li>
                     <a href="/Xmu/UserMessages">@(t._("User messages"))</a>
