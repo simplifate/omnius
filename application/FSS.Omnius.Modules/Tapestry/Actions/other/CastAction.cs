@@ -52,7 +52,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             catch(Exception e) {
                 outputVars["Result"] = null;
                 outputVars["Error"] = e.Message;
-                outputVars["IsNull"] = true;
+                outputVars["IsNull"] = false;
             }
         }
 
