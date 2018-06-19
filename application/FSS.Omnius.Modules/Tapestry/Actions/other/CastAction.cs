@@ -25,6 +25,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             outputVars["Error"] = "";
+            outputVars["IsNull"] = false;
 
             object source = vars["Object"];
             string targetType = "";
@@ -51,6 +52,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             catch(Exception e) {
                 outputVars["Result"] = null;
                 outputVars["Error"] = e.Message;
+                outputVars["IsNull"] = true;
             }
         }
 
