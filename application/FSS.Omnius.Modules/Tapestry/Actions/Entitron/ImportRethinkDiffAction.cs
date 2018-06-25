@@ -91,7 +91,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 }
             }
             catch (Exception e) {
-                throw new Exception($"{Name}: Fatal error occured ({e.Message})");
+                throw;
             }
         }
 
