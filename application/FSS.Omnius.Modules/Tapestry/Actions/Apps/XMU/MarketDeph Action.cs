@@ -65,6 +65,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 socket.Receive(receiveInitBytes, receiveInitBytes.Length, SocketFlags.None);
 
                 socket.Send(Encoding.ASCII.GetBytes(json + "\n"));
+                Thread.Sleep(2000);
 
                 do
                 {
@@ -72,7 +73,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
                     responseJson += Encoding.ASCII.GetString(receiveBytes);
                     receiveBytes = new byte[receivedBufferSize];
-                    Thread.Sleep(1000);
                 }
                 while (socket.Available > 0);
 
