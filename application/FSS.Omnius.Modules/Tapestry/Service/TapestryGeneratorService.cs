@@ -632,6 +632,20 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                                     generatedInputVariables = ";WSName=s$" + relatedConnections.Source.Label.Substring(4);
                             }
                         }
+
+                        if (item.ActionId == 300212) // Call jsonrpc over tcp
+                        {
+                            foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id))
+                            {
+                                if (relatedConnections.Source.Label?.StartsWith("WS: ") ?? false)
+                                {
+                                    var ws = _context.WSs.SingleOrDefault(x => x.Name == relatedConnections.Source.Label.Substring(4));
+                                    generatedInputVariables = ";IpAddress=s$" + ws.REST_Base_Url.Split(';')[0].ToString() + ";Port=s$" + ws.REST_Base_Url.Split(';')[1].ToString();
+                                }
+
+                            }
+                        }
+
                         if (item.ActionId == 3004 || item.ActionId == 3005 || item.ActionId == 3006 || item.ActionId == 3007) // ExtDB Select / Insert / Update / Delete
                         {
                             foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id)) {
