@@ -633,7 +633,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                             }
                         }
 
-                        if (item.ActionId == 300212) // Call jsonrpc over tcp
+                        if (item.ActionId == 300212 || item.ActionId == 19856) // Call jsonrpc over tcp, marketdeph
                         {
                             foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id))
                             {
