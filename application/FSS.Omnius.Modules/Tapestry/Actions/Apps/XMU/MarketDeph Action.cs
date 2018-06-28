@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.DB;
 using Newtonsoft.Json.Linq;
@@ -64,6 +65,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 socket.Receive(receiveInitBytes, receiveInitBytes.Length, SocketFlags.None);
 
                 socket.Send(Encoding.ASCII.GetBytes(json + "\n"));
+                Thread.Sleep(2000);
 
                 do
                 {
