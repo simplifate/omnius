@@ -198,6 +198,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                     case "ui|wizzard":                          html = RenderDefault(c, p); break;
                     case "ui|wizzard-body":                     html = RenderDefault(c, p); break;
                     case "ui|wizzard-phase":                    html = RenderDefault(c, p); break;
+                    case "ui|event-calendar":                   html = RenderEventCalendar(c, p); break;
                     /***** FUNCTIONS *****/
                     case "functions|foreach": 					html = RenderForeach(c, p); break;
                     case "functions|if": 						html = RenderIf(c, p); 		break;
@@ -705,6 +706,29 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             return html.ToString();
         }
 
+        private string RenderEventCalendar(MozaicBootstrapComponent c, Dictionary<string, string> properties)
+        {
+            StringBuilder html = new StringBuilder();
+
+            byte[] optionsBytes = Convert.FromBase64String(GetAttribute(c.Attributes, "data-options"));
+            string options = Encoding.UTF8.GetString(optionsBytes);
+
+            string attrs = BuildAttributes(c, new List<string>() { "data-options" });
+            
+            if (properties.ContainsKey("raw") && properties["raw"].ToLower() == "true") {
+                html.Append($"<{c.Tag} {attrs}>{GetContent(c, properties)}</{c.Tag}>");
+            }
+            else {
+                html.Append($"<{c.Tag} {attrs}>{(HttpUtility.HtmlDecode(GetContent(c, properties)))}</{c.Tag}>");
+            }
+
+            html.Append("@section scripts {\n");
+            html.Append($"<script>var {c.ElmId}JsonData = @Html.Raw((ViewData.FirstOrDefault(v => v.Key.EndsWith(\"{c.ElmId}\")).Value ?? new Newtonsoft.Json.Linq.JArray()).ToString());</script>");
+            html.Append($"<script>{options}</script>\n");
+            html.Append("}");
+            return html.ToString();
+        }
+
         private string GetContent(MozaicBootstrapComponent c, Dictionary<string, string> properties)
         {
             return GetContent(c, properties, new Dictionary<string, string>());
@@ -790,7 +814,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             
             return html;
         }
-
+        
         #endregion
     }
 }

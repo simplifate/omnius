@@ -99,7 +99,7 @@
             lb.append(ch)
             lb.append(' ' + opt.options[k]);
             group.append(lb);
-            group.append('<br>');
+            group.append(opt.inline ? ' &nbsp;&nbsp;&nbsp;' : '<br>');
         }
 
         if (isCollapsed) {
@@ -197,7 +197,7 @@
         var group = $('<div class="option-group form-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
         var set = opt.set;
 
-        var inp = $('<textarea class="form-control" rows="15">' + opt.get.apply(MBE.options.target, [opt]) + '</textarea>');
+        var inp = $('<textarea class="form-control" rows="'+(opt.rows || 15)+'">' + opt.get.apply(MBE.options.target, [opt]) + '</textarea>');
 
         inp.on('change', function () {
             set.apply(MBE.options.target, [this]);
@@ -209,8 +209,17 @@
                 MBE.selection._update();
             });
         }
-
+        
         group.append(inp);
+
+        if (opt.showLabel) {
+            group.prepend('<label class="control-label col-xs-2">' + opt.label + '</label>');
+            inp.wrap('<div class="col-xs-10"></div>');
+        }
+
+        if (opt.help) {
+            inp.after('<p class="help-block">' + opt.help + '</p>');
+        }
 
         if (isCollapsed) {
             group.css('display', 'none');
@@ -220,7 +229,7 @@
             var cm = CodeMirror.fromTextArea(inp[0], {
                 lineNumbers: true,
                 lineWrapping: true,
-                mode: "htmlmixed",
+                mode: opt.syntax || "htmlmixed",
                 autoCloseBrackets: true,
                 autoCloseTags: true,
                 matchBrackets: true,

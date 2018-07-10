@@ -954,10 +954,10 @@ body.mozaicBootstrapEditorModule {
 }
 
 body.mozaicEditorBody {
-    -webkit-user-select: none;   /* Chrome/Safari/Opera */
-    -moz-user-select: none;      /* Firefox */
-    -ms-user-select: none;       /* Internet Explorer/Edge */
-    user-select: none;           /* Non-prefixed version, currently */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently */
     box-sizing: border-box;
     padding: 5px;
 
@@ -983,7 +983,7 @@ body.mozaicEditorBody {
     .embed-responsive iframe {
         background: #eee;
     }
-    
+
     .mbe-active {
         outline: 1px solid blue;
     }
@@ -999,7 +999,7 @@ body.mozaicEditorBody {
         background: #efefef;
         color: #ccc;
         padding: 5px 10px;
-        content: "empty item";  
+        content: "empty item";
     }
 
     @include empty('.container', 'empty container');
@@ -1034,6 +1034,15 @@ body.mozaicEditorBody {
     @include empty('.list-group', 'empty list group');
     @include empty('.list-group-item', 'empty list group item');
     @include empty('[data-uic="functions|foreach"]', 'empty foreach');
+    @include empty('[data-uic="ui|event-calendar"]', 'Event calendar'); 
+    
+    div[data-uic="ui|event-calendar"] {
+        border: 1px solid #d39212;
+        &:before {
+            color: #d39212;
+            background: #fcffca;
+        }
+    }
 
     div[data-uic="misc|embed"] {
         .embed-code:empty:before {

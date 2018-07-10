@@ -1063,6 +1063,17 @@ body.userLayout .data-table thead tr {
     margin: 0px 5px;
     cursor: pointer; }
 
+.mozaicBootstrapPage .event-calendar-filters {
+  padding: 1rem; }
+  .mozaicBootstrapPage .event-calendar-filters h4 {
+    margin-bottom: 1rem; }
+  .mozaicBootstrapPage .event-calendar-filters .panel {
+    margin-bottom: 1rem; }
+    .mozaicBootstrapPage .event-calendar-filters .panel .panel-heading, .mozaicBootstrapPage .event-calendar-filters .panel .panel-body {
+      padding: 0.5rem; }
+    .mozaicBootstrapPage .event-calendar-filters .panel .checkbox {
+      margin-bottom: 0.35rem; }
+
 body.Leaderboard #userTopBar {
   display: none; }
 
@@ -2468,6 +2479,13 @@ body.mozaicEditorBody {
     content: "empty list group item"; }
   body.mozaicEditorBody [data-uic="functions|foreach"].empty-element:before {
     content: "empty foreach"; }
+  body.mozaicEditorBody [data-uic="ui|event-calendar"].empty-element:before {
+    content: "Event calendar"; }
+  body.mozaicEditorBody div[data-uic="ui|event-calendar"] {
+    border: 1px solid #d39212; }
+    body.mozaicEditorBody div[data-uic="ui|event-calendar"]:before {
+      color: #d39212;
+      background: #fcffca; }
   body.mozaicEditorBody div[data-uic="misc|embed"] .embed-code:empty:before {
     display: block;
     background: #efefef;

@@ -338,10 +338,13 @@
     <Content Include="Content\CssLibs\Bundle.min.css">
       <DependentUpon>Bundle.css</DependentUpon>
     </Content>
+    <Content Include="Content\CssLibs\calenstyle-iconfont.css" />
+    <Content Include="Content\CssLibs\calenstyle.css" />
     <Content Include="Content\CssLibs\ErrorCss.css" />
     <Content Include="Content\CssLibs\jquery.countdown.css" />
     <Content Include="Content\CssLibs\jquery.datetimepicker.css" />
     <Content Include="Content\CssLibs\select.dataTables.min.css" />
+    <Content Include="Content\Fonts\calenstyle-iconfont.svg" />
     <Content Include="Content\Fonts\innogy\Innogy-Bold.svg" />
     <Content Include="Content\Fonts\innogy\Innogy-Light.svg" />
     <Content Include="Content\Fonts\innogy\Innogy-Medium.svg" />
@@ -361,6 +364,7 @@
     <Content Include="Content\Images\Icons\zcash_black.png" />
     <Content Include="Content\Images\innogy_logo_H_n_4C_ly.svg" />
     <Content Include="Content\Images\LogoCrymico.png" />
+    <Content Include="Content\Images\resize-handle.png" />
     <Content Include="Content\Images\TapestryIcons\circle-event.png" />
     <Content Include="Content\Images\TapestryIcons\envelope-start.png" />
     <Content Include="Content\CssLibs\PagedList.css" />
@@ -369,6 +373,9 @@
     <Content Include="Content\Fonts\context-menu-icons.woff" />
     <Content Include="Content\Fonts\context-menu-icons.woff2" />
     <Content Include="Content\Locale\en\LC_MESSAGES\Omnius.mo" />
+    <Content Include="Content\Fonts\calenstyle-iconfont.eot" />
+    <Content Include="Content\Fonts\calenstyle-iconfont.ttf" />
+    <Content Include="Content\Fonts\calenstyle-iconfont.woff" />
     <None Include="Content\Scss\AppTiles.scss" />
     <Content Include="Content\Scss\BootstrapUserLayout.scss" />
     <None Include="Content\Scss\Bundle\AdminStyleBundle.scss" />
@@ -727,6 +734,8 @@
     <Content Include="Scripts\CommonLibraries\Highcharts\themes\grid.js" />
     <Content Include="Scripts\CommonLibraries\Highcharts\themes\sand-signika.js" />
     <Content Include="Scripts\CommonLibraries\Highcharts\themes\skies.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\calenstyle-i18n-en.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\calenstyle.min.js" />
     <Content Include="Scripts\CommonLibraries\jQuery\dataTables.select.min.js" />
     <Content Include="Scripts\CommonLibraries\jQuery\jquery-2.2.3.js" />
     <Content Include="Scripts\CommonLibraries\jQuery\jquery-collision.min.js" />

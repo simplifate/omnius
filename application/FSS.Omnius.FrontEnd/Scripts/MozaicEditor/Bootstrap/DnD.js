@@ -8,6 +8,7 @@
     onDragEnd: [],
     onDrop: [],
     onBeforeDrop: [],
+    onDragOver: [],
 
     isNavNodeDragging: false,
     isUICDragging: false,
@@ -142,6 +143,12 @@
             return false;
         }
 
+        if (!MBE.DnD.canBeDropped('onDragOver', target, [MBE.DnD.placeholder])) {
+            event.originalEvent.dataTransfer.effectAllowed = 'none';
+            MBE.DnD.placeholder.hide();
+            return false;
+        }
+
         if(!childs.length) { // cíl neobsahuje žádné další prvky - vložíme na začátek
             target.append(MBE.DnD.placeholder);
         }
@@ -170,7 +177,18 @@
         event.preventDefault();
         
         var target = $(this);
-        
+        var dropTarget = target.is('.node-handle b') ? target.data('targetuic') :
+            (target.is('.node-handle') ? target.find('b').data('targetuic') :
+                target.find('> .node-handle b').data('targetuic'));
+
+        if (!target.hasClass('root')) {
+            if (!MBE.DnD.canBeDropped('onDragOver', $(dropTarget), [MBE.DnD.placeholder])) {
+                event.originalEvent.dataTransfer.effectAllowed = 'none';
+                MBE.DnD.placeholder.hide();
+                return false;
+            }
+        } 
+
         var y = event.pageY;
         var top = target.offset().top;
         var height = target.outerHeight();
@@ -321,6 +339,16 @@
             var f = MBE.DnD[eventType][i];
             f.apply(context, params ? params : []);
         }
+    },
+
+    canBeDropped: function (eventType, context, params) {
+        var result = true;
+        for (var i = 0; i < MBE.DnD[eventType].length; i++) {
+            var f = MBE.DnD[eventType][i];
+            var r = f.apply(context, params ? params : []);
+            result = result && r !== false;
+        }
+        return result;
     }
 }
 

@@ -3,15 +3,36 @@
     .data-table {
         tfoot {
             display: table-header-group;
+
             th input {
                 width: 100%;
             }
         }
+
         .actionIcons {
             white-space: nowrap;
+
             i.fa {
-                margin: 0px 5px; 
+                margin: 0px 5px;
                 cursor: pointer;
+            }
+        }
+    }
+
+    .event-calendar-filters {
+        padding: 1rem;
+        h4 {
+            margin-bottom: 1rem;
+        }
+
+        .panel {
+            margin-bottom: 1rem;
+
+            .panel-heading, .panel-body {
+                padding: 0.5rem;
+            }
+            .checkbox {
+                margin-bottom: 0.35rem;
             }
         }
     }
