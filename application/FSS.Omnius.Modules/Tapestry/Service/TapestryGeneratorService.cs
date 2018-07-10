@@ -640,7 +640,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                                 if (relatedConnections.Source.Label?.StartsWith("WS: ") ?? false)
                                 {
                                     var ws = _context.WSs.SingleOrDefault(x => x.Name == relatedConnections.Source.Label.Substring(4));
-                                    generatedInputVariables = ";IpAddress=s$" + ws.REST_Base_Url.Split(';')[0].ToString() + ";Port=s$" + ws.REST_Base_Url.Split(';')[1].ToString();
+                                    generatedInputVariables = ";IpAddress=s$" + ws.REST_Base_Url.Split(':')[0].ToString() + ";Port=s$" + ws.REST_Base_Url.Split(':')[1].ToString();
                                 }
 
                             }
