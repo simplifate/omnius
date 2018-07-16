@@ -3,7 +3,7 @@
 @if (Context.GetLoggedUser().canUseBlock("User",117)){            <li>
                     <a href="/Xmu/Sepa">@(t._("Sepa"))</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier,Overview",117)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/Overview">@(t._("Overview"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
