@@ -207,6 +207,9 @@ namespace FSS.Omnius.Modules.Entitron.Service
             // app exists -> merge
             if (oldApp != null)
             {
+                // store User_Role
+                var userRoles = _context.Users_Roles.Where(ur => ur.ApplicationId == oldApp.Id).ToList();
+
                 IEnumerable<PropertyInfo> appChildProperties = getChildProperties(typeof(Application));
                 foreach (PropertyInfo prop in appChildProperties)
                 {
@@ -215,9 +218,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         Type propType = prop.PropertyType.GetGenericArguments().Count() > 0
                             ? prop.PropertyType.GetGenericArguments()[0]
                             : prop.PropertyType;
-
-                        // store User_Role
-                        var userRoles = _context.Users_Roles.Where(ur => ur.ApplicationId == oldApp.Id).ToList();
 
                         if (inputJson[propType.Name] != null)
                         {
@@ -246,15 +246,13 @@ namespace FSS.Omnius.Modules.Entitron.Service
                                 }
                             }
                         }
-
-                        _context.Users_Roles.AddRange(userRoles);
-                        _context.SaveChanges();
                     }
                     catch (Exception ex)
                     {
                         throw new Exception($"Error merging applications: property[{prop.Name}]. See inner exception.", ex);
                     }
                 }
+                _context.Users_Roles.AddRange(userRoles);
                 _context.Applications.Remove(newApp);
             }
             // app doesn't exists -> rename
