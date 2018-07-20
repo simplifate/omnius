@@ -13,8 +13,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
         public static int requestId = 0;
         public override int Id => 300212;
 
-        public override string[] InputVar => new string[] {"?CurencyPair", "Method", "?Params", "?SkipInit" };
-
+        public override string[] InputVar => new string[] { "IpAddress", "Port", "CurencyPair", "Method", "Params", "?SkipInit" };
         public override string Name => "Call JsonRPC Over TCP";
 
         public override string[] OutputVar => new string[] { "Result", "Error" };
