@@ -1330,6 +1330,7 @@
     <Compile Include="Tapestry\Actions\Athena\CalibrateChartData.cs" />
     <Compile Include="Tapestry\Actions\Athena\CreateStaticCsvAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToDictionaryAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\ClearOldPoolAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemForEachAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemsForRowsAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GenerateUniqueIdAction.cs" />
@@ -1356,6 +1357,7 @@
     <Compile Include="Tapestry\Actions\Entitron\SetStateAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemWithoutFormAction.cs" />
+    <Compile Include="Tapestry\Actions\Hermes\RunMailerAction.cs" />
     <Compile Include="Tapestry\Actions\Apps\EPK\FillOrderAction.cs" />
     <Compile Include="Tapestry\Actions\Math\AddAction.cs" />
     <Compile Include="Tapestry\Actions\Math\AddInVectorAction.cs" />
