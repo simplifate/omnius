@@ -1,0 +1,187 @@
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="container"><form class="form-horizontal" method="post"><div class="panel panel-default" ><div class="panel-heading"><div class="" id="exchange_heading"><h2 class="panel-title" id="headingExchange">@(@"{var1} exchange".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("headingExchange")).Value ?? "").ToString()))</h2></div></div><div class="panel-body" style="padding: 10px"><div class="mbe-active" id="exchange_body"><div class="row"><div class="col-xs-12"><button type="submit" class="btn btn-success" name="button" value="buttonTurnOn" id="buttonTurnOn" style="margin-top: 11px;" ><span class="fa fa-play"></span></button><button type="submit" class="btn btn-danger" name="button" value="buttonTurnOff" id="buttonTurnOff" style="margin-top: 11px; margin-left: 11px;background-color: #ffd700;" ><span class="fa fa-pause"></span></button><button type="submit" class="btn btn-danger" name="button" value="buttonTurnOffoff" id="buttonTurnOffoff" style="margin-top: 11px; margin-left: 11px;" ><span class="fa fa-remove"></span></button></div></div><div class="row" style="margin-top: 30px;"><div class="col-xs-12"><div class="graphWrapper" id="hc_rate_changes">@Html.Raw(@"<div id=""hc_rate_changes_graph""></div><script>hc_rate_changes_graph_chart = new Highcharts.stockChart({
+  rangeSelector: {
+  	selected: $.cookie('hc_rate_changes_graph_chart_selectedRange') || 0
+  },
+  chart: {
+    renderTo: 'hc_rate_changes_graph',
+    events: {
+      redraw: function() {
+        $.cookie('hc_rate_changes_graph_chart_selectedRange', this.rangeSelector.selected, { expires: 365 });
+      }
+    }
+  },
+  title: {
+    text: 'Rate changes'
+  },
+  xAxis: {
+    type: 'datetime',
+    minPadding: 0,
+    maxPadding: 0,
+    lineColor: '#fff',
+    lineWidth: 2,
+    tickLength: 0,
+    labels: {
+      y: 15
+    }
+  },
+  yAxis: {
+    title: {
+      text: ''
+    },
+    labels: {
+      x: -5,
+      format: '{value}'
+    },
+    opposite: true,
+    gridZIndex: 20,
+    gridLineColor: 'rgba(255,255,255,0.5)',
+    tickLength: 0,
+    lineColor: '#fff',
+    lineWidth: 2,
+    minPadding: 0
+  },
+  legend: {
+    enabled: false
+  },
+  plotOptions: {
+    area: {
+      color: Highcharts.getOptions().colors[5],
+      lineColor: Highcharts.getOptions().colors[6],
+      lineWidth: 2,
+      marker: {
+        radius: 2,
+        enabled: false
+      },
+      lineWidth: 1,
+      states: {
+        hover: {
+          lineWidth: 1
+        }
+      },
+      threshold: null
+    }
+  },
+  data: {
+    csv: '{var1}'
+  },
+  tooltip: {
+    pointFormat: '<span style=""color:{point.color}"">\u25CF</span> {series.name}: <b>{point.y}</b><br/>'
+  },
+  series: [{
+    type: 'area',
+    name: 'Rate changes',
+  }]
+});        </script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_rate_changes")).Value ?? "").ToString()))</div></div></div><div class="row"><div class="col-xs-12 col-sm-6"><p class="" style="font-weight: bold; font-size: 120%;">Amount traded: <span class="" id="volume">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("volume")).Value ?? "").ToString()))</span><span class="" id="asset_name">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("asset_name")).Value ?? "").ToString()))</span></p></div><div class="col-xs-12 col-sm-6"><p class="" style="font-weight: bold; font-size: 120%;" id="current_rate">@(@"Current exchange-rate: {var1} ".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("current_rate")).Value ?? "").ToString()))</p></div></div><div class="row"><div class="col-xs-12"><div class="graphWrapper" id="hc_market_depth">@Html.Raw(@"<div id=""hc_market_depth_graph""></div><script>hc_market_depth_graph_chart = new Highcharts.stockChart({
+  rangeSelector: {
+  	selected: $.cookie('hc_market_depth_graph_chart_selectedRange') || 0
+  },
+  chart: {
+    renderTo: 'hc_market_depth_graph',
+    type: 'area',
+    events: {
+      redraw: function() {
+        $.cookie('hc_market_depth_graph_chart_selectedRange', this.rangeSelector.selected, { expires: 365 });
+      }
+    }
+  },
+  title: {
+    text: 'Market depth'
+  },
+  data: {
+    csv: '{var1}',
+    firstRowAsNames: false,
+    startRow: 1
+  },
+  xAxis: {
+    labels: {
+      y: 15,
+      formatter: function () {
+      return Highcharts.numberFormat(this.value, 0);
+    }
+    },
+    lineColor: '#fff',
+    lineWidth: 2,
+    tickLength: 0,
+    minPadding: 0,
+    maxPadding: 0
+  },
+  yAxis: {
+    lineColor: '#fff',
+    lineWidth: 2,
+    tickLength: 0,
+    minPadding: 0,
+    maxPadding: 0
+  },
+  plotOptions: {
+    area: {
+      stacking: 'normal',
+      lineWidth: 0,
+      step: 'center',
+      fillOpacity: 1,
+      marker: {
+        lineWidth: 0,
+        enabled: false,
+        lineColor: '#ffffff'
+      },
+    }
+  },
+  legend: {
+    enabled: true,
+  },
+rangeSelector: {
+        enabled: false
+    },
+  tooltip: {
+    split: false,
+    formatter: function() {
+        var s = 'Price: <b>'+ this.x +'</b>';
+
+        $.each(this.points, function(i, point) {
+            s += '<br/><span style=""color:' + point.color + '"">\u25CF</span> ' + point.series.name + ': <b>' + point.y + '</b>';
+        });
+
+        return s;
+    }
+  },
+  series: [{
+    type: 'area',
+    color: '#c71616',
+    lineColor: '#c71616',
+    lineWidth: 2,
+    showInNavigator: true,
+    fillOpacity: 0.2,
+    name: 'Buy'
+  }, 
+  {
+    type: 'area',
+    color: '#2dcc2d',
+    lineColor: '#2dcc2d',
+    lineWidth: 2,
+    showInNavigator: true,
+    fillOpacity: 0.2,
+    name: 'Sell'
+  }],
+  navigator: {
+    series: {
+      type: 'area',
+      stacking: 'normal'
+    },
+    xAxis: {
+    	labels: {
+      		formatter: function() {
+			return this.value;
+			},
+    	},
+    },
+  }
+
+});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_market_depth")).Value ?? "").ToString()))</div></div></div><div class="row" style="margin-top: 40px;">
+@{ if(ViewData.ContainsKey("exchange_foreach")) {
+        foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DB.DBItem>)ViewData["exchange_foreach"]) {
+            <div class="">
+                <div class="col-xs-6 col-sm-4 col-md-3"><div class="" style="border: 2px solid #444; margin-top: 15px;"><div class="" style="width: 50%; padding: 15px 5px; background-color: #444; color: #fff; text-align: center; display: inline-block;"><span class="">@(row["exchange"].ToString())</span></div><div class="" style="width: 50%; padding: 15px 5px; text-align: center; display: inline-block;"><span class="">@(row["value"].ToString())</span></div></div></div>   
+            </div>
+        }
+    }
+}</div></div></div></div>
+@Html.AntiForgeryToken()</form></div></div>

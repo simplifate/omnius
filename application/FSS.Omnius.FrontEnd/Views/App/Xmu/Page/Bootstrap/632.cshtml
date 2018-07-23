@@ -1,0 +1,33 @@
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="row"><div class="col-xs-12">
+@{ if(ViewData.ContainsKey("tableData_dt") && ((System.Data.DataTable)(ViewData["tableData_dt"])).Rows.Count > 0) {
+    <table class="table data-table no-footer mbe-active dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="dt" role="grid" aria-describedby="dt_info" data-dtselect="1" style="">
+        <thead>
+            <tr>
+            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_dt"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_dt"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                
+            </tr>
+        </tfoot>
+        <tbody>
+        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_dt"])).Rows) {
+            <tr>@foreach (var cell in row.ItemArray) {
+                <td>@cell.ToString()</td>
+            }
+                
+            </tr>
+        }
+        </tbody>
+    </table>
+} else {
+    <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
+} }
+<input type="hidden" name="dt" />
+</div></div></div>
