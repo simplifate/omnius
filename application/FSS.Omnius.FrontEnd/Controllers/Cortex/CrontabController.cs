@@ -16,7 +16,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Cortex
         public ActionResult Create()
         {
             var context = DBEntities.instance;
-            ViewData["apps"] = context.Applications.Select(app => new SelectListItem { Text = app.DisplayName ?? app.Name, Value = app.Id.ToString() });
+            ViewData["apps"] = context.Applications.Select(app => new { app.DisplayName, app.Name, app.Id }).ToList().Select(app => new SelectListItem { Text = app.DisplayName ?? app.Name, Value = app.Id.ToString() });
             return View(new CrontabTask());
         }
         [HttpPost]
@@ -26,7 +26,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Cortex
 
             if (!ModelState.IsValid)
             {
-                ViewData["apps"] = context.Applications.Select(app => new SelectListItem { Text = app.DisplayName ?? app.Name, Value = app.Id.ToString() });
+                ViewData["apps"] = context.Applications.Select(app => new { app.DisplayName, app.Name, app.Id }).ToList().Select(app => new SelectListItem { Text = app.DisplayName ?? app.Name, Value = app.Id.ToString() });
                 return View(crontabTask);
             }
 
@@ -42,7 +42,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Cortex
         {
             var context = DBEntities.instance;
             CrontabTask crontabTask = context.CrontabTask.Find(Id);
-            ViewData["apps"] = context.Applications.Select(app => new SelectListItem { Text = app.DisplayName ?? app.Name, Value = app.Id.ToString(), Selected = app.Id == crontabTask.ApplicationId });
+            ViewData["apps"] = context.Applications.Select(app => new { app.DisplayName, app.Name, app.Id }).ToList().Select(app => new SelectListItem { Text = app.DisplayName ?? app.Name, Value = app.Id.ToString(), Selected = app.Id == crontabTask.ApplicationId });
             return View(crontabTask);
         }
         [HttpPost]
@@ -52,7 +52,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Cortex
 
             if (!ModelState.IsValid)
             {
-                ViewData["apps"] = context.Applications.Select(app => new SelectListItem { Text = app.DisplayName ?? app.Name, Value = app.Id.ToString(), Selected = app.Id == crontabTask.ApplicationId });
+                ViewData["apps"] = context.Applications.Select(app => new { app.DisplayName, app.Name, app.Id }).ToList().Select(app => new SelectListItem { Text = app.DisplayName ?? app.Name, Value = app.Id.ToString(), Selected = app.Id == crontabTask.ApplicationId });
                 return View(crontabTask);
             }
             
