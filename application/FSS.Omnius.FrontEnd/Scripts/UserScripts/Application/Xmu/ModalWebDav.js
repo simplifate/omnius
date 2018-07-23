@@ -12,7 +12,7 @@ $(".modalType").find(".fa-edit").attr("data-toggle","modal").attr("data-target",
         success: function (token) {
             $.ajax({
                 type: 'POST',
-                url: "/Xmu/WebDavUsersEdit?modelId="+userId,
+                url: "/Xmu/WebDavUsersEdit?modelId="+userId+"&button=Save",
                 data: { 'type': type, '__RequestVerificationToken': token},
                 success: function (response) {
                     var x = $(response)
@@ -26,9 +26,9 @@ $(".modalType").find(".fa-edit").attr("data-toggle","modal").attr("data-target",
           }
         })
      };
-  $("#Profiles_table_nove").on("click", ".fa-edit", function () {var that = $(this); modal("new",that)});
-  $("#Profiles_table_schvalene").on("click", ".fa-edit", function () {var that = $(this); modal("approved")});
-  $("#Profiles_table_zamitnute").on("click", ".fa-edit", function () {var that = $(this); modal("rejected")});
+  $("#Profiles_table_nove").on("click", ".fa-edit", function () {var that = $(this); modal("1",that)});
+  $("#Profiles_table_schvalene").on("click", ".fa-edit", function () {var that = $(this); modal("2", that)});
+  $("#Profiles_table_zamitnute").on("click", ".fa-edit", function () {var that = $(this); modal("3", that)});
 });
 
                         
