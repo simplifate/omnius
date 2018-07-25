@@ -40,17 +40,21 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
                 Thread.Sleep(sleepTime);
 
                 /// Run
-                Modules.Watchtower.OmniusInfo.Log($"Task[{Id}] start", Modules.Watchtower.OmniusLogSource.Cortex, Application);
-                LastStartTask = DateTime.UtcNow;
-                DBEntities.instance.SaveChanges();
-                if (ScheduleStart == ScheduleStartAt.taskStart)
+                lock(_lock)
                 {
-                    Thread thread = new Thread(new ThreadStart(Run));
-                    thread.Start();
-                }
-                else
-                {
-                    Run();
+                    Modules.Watchtower.OmniusInfo.Log($"Task[{Id}] start", Modules.Watchtower.OmniusLogSource.Cortex, Application);
+                    LastStartTask = DateTime.UtcNow;
+                    DBEntities.instance.SaveChanges();
+
+                    if (ScheduleStart == ScheduleStartAt.taskStart)
+                    {
+                        Thread thread = new Thread(new ThreadStart(Run));
+                        thread.Start();
+                    }
+                    else
+                    {
+                        Run();
+                    }
                 }
             }
         }
@@ -62,7 +66,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
                 var core = new Modules.CORE.CORE();
                 var context = DBEntities.instance;
                 core.User = context.Users.Single(u => u.UserName == "scheduler");
-                var block = context.Blocks.Single(b => b.WorkFlow.ApplicationId == ApplicationId && b.Name == BlockName);
+                Modules.Entitron.Entitron.i.Application = context.Applications.Find(ApplicationId);
+                var block = context.Blocks.Single(b => b.WorkFlow.ApplicationId == ApplicationId && b.Name.ToLower() == BlockName.ToLower());
 
                 var tapestry = new Modules.Tapestry.Tapestry(core);
                 var result = tapestry.innerRun(core.User, block, Executor ?? "INIT", ModelId ?? -1, null, -1);
@@ -141,9 +146,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
             }
         }
 
+        private static object _lock = new object();
+
         public static void StartAll()
         {
-            foreach (CrontabTask task in DBEntities.instance.CrontabTask.Where(ct => !ct.IsDeleted && ct.IsActive))
+            var tasks = DBEntities.instance.CrontabTask.Where(ct => !ct.IsDeleted && ct.IsActive).ToList();
+            foreach (CrontabTask task in tasks)
             {
                 task.Start();
             }
