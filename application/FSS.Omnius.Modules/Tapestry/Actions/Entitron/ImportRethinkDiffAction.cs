@@ -54,7 +54,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if (!(diffObject is string) && !(diffObject is JToken))
                 throw new Exception($"{Name}: Diff must be string or JToken");
 
-            try {
                 JToken diff = diffObject is JToken ? (JToken)diffObject : JToken.Parse((string)diffObject);
                 List<string> tableNamesList = tableNames.Split(new char[] { ',', ';' }).ToList();
 
@@ -93,10 +92,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     outputVars["Result"] = -1;
                     outputVars["Error"] = "";
                 }
-            }
-            catch (Exception e) {
-                throw new Exception($"{Name}: Fatal error occured ({e.Message})");
-            }
+            
+        
         }
 
         private RethinkDiffType GetDiffType(JToken oldValue, JToken newValue)
@@ -128,15 +125,28 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         private void Insert(JToken newValue)
         {
-            var item = new DBItem(db, table);
-            SetDBItemValues(ref item, table.Columns, newValue);
-            table.Add(item);
+            var ext_id = (string)newValue[diffIdColumnName];
+            var item = table.Select().Where(t => t.Column(extIdColumnName).Equal(ext_id)).FirstOrDefault();
+            
+            if(item == null)
+            {
+                item = new DBItem(db, table);
+                SetDBItemValues(ref item, table.Columns, newValue);
+                table.Add(item);
+            }
+            else
+            {
+                SetDBItemValues(ref item, table.Columns, newValue);
+                table.Update(item, (int)item[DBCommandSet.PrimaryKey]);
+            }
+
+           
         }
 
         private void Update(JToken oldValue, JToken newValue)
         {
             var id = (string)oldValue[diffIdColumnName];
-            var item = table.Select().Where(t => t.Column(extIdColumnName).Equal(id)).SingleOrDefault();
+            var item = table.Select().Where(t => t.Column(extIdColumnName).Equal(id)).FirstOrDefault();
 
             if(item != null) {
                 SetDBItemValues(ref item, table.Columns, newValue);
