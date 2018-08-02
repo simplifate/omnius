@@ -69,8 +69,19 @@ namespace FSS.Omnius.Modules.Tapestry
                     while(nextRule != null) {
                         foreach (var nextAction in nextRule.ActionRule_Actions.OrderBy(a => a.Order)) {
                             var remapedParams = nextAction.getInputVariables(results.OutputData);
-                            Action action = All[nextAction.ActionId];
-                            ActionResult result = action.run(remapedParams, nextAction);
+
+                            ActionResult result = null;
+                            if (nextAction.ActionId == -1 && nextAction.VirtualAction == "foreach") { // foreach
+                                result = Action.RunForeach(remapedParams, nextAction);
+                                if (result.Type != ActionResultType.Error) {
+                                    result.OutputData["__item__"] = item;
+                                }
+                            }
+                            else // Action
+                            {
+                                Action action = All[nextAction.ActionId];
+                                result = action.run(remapedParams, nextAction);
+                            }
 
                             if (result.Type == ActionResultType.Error) {
                                 foreach (IActionRule_Action reverseActionMap in nextRule.ActionRule_Actions.Where(a => a.Order < nextAction.Order).OrderByDescending(a => a.Order)) {
