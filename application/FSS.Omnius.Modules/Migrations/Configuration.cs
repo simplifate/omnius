@@ -1,38 +1,65 @@
 namespace FSS.Omnius.Modules.Migrations
 {
-    using FSS.Omnius.Modules.Entitron.Entity.Persona;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using FSS.Omnius.Modules.Entitron;
+    using FSS.Omnius.Modules.Entitron.Entity;
+    using FSS.Omnius.Modules.Entitron.Entity.Persona;
+    using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+    using FSS.Omnius.Modules.Entitron.Entity.Master;
+    using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Entitron.Entity.DBEntities>
+    internal sealed class Configuration : DbMigrationsConfiguration<DBEntities>
     {
         public Configuration()
         {
+            /// common
             AutomaticMigrationsEnabled = false;
+            
+            /// provider-specific attrs
+            /// - Migration directory
+            Entitron.ParseConnectionString("DefaultConnection");
+            switch (Entitron.DefaultDBType)
+            {
+                case Modules.Entitron.DB.ESqlType.MSSQL:
+                    MigrationsDirectory = "Migrations\\MSSQL";
+                    MigrationsNamespace = "FSS.Omnius.Modules.Migrations.MSSQL";
+                    break;
+                case Modules.Entitron.DB.ESqlType.MySQL:
+                    MigrationsDirectory = "Migrations\\MySQL";
+                    MigrationsNamespace = "FSS.Omnius.Modules.Migrations.MySQL";
+                    break;
+                default:
+                    throw new InvalidOperationException("Unknown DB provider");
+            }
+
+            /// MySQL
+            SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
+            SetHistoryContextFactory("MySql.Data.MySqlClient", (conn, schema) => new MySqlHistoryContext(conn, schema));
         }
 
-        protected override void Seed(Entitron.Entity.DBEntities context)
+        protected override void Seed(DBEntities context)
         {
             // Enum: Workflow types
             if (!context.WorkFlowTypes.Any())
                 context.WorkFlowTypes.AddOrUpdate(
-                    new Entitron.Entity.Tapestry.WorkFlowType { Name = "Init" },
-                    new Entitron.Entity.Tapestry.WorkFlowType { Name = "Partial" },
-                    new Entitron.Entity.Tapestry.WorkFlowType { Name = "Preview" }
+                    new WorkFlowType { Name = "Init" },
+                    new WorkFlowType { Name = "Partial" },
+                    new WorkFlowType { Name = "Preview" }
                 );
             // Enum: Actor types
             if (!context.Actors.Any())
                 context.Actors.AddOrUpdate(
-                    new Entitron.Entity.Tapestry.Actor { Name = "Manual" },
-                    new Entitron.Entity.Tapestry.Actor { Name = "Time" },
-                    new Entitron.Entity.Tapestry.Actor { Name = "Auto" }
+                    new Actor { Name = "Manual" },
+                    new Actor { Name = "Time" },
+                    new Actor { Name = "Auto" }
                 );
 
             // system default application
-            var systemApp = context.Applications.SingleOrDefault(a => a.IsSystem) ?? new Entitron.Entity.Master.Application { Name = "System", DisplayName = "System", IsSystem = true, IsPublished = false, IsEnabled = true, TitleFontSize = 12, Color = 1, TileHeight = 5, TileWidth = 5 };
+            var systemApp = context.Applications.SingleOrDefault(a => a.IsSystem) ?? new Application { Name = "System", DisplayName = "System", IsSystem = true, IsPublished = false, IsEnabled = true, TitleFontSize = 12, Color = 1, TileHeight = 5, TileWidth = 5 };
             if (!context.Applications.Any())
                 context.Applications.AddOrUpdate(systemApp);
             // system default AD group
@@ -43,7 +70,7 @@ namespace FSS.Omnius.Modules.Migrations
             // empty shared dbscheme
             if (!context.DBSchemeCommits.Any())
                 context.DBSchemeCommits.AddOrUpdate(
-                    new Entitron.Entity.Entitron.DbSchemeCommit { Application = systemApp, CommitMessage = "Empty", IsComplete = true, Timestamp = DateTime.UtcNow }
+                    new DbSchemeCommit { Application = systemApp, CommitMessage = "Empty", IsComplete = true, Timestamp = DateTime.UtcNow }
                 );
 
             // admin account

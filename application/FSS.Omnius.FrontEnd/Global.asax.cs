@@ -35,8 +35,7 @@ namespace FSS.Omnius.FrontEnd
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
             Logger.Log.ConfigureRootDir(Server);
             MvcHandler.DisableMvcResponseHeader = true;
-            Entitron.DefaultConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            Entitron.DefaultDBType = DBCommandSet.GetSqlType(ConfigurationManager.ConnectionStrings["DefaultConnection"].ProviderName);
+            Entitron.ParseConnectionString("DefaultConnection");
             App_Start.AppStart.AppInitialize();
             CrontabTask.StartAll();
             Logger.Log.Info("Omnius starts");

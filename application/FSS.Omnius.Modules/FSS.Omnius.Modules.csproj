@@ -395,881 +395,894 @@
     <Compile Include="Hermes\HermesUtils.cs" />
     <Compile Include="Hermes\IncomingEmailListener.cs" />
     <Compile Include="Hermes\Mailer.cs" />
-    <Compile Include="Migrations\201511301834451_init.cs" />
-    <Compile Include="Migrations\201511301834451_init.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201511301834451_init.cs" />
+    <Compile Include="Migrations\MSSQL\201511301834451_init.Designer.cs">
       <DependentUpon>201511301834451_init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201511302216543_applicationAttr.cs" />
-    <Compile Include="Migrations\201511302216543_applicationAttr.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201511302216543_applicationAttr.cs" />
+    <Compile Include="Migrations\MSSQL\201511302216543_applicationAttr.Designer.cs">
       <DependentUpon>201511302216543_applicationAttr.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512031302475_add-nexus-ws.cs" />
-    <Compile Include="Migrations\201512031302475_add-nexus-ws.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512031302475_add-nexus-ws.cs" />
+    <Compile Include="Migrations\MSSQL\201512031302475_add-nexus-ws.Designer.cs">
       <DependentUpon>201512031302475_add-nexus-ws.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512041443397_userAttributes.cs" />
-    <Compile Include="Migrations\201512041443397_userAttributes.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512041443397_userAttributes.cs" />
+    <Compile Include="Migrations\MSSQL\201512041443397_userAttributes.Designer.cs">
       <DependentUpon>201512041443397_userAttributes.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512041505231_UniqueUsername.cs" />
-    <Compile Include="Migrations\201512041505231_UniqueUsername.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512041505231_UniqueUsername.cs" />
+    <Compile Include="Migrations\MSSQL\201512041505231_UniqueUsername.Designer.cs">
       <DependentUpon>201512041505231_UniqueUsername.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512071351124_ws-type.cs" />
-    <Compile Include="Migrations\201512071351124_ws-type.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512071351124_ws-type.cs" />
+    <Compile Include="Migrations\MSSQL\201512071351124_ws-type.Designer.cs">
       <DependentUpon>201512071351124_ws-type.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512071429383_actionRule.cs" />
-    <Compile Include="Migrations\201512071429383_actionRule.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512071429383_actionRule.cs" />
+    <Compile Include="Migrations\MSSQL\201512071429383_actionRule.Designer.cs">
       <DependentUpon>201512071429383_actionRule.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512081245349_App properties.cs" />
-    <Compile Include="Migrations\201512081245349_App properties.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512081245349_App properties.cs" />
+    <Compile Include="Migrations\MSSQL\201512081245349_App properties.Designer.cs">
       <DependentUpon>201512081245349_App properties.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512081250576_nexus-extdb.cs" />
-    <Compile Include="Migrations\201512081250576_nexus-extdb.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512081250576_nexus-extdb.cs" />
+    <Compile Include="Migrations\MSSQL\201512081250576_nexus-extdb.Designer.cs">
       <DependentUpon>201512081250576_nexus-extdb.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512081321277_App properties 2.cs" />
-    <Compile Include="Migrations\201512081321277_App properties 2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512081321277_App properties 2.cs" />
+    <Compile Include="Migrations\MSSQL\201512081321277_App properties 2.Designer.cs">
       <DependentUpon>201512081321277_App properties 2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512141524186_hermes-smtp.cs" />
-    <Compile Include="Migrations\201512141524186_hermes-smtp.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512141524186_hermes-smtp.cs" />
+    <Compile Include="Migrations\MSSQL\201512141524186_hermes-smtp.Designer.cs">
       <DependentUpon>201512141524186_hermes-smtp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512141602551_hermes-smtp-2.cs" />
-    <Compile Include="Migrations\201512141602551_hermes-smtp-2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512141602551_hermes-smtp-2.cs" />
+    <Compile Include="Migrations\MSSQL\201512141602551_hermes-smtp-2.Designer.cs">
       <DependentUpon>201512141602551_hermes-smtp-2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512141700362_hermes-email-templates.cs" />
-    <Compile Include="Migrations\201512141700362_hermes-email-templates.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512141700362_hermes-email-templates.cs" />
+    <Compile Include="Migrations\MSSQL\201512141700362_hermes-email-templates.Designer.cs">
       <DependentUpon>201512141700362_hermes-email-templates.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512161325143_Watchtower_log.cs" />
-    <Compile Include="Migrations\201512161325143_Watchtower_log.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512161325143_Watchtower_log.cs" />
+    <Compile Include="Migrations\MSSQL\201512161325143_Watchtower_log.Designer.cs">
       <DependentUpon>201512161325143_Watchtower_log.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512161418357_repair.cs" />
-    <Compile Include="Migrations\201512161418357_repair.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512161418357_repair.cs" />
+    <Compile Include="Migrations\MSSQL\201512161418357_repair.Designer.cs">
       <DependentUpon>201512161418357_repair.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512161558233_UniqueSeed.cs" />
-    <Compile Include="Migrations\201512161558233_UniqueSeed.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512161558233_UniqueSeed.cs" />
+    <Compile Include="Migrations\MSSQL\201512161558233_UniqueSeed.Designer.cs">
       <DependentUpon>201512161558233_UniqueSeed.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512211057430_repairTapestry.cs" />
-    <Compile Include="Migrations\201512211057430_repairTapestry.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512211057430_repairTapestry.cs" />
+    <Compile Include="Migrations\MSSQL\201512211057430_repairTapestry.Designer.cs">
       <DependentUpon>201512211057430_repairTapestry.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512211246554_BlockWorkflowRelation.cs" />
-    <Compile Include="Migrations\201512211246554_BlockWorkflowRelation.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512211246554_BlockWorkflowRelation.cs" />
+    <Compile Include="Migrations\MSSQL\201512211246554_BlockWorkflowRelation.Designer.cs">
       <DependentUpon>201512211246554_BlockWorkflowRelation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512211547114_BlockWorkFlowStep2.cs" />
-    <Compile Include="Migrations\201512211547114_BlockWorkFlowStep2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512211547114_BlockWorkFlowStep2.cs" />
+    <Compile Include="Migrations\MSSQL\201512211547114_BlockWorkFlowStep2.Designer.cs">
       <DependentUpon>201512211547114_BlockWorkFlowStep2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512251241115_WebDAV.cs" />
-    <Compile Include="Migrations\201512251241115_WebDAV.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512251241115_WebDAV.cs" />
+    <Compile Include="Migrations\MSSQL\201512251241115_WebDAV.Designer.cs">
       <DependentUpon>201512251241115_WebDAV.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512281031045_addPreBlockRun.cs" />
-    <Compile Include="Migrations\201512281031045_addPreBlockRun.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512281031045_addPreBlockRun.cs" />
+    <Compile Include="Migrations\MSSQL\201512281031045_addPreBlockRun.Designer.cs">
       <DependentUpon>201512281031045_addPreBlockRun.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512281522191_greatherMappingLimit.cs" />
-    <Compile Include="Migrations\201512281522191_greatherMappingLimit.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512281522191_greatherMappingLimit.cs" />
+    <Compile Include="Migrations\MSSQL\201512281522191_greatherMappingLimit.Designer.cs">
       <DependentUpon>201512281522191_greatherMappingLimit.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512281607535_local-rename-permission-table.Designer.cs" />
-    <Compile Include="Migrations\201512291359312_local-required.cs" />
-    <Compile Include="Migrations\201512291444190_Module access permissions.cs" />
-    <Compile Include="Migrations\201512291444190_Module access permissions.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201512281607535_local-rename-permission-table.Designer.cs" />
+    <Compile Include="Migrations\MSSQL\201512291359312_local-required.cs" />
+    <Compile Include="Migrations\MSSQL\201512291444190_Module access permissions.cs" />
+    <Compile Include="Migrations\MSSQL\201512291444190_Module access permissions.Designer.cs">
       <DependentUpon>201512291444190_Module access permissions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601061539404_Hermes-Template-Content.cs" />
-    <Compile Include="Migrations\201601061539404_Hermes-Template-Content.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601061539404_Hermes-Template-Content.cs" />
+    <Compile Include="Migrations\MSSQL\201601061539404_Hermes-Template-Content.Designer.cs">
       <DependentUpon>201601061539404_Hermes-Template-Content.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601071052182_Overview Metablocks.cs" />
-    <Compile Include="Migrations\201601071052182_Overview Metablocks.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601071052182_Overview Metablocks.cs" />
+    <Compile Include="Migrations\MSSQL\201601071052182_Overview Metablocks.Designer.cs">
       <DependentUpon>201601071052182_Overview Metablocks.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601071236503_addDataType.cs" />
-    <Compile Include="Migrations\201601071236503_addDataType.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601071236503_addDataType.cs" />
+    <Compile Include="Migrations\MSSQL\201601071236503_addDataType.Designer.cs">
       <DependentUpon>201601071236503_addDataType.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601071621315_Hermes-email-log.cs" />
-    <Compile Include="Migrations\201601071621315_Hermes-email-log.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601071621315_Hermes-email-log.cs" />
+    <Compile Include="Migrations\MSSQL\201601071621315_Hermes-email-log.Designer.cs">
       <DependentUpon>201601071621315_Hermes-email-log.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601111302087_Hermes-log-update.cs" />
-    <Compile Include="Migrations\201601111302087_Hermes-log-update.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601111302087_Hermes-log-update.cs" />
+    <Compile Include="Migrations\MSSQL\201601111302087_Hermes-log-update.Designer.cs">
       <DependentUpon>201601111302087_Hermes-log-update.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601111323025_actionRigthsToActionRuleRights.cs" />
-    <Compile Include="Migrations\201601111323025_actionRigthsToActionRuleRights.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601111323025_actionRigthsToActionRuleRights.cs" />
+    <Compile Include="Migrations\MSSQL\201601111323025_actionRigthsToActionRuleRights.Designer.cs">
       <DependentUpon>201601111323025_actionRigthsToActionRuleRights.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601111431229_Hermes-queue.cs" />
-    <Compile Include="Migrations\201601111431229_Hermes-queue.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601111431229_Hermes-queue.cs" />
+    <Compile Include="Migrations\MSSQL\201601111431229_Hermes-queue.Designer.cs">
       <DependentUpon>201601111431229_Hermes-queue.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601111502028_AddActions.cs" />
-    <Compile Include="Migrations\201601111502028_AddActions.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601111502028_AddActions.cs" />
+    <Compile Include="Migrations\MSSQL\201601111502028_AddActions.Designer.cs">
       <DependentUpon>201601111502028_AddActions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601111538327_ActionWithoutIdentity.cs" />
-    <Compile Include="Migrations\201601111538327_ActionWithoutIdentity.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601111538327_ActionWithoutIdentity.cs" />
+    <Compile Include="Migrations\MSSQL\201601111538327_ActionWithoutIdentity.Designer.cs">
       <DependentUpon>201601111538327_ActionWithoutIdentity.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601130939278_addNameToDbRelation.cs" />
-    <Compile Include="Migrations\201601130939278_addNameToDbRelation.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601130939278_addNameToDbRelation.cs" />
+    <Compile Include="Migrations\MSSQL\201601130939278_addNameToDbRelation.Designer.cs">
       <DependentUpon>201601130939278_addNameToDbRelation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601131033150_addConfigPairs.cs" />
-    <Compile Include="Migrations\201601131033150_addConfigPairs.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601131033150_addConfigPairs.cs" />
+    <Compile Include="Migrations\MSSQL\201601131033150_addConfigPairs.Designer.cs">
       <DependentUpon>201601131033150_addConfigPairs.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601131043302_groupsFromAD.cs" />
-    <Compile Include="Migrations\201601131043302_groupsFromAD.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601131043302_groupsFromAD.cs" />
+    <Compile Include="Migrations\MSSQL\201601131043302_groupsFromAD.Designer.cs">
       <DependentUpon>201601131043302_groupsFromAD.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601131308063_generateDatabase.cs" />
-    <Compile Include="Migrations\201601131308063_generateDatabase.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601131308063_generateDatabase.cs" />
+    <Compile Include="Migrations\MSSQL\201601131308063_generateDatabase.Designer.cs">
       <DependentUpon>201601131308063_generateDatabase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601131603195_Overview-connections.cs" />
-    <Compile Include="Migrations\201601131603195_Overview-connections.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601131603195_Overview-connections.cs" />
+    <Compile Include="Migrations\MSSQL\201601131603195_Overview-connections.Designer.cs">
       <DependentUpon>201601131603195_Overview-connections.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601181334425_hermes-email-attachment.cs" />
-    <Compile Include="Migrations\201601181334425_hermes-email-attachment.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601181334425_hermes-email-attachment.cs" />
+    <Compile Include="Migrations\MSSQL\201601181334425_hermes-email-attachment.Designer.cs">
       <DependentUpon>201601181334425_hermes-email-attachment.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601181552255_actionSequence.cs" />
-    <Compile Include="Migrations\201601181552255_actionSequence.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601181552255_actionSequence.cs" />
+    <Compile Include="Migrations\MSSQL\201601181552255_actionSequence.Designer.cs">
       <DependentUpon>201601181552255_actionSequence.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601191221159_App roles.cs" />
-    <Compile Include="Migrations\201601191221159_App roles.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601191221159_App roles.cs" />
+    <Compile Include="Migrations\MSSQL\201601191221159_App roles.Designer.cs">
       <DependentUpon>201601191221159_App roles.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601191401555_hermes-email-plain-template.cs" />
-    <Compile Include="Migrations\201601191401555_hermes-email-plain-template.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601191401555_hermes-email-plain-template.cs" />
+    <Compile Include="Migrations\MSSQL\201601191401555_hermes-email-plain-template.Designer.cs">
       <DependentUpon>201601191401555_hermes-email-plain-template.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601201400125_appRights.cs" />
-    <Compile Include="Migrations\201601201400125_appRights.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601201400125_appRights.cs" />
+    <Compile Include="Migrations\MSSQL\201601201400125_appRights.Designer.cs">
       <DependentUpon>201601201400125_appRights.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601221000214_ADgroups.cs" />
-    <Compile Include="Migrations\201601221000214_ADgroups.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601221000214_ADgroups.cs" />
+    <Compile Include="Migrations\MSSQL\201601221000214_ADgroups.Designer.cs">
       <DependentUpon>201601221000214_ADgroups.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601221627553_hermes-queue-status.cs" />
-    <Compile Include="Migrations\201601221627553_hermes-queue-status.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601221627553_hermes-queue-status.cs" />
+    <Compile Include="Migrations\MSSQL\201601221627553_hermes-queue-status.Designer.cs">
       <DependentUpon>201601221627553_hermes-queue-status.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601271825013_dropPages.cs" />
-    <Compile Include="Migrations\201601271825013_dropPages.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601271825013_dropPages.cs" />
+    <Compile Include="Migrations\MSSQL\201601271825013_dropPages.Designer.cs">
       <DependentUpon>201601271825013_dropPages.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601291003556_logout.cs" />
-    <Compile Include="Migrations\201601291003556_logout.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601291003556_logout.cs" />
+    <Compile Include="Migrations\MSSQL\201601291003556_logout.Designer.cs">
       <DependentUpon>201601291003556_logout.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601291108499_update tapestry designer models.cs" />
-    <Compile Include="Migrations\201601291108499_update tapestry designer models.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601291108499_update tapestry designer models.cs" />
+    <Compile Include="Migrations\MSSQL\201601291108499_update tapestry designer models.Designer.cs">
       <DependentUpon>201601291108499_update tapestry designer models.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601291246147_pageOldRelation.cs" />
-    <Compile Include="Migrations\201601291246147_pageOldRelation.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201601291246147_pageOldRelation.cs" />
+    <Compile Include="Migrations\MSSQL\201601291246147_pageOldRelation.Designer.cs">
       <DependentUpon>201601291246147_pageOldRelation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602081506423_sharedTables.cs" />
-    <Compile Include="Migrations\201602081506423_sharedTables.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602081506423_sharedTables.cs" />
+    <Compile Include="Migrations\MSSQL\201602081506423_sharedTables.Designer.cs">
       <DependentUpon>201602081506423_sharedTables.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602091209188_isLocalUser.cs" />
-    <Compile Include="Migrations\201602091209188_isLocalUser.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602091209188_isLocalUser.cs" />
+    <Compile Include="Migrations\MSSQL\201602091209188_isLocalUser.Designer.cs">
       <DependentUpon>201602091209188_isLocalUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602101151279_IdentityUser.cs" />
-    <Compile Include="Migrations\201602101151279_IdentityUser.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602101151279_IdentityUser.cs" />
+    <Compile Include="Migrations\MSSQL\201602101151279_IdentityUser.Designer.cs">
       <DependentUpon>201602101151279_IdentityUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602120828421_requiredModulePermissions.cs" />
-    <Compile Include="Migrations\201602120828421_requiredModulePermissions.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602120828421_requiredModulePermissions.cs" />
+    <Compile Include="Migrations\MSSQL\201602120828421_requiredModulePermissions.Designer.cs">
       <DependentUpon>201602120828421_requiredModulePermissions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602131234533_Mozaic editor and app profiles.cs" />
-    <Compile Include="Migrations\201602131234533_Mozaic editor and app profiles.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602131234533_Mozaic editor and app profiles.cs" />
+    <Compile Include="Migrations\MSSQL\201602131234533_Mozaic editor and app profiles.Designer.cs">
       <DependentUpon>201602131234533_Mozaic editor and app profiles.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602151623596_Overview isInitial property.cs" />
-    <Compile Include="Migrations\201602151623596_Overview isInitial property.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602151623596_Overview isInitial property.cs" />
+    <Compile Include="Migrations\MSSQL\201602151623596_Overview isInitial property.Designer.cs">
       <DependentUpon>201602151623596_Overview isInitial property.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602160832402_removeOldWFDesignerModels.cs" />
-    <Compile Include="Migrations\201602160832402_removeOldWFDesignerModels.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602160832402_removeOldWFDesignerModels.cs" />
+    <Compile Include="Migrations\MSSQL\201602160832402_removeOldWFDesignerModels.Designer.cs">
       <DependentUpon>201602160832402_removeOldWFDesignerModels.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602161059316_Mozaic editor properties.cs" />
-    <Compile Include="Migrations\201602161059316_Mozaic editor properties.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602161059316_Mozaic editor properties.cs" />
+    <Compile Include="Migrations\MSSQL\201602161059316_Mozaic editor properties.Designer.cs">
       <DependentUpon>201602161059316_Mozaic editor properties.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602170920573_renameType_WorkFlowItem.cs" />
-    <Compile Include="Migrations\201602170920573_renameType_WorkFlowItem.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602170920573_renameType_WorkFlowItem.cs" />
+    <Compile Include="Migrations\MSSQL\201602170920573_renameType_WorkFlowItem.Designer.cs">
       <DependentUpon>201602170920573_renameType_WorkFlowItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602181028549_DataTypeExtend.cs" />
-    <Compile Include="Migrations\201602181028549_DataTypeExtend.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602181028549_DataTypeExtend.cs" />
+    <Compile Include="Migrations\MSSQL\201602181028549_DataTypeExtend.Designer.cs">
       <DependentUpon>201602181028549_DataTypeExtend.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602181722051_page IDs for UI components.cs" />
-    <Compile Include="Migrations\201602181722051_page IDs for UI components.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602181722051_page IDs for UI components.cs" />
+    <Compile Include="Migrations\MSSQL\201602181722051_page IDs for UI components.Designer.cs">
       <DependentUpon>201602181722051_page IDs for UI components.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602182123313_removeOldTapestryDesignerApp.cs" />
-    <Compile Include="Migrations\201602182123313_removeOldTapestryDesignerApp.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602182123313_removeOldTapestryDesignerApp.cs" />
+    <Compile Include="Migrations\MSSQL\201602182123313_removeOldTapestryDesignerApp.Designer.cs">
       <DependentUpon>201602182123313_removeOldTapestryDesignerApp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602182208021_addExecuteByToActionRule.cs" />
-    <Compile Include="Migrations\201602182208021_addExecuteByToActionRule.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602182208021_addExecuteByToActionRule.cs" />
+    <Compile Include="Migrations\MSSQL\201602182208021_addExecuteByToActionRule.Designer.cs">
       <DependentUpon>201602182208021_addExecuteByToActionRule.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602191012213_ComponentId in Tapestry.cs" />
-    <Compile Include="Migrations\201602191012213_ComponentId in Tapestry.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602191012213_ComponentId in Tapestry.cs" />
+    <Compile Include="Migrations\MSSQL\201602191012213_ComponentId in Tapestry.Designer.cs">
       <DependentUpon>201602191012213_ComponentId in Tapestry.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602211130175_Associated page IDs for Tapestry blocks.cs" />
-    <Compile Include="Migrations\201602211130175_Associated page IDs for Tapestry blocks.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602211130175_Associated page IDs for Tapestry blocks.cs" />
+    <Compile Include="Migrations\MSSQL\201602211130175_Associated page IDs for Tapestry blocks.Designer.cs">
       <DependentUpon>201602211130175_Associated page IDs for Tapestry blocks.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602220920500_dbColumn-displayName.cs" />
-    <Compile Include="Migrations\201602220920500_dbColumn-displayName.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602220920500_dbColumn-displayName.cs" />
+    <Compile Include="Migrations\MSSQL\201602220920500_dbColumn-displayName.Designer.cs">
       <DependentUpon>201602220920500_dbColumn-displayName.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602221139352_Column filter in resource rules.cs" />
-    <Compile Include="Migrations\201602221139352_Column filter in resource rules.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602221139352_Column filter in resource rules.cs" />
+    <Compile Include="Migrations\MSSQL\201602221139352_Column filter in resource rules.Designer.cs">
       <DependentUpon>201602221139352_Column filter in resource rules.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602221229387_Add TableId property.cs" />
-    <Compile Include="Migrations\201602221229387_Add TableId property.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602221229387_Add TableId property.cs" />
+    <Compile Include="Migrations\MSSQL\201602221229387_Add TableId property.Designer.cs">
       <DependentUpon>201602221229387_Add TableId property.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602221348193_Hermes-template-appId.cs" />
-    <Compile Include="Migrations\201602221348193_Hermes-template-appId.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602221348193_Hermes-template-appId.cs" />
+    <Compile Include="Migrations\MSSQL\201602221348193_Hermes-template-appId.Designer.cs">
       <DependentUpon>201602221348193_Hermes-template-appId.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602221415130_Hermes-template-appId2.cs" />
-    <Compile Include="Migrations\201602221415130_Hermes-template-appId2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602221415130_Hermes-template-appId2.cs" />
+    <Compile Include="Migrations\MSSQL\201602221415130_Hermes-template-appId2.Designer.cs">
       <DependentUpon>201602221415130_Hermes-template-appId2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602221447359_hermes-appid3.cs" />
-    <Compile Include="Migrations\201602221447359_hermes-appid3.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602221447359_hermes-appid3.cs" />
+    <Compile Include="Migrations\MSSQL\201602221447359_hermes-appid3.Designer.cs">
       <DependentUpon>201602221447359_hermes-appid3.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602221641534_Tapestry-block-isInMenu.cs" />
-    <Compile Include="Migrations\201602221641534_Tapestry-block-isInMenu.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602221641534_Tapestry-block-isInMenu.cs" />
+    <Compile Include="Migrations\MSSQL\201602221641534_Tapestry-block-isInMenu.Designer.cs">
       <DependentUpon>201602221641534_Tapestry-block-isInMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602221837391_Tapestry-block-isInMenu2.cs" />
-    <Compile Include="Migrations\201602221837391_Tapestry-block-isInMenu2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602221837391_Tapestry-block-isInMenu2.cs" />
+    <Compile Include="Migrations\MSSQL\201602221837391_Tapestry-block-isInMenu2.Designer.cs">
       <DependentUpon>201602221837391_Tapestry-block-isInMenu2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602241608308_Tapestry-menu-order.cs" />
-    <Compile Include="Migrations\201602241608308_Tapestry-menu-order.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602241608308_Tapestry-menu-order.cs" />
+    <Compile Include="Migrations\MSSQL\201602241608308_Tapestry-menu-order.Designer.cs">
       <DependentUpon>201602241608308_Tapestry-menu-order.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602241930322_Tapestry designer attributes.cs" />
-    <Compile Include="Migrations\201602241930322_Tapestry designer attributes.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602241930322_Tapestry designer attributes.cs" />
+    <Compile Include="Migrations\MSSQL\201602241930322_Tapestry designer attributes.Designer.cs">
       <DependentUpon>201602241930322_Tapestry designer attributes.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602251931211_Mozaic - modal settings.cs" />
-    <Compile Include="Migrations\201602251931211_Mozaic - modal settings.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602251931211_Mozaic - modal settings.cs" />
+    <Compile Include="Migrations\MSSQL\201602251931211_Mozaic - modal settings.Designer.cs">
       <DependentUpon>201602251931211_Mozaic - modal settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602260939055_index.cs" />
-    <Compile Include="Migrations\201602260939055_index.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602260939055_index.cs" />
+    <Compile Include="Migrations\MSSQL\201602260939055_index.Designer.cs">
       <DependentUpon>201602260939055_index.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602261106254_Tapestry - ResourceMappingPairs.cs" />
-    <Compile Include="Migrations\201602261106254_Tapestry - ResourceMappingPairs.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602261106254_Tapestry - ResourceMappingPairs.cs" />
+    <Compile Include="Migrations\MSSQL\201602261106254_Tapestry - ResourceMappingPairs.Designer.cs">
       <DependentUpon>201602261106254_Tapestry - ResourceMappingPairs.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602261107177_actionId.cs" />
-    <Compile Include="Migrations\201602261107177_actionId.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602261107177_actionId.cs" />
+    <Compile Include="Migrations\MSSQL\201602261107177_actionId.Designer.cs">
       <DependentUpon>201602261107177_actionId.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602261157443_removingWorkFlow.cs" />
-    <Compile Include="Migrations\201602261157443_removingWorkFlow.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602261157443_removingWorkFlow.cs" />
+    <Compile Include="Migrations\MSSQL\201602261157443_removingWorkFlow.Designer.cs">
       <DependentUpon>201602261157443_removingWorkFlow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602261557034_Column filter.cs" />
-    <Compile Include="Migrations\201602261557034_Column filter.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602261557034_Column filter.cs" />
+    <Compile Include="Migrations\MSSQL\201602261557034_Column filter.Designer.cs">
       <DependentUpon>201602261557034_Column filter.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602261618180_app_metablock.cs" />
-    <Compile Include="Migrations\201602261618180_app_metablock.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602261618180_app_metablock.cs" />
+    <Compile Include="Migrations\MSSQL\201602261618180_app_metablock.Designer.cs">
       <DependentUpon>201602261618180_app_metablock.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602261918013_Action variables.cs" />
-    <Compile Include="Migrations\201602261918013_Action variables.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602261918013_Action variables.cs" />
+    <Compile Include="Migrations\MSSQL\201602261918013_Action variables.Designer.cs">
       <DependentUpon>201602261918013_Action variables.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602271145300_states.cs" />
-    <Compile Include="Migrations\201602271145300_states.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602271145300_states.cs" />
+    <Compile Include="Migrations\MSSQL\201602271145300_states.Designer.cs">
       <DependentUpon>201602271145300_states.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602271658212_stateId_condition.cs" />
-    <Compile Include="Migrations\201602271658212_stateId_condition.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602271658212_stateId_condition.cs" />
+    <Compile Include="Migrations\MSSQL\201602271658212_stateId_condition.Designer.cs">
       <DependentUpon>201602271658212_stateId_condition.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602280928491_TargetIdAdded.cs" />
-    <Compile Include="Migrations\201602280928491_TargetIdAdded.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201602280928491_TargetIdAdded.cs" />
+    <Compile Include="Migrations\MSSQL\201602280928491_TargetIdAdded.Designer.cs">
       <DependentUpon>201602280928491_TargetIdAdded.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603011128489_DbScheme lock.cs" />
-    <Compile Include="Migrations\201603011128489_DbScheme lock.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603011128489_DbScheme lock.cs" />
+    <Compile Include="Migrations\MSSQL\201603011128489_DbScheme lock.Designer.cs">
       <DependentUpon>201603011128489_DbScheme lock.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603021243591_rememberUserApp.cs" />
-    <Compile Include="Migrations\201603021243591_rememberUserApp.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603021243591_rememberUserApp.cs" />
+    <Compile Include="Migrations\MSSQL\201603021243591_rememberUserApp.Designer.cs">
       <DependentUpon>201603021243591_rememberUserApp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603021938431_Column metadata.cs" />
-    <Compile Include="Migrations\201603021938431_Column metadata.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603021938431_Column metadata.cs" />
+    <Compile Include="Migrations\MSSQL\201603021938431_Column metadata.Designer.cs">
       <DependentUpon>201603021938431_Column metadata.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603080945413_adGroup_isAdmin.cs" />
-    <Compile Include="Migrations\201603080945413_adGroup_isAdmin.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603080945413_adGroup_isAdmin.cs" />
+    <Compile Include="Migrations\MSSQL\201603080945413_adGroup_isAdmin.Designer.cs">
       <DependentUpon>201603080945413_adGroup_isAdmin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603081428441_UsersApplications.cs" />
-    <Compile Include="Migrations\201603081428441_UsersApplications.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603081428441_UsersApplications.cs" />
+    <Compile Include="Migrations\MSSQL\201603081428441_UsersApplications.Designer.cs">
       <DependentUpon>201603081428441_UsersApplications.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603081701163_Tapestry - attribute names.cs" />
-    <Compile Include="Migrations\201603081701163_Tapestry - attribute names.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603081701163_Tapestry - attribute names.cs" />
+    <Compile Include="Migrations\MSSQL\201603081701163_Tapestry - attribute names.Designer.cs">
       <DependentUpon>201603081701163_Tapestry - attribute names.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603091107525_isSystemCOlumnMasterApplication.cs" />
-    <Compile Include="Migrations\201603091107525_isSystemCOlumnMasterApplication.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603091107525_isSystemCOlumnMasterApplication.cs" />
+    <Compile Include="Migrations\MSSQL\201603091107525_isSystemCOlumnMasterApplication.Designer.cs">
       <DependentUpon>201603091107525_isSystemCOlumnMasterApplication.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603091902486_Tapestry designer foreign keys.cs" />
-    <Compile Include="Migrations\201603091902486_Tapestry designer foreign keys.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603091902486_Tapestry designer foreign keys.cs" />
+    <Compile Include="Migrations\MSSQL\201603091902486_Tapestry designer foreign keys.Designer.cs">
       <DependentUpon>201603091902486_Tapestry designer foreign keys.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603101916094_Mozaic nested components.cs" />
-    <Compile Include="Migrations\201603101916094_Mozaic nested components.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603101916094_Mozaic nested components.cs" />
+    <Compile Include="Migrations\MSSQL\201603101916094_Mozaic nested components.Designer.cs">
       <DependentUpon>201603101916094_Mozaic nested components.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603140933283_UniqueAndIndexForUsersApplications.cs" />
-    <Compile Include="Migrations\201603140933283_UniqueAndIndexForUsersApplications.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603140933283_UniqueAndIndexForUsersApplications.cs" />
+    <Compile Include="Migrations\MSSQL\201603140933283_UniqueAndIndexForUsersApplications.Designer.cs">
       <DependentUpon>201603140933283_UniqueAndIndexForUsersApplications.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603141104422_Cortex-Task.cs" />
-    <Compile Include="Migrations\201603141104422_Cortex-Task.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603141104422_Cortex-Task.cs" />
+    <Compile Include="Migrations\MSSQL\201603141104422_Cortex-Task.Designer.cs">
       <DependentUpon>201603141104422_Cortex-Task.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603141129547_Fix cortex conflict.cs" />
-    <Compile Include="Migrations\201603141129547_Fix cortex conflict.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603141129547_Fix cortex conflict.cs" />
+    <Compile Include="Migrations\MSSQL\201603141129547_Fix cortex conflict.Designer.cs">
       <DependentUpon>201603141129547_Fix cortex conflict.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603171030577_BlockDisplayName.cs" />
-    <Compile Include="Migrations\201603171030577_BlockDisplayName.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603171030577_BlockDisplayName.cs" />
+    <Compile Include="Migrations\MSSQL\201603171030577_BlockDisplayName.Designer.cs">
       <DependentUpon>201603171030577_BlockDisplayName.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603181026526_cascadeDelete.cs" />
-    <Compile Include="Migrations\201603181026526_cascadeDelete.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603181026526_cascadeDelete.cs" />
+    <Compile Include="Migrations\MSSQL\201603181026526_cascadeDelete.Designer.cs">
       <DependentUpon>201603181026526_cascadeDelete.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603181106522_splitConnections.cs" />
-    <Compile Include="Migrations\201603181106522_splitConnections.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603181106522_splitConnections.cs" />
+    <Compile Include="Migrations\MSSQL\201603181106522_splitConnections.Designer.cs">
       <DependentUpon>201603181106522_splitConnections.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603181127565_splitConnectionsRepair.cs" />
-    <Compile Include="Migrations\201603181127565_splitConnectionsRepair.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603181127565_splitConnectionsRepair.cs" />
+    <Compile Include="Migrations\MSSQL\201603181127565_splitConnectionsRepair.Designer.cs">
       <DependentUpon>201603181127565_splitConnectionsRepair.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603191225115_Conditions and condition sets.cs" />
-    <Compile Include="Migrations\201603191225115_Conditions and condition sets.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603191225115_Conditions and condition sets.cs" />
+    <Compile Include="Migrations\MSSQL\201603191225115_Conditions and condition sets.Designer.cs">
       <DependentUpon>201603191225115_Conditions and condition sets.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603191237383_Conditions 2.cs" />
-    <Compile Include="Migrations\201603191237383_Conditions 2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603191237383_Conditions 2.cs" />
+    <Compile Include="Migrations\MSSQL\201603191237383_Conditions 2.Designer.cs">
       <DependentUpon>201603191237383_Conditions 2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603191359417_Revert DbRelations %28temporary%29.cs" />
-    <Compile Include="Migrations\201603191359417_Revert DbRelations %28temporary%29.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603191359417_Revert DbRelations %28temporary%29.cs" />
+    <Compile Include="Migrations\MSSQL\201603191359417_Revert DbRelations %28temporary%29.Designer.cs">
       <DependentUpon>201603191359417_Revert DbRelations %28temporary%29.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603210942175_addedPriorityToPersonaAppRoles.cs" />
-    <Compile Include="Migrations\201603210942175_addedPriorityToPersonaAppRoles.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603210942175_addedPriorityToPersonaAppRoles.cs" />
+    <Compile Include="Migrations\MSSQL\201603210942175_addedPriorityToPersonaAppRoles.Designer.cs">
       <DependentUpon>201603210942175_addedPriorityToPersonaAppRoles.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603211040585_blockTemp.cs" />
-    <Compile Include="Migrations\201603211040585_blockTemp.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603211040585_blockTemp.cs" />
+    <Compile Include="Migrations\MSSQL\201603211040585_blockTemp.Designer.cs">
       <DependentUpon>201603211040585_blockTemp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603221517303_cortex-db-update.cs" />
-    <Compile Include="Migrations\201603221517303_cortex-db-update.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603221517303_cortex-db-update.cs" />
+    <Compile Include="Migrations\MSSQL\201603221517303_cortex-db-update.Designer.cs">
       <DependentUpon>201603221517303_cortex-db-update.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603231121543_ActionRuleCascade.cs" />
-    <Compile Include="Migrations\201603231121543_ActionRuleCascade.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603231121543_ActionRuleCascade.cs" />
+    <Compile Include="Migrations\MSSQL\201603231121543_ActionRuleCascade.Designer.cs">
       <DependentUpon>201603231121543_ActionRuleCascade.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603241521464_addAjaxToWFItem.cs" />
-    <Compile Include="Migrations\201603241521464_addAjaxToWFItem.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603241521464_addAjaxToWFItem.cs" />
+    <Compile Include="Migrations\MSSQL\201603241521464_addAjaxToWFItem.Designer.cs">
       <DependentUpon>201603241521464_addAjaxToWFItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603261504456_Add ActionId to resource rules.cs" />
-    <Compile Include="Migrations\201603261504456_Add ActionId to resource rules.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603261504456_Add ActionId to resource rules.cs" />
+    <Compile Include="Migrations\MSSQL\201603261504456_Add ActionId to resource rules.Designer.cs">
       <DependentUpon>201603261504456_Add ActionId to resource rules.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603281221022_Mozaic editor parent component.cs" />
-    <Compile Include="Migrations\201603281221022_Mozaic editor parent component.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603281221022_Mozaic editor parent component.cs" />
+    <Compile Include="Migrations\MSSQL\201603281221022_Mozaic editor parent component.Designer.cs">
       <DependentUpon>201603281221022_Mozaic editor parent component.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603281407051_WFitemMergeStep1.cs" />
-    <Compile Include="Migrations\201603281407051_WFitemMergeStep1.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603281407051_WFitemMergeStep1.cs" />
+    <Compile Include="Migrations\MSSQL\201603281407051_WFitemMergeStep1.Designer.cs">
       <DependentUpon>201603281407051_WFitemMergeStep1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603281452451_WFitemMergeStep2.cs" />
-    <Compile Include="Migrations\201603281452451_WFitemMergeStep2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603281452451_WFitemMergeStep2.cs" />
+    <Compile Include="Migrations\MSSQL\201603281452451_WFitemMergeStep2.Designer.cs">
       <DependentUpon>201603281452451_WFitemMergeStep2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603281818163_ConnectionSplitStep1.cs" />
-    <Compile Include="Migrations\201603281818163_ConnectionSplitStep1.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603281818163_ConnectionSplitStep1.cs" />
+    <Compile Include="Migrations\MSSQL\201603281818163_ConnectionSplitStep1.Designer.cs">
       <DependentUpon>201603281818163_ConnectionSplitStep1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603282059441_ConnectionSplitStep2.cs" />
-    <Compile Include="Migrations\201603282059441_ConnectionSplitStep2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603282059441_ConnectionSplitStep2.cs" />
+    <Compile Include="Migrations\MSSQL\201603282059441_ConnectionSplitStep2.Designer.cs">
       <DependentUpon>201603282059441_ConnectionSplitStep2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603282201536_addIdToModel.cs" />
-    <Compile Include="Migrations\201603282201536_addIdToModel.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603282201536_addIdToModel.cs" />
+    <Compile Include="Migrations\MSSQL\201603282201536_addIdToModel.Designer.cs">
       <DependentUpon>201603282201536_addIdToModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603290102436_identityWorkflow.cs" />
-    <Compile Include="Migrations\201603290102436_identityWorkflow.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603290102436_identityWorkflow.cs" />
+    <Compile Include="Migrations\MSSQL\201603290102436_identityWorkflow.Designer.cs">
       <DependentUpon>201603290102436_identityWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603291050130_Add TargetName.cs" />
-    <Compile Include="Migrations\201603291050130_Add TargetName.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603291050130_Add TargetName.cs" />
+    <Compile Include="Migrations\MSSQL\201603291050130_Add TargetName.Designer.cs">
       <DependentUpon>201603291050130_Add TargetName.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603291528171_Add pageId.cs" />
-    <Compile Include="Migrations\201603291528171_Add pageId.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603291528171_Add pageId.cs" />
+    <Compile Include="Migrations\MSSQL\201603291528171_Add pageId.Designer.cs">
       <DependentUpon>201603291528171_Add pageId.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603301510267_blockUnique.cs" />
-    <Compile Include="Migrations\201603301510267_blockUnique.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603301510267_blockUnique.cs" />
+    <Compile Include="Migrations\MSSQL\201603301510267_blockUnique.Designer.cs">
       <DependentUpon>201603301510267_blockUnique.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603310847502_Add DataSourceParams.cs" />
-    <Compile Include="Migrations\201603310847502_Add DataSourceParams.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603310847502_Add DataSourceParams.cs" />
+    <Compile Include="Migrations\MSSQL\201603310847502_Add DataSourceParams.Designer.cs">
       <DependentUpon>201603310847502_Add DataSourceParams.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603311101178_tempWorkflow.cs" />
-    <Compile Include="Migrations\201603311101178_tempWorkflow.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603311101178_tempWorkflow.cs" />
+    <Compile Include="Migrations\MSSQL\201603311101178_tempWorkflow.Designer.cs">
       <DependentUpon>201603311101178_tempWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603311320176_mappingPairs.cs" />
-    <Compile Include="Migrations\201603311320176_mappingPairs.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201603311320176_mappingPairs.cs" />
+    <Compile Include="Migrations\MSSQL\201603311320176_mappingPairs.Designer.cs">
       <DependentUpon>201603311320176_mappingPairs.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604010915108_repairTriggerRules.cs" />
-    <Compile Include="Migrations\201604010915108_repairTriggerRules.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604010915108_repairTriggerRules.cs" />
+    <Compile Include="Migrations\MSSQL\201604010915108_repairTriggerRules.Designer.cs">
       <DependentUpon>201604010915108_repairTriggerRules.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604011034314_targetRelation.cs" />
-    <Compile Include="Migrations\201604011034314_targetRelation.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604011034314_targetRelation.cs" />
+    <Compile Include="Migrations\MSSQL\201604011034314_targetRelation.Designer.cs">
       <DependentUpon>201604011034314_targetRelation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604011055555_requiredParent.cs" />
-    <Compile Include="Migrations\201604011055555_requiredParent.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604011055555_requiredParent.cs" />
+    <Compile Include="Migrations\MSSQL\201604011055555_requiredParent.Designer.cs">
       <DependentUpon>201604011055555_requiredParent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604011145470_repairTrigger.cs" />
-    <Compile Include="Migrations\201604011145470_repairTrigger.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604011145470_repairTrigger.cs" />
+    <Compile Include="Migrations\MSSQL\201604011145470_repairTrigger.Designer.cs">
       <DependentUpon>201604011145470_repairTrigger.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604041141371_Tapestry role whitelist.cs" />
-    <Compile Include="Migrations\201604041141371_Tapestry role whitelist.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604041141371_Tapestry role whitelist.cs" />
+    <Compile Include="Migrations\MSSQL\201604041141371_Tapestry role whitelist.Designer.cs">
       <DependentUpon>201604041141371_Tapestry role whitelist.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604042210534_pageRelation.cs" />
-    <Compile Include="Migrations\201604042210534_pageRelation.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604042210534_pageRelation.cs" />
+    <Compile Include="Migrations\MSSQL\201604042210534_pageRelation.Designer.cs">
       <DependentUpon>201604042210534_pageRelation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604042336288_componentParent.cs" />
-    <Compile Include="Migrations\201604042336288_componentParent.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604042336288_componentParent.cs" />
+    <Compile Include="Migrations\MSSQL\201604042336288_componentParent.Designer.cs">
       <DependentUpon>201604042336288_componentParent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604050708595_repairTriggerComponentParent.cs" />
-    <Compile Include="Migrations\201604050708595_repairTriggerComponentParent.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604050708595_repairTriggerComponentParent.cs" />
+    <Compile Include="Migrations\MSSQL\201604050708595_repairTriggerComponentParent.Designer.cs">
       <DependentUpon>201604050708595_repairTriggerComponentParent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604060906502_Allow multiple sources, add variables to resource items.cs" />
-    <Compile Include="Migrations\201604060906502_Allow multiple sources, add variables to resource items.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604060906502_Allow multiple sources, add variables to resource items.cs" />
+    <Compile Include="Migrations\MSSQL\201604060906502_Allow multiple sources, add variables to resource items.Designer.cs">
       <DependentUpon>201604060906502_Allow multiple sources, add variables to resource items.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604061859547_Tapestry - save toolbox state.cs" />
-    <Compile Include="Migrations\201604061859547_Tapestry - save toolbox state.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604061859547_Tapestry - save toolbox state.cs" />
+    <Compile Include="Migrations\MSSQL\201604061859547_Tapestry - save toolbox state.Designer.cs">
       <DependentUpon>201604061859547_Tapestry - save toolbox state.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604081157582_Remove resoure mapping pair source array.cs" />
-    <Compile Include="Migrations\201604081157582_Remove resoure mapping pair source array.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604081157582_Remove resoure mapping pair source array.cs" />
+    <Compile Include="Migrations\MSSQL\201604081157582_Remove resoure mapping pair source array.Designer.cs">
       <DependentUpon>201604081157582_Remove resoure mapping pair source array.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604110911042_Add StateId to ResourceItem.cs" />
-    <Compile Include="Migrations\201604110911042_Add StateId to ResourceItem.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604110911042_Add StateId to ResourceItem.cs" />
+    <Compile Include="Migrations\MSSQL\201604110911042_Add StateId to ResourceItem.Designer.cs">
       <DependentUpon>201604110911042_Add StateId to ResourceItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604121231256_cortex-montly-type.cs" />
-    <Compile Include="Migrations\201604121231256_cortex-montly-type.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604121231256_cortex-montly-type.cs" />
+    <Compile Include="Migrations\MSSQL\201604121231256_cortex-montly-type.Designer.cs">
       <DependentUpon>201604121231256_cortex-montly-type.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604130808394_actionRule_Action_Id.cs" />
-    <Compile Include="Migrations\201604130808394_actionRule_Action_Id.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604130808394_actionRule_Action_Id.cs" />
+    <Compile Include="Migrations\MSSQL\201604130808394_actionRule_Action_Id.Designer.cs">
       <DependentUpon>201604130808394_actionRule_Action_Id.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.cs" />
-    <Compile Include="Migrations\201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.cs" />
+    <Compile Include="Migrations\MSSQL\201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.Designer.cs">
       <DependentUpon>201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604131344422_appRoleRelation.cs" />
-    <Compile Include="Migrations\201604131344422_appRoleRelation.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604131344422_appRoleRelation.cs" />
+    <Compile Include="Migrations\MSSQL\201604131344422_appRoleRelation.Designer.cs">
       <DependentUpon>201604131344422_appRoleRelation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604210802463_dropModules.cs" />
-    <Compile Include="Migrations\201604210802463_dropModules.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201604210802463_dropModules.cs" />
+    <Compile Include="Migrations\MSSQL\201604210802463_dropModules.Designer.cs">
       <DependentUpon>201604210802463_dropModules.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605020810435_overviewTrash.cs" />
-    <Compile Include="Migrations\201605020810435_overviewTrash.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201605020810435_overviewTrash.cs" />
+    <Compile Include="Migrations\MSSQL\201605020810435_overviewTrash.Designer.cs">
       <DependentUpon>201605020810435_overviewTrash.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605041236075_Add condition sets to gateways.cs" />
-    <Compile Include="Migrations\201605041236075_Add condition sets to gateways.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201605041236075_Add condition sets to gateways.cs" />
+    <Compile Include="Migrations\MSSQL\201605041236075_Add condition sets to gateways.Designer.cs">
       <DependentUpon>201605041236075_Add condition sets to gateways.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605041320457_TapestryAdvanceConditions.cs" />
-    <Compile Include="Migrations\201605041320457_TapestryAdvanceConditions.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201605041320457_TapestryAdvanceConditions.cs" />
+    <Compile Include="Migrations\MSSQL\201605041320457_TapestryAdvanceConditions.Designer.cs">
       <DependentUpon>201605041320457_TapestryAdvanceConditions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605170940531_conditionSetCascade.cs" />
-    <Compile Include="Migrations\201605170940531_conditionSetCascade.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201605170940531_conditionSetCascade.cs" />
+    <Compile Include="Migrations\MSSQL\201605170940531_conditionSetCascade.Designer.cs">
       <DependentUpon>201605170940531_conditionSetCascade.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606061241384_Cortex-Repeat.cs" />
-    <Compile Include="Migrations\201606061241384_Cortex-Repeat.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201606061241384_Cortex-Repeat.cs" />
+    <Compile Include="Migrations\MSSQL\201606061241384_Cortex-Repeat.Designer.cs">
       <DependentUpon>201606061241384_Cortex-Repeat.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606210930404_RelationColumnRename.cs" />
-    <Compile Include="Migrations\201606210930404_RelationColumnRename.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201606210930404_RelationColumnRename.cs" />
+    <Compile Include="Migrations\MSSQL\201606210930404_RelationColumnRename.Designer.cs">
       <DependentUpon>201606210930404_RelationColumnRename.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606211001175_DBRelationFK.cs" />
-    <Compile Include="Migrations\201606211001175_DBRelationFK.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201606211001175_DBRelationFK.cs" />
+    <Compile Include="Migrations\MSSQL\201606211001175_DBRelationFK.Designer.cs">
       <DependentUpon>201606211001175_DBRelationFK.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606291006426_changed-since-last-save-bools.cs" />
-    <Compile Include="Migrations\201606291006426_changed-since-last-save-bools.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201606291006426_changed-since-last-save-bools.cs" />
+    <Compile Include="Migrations\MSSQL\201606291006426_changed-since-last-save-bools.Designer.cs">
       <DependentUpon>201606291006426_changed-since-last-save-bools.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606291203568_fourth-bool.cs" />
-    <Compile Include="Migrations\201606291203568_fourth-bool.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201606291203568_fourth-bool.cs" />
+    <Compile Include="Migrations\MSSQL\201606291203568_fourth-bool.Designer.cs">
       <DependentUpon>201606291203568_fourth-bool.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201607120948457_removeDataType.cs" />
-    <Compile Include="Migrations\201607120948457_removeDataType.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201607120948457_removeDataType.cs" />
+    <Compile Include="Migrations\MSSQL\201607120948457_removeDataType.Designer.cs">
       <DependentUpon>201607120948457_removeDataType.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201607140838442_add tabindex to component properties.cs" />
-    <Compile Include="Migrations\201607140838442_add tabindex to component properties.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201607140838442_add tabindex to component properties.cs" />
+    <Compile Include="Migrations\MSSQL\201607140838442_add tabindex to component properties.Designer.cs">
       <DependentUpon>201607140838442_add tabindex to component properties.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201607151241382_mozaic-editor-page-version.cs" />
-    <Compile Include="Migrations\201607151241382_mozaic-editor-page-version.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201607151241382_mozaic-editor-page-version.cs" />
+    <Compile Include="Migrations\MSSQL\201607151241382_mozaic-editor-page-version.Designer.cs">
       <DependentUpon>201607151241382_mozaic-editor-page-version.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201607181414222_AddMozaicEditorPageIsDeletedColumn.cs" />
-    <Compile Include="Migrations\201607181414222_AddMozaicEditorPageIsDeletedColumn.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201607181414222_AddMozaicEditorPageIsDeletedColumn.cs" />
+    <Compile Include="Migrations\MSSQL\201607181414222_AddMozaicEditorPageIsDeletedColumn.Designer.cs">
       <DependentUpon>201607181414222_AddMozaicEditorPageIsDeletedColumn.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201607211141272_add-bootstrap-classes.cs" />
-    <Compile Include="Migrations\201607211141272_add-bootstrap-classes.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201607211141272_add-bootstrap-classes.cs" />
+    <Compile Include="Migrations\MSSQL\201607211141272_add-bootstrap-classes.Designer.cs">
       <DependentUpon>201607211141272_add-bootstrap-classes.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201607250917494_AddUserIsActiveColumn2.cs" />
-    <Compile Include="Migrations\201607250917494_AddUserIsActiveColumn2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201607250917494_AddUserIsActiveColumn2.cs" />
+    <Compile Include="Migrations\MSSQL\201607250917494_AddUserIsActiveColumn2.Designer.cs">
       <DependentUpon>201607250917494_AddUserIsActiveColumn2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201608110907187_AddCSSTemplateTable.cs" />
-    <Compile Include="Migrations\201608110907187_AddCSSTemplateTable.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201608110907187_AddCSSTemplateTable.cs" />
+    <Compile Include="Migrations\MSSQL\201608110907187_AddCSSTemplateTable.Designer.cs">
       <DependentUpon>201608110907187_AddCSSTemplateTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201608150811297_ChangeMozaicCssTemplatesCssColumnToUrl.cs" />
-    <Compile Include="Migrations\201608150811297_ChangeMozaicCssTemplatesCssColumnToUrl.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201608150811297_ChangeMozaicCssTemplatesCssColumnToUrl.cs" />
+    <Compile Include="Migrations\MSSQL\201608150811297_ChangeMozaicCssTemplatesCssColumnToUrl.Designer.cs">
       <DependentUpon>201608150811297_ChangeMozaicCssTemplatesCssColumnToUrl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201608161238551_AddRoleWhitelistAttributeToBlock.cs" />
-    <Compile Include="Migrations\201608161238551_AddRoleWhitelistAttributeToBlock.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201608161238551_AddRoleWhitelistAttributeToBlock.cs" />
+    <Compile Include="Migrations\MSSQL\201608161238551_AddRoleWhitelistAttributeToBlock.Designer.cs">
       <DependentUpon>201608161238551_AddRoleWhitelistAttributeToBlock.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201609081823076_Merge Mozaic build from AS.cs" />
-    <Compile Include="Migrations\201609081823076_Merge Mozaic build from AS.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201609081823076_Merge Mozaic build from AS.cs" />
+    <Compile Include="Migrations\MSSQL\201609081823076_Merge Mozaic build from AS.Designer.cs">
       <DependentUpon>201609081823076_Merge Mozaic build from AS.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610131145516_AppConnectionString.cs" />
-    <Compile Include="Migrations\201610131145516_AppConnectionString.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201610131145516_AppConnectionString.cs" />
+    <Compile Include="Migrations\MSSQL\201610131145516_AppConnectionString.Designer.cs">
       <DependentUpon>201610131145516_AppConnectionString.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610261315588_FileMetadata_webdaventityuploadaction.cs" />
-    <Compile Include="Migrations\201610261315588_FileMetadata_webdaventityuploadaction.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201610261315588_FileMetadata_webdaventityuploadaction.cs" />
+    <Compile Include="Migrations\MSSQL\201610261315588_FileMetadata_webdaventityuploadaction.Designer.cs">
       <DependentUpon>201610261315588_FileMetadata_webdaventityuploadaction.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611132038327_IsChangedParameterAddedToBlock.cs" />
-    <Compile Include="Migrations\201611132038327_IsChangedParameterAddedToBlock.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201611132038327_IsChangedParameterAddedToBlock.cs" />
+    <Compile Include="Migrations\MSSQL\201611132038327_IsChangedParameterAddedToBlock.Designer.cs">
       <DependentUpon>201611132038327_IsChangedParameterAddedToBlock.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611181020083_ResourceMappingPairUpgrade1.cs" />
-    <Compile Include="Migrations\201611181020083_ResourceMappingPairUpgrade1.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201611181020083_ResourceMappingPairUpgrade1.cs" />
+    <Compile Include="Migrations\MSSQL\201611181020083_ResourceMappingPairUpgrade1.Designer.cs">
       <DependentUpon>201611181020083_ResourceMappingPairUpgrade1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611181120487_ResourceMappingPairUpgrade2.cs" />
-    <Compile Include="Migrations\201611181120487_ResourceMappingPairUpgrade2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201611181120487_ResourceMappingPairUpgrade2.cs" />
+    <Compile Include="Migrations\MSSQL\201611181120487_ResourceMappingPairUpgrade2.Designer.cs">
       <DependentUpon>201611181120487_ResourceMappingPairUpgrade2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611181522498_conditionSetMappingPairRelationRemoved.cs" />
-    <Compile Include="Migrations\201611181522498_conditionSetMappingPairRelationRemoved.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201611181522498_conditionSetMappingPairRelationRemoved.cs" />
+    <Compile Include="Migrations\MSSQL\201611181522498_conditionSetMappingPairRelationRemoved.Designer.cs">
       <DependentUpon>201611181522498_conditionSetMappingPairRelationRemoved.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611231456099_addBlockBuildLink.cs" />
-    <Compile Include="Migrations\201611231456099_addBlockBuildLink.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201611231456099_addBlockBuildLink.cs" />
+    <Compile Include="Migrations\MSSQL\201611231456099_addBlockBuildLink.Designer.cs">
       <DependentUpon>201611231456099_addBlockBuildLink.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612141429553_MozaicBootstrapEditorModels.cs" />
-    <Compile Include="Migrations\201612141429553_MozaicBootstrapEditorModels.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201612141429553_MozaicBootstrapEditorModels.cs" />
+    <Compile Include="Migrations\MSSQL\201612141429553_MozaicBootstrapEditorModels.Designer.cs">
       <DependentUpon>201612141429553_MozaicBootstrapEditorModels.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701021100138_MozaicBootstrapModelsUpdate.cs" />
-    <Compile Include="Migrations\201701021100138_MozaicBootstrapModelsUpdate.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201701021100138_MozaicBootstrapModelsUpdate.cs" />
+    <Compile Include="Migrations\MSSQL\201701021100138_MozaicBootstrapModelsUpdate.Designer.cs">
       <DependentUpon>201701021100138_MozaicBootstrapModelsUpdate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701021412417_DbSchemeCommit - add IsComplete boolean.cs" />
-    <Compile Include="Migrations\201701021412417_DbSchemeCommit - add IsComplete boolean.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201701021412417_DbSchemeCommit - add IsComplete boolean.cs" />
+    <Compile Include="Migrations\MSSQL\201701021412417_DbSchemeCommit - add IsComplete boolean.Designer.cs">
       <DependentUpon>201701021412417_DbSchemeCommit - add IsComplete boolean.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701031039386_checkContext.cs" />
-    <Compile Include="Migrations\201701031039386_checkContext.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201701031039386_checkContext.cs" />
+    <Compile Include="Migrations\MSSQL\201701031039386_checkContext.Designer.cs">
       <DependentUpon>201701031039386_checkContext.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701051017339_NexusWsModelUpdate.cs" />
-    <Compile Include="Migrations\201701051017339_NexusWsModelUpdate.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201701051017339_NexusWsModelUpdate.cs" />
+    <Compile Include="Migrations\MSSQL\201701051017339_NexusWsModelUpdate.Designer.cs">
       <DependentUpon>201701051017339_NexusWsModelUpdate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701051042291_NexusWsModelUpdate2.cs" />
-    <Compile Include="Migrations\201701051042291_NexusWsModelUpdate2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201701051042291_NexusWsModelUpdate2.cs" />
+    <Compile Include="Migrations\MSSQL\201701051042291_NexusWsModelUpdate2.Designer.cs">
       <DependentUpon>201701051042291_NexusWsModelUpdate2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701121450310_TapestryModelsBootstrapPageSupport.cs" />
-    <Compile Include="Migrations\201701121450310_TapestryModelsBootstrapPageSupport.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201701121450310_TapestryModelsBootstrapPageSupport.cs" />
+    <Compile Include="Migrations\MSSQL\201701121450310_TapestryModelsBootstrapPageSupport.Designer.cs">
       <DependentUpon>201701121450310_TapestryModelsBootstrapPageSupport.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701301106083_VirtualBlockLink.cs" />
-    <Compile Include="Migrations\201701301106083_VirtualBlockLink.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201701301106083_VirtualBlockLink.cs" />
+    <Compile Include="Migrations\MSSQL\201701301106083_VirtualBlockLink.Designer.cs">
       <DependentUpon>201701301106083_VirtualBlockLink.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701310858552_PageUpdate.cs" />
-    <Compile Include="Migrations\201701310858552_PageUpdate.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201701310858552_PageUpdate.cs" />
+    <Compile Include="Migrations\MSSQL\201701310858552_PageUpdate.Designer.cs">
       <DependentUpon>201701310858552_PageUpdate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701311034441_BootstrapComponentNumOrder.cs" />
-    <Compile Include="Migrations\201701311034441_BootstrapComponentNumOrder.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201701311034441_BootstrapComponentNumOrder.cs" />
+    <Compile Include="Migrations\MSSQL\201701311034441_BootstrapComponentNumOrder.Designer.cs">
       <DependentUpon>201701311034441_BootstrapComponentNumOrder.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701311449079_ResourceItemBootstrapPageId.cs" />
-    <Compile Include="Migrations\201701311449079_ResourceItemBootstrapPageId.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201701311449079_ResourceItemBootstrapPageId.cs" />
+    <Compile Include="Migrations\MSSQL\201701311449079_ResourceItemBootstrapPageId.Designer.cs">
       <DependentUpon>201701311449079_ResourceItemBootstrapPageId.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702060918128_AppSchemeConnectionString.cs" />
-    <Compile Include="Migrations\201702060918128_AppSchemeConnectionString.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702060918128_AppSchemeConnectionString.cs" />
+    <Compile Include="Migrations\MSSQL\201702060918128_AppSchemeConnectionString.Designer.cs">
       <DependentUpon>201702060918128_AppSchemeConnectionString.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702070835205_JsEditor.cs" />
-    <Compile Include="Migrations\201702070835205_JsEditor.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702070835205_JsEditor.cs" />
+    <Compile Include="Migrations\MSSQL\201702070835205_JsEditor.Designer.cs">
       <DependentUpon>201702070835205_JsEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702070915546_JsModelUpdate.cs" />
-    <Compile Include="Migrations\201702070915546_JsModelUpdate.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702070915546_JsModelUpdate.cs" />
+    <Compile Include="Migrations\MSSQL\201702070915546_JsModelUpdate.Designer.cs">
       <DependentUpon>201702070915546_JsModelUpdate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702091237139_IncomingEmail.cs" />
-    <Compile Include="Migrations\201702091237139_IncomingEmail.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702091237139_IncomingEmail.cs" />
+    <Compile Include="Migrations\MSSQL\201702091237139_IncomingEmail.Designer.cs">
       <DependentUpon>201702091237139_IncomingEmail.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702091354293_IncomingEmail-UseSLL.cs" />
-    <Compile Include="Migrations\201702091354293_IncomingEmail-UseSLL.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702091354293_IncomingEmail-UseSLL.cs" />
+    <Compile Include="Migrations\MSSQL\201702091354293_IncomingEmail-UseSLL.Designer.cs">
       <DependentUpon>201702091354293_IncomingEmail-UseSLL.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702101119192_IncomingEmailRule-Name.cs" />
-    <Compile Include="Migrations\201702101119192_IncomingEmailRule-Name.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702101119192_IncomingEmailRule-Name.cs" />
+    <Compile Include="Migrations\MSSQL\201702101119192_IncomingEmailRule-Name.Designer.cs">
       <DependentUpon>201702101119192_IncomingEmailRule-Name.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702101332222_addedLocaleId.cs" />
-    <Compile Include="Migrations\201702101332222_addedLocaleId.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702101332222_addedLocaleId.cs" />
+    <Compile Include="Migrations\MSSQL\201702101332222_addedLocaleId.Designer.cs">
       <DependentUpon>201702101332222_addedLocaleId.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702101553507_IsSharedTable.cs" />
-    <Compile Include="Migrations\201702101553507_IsSharedTable.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702101553507_IsSharedTable.cs" />
+    <Compile Include="Migrations\MSSQL\201702101553507_IsSharedTable.Designer.cs">
       <DependentUpon>201702101553507_IsSharedTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.cs" />
-    <Compile Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702101634102_SharedResourcesInResourcesPairs.cs" />
+    <Compile Include="Migrations\MSSQL\201702101634102_SharedResourcesInResourcesPairs.Designer.cs">
       <DependentUpon>201702101634102_SharedResourcesInResourcesPairs.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702211247252_addedColumnToUser.cs" />
-    <Compile Include="Migrations\201702211247252_addedColumnToUser.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702211247252_addedColumnToUser.cs" />
+    <Compile Include="Migrations\MSSQL\201702211247252_addedColumnToUser.Designer.cs">
       <DependentUpon>201702211247252_addedColumnToUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702231120106_addedLockedForUserIdColumn.cs" />
-    <Compile Include="Migrations\201702231120106_addedLockedForUserIdColumn.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702231120106_addedLockedForUserIdColumn.cs" />
+    <Compile Include="Migrations\MSSQL\201702231120106_addedLockedForUserIdColumn.Designer.cs">
       <DependentUpon>201702231120106_addedLockedForUserIdColumn.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702231414120_TapestryWorkflowItems-Name-and-Comments.cs" />
-    <Compile Include="Migrations\201702231414120_TapestryWorkflowItems-Name-and-Comments.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702231414120_TapestryWorkflowItems-Name-and-Comments.cs" />
+    <Compile Include="Migrations\MSSQL\201702231414120_TapestryWorkflowItems-Name-and-Comments.Designer.cs">
       <DependentUpon>201702231414120_TapestryWorkflowItems-Name-and-Comments.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702240918341_Fix IsShared problem.cs" />
-    <Compile Include="Migrations\201702240918341_Fix IsShared problem.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201702240918341_Fix IsShared problem.cs" />
+    <Compile Include="Migrations\MSSQL\201702240918341_Fix IsShared problem.Designer.cs">
       <DependentUpon>201702240918341_Fix IsShared problem.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201704131111235_add isAllowedForAll.cs" />
-    <Compile Include="Migrations\201704131111235_add isAllowedForAll.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201704131111235_add isAllowedForAll.cs" />
+    <Compile Include="Migrations\MSSQL\201704131111235_add isAllowedForAll.Designer.cs">
       <DependentUpon>201704131111235_add isAllowedForAll.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706120733572_ApplicationDB.cs" />
-    <Compile Include="Migrations\201706120733572_ApplicationDB.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201706120733572_ApplicationDB.cs" />
+    <Compile Include="Migrations\MSSQL\201706120733572_ApplicationDB.Designer.cs">
       <DependentUpon>201706120733572_ApplicationDB.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706191130508_WatchtowerException.cs" />
-    <Compile Include="Migrations\201706191130508_WatchtowerException.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201706191130508_WatchtowerException.cs" />
+    <Compile Include="Migrations\MSSQL\201706191130508_WatchtowerException.Designer.cs">
       <DependentUpon>201706191130508_WatchtowerException.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706201036161_Add DeletedBySync column to Persona_Users.cs" />
-    <Compile Include="Migrations\201706201036161_Add DeletedBySync column to Persona_Users.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201706201036161_Add DeletedBySync column to Persona_Users.cs" />
+    <Compile Include="Migrations\MSSQL\201706201036161_Add DeletedBySync column to Persona_Users.Designer.cs">
       <DependentUpon>201706201036161_Add DeletedBySync column to Persona_Users.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706271059315_omnius-api-models.cs" />
-    <Compile Include="Migrations\201706271059315_omnius-api-models.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201706271059315_omnius-api-models.cs" />
+    <Compile Include="Migrations\MSSQL\201706271059315_omnius-api-models.Designer.cs">
       <DependentUpon>201706271059315_omnius-api-models.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201707030938552_babylon.cs" />
-    <Compile Include="Migrations\201707030938552_babylon.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201707030938552_babylon.cs" />
+    <Compile Include="Migrations\MSSQL\201707030938552_babylon.Designer.cs">
       <DependentUpon>201707030938552_babylon.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201707281231548_athena.cs" />
-    <Compile Include="Migrations\201707281231548_athena.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201707281231548_athena.cs" />
+    <Compile Include="Migrations\MSSQL\201707281231548_athena.Designer.cs">
       <DependentUpon>201707281231548_athena.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708140808177_Alias for External DBs.cs" />
-    <Compile Include="Migrations\201708140808177_Alias for External DBs.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201708140808177_Alias for External DBs.cs" />
+    <Compile Include="Migrations\MSSQL\201708140808177_Alias for External DBs.Designer.cs">
       <DependentUpon>201708140808177_Alias for External DBs.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708141059461_Dev_Grid_Work_Merge.cs" />
-    <Compile Include="Migrations\201708141059461_Dev_Grid_Work_Merge.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201708141059461_Dev_Grid_Work_Merge.cs" />
+    <Compile Include="Migrations\MSSQL\201708141059461_Dev_Grid_Work_Merge.Designer.cs">
       <DependentUpon>201708141059461_Dev_Grid_Work_Merge.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708141312346_Merge.cs" />
-    <Compile Include="Migrations\201708141312346_Merge.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201708141312346_Merge.cs" />
+    <Compile Include="Migrations\MSSQL\201708141312346_Merge.Designer.cs">
       <DependentUpon>201708141312346_Merge.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201709011206320_EmailQueueOptionalApp.cs" />
-    <Compile Include="Migrations\201709011206320_EmailQueueOptionalApp.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201709011206320_EmailQueueOptionalApp.cs" />
+    <Compile Include="Migrations\MSSQL\201709011206320_EmailQueueOptionalApp.Designer.cs">
       <DependentUpon>201709011206320_EmailQueueOptionalApp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201710191356205_Add AbsoluteURL to file metadata.cs" />
-    <Compile Include="Migrations\201710191356205_Add AbsoluteURL to file metadata.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201710191356205_Add AbsoluteURL to file metadata.cs" />
+    <Compile Include="Migrations\MSSQL\201710191356205_Add AbsoluteURL to file metadata.Designer.cs">
       <DependentUpon>201710191356205_Add AbsoluteURL to file metadata.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201712041556123_tableApplication.cs" />
-    <Compile Include="Migrations\201712041556123_tableApplication.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201712041556123_tableApplication.cs" />
+    <Compile Include="Migrations\MSSQL\201712041556123_tableApplication.Designer.cs">
       <DependentUpon>201712041556123_tableApplication.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201802160746220_Entitron2.cs" />
-    <Compile Include="Migrations\201802160746220_Entitron2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201802160746220_Entitron2.cs" />
+    <Compile Include="Migrations\MSSQL\201802160746220_Entitron2.Designer.cs">
       <DependentUpon>201802160746220_Entitron2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201802221413479_WatchtowerCascadeDelete.cs" />
-    <Compile Include="Migrations\201802221413479_WatchtowerCascadeDelete.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201802221413479_WatchtowerCascadeDelete.cs" />
+    <Compile Include="Migrations\MSSQL\201802221413479_WatchtowerCascadeDelete.Designer.cs">
       <DependentUpon>201802221413479_WatchtowerCascadeDelete.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201802231111575_hermesUniqueness.cs" />
-    <Compile Include="Migrations\201802231111575_hermesUniqueness.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201802231111575_hermesUniqueness.cs" />
+    <Compile Include="Migrations\MSSQL\201802231111575_hermesUniqueness.Designer.cs">
       <DependentUpon>201802231111575_hermesUniqueness.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201802281121138_cascadeTrigger.cs" />
-    <Compile Include="Migrations\201802281121138_cascadeTrigger.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201802281121138_cascadeTrigger.cs" />
+    <Compile Include="Migrations\MSSQL\201802281121138_cascadeTrigger.Designer.cs">
       <DependentUpon>201802281121138_cascadeTrigger.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803011217358_removeEntitronMeta.cs" />
-    <Compile Include="Migrations\201803011217358_removeEntitronMeta.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201803011217358_removeEntitronMeta.cs" />
+    <Compile Include="Migrations\MSSQL\201803011217358_removeEntitronMeta.Designer.cs">
       <DependentUpon>201803011217358_removeEntitronMeta.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803091647177_UserUpdate.cs" />
-    <Compile Include="Migrations\201803091647177_UserUpdate.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201803091647177_UserUpdate.cs" />
+    <Compile Include="Migrations\MSSQL\201803091647177_UserUpdate.Designer.cs">
       <DependentUpon>201803091647177_UserUpdate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803121532238_BadLoginCount.cs" />
-    <Compile Include="Migrations\201803121532238_BadLoginCount.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201803121532238_BadLoginCount.cs" />
+    <Compile Include="Migrations\MSSQL\201803121532238_BadLoginCount.Designer.cs">
       <DependentUpon>201803121532238_BadLoginCount.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803150800222_removeEntitronMetaCascade.cs" />
-    <Compile Include="Migrations\201803150800222_removeEntitronMetaCascade.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201803150800222_removeEntitronMetaCascade.cs" />
+    <Compile Include="Migrations\MSSQL\201803150800222_removeEntitronMetaCascade.Designer.cs">
       <DependentUpon>201803150800222_removeEntitronMetaCascade.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803150821030_athenaUniqueness.cs" />
-    <Compile Include="Migrations\201803150821030_athenaUniqueness.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201803150821030_athenaUniqueness.cs" />
+    <Compile Include="Migrations\MSSQL\201803150821030_athenaUniqueness.Designer.cs">
       <DependentUpon>201803150821030_athenaUniqueness.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201804121453288_rabbitmq.cs" />
-    <Compile Include="Migrations\201804121453288_rabbitmq.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201804121453288_rabbitmq.cs" />
+    <Compile Include="Migrations\MSSQL\201804121453288_rabbitmq.Designer.cs">
       <DependentUpon>201804121453288_rabbitmq.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201804130850131_rabbitmq2.cs" />
-    <Compile Include="Migrations\201804130850131_rabbitmq2.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201804130850131_rabbitmq2.cs" />
+    <Compile Include="Migrations\MSSQL\201804130850131_rabbitmq2.Designer.cs">
       <DependentUpon>201804130850131_rabbitmq2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201804130900224_rabbitmq3.cs" />
-    <Compile Include="Migrations\201804130900224_rabbitmq3.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201804130900224_rabbitmq3.cs" />
+    <Compile Include="Migrations\MSSQL\201804130900224_rabbitmq3.Designer.cs">
       <DependentUpon>201804130900224_rabbitmq3.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201804130946190_rabbitmq4.cs" />
-    <Compile Include="Migrations\201804130946190_rabbitmq4.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201804130946190_rabbitmq4.cs" />
+    <Compile Include="Migrations\MSSQL\201804130946190_rabbitmq4.Designer.cs">
       <DependentUpon>201804130946190_rabbitmq4.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805161042186_RabbbitMqMove.cs" />
-    <Compile Include="Migrations\201805161042186_RabbbitMqMove.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201805161042186_RabbbitMqMove.cs" />
+    <Compile Include="Migrations\MSSQL\201805161042186_RabbbitMqMove.Designer.cs">
       <DependentUpon>201805161042186_RabbbitMqMove.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201807230854247_addCrontab.cs" />
-    <Compile Include="Migrations\201807230854247_addCrontab.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201807230854247_addCrontab.cs" />
+    <Compile Include="Migrations\MSSQL\201807230854247_addCrontab.Designer.cs">
       <DependentUpon>201807230854247_addCrontab.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201807230903210_crontabAddTimestamps.cs" />
-    <Compile Include="Migrations\201807230903210_crontabAddTimestamps.Designer.cs">
+    <Compile Include="Migrations\MSSQL\201807230903210_crontabAddTimestamps.cs" />
+    <Compile Include="Migrations\MSSQL\201807230903210_crontabAddTimestamps.Designer.cs">
       <DependentUpon>201807230903210_crontabAddTimestamps.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\MSSQL\201808091158598_renameBootstrap.cs" />
+    <Compile Include="Migrations\MSSQL\201808091158598_renameBootstrap.Designer.cs">
+      <DependentUpon>201808091158598_renameBootstrap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MySqlHistoryContext.cs" />
+    <Compile Include="Migrations\MySQL\201808091107243_INIT.cs" />
+    <Compile Include="Migrations\MySQL\201808091107243_INIT.Designer.cs">
+      <DependentUpon>201808091107243_INIT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MySQL\201808091116574_cascadeTriggers.cs" />
+    <Compile Include="Migrations\MySQL\201808091116574_cascadeTriggers.Designer.cs">
+      <DependentUpon>201808091116574_cascadeTriggers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1499,659 +1512,668 @@
     <Folder Include="Nexus\Proxy\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201511301834451_init.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201511301834451_init.resx">
       <DependentUpon>201511301834451_init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511302216543_applicationAttr.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201511302216543_applicationAttr.resx">
       <DependentUpon>201511302216543_applicationAttr.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512031302475_add-nexus-ws.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512031302475_add-nexus-ws.resx">
       <DependentUpon>201512031302475_add-nexus-ws.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512041443397_userAttributes.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512041443397_userAttributes.resx">
       <DependentUpon>201512041443397_userAttributes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512041505231_UniqueUsername.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512041505231_UniqueUsername.resx">
       <DependentUpon>201512041505231_UniqueUsername.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512071351124_ws-type.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512071351124_ws-type.resx">
       <DependentUpon>201512071351124_ws-type.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512071429383_actionRule.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512071429383_actionRule.resx">
       <DependentUpon>201512071429383_actionRule.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512081245349_App properties.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512081245349_App properties.resx">
       <DependentUpon>201512081245349_App properties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512081250576_nexus-extdb.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512081250576_nexus-extdb.resx">
       <DependentUpon>201512081250576_nexus-extdb.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512081321277_App properties 2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512081321277_App properties 2.resx">
       <DependentUpon>201512081321277_App properties 2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512141524186_hermes-smtp.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512141524186_hermes-smtp.resx">
       <DependentUpon>201512141524186_hermes-smtp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512141602551_hermes-smtp-2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512141602551_hermes-smtp-2.resx">
       <DependentUpon>201512141602551_hermes-smtp-2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512141700362_hermes-email-templates.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512141700362_hermes-email-templates.resx">
       <DependentUpon>201512141700362_hermes-email-templates.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512161325143_Watchtower_log.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512161325143_Watchtower_log.resx">
       <DependentUpon>201512161325143_Watchtower_log.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512161418357_repair.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512161418357_repair.resx">
       <DependentUpon>201512161418357_repair.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512161558233_UniqueSeed.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512161558233_UniqueSeed.resx">
       <DependentUpon>201512161558233_UniqueSeed.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512211057430_repairTapestry.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512211057430_repairTapestry.resx">
       <DependentUpon>201512211057430_repairTapestry.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512211246554_BlockWorkflowRelation.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512211246554_BlockWorkflowRelation.resx">
       <DependentUpon>201512211246554_BlockWorkflowRelation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512211547114_BlockWorkFlowStep2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512211547114_BlockWorkFlowStep2.resx">
       <DependentUpon>201512211547114_BlockWorkFlowStep2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512251241115_WebDAV.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512251241115_WebDAV.resx">
       <DependentUpon>201512251241115_WebDAV.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512281031045_addPreBlockRun.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512281031045_addPreBlockRun.resx">
       <DependentUpon>201512281031045_addPreBlockRun.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512281522191_greatherMappingLimit.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512281522191_greatherMappingLimit.resx">
       <DependentUpon>201512281522191_greatherMappingLimit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512291444190_Module access permissions.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201512291444190_Module access permissions.resx">
       <DependentUpon>201512291444190_Module access permissions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601061539404_Hermes-Template-Content.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601061539404_Hermes-Template-Content.resx">
       <DependentUpon>201601061539404_Hermes-Template-Content.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601071052182_Overview Metablocks.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601071052182_Overview Metablocks.resx">
       <DependentUpon>201601071052182_Overview Metablocks.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601071236503_addDataType.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601071236503_addDataType.resx">
       <DependentUpon>201601071236503_addDataType.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601071621315_Hermes-email-log.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601071621315_Hermes-email-log.resx">
       <DependentUpon>201601071621315_Hermes-email-log.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601111302087_Hermes-log-update.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601111302087_Hermes-log-update.resx">
       <DependentUpon>201601111302087_Hermes-log-update.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601111323025_actionRigthsToActionRuleRights.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601111323025_actionRigthsToActionRuleRights.resx">
       <DependentUpon>201601111323025_actionRigthsToActionRuleRights.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601111431229_Hermes-queue.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601111431229_Hermes-queue.resx">
       <DependentUpon>201601111431229_Hermes-queue.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601111502028_AddActions.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601111502028_AddActions.resx">
       <DependentUpon>201601111502028_AddActions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601111538327_ActionWithoutIdentity.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601111538327_ActionWithoutIdentity.resx">
       <DependentUpon>201601111538327_ActionWithoutIdentity.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601130939278_addNameToDbRelation.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601130939278_addNameToDbRelation.resx">
       <DependentUpon>201601130939278_addNameToDbRelation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601131033150_addConfigPairs.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601131033150_addConfigPairs.resx">
       <DependentUpon>201601131033150_addConfigPairs.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601131043302_groupsFromAD.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601131043302_groupsFromAD.resx">
       <DependentUpon>201601131043302_groupsFromAD.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601131308063_generateDatabase.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601131308063_generateDatabase.resx">
       <DependentUpon>201601131308063_generateDatabase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601131603195_Overview-connections.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601131603195_Overview-connections.resx">
       <DependentUpon>201601131603195_Overview-connections.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601181334425_hermes-email-attachment.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601181334425_hermes-email-attachment.resx">
       <DependentUpon>201601181334425_hermes-email-attachment.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601181552255_actionSequence.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601181552255_actionSequence.resx">
       <DependentUpon>201601181552255_actionSequence.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601191221159_App roles.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601191221159_App roles.resx">
       <DependentUpon>201601191221159_App roles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601191401555_hermes-email-plain-template.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601191401555_hermes-email-plain-template.resx">
       <DependentUpon>201601191401555_hermes-email-plain-template.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601201400125_appRights.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601201400125_appRights.resx">
       <DependentUpon>201601201400125_appRights.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601221000214_ADgroups.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601221000214_ADgroups.resx">
       <DependentUpon>201601221000214_ADgroups.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601221627553_hermes-queue-status.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601221627553_hermes-queue-status.resx">
       <DependentUpon>201601221627553_hermes-queue-status.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601271825013_dropPages.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601271825013_dropPages.resx">
       <DependentUpon>201601271825013_dropPages.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601291003556_logout.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601291003556_logout.resx">
       <DependentUpon>201601291003556_logout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601291108499_update tapestry designer models.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601291108499_update tapestry designer models.resx">
       <DependentUpon>201601291108499_update tapestry designer models.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601291246147_pageOldRelation.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201601291246147_pageOldRelation.resx">
       <DependentUpon>201601291246147_pageOldRelation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602081506423_sharedTables.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602081506423_sharedTables.resx">
       <DependentUpon>201602081506423_sharedTables.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602091209188_isLocalUser.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602091209188_isLocalUser.resx">
       <DependentUpon>201602091209188_isLocalUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602101151279_IdentityUser.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602101151279_IdentityUser.resx">
       <DependentUpon>201602101151279_IdentityUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602120828421_requiredModulePermissions.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602120828421_requiredModulePermissions.resx">
       <DependentUpon>201602120828421_requiredModulePermissions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602131234533_Mozaic editor and app profiles.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602131234533_Mozaic editor and app profiles.resx">
       <DependentUpon>201602131234533_Mozaic editor and app profiles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602151623596_Overview isInitial property.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602151623596_Overview isInitial property.resx">
       <DependentUpon>201602151623596_Overview isInitial property.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602160832402_removeOldWFDesignerModels.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602160832402_removeOldWFDesignerModels.resx">
       <DependentUpon>201602160832402_removeOldWFDesignerModels.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602161059316_Mozaic editor properties.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602161059316_Mozaic editor properties.resx">
       <DependentUpon>201602161059316_Mozaic editor properties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602170920573_renameType_WorkFlowItem.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602170920573_renameType_WorkFlowItem.resx">
       <DependentUpon>201602170920573_renameType_WorkFlowItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602181028549_DataTypeExtend.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602181028549_DataTypeExtend.resx">
       <DependentUpon>201602181028549_DataTypeExtend.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602181722051_page IDs for UI components.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602181722051_page IDs for UI components.resx">
       <DependentUpon>201602181722051_page IDs for UI components.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602182123313_removeOldTapestryDesignerApp.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602182123313_removeOldTapestryDesignerApp.resx">
       <DependentUpon>201602182123313_removeOldTapestryDesignerApp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602182208021_addExecuteByToActionRule.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602182208021_addExecuteByToActionRule.resx">
       <DependentUpon>201602182208021_addExecuteByToActionRule.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602191012213_ComponentId in Tapestry.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602191012213_ComponentId in Tapestry.resx">
       <DependentUpon>201602191012213_ComponentId in Tapestry.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602211130175_Associated page IDs for Tapestry blocks.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602211130175_Associated page IDs for Tapestry blocks.resx">
       <DependentUpon>201602211130175_Associated page IDs for Tapestry blocks.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602220920500_dbColumn-displayName.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602220920500_dbColumn-displayName.resx">
       <DependentUpon>201602220920500_dbColumn-displayName.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602221139352_Column filter in resource rules.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602221139352_Column filter in resource rules.resx">
       <DependentUpon>201602221139352_Column filter in resource rules.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602221229387_Add TableId property.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602221229387_Add TableId property.resx">
       <DependentUpon>201602221229387_Add TableId property.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602221348193_Hermes-template-appId.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602221348193_Hermes-template-appId.resx">
       <DependentUpon>201602221348193_Hermes-template-appId.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602221415130_Hermes-template-appId2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602221415130_Hermes-template-appId2.resx">
       <DependentUpon>201602221415130_Hermes-template-appId2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602221447359_hermes-appid3.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602221447359_hermes-appid3.resx">
       <DependentUpon>201602221447359_hermes-appid3.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602221641534_Tapestry-block-isInMenu.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602221641534_Tapestry-block-isInMenu.resx">
       <DependentUpon>201602221641534_Tapestry-block-isInMenu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602221837391_Tapestry-block-isInMenu2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602221837391_Tapestry-block-isInMenu2.resx">
       <DependentUpon>201602221837391_Tapestry-block-isInMenu2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602241608308_Tapestry-menu-order.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602241608308_Tapestry-menu-order.resx">
       <DependentUpon>201602241608308_Tapestry-menu-order.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602241930322_Tapestry designer attributes.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602241930322_Tapestry designer attributes.resx">
       <DependentUpon>201602241930322_Tapestry designer attributes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602251931211_Mozaic - modal settings.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602251931211_Mozaic - modal settings.resx">
       <DependentUpon>201602251931211_Mozaic - modal settings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602260939055_index.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602260939055_index.resx">
       <DependentUpon>201602260939055_index.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602261106254_Tapestry - ResourceMappingPairs.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602261106254_Tapestry - ResourceMappingPairs.resx">
       <DependentUpon>201602261106254_Tapestry - ResourceMappingPairs.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602261107177_actionId.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602261107177_actionId.resx">
       <DependentUpon>201602261107177_actionId.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602261157443_removingWorkFlow.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602261157443_removingWorkFlow.resx">
       <DependentUpon>201602261157443_removingWorkFlow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602261557034_Column filter.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602261557034_Column filter.resx">
       <DependentUpon>201602261557034_Column filter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602261618180_app_metablock.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602261618180_app_metablock.resx">
       <DependentUpon>201602261618180_app_metablock.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602261918013_Action variables.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602261918013_Action variables.resx">
       <DependentUpon>201602261918013_Action variables.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602271145300_states.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602271145300_states.resx">
       <DependentUpon>201602271145300_states.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602271658212_stateId_condition.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602271658212_stateId_condition.resx">
       <DependentUpon>201602271658212_stateId_condition.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602280928491_TargetIdAdded.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201602280928491_TargetIdAdded.resx">
       <DependentUpon>201602280928491_TargetIdAdded.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603011128489_DbScheme lock.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603011128489_DbScheme lock.resx">
       <DependentUpon>201603011128489_DbScheme lock.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603021243591_rememberUserApp.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603021243591_rememberUserApp.resx">
       <DependentUpon>201603021243591_rememberUserApp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603021938431_Column metadata.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603021938431_Column metadata.resx">
       <DependentUpon>201603021938431_Column metadata.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603080945413_adGroup_isAdmin.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603080945413_adGroup_isAdmin.resx">
       <DependentUpon>201603080945413_adGroup_isAdmin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603081428441_UsersApplications.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603081428441_UsersApplications.resx">
       <DependentUpon>201603081428441_UsersApplications.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603081701163_Tapestry - attribute names.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603081701163_Tapestry - attribute names.resx">
       <DependentUpon>201603081701163_Tapestry - attribute names.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603091107525_isSystemCOlumnMasterApplication.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603091107525_isSystemCOlumnMasterApplication.resx">
       <DependentUpon>201603091107525_isSystemCOlumnMasterApplication.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603091902486_Tapestry designer foreign keys.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603091902486_Tapestry designer foreign keys.resx">
       <DependentUpon>201603091902486_Tapestry designer foreign keys.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603101916094_Mozaic nested components.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603101916094_Mozaic nested components.resx">
       <DependentUpon>201603101916094_Mozaic nested components.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603140933283_UniqueAndIndexForUsersApplications.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603140933283_UniqueAndIndexForUsersApplications.resx">
       <DependentUpon>201603140933283_UniqueAndIndexForUsersApplications.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603141104422_Cortex-Task.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603141104422_Cortex-Task.resx">
       <DependentUpon>201603141104422_Cortex-Task.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603141129547_Fix cortex conflict.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603141129547_Fix cortex conflict.resx">
       <DependentUpon>201603141129547_Fix cortex conflict.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603171030577_BlockDisplayName.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603171030577_BlockDisplayName.resx">
       <DependentUpon>201603171030577_BlockDisplayName.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603181026526_cascadeDelete.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603181026526_cascadeDelete.resx">
       <DependentUpon>201603181026526_cascadeDelete.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603181106522_splitConnections.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603181106522_splitConnections.resx">
       <DependentUpon>201603181106522_splitConnections.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603181127565_splitConnectionsRepair.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603181127565_splitConnectionsRepair.resx">
       <DependentUpon>201603181127565_splitConnectionsRepair.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603191225115_Conditions and condition sets.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603191225115_Conditions and condition sets.resx">
       <DependentUpon>201603191225115_Conditions and condition sets.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603191237383_Conditions 2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603191237383_Conditions 2.resx">
       <DependentUpon>201603191237383_Conditions 2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603191359417_Revert DbRelations %28temporary%29.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603191359417_Revert DbRelations %28temporary%29.resx">
       <DependentUpon>201603191359417_Revert DbRelations %28temporary%29.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603210942175_addedPriorityToPersonaAppRoles.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603210942175_addedPriorityToPersonaAppRoles.resx">
       <DependentUpon>201603210942175_addedPriorityToPersonaAppRoles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603211040585_blockTemp.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603211040585_blockTemp.resx">
       <DependentUpon>201603211040585_blockTemp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603221517303_cortex-db-update.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603221517303_cortex-db-update.resx">
       <DependentUpon>201603221517303_cortex-db-update.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603231121543_ActionRuleCascade.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603231121543_ActionRuleCascade.resx">
       <DependentUpon>201603231121543_ActionRuleCascade.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603241521464_addAjaxToWFItem.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603241521464_addAjaxToWFItem.resx">
       <DependentUpon>201603241521464_addAjaxToWFItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603261504456_Add ActionId to resource rules.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603261504456_Add ActionId to resource rules.resx">
       <DependentUpon>201603261504456_Add ActionId to resource rules.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603281221022_Mozaic editor parent component.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603281221022_Mozaic editor parent component.resx">
       <DependentUpon>201603281221022_Mozaic editor parent component.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603281407051_WFitemMergeStep1.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603281407051_WFitemMergeStep1.resx">
       <DependentUpon>201603281407051_WFitemMergeStep1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603281452451_WFitemMergeStep2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603281452451_WFitemMergeStep2.resx">
       <DependentUpon>201603281452451_WFitemMergeStep2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603281818163_ConnectionSplitStep1.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603281818163_ConnectionSplitStep1.resx">
       <DependentUpon>201603281818163_ConnectionSplitStep1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603282059441_ConnectionSplitStep2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603282059441_ConnectionSplitStep2.resx">
       <DependentUpon>201603282059441_ConnectionSplitStep2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603282201536_addIdToModel.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603282201536_addIdToModel.resx">
       <DependentUpon>201603282201536_addIdToModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603290102436_identityWorkflow.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603290102436_identityWorkflow.resx">
       <DependentUpon>201603290102436_identityWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603291050130_Add TargetName.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603291050130_Add TargetName.resx">
       <DependentUpon>201603291050130_Add TargetName.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603291528171_Add pageId.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603291528171_Add pageId.resx">
       <DependentUpon>201603291528171_Add pageId.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603301510267_blockUnique.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603301510267_blockUnique.resx">
       <DependentUpon>201603301510267_blockUnique.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603310847502_Add DataSourceParams.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603310847502_Add DataSourceParams.resx">
       <DependentUpon>201603310847502_Add DataSourceParams.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603311101178_tempWorkflow.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603311101178_tempWorkflow.resx">
       <DependentUpon>201603311101178_tempWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603311320176_mappingPairs.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201603311320176_mappingPairs.resx">
       <DependentUpon>201603311320176_mappingPairs.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604010915108_repairTriggerRules.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604010915108_repairTriggerRules.resx">
       <DependentUpon>201604010915108_repairTriggerRules.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604011034314_targetRelation.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604011034314_targetRelation.resx">
       <DependentUpon>201604011034314_targetRelation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604011055555_requiredParent.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604011055555_requiredParent.resx">
       <DependentUpon>201604011055555_requiredParent.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604011145470_repairTrigger.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604011145470_repairTrigger.resx">
       <DependentUpon>201604011145470_repairTrigger.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604041141371_Tapestry role whitelist.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604041141371_Tapestry role whitelist.resx">
       <DependentUpon>201604041141371_Tapestry role whitelist.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604042210534_pageRelation.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604042210534_pageRelation.resx">
       <DependentUpon>201604042210534_pageRelation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604042336288_componentParent.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604042336288_componentParent.resx">
       <DependentUpon>201604042336288_componentParent.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604050708595_repairTriggerComponentParent.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604050708595_repairTriggerComponentParent.resx">
       <DependentUpon>201604050708595_repairTriggerComponentParent.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604060906502_Allow multiple sources, add variables to resource items.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604060906502_Allow multiple sources, add variables to resource items.resx">
       <DependentUpon>201604060906502_Allow multiple sources, add variables to resource items.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604061859547_Tapestry - save toolbox state.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604061859547_Tapestry - save toolbox state.resx">
       <DependentUpon>201604061859547_Tapestry - save toolbox state.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604081157582_Remove resoure mapping pair source array.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604081157582_Remove resoure mapping pair source array.resx">
       <DependentUpon>201604081157582_Remove resoure mapping pair source array.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604110911042_Add StateId to ResourceItem.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604110911042_Add StateId to ResourceItem.resx">
       <DependentUpon>201604110911042_Add StateId to ResourceItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604121231256_cortex-montly-type.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604121231256_cortex-montly-type.resx">
       <DependentUpon>201604121231256_cortex-montly-type.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604130808394_actionRule_Action_Id.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604130808394_actionRule_Action_Id.resx">
       <DependentUpon>201604130808394_actionRule_Action_Id.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.resx">
       <DependentUpon>201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604131344422_appRoleRelation.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604131344422_appRoleRelation.resx">
       <DependentUpon>201604131344422_appRoleRelation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604210802463_dropModules.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201604210802463_dropModules.resx">
       <DependentUpon>201604210802463_dropModules.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605020810435_overviewTrash.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201605020810435_overviewTrash.resx">
       <DependentUpon>201605020810435_overviewTrash.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605041236075_Add condition sets to gateways.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201605041236075_Add condition sets to gateways.resx">
       <DependentUpon>201605041236075_Add condition sets to gateways.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605041320457_TapestryAdvanceConditions.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201605041320457_TapestryAdvanceConditions.resx">
       <DependentUpon>201605041320457_TapestryAdvanceConditions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605170940531_conditionSetCascade.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201605170940531_conditionSetCascade.resx">
       <DependentUpon>201605170940531_conditionSetCascade.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606061241384_Cortex-Repeat.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201606061241384_Cortex-Repeat.resx">
       <DependentUpon>201606061241384_Cortex-Repeat.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606210930404_RelationColumnRename.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201606210930404_RelationColumnRename.resx">
       <DependentUpon>201606210930404_RelationColumnRename.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606211001175_DBRelationFK.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201606211001175_DBRelationFK.resx">
       <DependentUpon>201606211001175_DBRelationFK.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606291006426_changed-since-last-save-bools.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201606291006426_changed-since-last-save-bools.resx">
       <DependentUpon>201606291006426_changed-since-last-save-bools.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606291203568_fourth-bool.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201606291203568_fourth-bool.resx">
       <DependentUpon>201606291203568_fourth-bool.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607120948457_removeDataType.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201607120948457_removeDataType.resx">
       <DependentUpon>201607120948457_removeDataType.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607140838442_add tabindex to component properties.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201607140838442_add tabindex to component properties.resx">
       <DependentUpon>201607140838442_add tabindex to component properties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607151241382_mozaic-editor-page-version.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201607151241382_mozaic-editor-page-version.resx">
       <DependentUpon>201607151241382_mozaic-editor-page-version.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607181414222_AddMozaicEditorPageIsDeletedColumn.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201607181414222_AddMozaicEditorPageIsDeletedColumn.resx">
       <DependentUpon>201607181414222_AddMozaicEditorPageIsDeletedColumn.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607211141272_add-bootstrap-classes.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201607211141272_add-bootstrap-classes.resx">
       <DependentUpon>201607211141272_add-bootstrap-classes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607250917494_AddUserIsActiveColumn2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201607250917494_AddUserIsActiveColumn2.resx">
       <DependentUpon>201607250917494_AddUserIsActiveColumn2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608110907187_AddCSSTemplateTable.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201608110907187_AddCSSTemplateTable.resx">
       <DependentUpon>201608110907187_AddCSSTemplateTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608150811297_ChangeMozaicCssTemplatesCssColumnToUrl.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201608150811297_ChangeMozaicCssTemplatesCssColumnToUrl.resx">
       <DependentUpon>201608150811297_ChangeMozaicCssTemplatesCssColumnToUrl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608161238551_AddRoleWhitelistAttributeToBlock.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201608161238551_AddRoleWhitelistAttributeToBlock.resx">
       <DependentUpon>201608161238551_AddRoleWhitelistAttributeToBlock.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609081823076_Merge Mozaic build from AS.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201609081823076_Merge Mozaic build from AS.resx">
       <DependentUpon>201609081823076_Merge Mozaic build from AS.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610131145516_AppConnectionString.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201610131145516_AppConnectionString.resx">
       <DependentUpon>201610131145516_AppConnectionString.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610261315588_FileMetadata_webdaventityuploadaction.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201610261315588_FileMetadata_webdaventityuploadaction.resx">
       <DependentUpon>201610261315588_FileMetadata_webdaventityuploadaction.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611132038327_IsChangedParameterAddedToBlock.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201611132038327_IsChangedParameterAddedToBlock.resx">
       <DependentUpon>201611132038327_IsChangedParameterAddedToBlock.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611181020083_ResourceMappingPairUpgrade1.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201611181020083_ResourceMappingPairUpgrade1.resx">
       <DependentUpon>201611181020083_ResourceMappingPairUpgrade1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611181120487_ResourceMappingPairUpgrade2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201611181120487_ResourceMappingPairUpgrade2.resx">
       <DependentUpon>201611181120487_ResourceMappingPairUpgrade2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611181522498_conditionSetMappingPairRelationRemoved.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201611181522498_conditionSetMappingPairRelationRemoved.resx">
       <DependentUpon>201611181522498_conditionSetMappingPairRelationRemoved.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611231456099_addBlockBuildLink.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201611231456099_addBlockBuildLink.resx">
       <DependentUpon>201611231456099_addBlockBuildLink.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612141429553_MozaicBootstrapEditorModels.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201612141429553_MozaicBootstrapEditorModels.resx">
       <DependentUpon>201612141429553_MozaicBootstrapEditorModels.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701021100138_MozaicBootstrapModelsUpdate.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201701021100138_MozaicBootstrapModelsUpdate.resx">
       <DependentUpon>201701021100138_MozaicBootstrapModelsUpdate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701021412417_DbSchemeCommit - add IsComplete boolean.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201701021412417_DbSchemeCommit - add IsComplete boolean.resx">
       <DependentUpon>201701021412417_DbSchemeCommit - add IsComplete boolean.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701031039386_checkContext.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201701031039386_checkContext.resx">
       <DependentUpon>201701031039386_checkContext.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701051017339_NexusWsModelUpdate.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201701051017339_NexusWsModelUpdate.resx">
       <DependentUpon>201701051017339_NexusWsModelUpdate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701051042291_NexusWsModelUpdate2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201701051042291_NexusWsModelUpdate2.resx">
       <DependentUpon>201701051042291_NexusWsModelUpdate2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701121450310_TapestryModelsBootstrapPageSupport.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201701121450310_TapestryModelsBootstrapPageSupport.resx">
       <DependentUpon>201701121450310_TapestryModelsBootstrapPageSupport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701301106083_VirtualBlockLink.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201701301106083_VirtualBlockLink.resx">
       <DependentUpon>201701301106083_VirtualBlockLink.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701310858552_PageUpdate.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201701310858552_PageUpdate.resx">
       <DependentUpon>201701310858552_PageUpdate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701311034441_BootstrapComponentNumOrder.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201701311034441_BootstrapComponentNumOrder.resx">
       <DependentUpon>201701311034441_BootstrapComponentNumOrder.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701311449079_ResourceItemBootstrapPageId.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201701311449079_ResourceItemBootstrapPageId.resx">
       <DependentUpon>201701311449079_ResourceItemBootstrapPageId.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702060918128_AppSchemeConnectionString.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702060918128_AppSchemeConnectionString.resx">
       <DependentUpon>201702060918128_AppSchemeConnectionString.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702070835205_JsEditor.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702070835205_JsEditor.resx">
       <DependentUpon>201702070835205_JsEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702070915546_JsModelUpdate.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702070915546_JsModelUpdate.resx">
       <DependentUpon>201702070915546_JsModelUpdate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702091237139_IncomingEmail.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702091237139_IncomingEmail.resx">
       <DependentUpon>201702091237139_IncomingEmail.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702091354293_IncomingEmail-UseSLL.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702091354293_IncomingEmail-UseSLL.resx">
       <DependentUpon>201702091354293_IncomingEmail-UseSLL.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702101119192_IncomingEmailRule-Name.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702101119192_IncomingEmailRule-Name.resx">
       <DependentUpon>201702101119192_IncomingEmailRule-Name.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702101332222_addedLocaleId.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702101332222_addedLocaleId.resx">
       <DependentUpon>201702101332222_addedLocaleId.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702101553507_IsSharedTable.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702101553507_IsSharedTable.resx">
       <DependentUpon>201702101553507_IsSharedTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702101634102_SharedResourcesInResourcesPairs.resx">
       <DependentUpon>201702101634102_SharedResourcesInResourcesPairs.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702211247252_addedColumnToUser.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702211247252_addedColumnToUser.resx">
       <DependentUpon>201702211247252_addedColumnToUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702231120106_addedLockedForUserIdColumn.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702231120106_addedLockedForUserIdColumn.resx">
       <DependentUpon>201702231120106_addedLockedForUserIdColumn.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702231414120_TapestryWorkflowItems-Name-and-Comments.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702231414120_TapestryWorkflowItems-Name-and-Comments.resx">
       <DependentUpon>201702231414120_TapestryWorkflowItems-Name-and-Comments.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702240918341_Fix IsShared problem.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201702240918341_Fix IsShared problem.resx">
       <DependentUpon>201702240918341_Fix IsShared problem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704131111235_add isAllowedForAll.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201704131111235_add isAllowedForAll.resx">
       <DependentUpon>201704131111235_add isAllowedForAll.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706120733572_ApplicationDB.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201706120733572_ApplicationDB.resx">
       <DependentUpon>201706120733572_ApplicationDB.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706191130508_WatchtowerException.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201706191130508_WatchtowerException.resx">
       <DependentUpon>201706191130508_WatchtowerException.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706201036161_Add DeletedBySync column to Persona_Users.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201706201036161_Add DeletedBySync column to Persona_Users.resx">
       <DependentUpon>201706201036161_Add DeletedBySync column to Persona_Users.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706271059315_omnius-api-models.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201706271059315_omnius-api-models.resx">
       <DependentUpon>201706271059315_omnius-api-models.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707030938552_babylon.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201707030938552_babylon.resx">
       <DependentUpon>201707030938552_babylon.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707281231548_athena.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201707281231548_athena.resx">
       <DependentUpon>201707281231548_athena.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708140808177_Alias for External DBs.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201708140808177_Alias for External DBs.resx">
       <DependentUpon>201708140808177_Alias for External DBs.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708141059461_Dev_Grid_Work_Merge.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201708141059461_Dev_Grid_Work_Merge.resx">
       <DependentUpon>201708141059461_Dev_Grid_Work_Merge.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708141312346_Merge.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201708141312346_Merge.resx">
       <DependentUpon>201708141312346_Merge.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709011206320_EmailQueueOptionalApp.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201709011206320_EmailQueueOptionalApp.resx">
       <DependentUpon>201709011206320_EmailQueueOptionalApp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710191356205_Add AbsoluteURL to file metadata.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201710191356205_Add AbsoluteURL to file metadata.resx">
       <DependentUpon>201710191356205_Add AbsoluteURL to file metadata.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712041556123_tableApplication.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201712041556123_tableApplication.resx">
       <DependentUpon>201712041556123_tableApplication.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802160746220_Entitron2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201802160746220_Entitron2.resx">
       <DependentUpon>201802160746220_Entitron2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802221413479_WatchtowerCascadeDelete.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201802221413479_WatchtowerCascadeDelete.resx">
       <DependentUpon>201802221413479_WatchtowerCascadeDelete.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802231111575_hermesUniqueness.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201802231111575_hermesUniqueness.resx">
       <DependentUpon>201802231111575_hermesUniqueness.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802281121138_cascadeTrigger.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201802281121138_cascadeTrigger.resx">
       <DependentUpon>201802281121138_cascadeTrigger.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803011217358_removeEntitronMeta.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201803011217358_removeEntitronMeta.resx">
       <DependentUpon>201803011217358_removeEntitronMeta.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803091647177_UserUpdate.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201803091647177_UserUpdate.resx">
       <DependentUpon>201803091647177_UserUpdate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803121532238_BadLoginCount.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201803121532238_BadLoginCount.resx">
       <DependentUpon>201803121532238_BadLoginCount.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803150800222_removeEntitronMetaCascade.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201803150800222_removeEntitronMetaCascade.resx">
       <DependentUpon>201803150800222_removeEntitronMetaCascade.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803150821030_athenaUniqueness.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201803150821030_athenaUniqueness.resx">
       <DependentUpon>201803150821030_athenaUniqueness.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804121453288_rabbitmq.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201804121453288_rabbitmq.resx">
       <DependentUpon>201804121453288_rabbitmq.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804130850131_rabbitmq2.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201804130850131_rabbitmq2.resx">
       <DependentUpon>201804130850131_rabbitmq2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804130900224_rabbitmq3.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201804130900224_rabbitmq3.resx">
       <DependentUpon>201804130900224_rabbitmq3.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804130946190_rabbitmq4.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201804130946190_rabbitmq4.resx">
       <DependentUpon>201804130946190_rabbitmq4.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805161042186_RabbbitMqMove.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201805161042186_RabbbitMqMove.resx">
       <DependentUpon>201805161042186_RabbbitMqMove.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807230854247_addCrontab.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201807230854247_addCrontab.resx">
       <DependentUpon>201807230854247_addCrontab.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807230903210_crontabAddTimestamps.resx">
+    <EmbeddedResource Include="Migrations\MSSQL\201807230903210_crontabAddTimestamps.resx">
       <DependentUpon>201807230903210_crontabAddTimestamps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\201808091158598_renameBootstrap.resx">
+      <DependentUpon>201808091158598_renameBootstrap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MySQL\201808091107243_INIT.resx">
+      <DependentUpon>201808091107243_INIT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MySQL\201808091116574_cascadeTriggers.resx">
+      <DependentUpon>201808091116574_cascadeTriggers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

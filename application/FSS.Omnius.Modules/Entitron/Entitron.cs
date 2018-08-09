@@ -7,6 +7,7 @@
     using FSS.Omnius.Modules.Entitron.Service;
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Data.Entity;
     using System.Linq;
     using System.Web;
@@ -58,6 +59,11 @@
             return new Tuple<List<string>, List<DBItem>>(columnList, rowList);
         }
 
+        public static void ParseConnectionString(string connectionStringName)
+        {
+            DefaultConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+            DefaultDBType = DBCommandSet.GetSqlType(ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName);
+        }
 
         public static string DefaultConnectionString = "DefaultConnection";
         public static ESqlType DefaultDBType = ESqlType.MSSQL;
