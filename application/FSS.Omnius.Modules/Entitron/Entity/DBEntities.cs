@@ -334,11 +334,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         public virtual DbSet<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
         public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
+        public virtual DbSet<TapestryDesignerBlockCommit> TapestryDesignerBlockCommits { get; set; }
         public virtual DbSet<TapestryDesignerMetablockConnection> TapestryDesignerMetablockConnections { get; set; }
+        public virtual DbSet<TapestryDesignerSwimlane> TapestryDesignerSwimlane { get; set; }
         public virtual DbSet<TapestryDesignerWorkflowRule> TapestryDesignerWorkflowRules { get; set; }
         public virtual DbSet<TapestryDesignerWorkflowItem> TapestryDesignerWorkflowItems { get; set; }
+        public virtual DbSet<TapestryDesignerWorkflowConnection> TapestryDesignerWorkflowConnection { get; set; }
         public virtual DbSet<TapestryDesignerResourceRule> TapestryDesignerResourceRules { get; set; }
         public virtual DbSet<TapestryDesignerResourceItem> TapestryDesignerResourceItems { get; set; }
+        public virtual DbSet<TapestryDesignerResourceConnection> TapestryDesignerResourceConnections { get; set; }
         public virtual DbSet<TapestryDesignerConditionGroup> TapestryDesignerConditionGroups { get; set; }
         public virtual DbSet<TapestryDesignerConditionSet> TapestryDesignerConditionSets { get; set; }
         public virtual DbSet<TapestryDesignerCondition> TapestryDesignerConditions { get; set; }
