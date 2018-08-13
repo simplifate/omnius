@@ -33,60 +33,58 @@
         <ul class="leftMenu">
             @if (map.Core)
             {
-                <li id="adminMenuPortal"><a href="/CORE/Portal">Centrální administrace</a></li>
+                <li id="adminMenuPortal"><a href="/CORE/Portal">CORE portal</a></li>
             }
             @if (map.Persona)
             {
                 <li id="identitySuperMenu" class="expandable">Identity management</li>
-                <li id="adminMenuPersona" class="subMenu identitySubMenu"><a href="/Persona/Rights">Přístup k aplikacím</a></li>
-                <li id="adminMenuPersonaModules" class="subMenu identitySubMenu"><a href="/Persona/Modules">Přístup k modulům</a></li>
-                <li id="adminMenuPersona" class="subMenu identitySubMenu"><a href="/Persona/Account">Uživatelé</a></li>
+                <li id="adminMenuPersona" class="subMenu identitySubMenu"><a href="/Persona/Rights">Access to applications</a></li>
+                <li id="adminMenuPersonaModules" class="subMenu identitySubMenu"><a href="/Persona/Modules">Access to modules</a></li>
+                <li id="adminMenuPersona" class="subMenu identitySubMenu"><a href="/Persona/Account">Users</a></li>
             }
             @if (map.Master)
             {
-                <li id="adminMenuApps"><a href="/Master/AppAdminManager">Správa aplikací</a></li>
+                <li id="adminMenuApps"><a href="/Master/AppAdminManager">Application management</a></li>
             }
             @if (map.Nexus)
             {
-                <li id="adminMenuNexus"><a href="/Nexus/LDAP">Integrace</a></li>
+                <li id="adminMenuNexus"><a href="/Nexus/LDAP">Integrations</a></li>
             }
             @if (map.Tapestry || map.Entitron || map.Mozaic)
             {
-                <li id="appSuperMenu" class="expandable">Vytvoření aplikace</li>
+                <li id="appSuperMenu" class="expandable">Application designing</li>
                 if (map.Tapestry && Convert.ToInt32(TempData["appId"])!=30)
                 {
-                    <li id="adminMenuTapestry" class="subMenu appSubMenu"><a href="/Tapestry/Overview">Návrh workflow</a></li>
+                    <li id="adminMenuTapestry" class="subMenu appSubMenu"><a href="/Tapestry/Overview">Workflows</a></li>
                 }
                 if (map.Entitron)
                 {
-                    <li id="adminMenuDbDesigner" class="subMenu appSubMenu"><a href="/Entitron/DbDesigner">Datové struktury</a></li>
+                    <li id="adminMenuDbDesigner" class="subMenu appSubMenu"><a href="/Entitron/DbDesigner">Data structures</a></li>
                 }
                 if (map.Mozaic && Convert.ToInt32(TempData["appId"]) != 30)
                 {
-                    <li id="adminMenuMozaic" class="subMenu appSubMenu"><a href="/Mozaic/Editor">Návrh UI</a></li>
+                    <li id="adminMenuMozaic" class="subMenu appSubMenu"><a href="/Mozaic/Editor">UI design</a></li>
                 }
             }
             @if (map.Hermes)
             {
-                <li id="adminMenuHermes"><a href="/Hermes/SMTP">E-maily</a></li>
+                <li id="adminMenuHermes"><a href="/Hermes/SMTP">E-mails</a></li>
             }
             @if (map.Cortex) {
-                <li id="adminMenuCortex"><a href="/Cortex">Asynchronní úlohy</a></li>
+                <li id="adminMenuCortex"><a href="/Cortex">Async tasks</a></li>
             }
             @if (map.Watchtower)
             {
-                <li id="adminMenuWatchtower"><a href="/Watchtower">Audity a logování­</a></li>
+                <li id="adminMenuWatchtower"><a href="/Watchtower">Logs­</a></li>
             }
 	    @if (map.Babylon) 
             {
-                <li id="adminMenuBabylon"><a href="/Babylon">Jazykové verze</a></li>
+                <li id="adminMenuBabylon"><a href="/Babylon">Languages</a></li>
             }
             @if (map.Athena) {
-                <li id="adminMenuAthena"><a href="/Athena">Analytický modul</a></li>
+                <li id="adminMenuAthena"><a href="/Athena">Graphs</a></li>
             }
-            <li>Vyhledávání</li>
-            <li>Bezpečnost</li>-->
-            <li><a href="/Master/Home">Uživatelská sekce</a></li>
+            <li><a href="/Master/Home">User section</a></li>
         </ul>
     </div>
     <div id="pageOverlay">

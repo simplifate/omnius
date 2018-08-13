@@ -9,17 +9,17 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Athena
     {
         public int? Id { get; set; }
         
-        [Display(Name = "Aktivní")]
+        [Display(Name = "Is active")]
         public bool Active { get; set; }
         
         [Required]
         [StringLength(255)]
-        [Display(Name = "Název")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
         [Required]
         [StringLength(255)]
-        [Display(Name = "Identifikátor")]
+        [Display(Name = "Identify")]
         [Index(IsUnique = true)]
         [ImportExportProperty(IsKey = true)]
         public string Ident { get; set; }

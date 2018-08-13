@@ -15,7 +15,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@(t._((string)ViewBag.Title)) Work</title>
+    <title>@(t._((string)ViewBag.Title)) | Omnius</title>
     <link rel="stylesheet" href="@Services.GetFileVersion("/Content/CssLibs/Bundle.min.css")" />
     <link rel="stylesheet" href="@Services.GetFileVersion("/Content/Scss/Bundle/UserStyleBundle.min.css")" />
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/modernizr.min.js")"></script>
@@ -65,15 +65,16 @@
             <div class="notificationIcon fa fa-bell"></div>
             <div class="avatar"></div>
             <div class="fullName"><a href="/Master/Home/Details">@Context.GetLoggedUser().DisplayName</a></div>
-            <div class="commands">@Html.Raw(Context.GetLoggedUser().isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">{t._("Odhlásit se")}</a> | " : "")                <a href="@(ViewData["locale"].ToString() == "cs" ? String.Format("/{0}/?locale=en",ViewData["appSystemName"].ToString()) : String.Format("/{0}/?locale=cs",ViewData["appSystemName"].ToString()))"> @(ViewData["locale"].ToString() == "cs" ? "English" : "Česky")</a>
-</div>
-           
+            <div class="commands">
+                @Html.Raw(Context.GetLoggedUser().isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">{t._("Logout")}</a> | " : "")
+                <a href="@(ViewData["locale"].ToString() == "cs" ? String.Format("/{0}/?locale=en",ViewData["appSystemName"].ToString()) : String.Format("/{0}/?locale=cs",ViewData["appSystemName"].ToString()))"> @(ViewData["locale"].ToString() == "cs" ? "English" : "Česky")</a>
+            </div>
         </div>
         <div class="searchBoxMinimized">
             <div class="searchIcon fa fa-search"></div>
         </div>
         <div class="searchBox">
-                <input type="text" placeholder="@t._("Vyhledat v aplikaci")" class="searchInputField" name="search" />
+                <input type="text" placeholder="@t._("Search in application")" class="searchInputField" name="search" />
                 <div class="searchIcon fa fa-search"></div>
         </div>
     </div>

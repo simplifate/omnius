@@ -14,7 +14,7 @@
     @Html.HiddenFor(m => m.Id)
 
     <section class="form-horizontal">
-        <h4>@(Model != null ? "Úprava úlohy" : "Vytvoření úlohy")</h4>
+        <h4>@(Model != null ? "Task edit" : "Task creating")</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         
@@ -31,7 +31,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.AppId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.AppId, new SelectList((DbSet<Application>)ViewData["ApplicationList"], "Id", "Name", Model != null ? Model.AppId : null), "-- žádná --", new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.AppId, new SelectList((DbSet<Application>)ViewData["ApplicationList"], "Id", "Name", Model != null ? Model.AppId : null), "-- none --", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.AppId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -55,7 +55,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
-                @Html.DropDownListFor(model => model.Type, new SelectList(c.scheduleTypeNames, "Key", "Value", Model != null ? (ScheduleType?)Model.Type : null), "-- žádná --", new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.Type, new SelectList(c.scheduleTypeNames, "Key", "Value", Model != null ? (ScheduleType?)Model.Type : null), "-- none --", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -66,7 +66,7 @@
                 <div class="col-md-2">
                     <div class="input-group">
                         @Html.EditorFor(model => model.Daily_Repeat, new { htmlAttributes = new { @class = "form-control col-md-3 col-sm-2" } })
-                        <div class="input-group-addon">(dny)</div>
+                        <div class="input-group-addon">(days)</div>
                     </div>
                     @Html.ValidationMessageFor(model => model.Daily_Repeat, "", new { @class = "text-danger" })
                 </div>
@@ -79,7 +79,7 @@
                 <div class="col-md-2">
                     <div class="input-group">
                         @Html.EditorFor(model => model.Weekly_Repeat, new { htmlAttributes = new { @class = "form-control" } })
-                        <div class="input-group-addon">týdnů vždy v:</div>
+                        <div class="input-group-addon">weeks always at:</div>
                     </div>
                     @Html.ValidationMessageFor(model => model.Weekly_Repeat, "", new { @class = "text-danger" })
                 </div>
@@ -112,7 +112,7 @@
             <div class="form-group">
                 <label class="control-label col-md-2">
                     <input type="radio" name="Monthly_Type" id="Month_Type_Day" value="2" @(Model == null ? "" : Model.Monthly_Type == MonthlyType.DAYS ? "checked" : "") />
-                    Dny
+                    Days
                 </label>
                 <div class="col-md-6">
                     @foreach(KeyValuePair<DaysInMonth, string> day in c.daysInMonthNames) {
@@ -126,7 +126,7 @@
             <div class="form-group">
                 <label class="control-label col-md-2">
                     <input type="radio" name="Monthly_Type" id="Month_Type_In" value="1" @(Model == null ? "" : Model.Monthly_Type == MonthlyType.IN ? "checked" : "") />
-                    V
+                    At
                 </label>
                 <div class="col-md-6">
                     @foreach(KeyValuePair<InModifiers, string> mod in c.modifiersNames) {
@@ -204,7 +204,7 @@
             <div class="col-md-10">
                 <label class="checkbox-inline">
                     <input type="checkbox" name="Repeat" value="true" id="Repeat" @(Model == null ? "" : Model.Repeat ? "checked" : "") />
-                    Ano
+                    Yes
                 </label>
             </div>
         </div>
@@ -215,7 +215,7 @@
                 <div class="col-md-2">
                     <div class="input-group">
                         @Html.DropDownListFor(model => model.Type, new SelectList(c.repetitionMinutesNames, "Key", "Value", Model != null ? (RepetitionMinutes?)Model.Repeat_Minute : null), "-- vyberte --", new { @class = "form-control" })
-                        <div class="input-group-addon">minut</div>
+                        <div class="input-group-addon">Minutes</div>
                     </div>
                     @Html.ValidationMessageFor(model => model.Repeat_Minute, "", new { @class = "text-danger" })
                 </div>
@@ -225,7 +225,7 @@
                 <div class="col-md-2">
                     <div class="input-group">
                         @Html.EditorFor(model => model.Repeat_Duration, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 24 } })
-                        <div class="input-group-addon">hodin</div>
+                        <div class="input-group-addon">Hours</div>
                     </div>
                     @Html.ValidationMessageFor(model => model.Repeat_Duration, "", new { @class = "text-danger" })
                 </div>

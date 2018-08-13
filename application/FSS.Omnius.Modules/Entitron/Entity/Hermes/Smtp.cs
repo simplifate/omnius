@@ -11,7 +11,7 @@
         [Required]
         [StringLength(100)]
         [Index(IsClustered = false, IsUnique = true)]
-        [Display(Name = "Název")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
         [Required]
@@ -20,19 +20,19 @@
         public string Server { get; set; }
 
         [StringLength(255)]
-        [Display(Name = "Uživatelské jméno")]
+        [Display(Name = "User name")]
         public string Auth_User { get; set; }
 
         [StringLength(255)]
-        [Display(Name = "Heslo")]
+        [Display(Name = "Password")]
         public string Auth_Password { get; set; }
 
         [Index(IsClustered = false, IsUnique = false)]
-        [Display(Name = "Šifrované spojení")]
+        [Display(Name = "Using SSL")]
         public bool Use_SSL { get; set; }
 
         [Index(IsClustered = false, IsUnique = false)]
-        [Display(Name = "Výchozí")]
+        [Display(Name = "Is default")]
         public bool Is_Default { get; set; }
     }
 }

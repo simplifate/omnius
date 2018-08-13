@@ -16,7 +16,7 @@
         public int? Id { get; set; }
 
         [Required]
-        [Display(Name = "Název")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
         [Required]
@@ -26,15 +26,15 @@
         [Display(Name = "Port")]
         public int? ImapPort { get; set; }
 
-        [Display(Name = "Použít SSL")]
+        [Display(Name = "Use SSL")]
         public bool ImapUseSSL { get; set; }
 
         [Required]
-        [Display(Name = "Uživatelské jméno (e-mail)")]
+        [Display(Name = "User name (e-mail)")]
         public string UserName { get; set; }
 
         [Required]
-        [Display(Name = "Heslo")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [ImportExport(ELinkType.LinkChild)]

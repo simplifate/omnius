@@ -12,11 +12,11 @@
         [StringLength(255)]
         [Index(IsClustered = false, IsUnique = false)]
         [RegularExpression("^[a-zA-Z0-9_.@]+$")]
-        [Display(Name = "Poměnná")]
+        [Display(Name = "Variable")]
         public string Prop_Name { get; set; }
         [Required]
         [StringLength(255)]
-        [Display(Name = "Popis")]
+        [Display(Name = "Description")]
         public string Description { get; set; }
         public int Num_Order { get; set; }
 

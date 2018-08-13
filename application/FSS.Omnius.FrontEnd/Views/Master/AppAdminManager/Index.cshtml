@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
 }
 <div id="upperPanel">
-    <div class="panelLabel">Správa aplikací</div>
+    <div class="panelLabel">Application management</div>
     <svg class="backgroundDecoration" width="540px" height="135px">
         <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
         <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
@@ -17,7 +17,7 @@
     <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
 </div>
 <div id="minimizedUpperPanel">
-    <div class="panelLabel">Správa aplikací</div>
+    <div class="panelLabel">Application management</div>
     <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
 </div>
 <div id="lowerPanel">
@@ -27,13 +27,13 @@
     <table class="adminAppTable table table-bordered table-striped table-omnius">
         <thead>
             <tr>
-                <th>Jméno aplikace</th>
+                <th>Name</th>
                 <th>Tapestry</th>
                 <th>Entitron</th>
                 <th>Mozaic</th>
-                <th>Publikováno?</th>
-                <th>Povoleno?</th>
-                <th>Akce</th>
+                <th>Published?</th>
+                <th>Allowed?</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -53,34 +53,34 @@
                         <td><button class="btn btn-info btnOpenDbScheme">Entitron</button></td>
                         <td></td>
                     }
-                    <td>@(app.IsPublished ? "Ano" : "Ne")</td>
-                    <td class="isEnabledColumn">@(app.IsEnabled ? "Ano" : "Ne")</td>
+                    <td>@(app.IsPublished ? "Yes" : "No")</td>
+                    <td class="isEnabledColumn">@(app.IsEnabled ? "Yes" : "No")</td>
                     <td class="actions">
                         @if (!app.IsSystem)//id 30 mají sdílené tabulky
                         {
                             if (app.IsPublished)
                             {
-                                <button class="btn btn-primary btnValidate">Aktualizovat</button>
+                                <button class="btn btn-primary btnValidate">Actualize</button>
                                 <button class="btn btn-primary btnRebuild">Rebuild</button>
                                 if (app.IsEnabled)
                                 {
-                                    <button class="btn btn-danger btnToggleEnabled btnDisable">Zakázat</button>
+                                    <button class="btn btn-danger btnToggleEnabled btnDisable">Deny</button>
                                 }
                                 else
                                 {
-                                    <button class="btn btn-success btnToggleEnabled btnEnable">Povolit</button>
+                                    <button class="btn btn-success btnToggleEnabled btnEnable">Allow</button>
                                 }
                             }
                             else
                             {
-                                <button class="btn btn-primary btnValidate">Vytvořit</button>
+                                <button class="btn btn-primary btnValidate">Create</button>
                             }
-                            <button class="btn btn-default btnProperties">Vlastnosti</button>
+                            <button class="btn btn-default btnProperties">Options</button>
 
                         }
                         else
                         {
-                            <button class="btn btn-primary btnValidate">Aktualizovat</button>
+                            <button class="btn btn-primary btnValidate">Actualize</button>
                             <button class="btn btn-primary btnRebuild">Rebuild</button>
                         }
                         @Html.RouteLink("Export", "Master", new { @controller = "Service", @action = "BackupApp", @id = app.Id }, new { @class = "btn btn-default btn-export", @target = "_blank" })
@@ -89,7 +89,7 @@
             }
         </tbody>
     </table>
-    <button id="btnAddApp" class="btn btn-primary">Přidat aplikaci</button>
+    <button id="btnAddApp" class="btn btn-primary">Create application</button>
     @Html.RouteLink("Import", "Master", new { @controller = "Service", @action = "RecoverApp" }, new { @class = "btn btn-default" })
 </div>
 <form id="openMetablockForm" method="post" action="/Tapestry/Overview">
@@ -106,7 +106,7 @@
         <fieldset>
             <table class="formTable">
                 <tr>
-                    <td><label for="app-name">Název aplikace</label></td>
+                    <td><label for="app-name">Name</label></td>
                     <td><input type="text" name="app-name" id="app-name" value=""></td>
                 </tr>
                 <tr>
@@ -121,38 +121,38 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="allowAllUsers">Povolit pro všechny uživatele</label></td>
+                    <td><label for="allowAllUsers">Allow for all users</label></td>
                     <td>
                         <input type="checkbox" id="cbAllowAll" name="cbAllowAll" /> Povolit
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="allowGuests">Povolit pro nepřihlášení </label></td>
+                    <td><label for="allowGuests">Allow for guests</label></td>
                     <td>
-                        <input type="checkbox" id="cbAllowGuests" name="cbAllowGuests" /> Povolit
+                        <input type="checkbox" id="cbAllowGuests" name="cbAllowGuests" />Allow
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="tile-width">Šířka dlaždice</label></td>
+                    <td><label for="tile-width">Icon width</label></td>
                     <td>
                         <select name="tile-width" id="tile-width">
-                            <option value="2" selected="selected">Výchozí (x2)</option>
-                            <option value="4">Široká (x4)</option>
+                            <option value="2" selected="selected">Default (x2)</option>
+                            <option value="4">Wide (x4)</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="tile-height">Výška dlaždice</label></td>
+                    <td><label for="tile-height">Icon height</label></td>
                     <td>
                         <select name="tile-height" id="tile-height">
-                            <option value="1" selected="selected">Nízká (x1)</option>
-                            <option value="2">Střední (x2)</option>
-                            <option value="4">Vysoká (x4)</option>
+                            <option value="1" selected="selected">short (x1)</option>
+                            <option value="2">Middle (x2)</option>
+                            <option value="4">High(x4)</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="bg-color">Barva pozadí</label></td>
+                    <td><label for="bg-color">Background color</label></td>
                     <td>
                         <select name="bg-color" id="bg-color">
                             <option value="0" selected="selected">Mellow Yellow</option>
@@ -166,19 +166,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="icon-class">Ikona (font awesome)</label></td>
+                    <td><label for="icon-class">Icon (font awesome)</label></td>
                     <td><input type="text" name="icon-class" id="icon-class" value=""></td>
                 </tr>
             </table>
         </fieldset>
     </form>
 </div>
-<div id="new-app-dialog" title="Nová aplikace">
+<div id="new-app-dialog" title="New application">
     <form>
         <fieldset>
             <table class="formTable">
                 <tr>
-                    <td><label for="app-name">Název aplikace</label></td>
+                    <td><label for="app-name">Name</label></td>
                     <td><input type="text" name="app-name" id="app-name" value=""></td>
                 </tr>
                 <tr>
@@ -193,36 +193,36 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="tile-width">Šířka dlaždice</label></td>
+                    <td><label for="tile-width">Icon width</label></td>
                     <td>
                         <select name="tile-width" id="tile-width">
-                            <option value="2" selected="selected">Výchozí (x2)</option>
-                            <option value="4">Široká (x4)</option>
+                            <option value="2" selected="selected">Default (x2)</option>
+                            <option value="4">Wide (x4)</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="tile-height">Výška dlaždice</label></td>
+                    <td><label for="tile-height">Icon height</label></td>
                     <td>
                         <select name="tile-height" id="tile-height">
-                            <option value="1" selected="selected">Nízká (x1)</option>
-                            <option value="2">Střední (x2)</option>
-                            <option value="4">Vysoká (x4)</option>
+                            <option value="1" selected="selected">Short (x1)</option>
+                            <option value="2">Middle (x2)</option>
+                            <option value="4">High (x4)</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="bg-color">Barva pozadí</label></td>
+                    <td><label for="bg-color">Background color</label></td>
                     <td>
                         <select name="bg-color" id="bg-color">
-                            <option value="0" selected="selected">Modrá</option>
-                            <option value="1">Sytě zelená</option>
-                            <option value="2">Světle zelená</option>
+                            <option value="0" selected="selected">Blue</option>
+                            <option value="1">Dark green</option>
+                            <option value="2">Light green</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="icon-class">Ikona (font awesome)</label></td>
+                    <td><label for="icon-class">Icon (font awesome)</label></td>
                     <td><input type="text" name="icon-class" id="icon-class" value=""></td>
                 </tr>
             </table>

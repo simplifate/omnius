@@ -13,24 +13,24 @@
         [Index(IsClustered = false, IsUnique = false)]
         public int? LanguageId { get; set; }
 
-        [Display(Name = "Jméno odesílatele")]
+        [Display(Name = "Sender name")]
         [MaxLength(255)]
         public string From_Name { get; set; }
 
-        [Display(Name = "E-mail odesílatele")]
+        [Display(Name = "Sender E-mail")]
         [MaxLength(1000)]
         public string From_Email { get; set; }
 
-        [Display(Name = "Předmět")]
+        [Display(Name = "Subject")]
         [MaxLength(1000)]
         public string Subject { get; set; }
 
-        [Display(Name = "Obsah (HTML)")]
+        [Display(Name = "Content (HTML)")]
         [DataType(DataType.Text)]
         [AllowHtml]
         public string Content { get; set; }
 
-        [Display(Name = "Obsah (plain)")]
+        [Display(Name = "Content (plain)")]
         [DataType(DataType.Text)]
         public string Content_Plain { get; set; }
 

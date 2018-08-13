@@ -11,7 +11,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? (ViewData.ContainsKey("Action") && ViewData["Action"].ToString() == "SaveClone" ? "Kopie šablony e-mailu" : "Úprava šablony e-mailu") : "Nová šablona e-mailu")</h4>
+        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? (ViewData.ContainsKey("Action") && ViewData["Action"].ToString() == "SaveClone" ? "Copy of e-mail template" : "Edit e-mail template") : "New e-mail template")</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -44,7 +44,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Uložit" class="btn btn-omnius-blue" />
+                <input type="submit" value="Save" class="btn btn-omnius-blue" />
             </div>
         </div>
     </div>

@@ -13,11 +13,11 @@
     <img class="decorationWatcheye" src="~/Content/Images/watcheye_small.png" />
     <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
     <div id="controlButtonArea">
-        <button id="btnNewPage" class="btn-omnius-rectangular">Nová stránka</button>
-        <button id="btnChoosePage" class="btn-omnius-rectangular">Zvolit stránku</button>
-        <button id="btnClear" class="btn-omnius-rectangular">Vymazat</button>
-        <button id="btnSave" class="btn-omnius-rectangular">Uložit</button>
-        <button id="btnLoad" class="btn-omnius-rectangular">Načíst</button>
+        <button id="btnNewPage" class="btn-omnius-rectangular">New page</button>
+        <button id="btnChoosePage" class="btn-omnius-rectangular">Choose page</button>
+        <button id="btnClear" class="btn-omnius-rectangular">Clear</button>
+        <button id="btnSave" class="btn-omnius-rectangular">Save</button>
+        <button id="btnLoad" class="btn-omnius-rectangular">Load</button>
         <button id="btnTrashPage" class="btn-omnius-rectangular">Trash</button>
         <button id="btnBootstrap" onclick="location.href='/Mozaic/Bootstrap/'" class="btn-omnius-rectangular">Bootstrap</button>
         @{
@@ -29,9 +29,9 @@
         App: <span id="headerAppName">@ViewData["appName"]</span><br /> Page: <span id="headerPageName"></span>
     </div>
     <div id="gridControlPanel">
-        <label for="gridResolution">Mřížka:</label>
+        <label for="gridResolution">Grid:</label>
         <select id="gridResolutionDropdown" name="gridResolution">
-            <option selected="selected" value="off">Žádná</option>
+            <option selected="selected" value="off">None</option>
             <option value="5">5px</option>
             <option value="10">10px</option>
             <option value="15">15px</option>
@@ -43,13 +43,13 @@
             <option value="45">45px</option>
             <option value="50">50px</option>
         </select>
-        <label for="gridShow">Zobrazit:</label>
+        <label for="gridShow">Show:</label>
         <input type="checkbox" id="gridShowCheckbox" name="gridShow" />
     </div>
     <div id="modalControlPanel">
-        <label>Uložit jako modal:</label><input type="checkbox" id="currentPageIsModal" />
-        <label>Šířka:</label><input type="text" id="modalWidthInput" value="400" />
-        <label>Výška:</label><input type="text" id="modalHeightInput" value="300" />
+        <label>Save as modal:</label><input type="checkbox" id="currentPageIsModal" />
+        <label>Width:</label><input type="text" id="modalWidthInput" value="400" />
+        <label>Height:</label><input type="text" id="modalHeightInput" value="300" />
     </div>
 </div>
 <div id="minimizedUpperPanel">
@@ -65,7 +65,7 @@
     </div>
     <div id="mozaicContainer">
         <div id="mozaicLeftBar">
-            <div class="leftBarHeader">Paleta</div>
+            <div class="leftBarHeader">Palette</div>
             <div id="hideMozaicTooboxIcon" class="fa fa-caret-left"></div>
             <hr class="toolboxCategoryHr bootstrap-editor-cat" />
             <div class="toolboxCategoryLabel bootstrap-editor-cat">Bootstrap row</div>
@@ -144,19 +144,19 @@
                     <div class="phase-icon-circle">
                         <div class="phase-icon-number">1</div>
                     </div>
-                    <div class="phase-label">Fáze 1</div>
+                    <div class="phase-label">Phase 1</div>
                 </div>
                 <div class="phase phase2">
                     <div class="phase-icon-circle">
                         <div class="phase-icon-number">2</div>
                     </div>
-                    <div class="phase-label">Fáze 2</div>
+                    <div class="phase-label">Phase 2</div>
                 </div>
                 <div class="phase phase3">
                     <div class="phase-icon-circle">
                         <div class="phase-icon-number">3</div>
                     </div>
-                    <div class="phase-label">Fáze 3</div>
+                    <div class="phase-label">Phase 3</div>
                 </div>
             </div>
             <hr class="toolboxCategoryHr" />
@@ -192,7 +192,7 @@
                     <tr>
                         <th>Column 1</th>
                         <th>Column 2</th>
-                        <th>Akce</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -218,7 +218,7 @@
                     <tr>
                         <th>Column 1</th>
                         <th>Column 2</th>
-                        <th>Akce</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -259,15 +259,15 @@
                 <span class="countdown-row countdown-show3">
                     <span class="countdown-section">
                         <span class="countdown-amount">0</span>
-                        <span class="countdown-period">Hodin</span>
+                        <span class="countdown-period">Hours</span>
                     </span>
                     <span class="countdown-section">
                         <span class="countdown-amount">29</span>
-                        <span class="countdown-period">Minut</span>
+                        <span class="countdown-period">Minutes</span>
                     </span>
                     <span class="countdown-section">
                         <span class="countdown-amount">59</span>
-                        <span class="countdown-period">Sekund</span>
+                        <span class="countdown-period">Seconds</span>
                     </span>
                 </span>
             </div>
@@ -276,12 +276,12 @@
             <div class="toolboxItem panel-component" uicClasses="panel-component"></div>
             <div class="toolboxItem panel-component visible-panel-pale-background" uicClasses="panel-component visible-panel-pale-background"></div>
             <div class="toolboxItem panel-component named-panel" uicClasses="panel-component named-panel">
-                <div class="named-panel-header">Název panelu</div>
+                <div class="named-panel-header">Panel name</div>
             </div>
         </div>
         <div id="mozaicLeftBarMinimized">
             <div id="showMozaicTooboxIcon" class="fa fa-caret-right"></div>
-            <div class="leftBarHeader">Paleta</div>
+            <div class="leftBarHeader">Palette</div>
         </div>
     </div>
     <div id="mozaicPageContainer">

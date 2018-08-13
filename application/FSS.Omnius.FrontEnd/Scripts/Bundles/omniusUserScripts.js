@@ -961,31 +961,7 @@ $(function () {
     });
 });
 function GetColumnSearchElementFor(title) {
-
-    if ($("#currentAppName").val() == "Evidence Periodik") {
-
-        if (title == "Forma periodika") {
-            return '<select><option value="">--vyberte--</option><option>Elektronické</option><option>Papírové</option></select>';
-        }
-        else if (title == "Typ periodika") {
-            return '<select><option value="">--vyberte--</option><option>tuzemské</option><option>zahraniční</option></select>';
-        }
-        else if (title == "Četnost periodika") {
-            return '<select><option value="">--vyberte--</option><option>1x týdně</option><option>5x týdně</option><option>10x ročně</option><option>1x měsíčně</option><option>6x ročně</option><option>2x ročně</option><option>denně</option><option>4x ročně</option><option>2x měsíčně</option><option>nepravidelně</option><option>1x ročně</option><option>6x týdně</option><option>22x ročně</option><option>312x ročně</option><option>6x ročně + 4x ročně bulletin</option><option>12x ročně</option><option>2x týdně</option><option>254x ročně</option></select>';
-        }
-        else if (title == "Stav objednávky") {
-            return '<select><option value="">--vyberte--</option><option>nový</option><option>rozpracováno</option><option>vyřízeno</option><option>zrušeno</option><option>nevyfakturováno</option><option>změna</option></select>';
-        }
-        else if (title == "Stav schválení") {
-            return '<select><option value="">--vyberte--</option><option>schváleno</option><option>zamítnuto</option><option>čeká na schválení</option></select>';
-        }
-        else {
-            return '<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />';
-        }
-      
-    } else {
-        return '<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />';
-    }
+        return '<input type="text" placeholder="Search in &quot;' + title + '&quot;" />';
 }
 $(document).ready(function () {
     //var logOutFlag = true;
@@ -1203,7 +1179,7 @@ $(function () {
                 submitActionByForm(tableName, rowId, "DetailsAction");
             });
             table.on("click", ".rowDeleteAction", function () {
-                if (confirm('Jste si jistí?')) {
+                if (confirm('Are you sure?')) {
                     rowId = parseInt($(this).parents("tr").find("td:first").text());
                     var modelId = GetUrlParameter("modelId");
                     var tableName = table.attr("name");
@@ -1524,7 +1500,7 @@ $(function () {
                         alert("TODO: Save");
                         $(this).dialog("close")
                     },
-                    "Zrušit": function () {
+                    "Cancel": function () {
                         $(this).dialog("close");
                     }
                 }
@@ -1575,12 +1551,12 @@ var BootstrapUserInit = {
         var modalDialog = $('<div class="modal-dialog" role="document"></div>');
         var modalContent = $('<div class="modal-content"></div>');
         var modalHeader = $('<div class="modal-header"></div>');
-        var modalClose = $('<button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Zavřít"><span aria-hidden="true">&times;</span></button>');
-        var modalTitle = $('<h4 class="modal-title">Jste si jistí?</h4>');
+        var modalClose = $('<button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close"><span aria-hidden="true">&times;</span></button>');
+        var modalTitle = $('<h4 class="modal-title">Are you sure?</h4>');
         var modalBody = $('<div class="modal-body">' + message + '</div>');
         var modalFooter = $('<div class="modal-footer"></div>');
-        var buttonYes = $('<button type="button" class="btn btn-danger">Ano</button>');
-        var buttonNo = $('<button type="button" class="btn btn-default">Ne</button>');
+        var buttonYes = $('<button type="button" class="btn btn-danger">Yes</button>');
+        var buttonNo = $('<button type="button" class="btn btn-default">No</button>');
 
         modal.append(modalDialog);
         modalDialog.append(modalContent);
@@ -1663,26 +1639,26 @@ var BootstrapUserInit = {
                     ajax: table.data('dtserverside') == '1' ? { url: "/api/run" + location.pathname + '?button=' + table.attr('id'), type: 'POST' } : null,
                     columns: columns,
                     language: {
-                        sEmptyTable: 'Tabulka neobsahuje žádná data',
-                        sInfo: 'Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů',
-                        sInfoEmpty: 'Zobrazuji 0 až 0 z 0 záznamů',
-                        sInfoFiltered: '(filtrováno z celkem _MAX_ záznamů)',
+                        sEmptyTable: 'Table contains no data',
+                        sInfo: 'Showing _START_ to _END_ of total _TOTAL_ entries',
+                        sInfoEmpty: 'Showing 0 to 0 of total 0 entries',
+                        sInfoFiltered: '(filtered of total _MAX_ entries)',
                         sInfoPostFix: '',
                         sInfoThousands: '',
-                        sLengthMenu: 'Zobraz záznamů _MENU_',
-                        sLoadingRecords: 'Načítám...',
-                        sProcessing: 'Provádím...',
-                        sSearch: 'Hledat:',
-                        sZeroRecords: 'Žádné záznamy nebyly nalezeny',
+                        sLengthMenu: 'Show _MENU_ entries',
+                        sLoadingRecords: 'Loading...',
+                        sProcessing: 'In progress...',
+                        sSearch: 'Search:',
+                        sZeroRecords: 'No entries was found',
                         oPaginate: {
-                            sFirst: 'První',
-                            sLast: 'Poslední',
-                            sNext: 'Další',
-                            sPrevious: 'Předchozí'
+                            sFirst: 'First',
+                            sLast: 'Last',
+                            sNext: 'Next',
+                            sPrevious: 'Previous'
                         },
                         oAria: {
-                            sSortAscending: ': aktivujte pro řazení sloupce vzestupně',
-                            sSortDescending: ': aktivujte pro řazení sloupce sestupně'
+                            sSortAscending: ': activate to sort column ascending',
+                            sSortDescending: ': activate to sort column descending'
                         }
                     },
                     drawCallback: function () {
@@ -1702,7 +1678,7 @@ var BootstrapUserInit = {
 
                     table.find('tfoot th').each(function () {
                         var title = $(this).text();
-                        if (title == "Akce" || title == "Select All")
+                        if (title == "Action" || title == "Select All")
                             $(this).html("");
                         else
                             $(this).html('<input type="text" placeholder="" />');
@@ -2119,12 +2095,12 @@ var BootstrapUserInit = {
                         }
                     }
                     else {
-                        body.append('<tr><td colspan="' + colspan + '" class="cEmptyList">Žádné události</td></tr>');
+                        body.append('<tr><td colspan="' + colspan + '" class="cEmptyList">No events</td></tr>');
                     }
                 }
             }
             else {
-                body.append('<tr><td>Žádné události</td></tr>');
+                body.append('<tr><td>No events</td></tr>');
             }
             body.appendTo(table);
 
@@ -2233,11 +2209,9 @@ if (!window.jQuery) {
     var message;
     if (/^Mozilla\/4\.0.*\bMSIE\b/.test(navigator.userAgent)) {
         // (emulované) IE5 .. IE8 se hlásí jako Mozilla/4.0, novější prohlížeče jako Mozilla/5.0 a fungují
-        message = "Omlouváme se, ale Vaše verze Internet Exploreru nepodporuje základní funkce jazyka Javascript, " +
-        "které jsou pro chod aplikace nezbytné.  Kontaktujte helpdesk nebo administrátory platformy. ";
+        message = "We are sorry, but your Internet explorer version does not support basic function of Javascript, that are necessary for application.";
     } else {
-        message = "Omlouváme se, ale verze Vašeho prohlížeče nepodporuje základní funkce jazyka Javascript, " +
-            "které jsou pro chod aplikace nezbytné.  Kontaktujte helpdesk nebo administrátory platformy. ";
+        message = "We are sorry, but your browser version does not support basic function of Javascript, that are necessary for application.";
     }
     var style = "body {background: white !important} body > * {display:none !important} div:first-child {display:block !important; margin: 25px; border: 5px solid red; padding: 25px; font-weight: bold}";
 
@@ -2342,7 +2316,7 @@ function CreateCzechDataTable(element, simpleMode) {
                 "loadingRecords": "Loading...",
                 "processing": "Processing...",
                 "search": "Search:",
-                "zeroRecords": "No matching records found",
+                "zeroRecords": "No matching entries found",
                 "paginate": {
                     "first": "First",
                     "last": "Last",
@@ -2416,9 +2390,9 @@ function CreateCzechDataTable(element, simpleMode) {
         main.on("change", function () {
             // Titles depending on state
             if (main.is(":checked")) {
-                main.attr("title", "Odoznačit vše");
+                main.attr("title", "Uncheck all");
             } else {
-                main.attr("title", "Označit vše");
+                main.attr("title", "Check all");
             }
 
             // Iterate all row checkboxes
@@ -2444,7 +2418,7 @@ function CreateCzechDataTable(element, simpleMode) {
             // If main isn't checked but row is, then check main !WITHOUT triggering EVENT!
             if (!main.is(":checked") && $(this).is(":checked")) {
                 main.prop("checked", true);
-                main.attr("title", "Odoznačit vše");
+                main.attr("title", "Uncheck all");
             }
         });
 

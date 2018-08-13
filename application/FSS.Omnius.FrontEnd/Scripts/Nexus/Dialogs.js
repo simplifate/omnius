@@ -7,7 +7,7 @@ $(function () {
             width: 800,
             height: 600,
             buttons: {
-                "Zavřít": function () {
+                "Close": function () {
                     showWsdlDialog.dialog("close");
                 }
             },

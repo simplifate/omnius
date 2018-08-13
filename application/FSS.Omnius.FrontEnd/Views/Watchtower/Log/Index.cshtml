@@ -27,7 +27,7 @@
             <path d="M700 74 L1140 74 L1200 134 L1200 240 L980 240 L900 320 L190 320" stroke="#49c4f1" stroke-width="1" fill="none" />
         </svg>
         <img class="decorationWatcheye" src="~/Content/Images/watcheye_small.png" />
-        <div id="filterPanelLabel">Vyhledávání</div>
+        <div id="filterPanelLabel">Filter</div>
         <form id="filterLogForm" method="post" action="/Watchtower">
             <table id="filterLogTable">
                 <tr>
@@ -83,8 +83,8 @@
             </table>
             <div id="formButtonArea">
                 <input type="hidden" name="page" value="1" id="PageNumber" />
-                <button id="resetSearchForm" type="reset" class="btn-omnius-rectangular">Zrušit</button>
-                <button id="submitSearchForm" type="submit" class="btn-omnius-rectangular">Hledat</button>
+                <button id="submitSearchForm" type="submit" class="btn-omnius-rectangular">Filter</button>
+                <button id="resetSearchForm" type="reset" class="btn-omnius-rectangular">Cancel</button>
             </div>
         </form>
     </div>
@@ -171,7 +171,7 @@
     }
     else
     {
-        <div class="noSearchResults">Tomuto požadavku neodpovídají žádné záznamy</div>
+        <div class="noSearchResults">No logs matches filter</div>
     }
 </div>
 <div class="hide" id="detail">

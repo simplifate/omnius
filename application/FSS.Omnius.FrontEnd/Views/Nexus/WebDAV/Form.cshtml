@@ -8,11 +8,11 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "Úprava WebDAV serveru" : "Nový WebDAV server")</h4>
+        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "Edit WebDAV server" : "New WebDAV server")</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, "Název:", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Name, "Name:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -20,7 +20,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UriBasePath, "Bázové URL:", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.UriBasePath, "Base URL:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.UriBasePath, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.UriBasePath, "", new { @class = "text-danger" })
@@ -28,7 +28,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AnonymousMode, "Anonymní přihlášení:", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.AnonymousMode, "Anonymous login:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.AnonymousMode)
@@ -38,7 +38,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AuthUsername, "Uživatel:", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.AuthUsername, "User:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10 has-feedback">
                 @Html.EditorFor(model => model.AuthUsername, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.AuthUsername, "", new { @class = "text-danger" })
@@ -47,7 +47,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AuthPassword, "Heslo:", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.AuthPassword, "Password:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10 has-feedback">
                 @Html.EditorFor(model => model.AuthPassword, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
                 @Html.ValidationMessageFor(model => model.AuthPassword, "", new { @class = "text-danger" })
@@ -58,9 +58,8 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @type = "hidden" } })
-                <input type="submit" value="Uložit" class="btn btn-omnius-blue" />
+                <input type="submit" value="Save" class="btn btn-omnius-blue" />
             </div>
         </div>
     </div>
 }
-

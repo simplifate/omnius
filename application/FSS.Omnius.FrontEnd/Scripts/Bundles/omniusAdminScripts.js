@@ -291,22 +291,22 @@ $(function () {
         ShowDetail(id, '80%');
         return false;
     })
-    .on('click', "a[data-innerid]", function () {
-        var id = $(this).attr('data-innerid');
+        .on('click', "a[data-innerid]", function () {
+            var id = $(this).attr('data-innerid');
 
-        ShowDetail(id, '70%');
-        return false;
-    })
-    .on('click', '.pagination a[data-page]', function () {
-        $('#PageNumber').val($(this).attr('data-page'));
-        $('#filterLogForm').submit();
-        return false;
-    })
-    .on('click', '#filterLogForm #resetSearchForm', function () {
-        $('#filterLogForm').find('select').each(function () { this.selectedIndex = 0; }).end()
-                           .find('input[type=text]').val('').end()
-                           .submit();
-    });
+            ShowDetail(id, '70%');
+            return false;
+        })
+        .on('click', '.pagination a[data-page]', function () {
+            $('#PageNumber').val($(this).attr('data-page'));
+            $('#filterLogForm').submit();
+            return false;
+        })
+        .on('click', '#filterLogForm #resetSearchForm', function () {
+            $('#filterLogForm').find('select').each(function () { this.selectedIndex = 0; }).end()
+                .find('input[type=text]').val('').end()
+                .submit();
+        });
 });
 
 sourceEndpoint = {
@@ -697,7 +697,7 @@ var ManualInputConditionTemplate = '<tr><td class="conditionOperator"></td><td c
 var HermesConditionSetTemplate = '<div class="conditionSet"><div class="conditionSetHeading"><span class="conditionSetPrefix"> a</span>ll of these conditions must be met</div>'
     + '<div class="removeConditionSetIcon">X</div><table class="conditionTable"></table></div>';
 var HermesConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><select class="form-control" style="width:auto"><option value="From">From</option><option value="CC">CC</option><option value="Subject">Subject</option><option value="Body">Body</option></select>'
-    + '</td><td class="conditionOperatorCell"><select class="form-control" style="width:auto"><option value="contains" selected="selected">obsahuje</option><option value="BeginWith">začíná</option><option value="EndWith">končí</option><option value="IsEmpty" data-inputType="none">is empty</option><option value="IsNotEmpty" data-inputType="none">is not empty</option></select></td><td class="conditionValueCell">'
+    + '</td><td class="conditionOperatorCell"><select class="form-control" style="width:auto"><option value="contains" selected="selected">contains</option><option value="BeginWith">begins with</option><option value="EndWith">ends with</option><option value="IsEmpty" data-inputType="none">is empty</option><option value="IsNotEmpty" data-inputType="none">is not empty</option></select></td><td class="conditionValueCell">'
     + '<input type="text" value="" class="form-control" /></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
     + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
     + '</tr>';
@@ -976,7 +976,7 @@ $(function () {
 
         $("#btnLoad").on("click", function () {
             if (ChangedSinceLastSave)
-                confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
+                confirmed = confirm("You have unsaved changes. Do you really want to discard unsaved changes");
             else
                 confirmed = true;
             if (confirmed) {
@@ -989,7 +989,7 @@ $(function () {
         });
         $("#btnOverview").on("click", function () {
             if (ChangedSinceLastSave)
-                confirmed = confirm("Máte neuložené změny, opravdu si přejete opustit blok?");
+                confirmed = confirm("You have unsaved changes. Do you really want to discard unsaved changes");
             else
                 confirmed = true;
             if (confirmed) {
@@ -1002,7 +1002,7 @@ $(function () {
         window.onbeforeunload = function () {
             if (ChangedSinceLastSave) {
                 pageSpinner.hide();
-                return "Máte neuložené změny, opravdu si přejete opustit blok?";
+                return "You have unsaved changes. Do you really want to discard unsaved changes";
             }
         };
         $("#btnOpenTableConditions").on("click", function () {
@@ -1234,8 +1234,7 @@ $(function () {
                 }
             });
             newRule = $('<div class="rule workflowRule" style="width: 766px; height: 180px; left: 40px; top: ' + (lowestRuleBottom + 20) + 'px;"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;">Pravidlo ' + (highestRuleNumber + 1) + '</div>'
-                + '</div><div class="swimlaneArea"><div class="swimlane" style="height: 100%;"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
-                + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>'
+                + '</div><div class="swimlaneArea"><div class="swimlane" style="height: 100%;"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">If you want to specify role<br />drag & drop in into this section</div></div></div><div class="swimlaneContentArea"></div></div>'
                 + '</div></div>');
             $("#workflowRulesPanel .scrollArea").append(newRule);
             newRule.draggable({
@@ -1653,7 +1652,7 @@ $(function () {
             if (historyDialog.data("selectedCommitId")) {
                 historyDialog.dialog("close");
                 if (ChangedSinceLastSave)
-                    confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
+                    confirmed = confirm("You have unsaved changes. Do you really want to discard unsaved changes?");
                 else
                     confirmed = true;
                 if (confirmed) {
@@ -1716,7 +1715,7 @@ $(function () {
                             return value.Name == tableName;
                         })[0];
                         if (targetTable == undefined)
-                            alert("Požadovaná tabulka již není součástí schématu v Entitronu, nebo má nyní jiné Id.");
+                            alert("Selected table is no longer in DB scheme or table's id has changed.");
                         for (i = 0; i < targetTable.Columns.length; i++) {
                             newRow = $('<tr><td class="nameCell">' + targetTable.Columns[i].Name + '</td>'
                                 + '<td><input type="checkbox" class="showColumnCheckbox"></input>Show</td></tr>');
@@ -2619,7 +2618,7 @@ TO.metablock = {
 
 TO.onInit.push(TO.metablock.init);
 TO.block = {
-    
+
     contextItems: {
         'copy': { name: 'Copy...', icon: 'fa-clone' },
         'properties': { name: 'Properties...', icon: 'fa-cog' },
@@ -2633,7 +2632,7 @@ TO.block = {
         $(document).on('dblclick', '.block', self._doubleClick);
     },
 
-    add: function() {
+    add: function () {
         var blockName = $(this).find('#block-name').val();
         var newBlock = $('<div class="block"><div class="blockName">' + blockName + '</div><div class="blockInfo"></div></div>');
 
@@ -2644,12 +2643,12 @@ TO.block = {
         });
 
         instance.draggable(newBlock, { containment: 'parent' });
-        
+
         TO.changedSinceLastSave = true;
         TO.dialog.close.apply(this);
     },
 
-    copy: function() {
+    copy: function () {
 
         if (!$('#c-target-name').val().length) {
             alert('Vyberte cílový metablok.');
@@ -2658,8 +2657,8 @@ TO.block = {
 
         var url = '/api/tapestry/{appId}/blocks/{blockId}/copy/{targetMetablockId}';
         url = url.replace(/\{appId\}/, $('#currentAppId').val())
-                 .replace(/\{blockId\}/, $(currentBlock).attr('blockid'))
-                 .replace(/\{targetMetablockId\}/, $('#c-target-name').val());
+            .replace(/\{blockId\}/, $(currentBlock).attr('blockid'))
+            .replace(/\{targetMetablockId\}/, $('#c-target-name').val());
 
         var d = this;
 
@@ -2669,14 +2668,14 @@ TO.block = {
             data: {},
             success: function (data) {
                 if (data == true) {
-                    alert('Blok byl úspěšně zkopírován');
+                    alert('Block was successfully copied');
 
                     if ($('#currentMetablockId').val() == $('#c-target-name').val()) {
                         window.location.reload();
-                    } 
+                    }
                 }
                 else {
-                    alert('Blok se nepodařilo zkopírovat');
+                    alert('Error while copiing block');
                 }
                 TO.dialog.close.apply(d);
             }
@@ -2686,19 +2685,19 @@ TO.block = {
     move: function () {
 
         if (!$('#c-target-name').val().length) {
-            alert('Vyberte cílový metablok.');
+            alert('Select target metablock.');
             return false;
         }
 
         if ($('#currentMetablockId').val() == $('#c-target-name').val()) {
-            alert('Block nelze přesunout. Již se ve vybraném metabloku nachází.');
+            alert('Block cannot move - it is already in selected metablock.');
             return false;
         }
 
         var url = '/api/tapestry/{appId}/blocks/{blockId}/move/{targetMetablockId}';
         url = url.replace(/\{appId\}/, $('#currentAppId').val())
-                 .replace(/\{blockId\}/, $(currentBlock).attr('blockid'))
-                 .replace(/\{targetMetablockId\}/, $('#c-target-name').val());
+            .replace(/\{blockId\}/, $(currentBlock).attr('blockid'))
+            .replace(/\{targetMetablockId\}/, $('#c-target-name').val());
 
         var d = this;
 
@@ -2708,11 +2707,11 @@ TO.block = {
             data: {},
             success: function (data) {
                 if (data == true) {
-                    alert('Blok byl úspěšně přesunut');
+                    alert('Block was successfully moved');
                     window.location.reload();
                 }
                 else {
-                    alert('Blok se nepodařilo přesunout');
+                    alert('Error while moving block');
                     TO.dialog.close.apply(d);
                 }
             }
@@ -2722,7 +2721,7 @@ TO.block = {
     /*************************************************/
     /* EVENTS                                        */
     /*************************************************/
-    _doubleClick: function() {
+    _doubleClick: function () {
         var blockToOpen = $(this);
 
         SaveMetablock(function () {
@@ -2732,11 +2731,11 @@ TO.block = {
         });
     },
 
-    _addOpen: function() {
+    _addOpen: function () {
         $(this).find('#block-name').val('');
     },
 
-    _copyOpen: function() {
+    _copyOpen: function () {
         $('#c-block-name').html($(currentBlock).find('.blockName').text());
         $('#c-target-name').val('');
     },
@@ -2757,7 +2756,7 @@ TO.block = {
                 });
                 options.$trigger.attr('isInitial', true);
                 options.$trigger.find('.blockInfo').text('Initial');
-                
+
                 TO.changedSinceLastSave = true;
                 break;
             }
@@ -2910,7 +2909,7 @@ TO.load = {
         var confirmed = true;
 
         if (TO.changedSinceLastSave)
-            confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
+            confirmed = confirm("You have unsaved changes. Do you really want to discard unsaved changes");
             
         if (confirmed) {
             LoadMetablock();
@@ -4804,7 +4803,7 @@ TB.foreach = {
                 var uuids = this.getUuids();
 
                 if (target.is('.symbol')) {
-                    errors.push('Cyklus nemůže začínat symbolem. Upravte spojení manuálně a označte počáteční akci.');
+                    errors.push('Foreach cannot start with symbol. Change connection manualy and select starting action.');
                 }
                 else if (!foreach.find('.fa-play').length) {
                     target.append('<span class="fa fa-play"></span>');
@@ -4818,7 +4817,7 @@ TB.foreach = {
                 }
                 else {
                     foreach.find('.fa-play').remove();
-                    errors.push('Nelze jednoznačně určit počáteční akci. Upravte spojení manuálně a označte počáteční akci.');
+                    errors.push('Ambiguously starting action. Change connection manualy and select starting action.');
                 }
             }
             // Zdroj je ve FE - cíl je mimo FE (považujme ho za konec)  
@@ -4826,7 +4825,7 @@ TB.foreach = {
                 var type = this.getType();
 
                 if (target.is('.symbol')) {
-                    errors.push('Cyklus nemůže končit symbolem. Upravte spojení manuálně a označte koncovou akci.');
+                    errors.push('Foreach cannot end with symbol. Change connection manualy and select ending action.');
                 }
                 else if (!foreach.find('.fa-stop').length) {
                     source.append('<span class="fa fa-stop"></span>');
@@ -4840,16 +4839,16 @@ TB.foreach = {
                 }
                 else {
                     foreach.find('.fa-stop').remove();
-                    errors.push('Nelze jednoznačně určit koncovou akci. Upravte spojení manuálně a označte koncovou akci.');
+                    errors.push('Ambiguously ending action. Change connection manualy and select ending action.');
                 }
             }
         });
 
         if (!foreach.find('.fa-play').length) {
-            errors.push('Nebyl nalezen začátek cyklu. Upravte spojení manuálně a označte počáteční akci.');
+            errors.push('Foreach start not found. Change connection manualy and select starting action.');
         }
         if (!foreach.find('.fa-stop').length) {
-            errors.push('Nebyl nalezen konec cyklu. Upravte spojení mauálně a označte koncovou akci.');
+            errors.push('Foreach end not found. Change connection manualy and select ending action.');
         }
 
         if (errors.length) {
@@ -5220,8 +5219,8 @@ TB.wfr = {
 
     templates: {
         rule: '<div class="rule workflowRule"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;"></div></div><div class="swimlaneArea"></div></div>',
-        swimlane: '<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
-            + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>',
+        swimlane: '<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">If you want to specify role<br />'
+            + 'drag & drop in into this section</div></div></div><div class="swimlaneContentArea"></div></div>',
         item: ''
     },
     
@@ -5377,7 +5376,7 @@ TB.wfr = {
             TB.changedSinceLastSave = true;
         }
         else {
-            alert('Pravidlo musí mít alspoň jednu swimlane, nelze smazat všechny.');
+            alert('Rule needs at least one swimlane, cannot delete all of them.');
         }
     },
 
@@ -5548,7 +5547,7 @@ TB.wfr = {
         var targetBlockId = $('#wr-copy-target').val();
 
         if (!targetBlockId) {
-            alert('Vyberte cílový blok.');
+            alert('Select target block.');
         }
         else {
             var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '/copyWorkflow/' + wfrId + /target/ + targetBlockId;
@@ -5558,11 +5557,11 @@ TB.wfr = {
                 data: {},
                 success: function (data) {
                     if (data) {
-                        alert('Workflow bylo úspěšně zkopírováno.');
+                        alert('Workflow was successfully copied.');
                         TB.dialog.close.apply(d);
                     }
                     else {
-                        alert('Workflow se nepodařilo zkopírovat.');
+                        alert('Error while copiing workflow.');
                     }
                 }
             })
@@ -5680,7 +5679,7 @@ TB.wfr = {
             item.remove();
             if (swimlaneRolesArea.find(".roleItem").length == 0)
                 swimlaneRolesArea.append($('<div class="rolePlaceholder"><div class="rolePlaceholderLabel">'
-                    + 'Pokud chcete specifikovat roli<br />přetáhněte ji do této oblasti</div></div>'));
+                    + 'If you want to specify role<br />drag & drop in into this section</div></div>'));
             ChangedSinceLastSave = true; /// OBSOLATE
             TB.changedSinceLastSave = true;
         }
@@ -5704,7 +5703,7 @@ TB.wfr = {
                     TB.wizard.open.apply(item, []);
                 }
                 else {
-                    alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                    alert("There are no options for this type of object.");
                     item.removeClass("activeItem");
                 }
                 break;
@@ -5870,6 +5869,7 @@ TB.wfr = {
 
                 var $b = $('<span class="input-group-btn"><button type="button" id="Search" class="btn btn-default"><span class="fa fa-search"></span></button></span>');
                 $b.appendTo($ig);
+                $f.focus();
             }
         }  
     },
@@ -6340,7 +6340,7 @@ TB.wizard = {
 
         self.target = target;
 
-        var d = $('<div title="Průvodce parametry akce \'{action_name}\'"></div>');
+        var d = $('<div title="Wizard of action parameters \'{action_name}\'"></div>');
         d.attr('title', d.attr('title').replace(/\{action_name\}/, action.name));
         d.append(form);
 
@@ -6412,7 +6412,7 @@ TB.wizard = {
                 }
             }
             else {
-                iSet.append('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné vstupní parametry</p></div></div>');
+                iSet.append('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">This action has no input prameters</p></div></div>');
             }
 
             if (action.outputVars.length || outputVarsValues.length) {
@@ -6436,11 +6436,11 @@ TB.wizard = {
                 }
             }
             else {
-                oSet.append('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné výstupní parametry</p></div></div>');
+                oSet.append('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">This action has no output parameters</p></div></div>');
             }
         }
         else {
-            form.html('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné vstupní ani výstupní parametry</p></div></div>');
+            form.html('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">This action has no input and output parameters</p></div></div>');
         }
 
         d.dialog('open');
@@ -6474,7 +6474,7 @@ TB.wizard = {
             TB.wizard.build.apply(this, []);
         }
         else {
-            var confirm = $('<div title="Jste si jistí?"><p class="text-nowrap">Nemáte vyplněné všechny povinné proměnné.<br><b>Opravdu chcete parametry uložit?</b></p></div>');
+            var confirm = $('<div title="Are you sure?"><p class="text-nowrap">Not all required parameters are filled.<br><b>Are you sure about saving?</b></p></div>');
             var context = this;
 
             confirm.dialog({
@@ -6704,7 +6704,7 @@ TB.wizard = {
         }
         else {
             if (inputVar.unknown) {
-                addOn.append('<span class="fa fa-warning fa-fw" title="Neočekávaná vstupní proměnná"></span>');
+                addOn.append('<span class="fa fa-warning fa-fw" title="Unexpected input parameter"></span>');
 
                 var addOn2 = $('<div class="input-group-addon"></div>');
                 var del = $('<span class="fa fa-times fa-fw"></span>');
@@ -6773,9 +6773,9 @@ TB.wizard = {
         }
 
         if (outputVar.unknown) {
-            var del = $('<span class="fa fa-times fa-fw" style="margin-left: 7px" title="Smazat"></span>');
+            var del = $('<span class="fa fa-times fa-fw" style="margin-left: 7px" title="Delete"></span>');
 
-            valueWrapper.prepend('<div class="input-group-addon"><span class="fa fa-warning fa-fw" title="Neočekávaná výstupní proměnná"></span></div>');
+            valueWrapper.prepend('<div class="input-group-addon"><span class="fa fa-warning fa-fw" title="Unexpected output parameter"></span></div>');
             addOn.append(del);
             del.click(TB.wizard._deleteUnexpectedVar);
         }
@@ -7099,9 +7099,9 @@ TB.lock = {
         TB.lock.isLockedForCurrentUser = this.LockedForUserId == Number($('#currentUserId').val());
         TB.lock.LockedForUserName = this.LockedForUserName;
         if (TB.lock.isLockedForCurrentUser) {
-            $('#btnLock').html('Odemknout');
+            $('#btnLock').html('Unlock');
         } else {
-            $('#btnLock').html('Zamknout');
+            $('#btnLock').html('Lock');
 
         }
 
@@ -7173,11 +7173,11 @@ TB.lock = {
         }
 
         else if (result.lockStatusId == 3) {
-            alert('This block has been recently updated,please reload the latest version of it and try again');
+            alert('This block has been recently updated, please reload the latest version of it and try again');
         }
         else {
             //alert('This block has been locked by ' + result.lockedForUserName + ' ,please wait untill this user unlocks it');
-            var msg = ('The block is currently locked by user ' + result.lockedForUserName + ',are you sure you want to force locking this block? It can cause overwriting ' + result.lockedForUserName + '\'s work');
+            var msg = ('The block is currently locked by user ' + result.lockedForUserName + ', are you sure you want to force locking this block? It can cause overwriting ' + result.lockedForUserName + '\'s work');
 
             $('<div></div>').appendTo('body')
                 .html('<div><h6>' + msg + '</h6></div>')
@@ -7210,20 +7210,20 @@ TB.lock = {
 
     _onLock: function (result) {
         if (result) {
-            $('#btnLock').html('Odemknout');
+            $('#btnLock').html('Unlock');
             TB.lock.isLockedForCurrentUser = true;
         } else {
-            $('#btnLock').html('Zamknout');
+            $('#btnLock').html('Lock');
             TB.lock.isLockedForCurrentUser = false;
         }
     },
 
     _onUnlock: function (result) {
         if (result) {
-            $('#btnLock').html('Zamknout');
+            $('#btnLock').html('Lock');
             TB.lock.isLockedForCurrentUser = false;
         } else {
-            $('#btnLock').html('Odemknout');
+            $('#btnLock').html('Unlock');
             TB.lock.isLockedForCurrentUser = true;
         }
     },
@@ -7263,7 +7263,7 @@ TB.lock = {
                 break;
             }
             case 1: {
-                var msg = 'The block is currently locked by user ' + result.lockedForUserName + ',but u can press Lock button to Force Locking and overwrite his/her work';
+                var msg = 'The block is currently locked by user ' + result.lockedForUserName + ', but u can press Lock button to Force Locking and overwrite his/her work';
                 alert(msg);
 
                 break;
@@ -7369,13 +7369,13 @@ $(function () {
     var currentModule = document.body.getAttribute("data-module");
 
     $(document).on("ajaxError", function (event, jqxhr, settings, thrownError) {
-        ShowAppNotification(jqxhr.responseText || "nastala chyba sítě", "error");
+        ShowAppNotification(jqxhr.responseText || "network error", "error");
     })
     $(window).on("error", function () {
-        ShowAppNotification("Nastala neočekávaná chyba", "error");
+        ShowAppNotification("Unexpected error", "error");
     })
     $("[data-ajax='true']").data("ajax-failure", function (xhr) {
-        ShowAppNotification(xhr.responseText || "nastala chyba sítě", "error");
+        ShowAppNotification(xhr.responseText || "network error", "error");
     }.toString()); 
 
     pageSpinner.hide();
@@ -7455,12 +7455,12 @@ $(function () {
     $("#maintenanceIndicator").on("click", function () {
         if (maintenanceModeActive) {
             $("#maintenanceIndicator").removeClass("maintenanceActive");
-            $("#maintenanceIndicator .indicatorLabel").text("vypnuta");
+            $("#maintenanceIndicator .indicatorLabel").text("Off");
             maintenanceModeActive = false;
         }
         else {
             $("#maintenanceIndicator").addClass("maintenanceActive");
-            $("#maintenanceIndicator .indicatorLabel").text("zapnuta");
+            $("#maintenanceIndicator .indicatorLabel").text("On");
             maintenanceModeActive = true;
         }
     });
@@ -7928,7 +7928,7 @@ $(function () {
             width: 800,
             height: 600,
             buttons: {
-                "Zavřít": function () {
+                "Close": function () {
                     showWsdlDialog.dialog("close");
                 }
             },
@@ -9366,8 +9366,6 @@ function SaveDbScheme(commitMessage) {
             });
         }
     });
-
-  
 }
 
 function LoadDbScheme(commitId) {
@@ -10415,10 +10413,10 @@ $(function () {
         width: 600,
         height: 320,
         buttons: {
-            "Uložit": function () {
+            "Save": function () {
                 appPropertiesDialog_SubmitData();
             },
-            "Zrušit": function () {
+            "Cancel": function () {
                 appPropertiesDialog.dialog("close");
             }
         },
@@ -10497,10 +10495,10 @@ $(function () {
         width: 600,
         height: 320,
         buttons: {
-            "Přidat": function () {
+            "Add": function () {
                 addAppDialog_SubmitData();
             },
-            "Zrušit": function () {
+            "Cancel": function () {
                 addAppDialog.dialog("close");
             }
         },
@@ -10552,10 +10550,10 @@ $(function () {
         width: 660,
         height: 380,
         buttons: {
-            "Exportovat": function () {
+            "Export": function () {
                 exportAppDialog_SubmitData();
             },
-            "Zrušit": function () {
+            "Cancel": function () {
                 exportAppDialog.dialog("close");
             }
         },
@@ -10600,11 +10598,11 @@ $(function () {
             CurrentAppId = $(this).parents("tr").attr("appId");
 
             if (typeof WebSocket === "undefined") {
-                ShowAppNotification("Váš prohlížeč nepodporuje webSockety, a nemůže být využit k aktualizaci aplikací", "error");
+                ShowAppNotification("Your browser does not support WebSockets, cannot continue!", "error");
                 return;
             }
 
-            appBuildDialog.dialog("option", { title: "aktualizuji " + $(this).parents("tr").data("displayName") }).empty().dialog("open");
+            appBuildDialog.dialog("option", { title: "Actualization " + $(this).parents("tr").data("displayName") + " in progress "}).empty().dialog("open");
             var messagesById = {};
 
             var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
@@ -10657,11 +10655,11 @@ $(function () {
             CurrentAppId = $(this).parents("tr").attr("appId");
 
             if (typeof WebSocket === "undefined") {
-                ShowAppNotification("Váš prohlížeč nepodporuje webSockety, a nemůže být využit k aktualizaci aplikací", "error");
+                ShowAppNotification("Your browser does not support WebSockets, cannot continue!", "error");
                 return;
             }
 
-            appBuildDialog.dialog("option", { title: "aktualizuji " + $(this).parents("tr").data("displayName") }).empty().dialog("open");
+            appBuildDialog.dialog("option", { title: "Actualization " + $(this).parents("tr").data("displayName") + " in progress " }).empty().dialog("open");
             var messagesById = {};
 
             var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/RebuildApp/' + CurrentAppId);

@@ -3,14 +3,14 @@
 @if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
 {
     Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
-    @Html.Raw("Nemáte Přístup");
+    @Html.Raw("You are not authorized");
 }
 else
 {
-    ViewBag.Title = "Nemáte přístup";
+    ViewBag.Title = "You are not authorized";
     Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
     <link href="/Content/css/ErrorCss.css" rel="stylesheet" />
 
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.min.js")"></script>
-    <script>ShowAppNotification("Nemáte přístup", "error")</script>
+    <script>ShowAppNotification("You are not authorized", "error")</script>
 }

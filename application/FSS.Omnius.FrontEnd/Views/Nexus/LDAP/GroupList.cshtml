@@ -2,7 +2,7 @@
     Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
 }
 <div>
-    <h4>Seznam skupin v AD</h4>
+    <h4>List of AD groups</h4>
     <hr />
 
     @using (Ajax.BeginRouteForm("Nexus", new { action = "Groups" }, new AjaxOptions() { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }))
@@ -15,7 +15,7 @@
                     <span class="form-control-feedback glyphicon glyphicon-asterisk"></span>
                 </div>
                 <div class="col-md-2">
-                    <input type="submit" value="Hledat..." class="btn btn-omnius-blue" />
+                    <input type="submit" value="Search..." class="btn btn-omnius-blue" />
                 </div>
             </div>
         </div>

@@ -34,12 +34,12 @@
         var modalDialog = $('<div class="modal-dialog" role="document"></div>');
         var modalContent = $('<div class="modal-content"></div>');
         var modalHeader = $('<div class="modal-header"></div>');
-        var modalClose = $('<button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Zavřít"><span aria-hidden="true">&times;</span></button>');
-        var modalTitle = $('<h4 class="modal-title">Jste si jistí?</h4>');
+        var modalClose = $('<button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close"><span aria-hidden="true">&times;</span></button>');
+        var modalTitle = $('<h4 class="modal-title">Are you sure?</h4>');
         var modalBody = $('<div class="modal-body">' + message + '</div>');
         var modalFooter = $('<div class="modal-footer"></div>');
-        var buttonYes = $('<button type="button" class="btn btn-danger">Ano</button>');
-        var buttonNo = $('<button type="button" class="btn btn-default">Ne</button>');
+        var buttonYes = $('<button type="button" class="btn btn-danger">Yes</button>');
+        var buttonNo = $('<button type="button" class="btn btn-default">No</button>');
 
         modal.append(modalDialog);
         modalDialog.append(modalContent);
@@ -122,26 +122,26 @@
                     ajax: table.data('dtserverside') == '1' ? { url: "/api/run" + location.pathname + '?button=' + table.attr('id'), type: 'POST' } : null,
                     columns: columns,
                     language: {
-                        sEmptyTable: 'Tabulka neobsahuje žádná data',
-                        sInfo: 'Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů',
-                        sInfoEmpty: 'Zobrazuji 0 až 0 z 0 záznamů',
-                        sInfoFiltered: '(filtrováno z celkem _MAX_ záznamů)',
+                        sEmptyTable: 'Table contains no data',
+                        sInfo: 'Showing _START_ to _END_ of total _TOTAL_ entries',
+                        sInfoEmpty: 'Showing 0 to 0 of total 0 entries',
+                        sInfoFiltered: '(filtered of total _MAX_ entries)',
                         sInfoPostFix: '',
                         sInfoThousands: '',
-                        sLengthMenu: 'Zobraz záznamů _MENU_',
-                        sLoadingRecords: 'Načítám...',
-                        sProcessing: 'Provádím...',
-                        sSearch: 'Hledat:',
-                        sZeroRecords: 'Žádné záznamy nebyly nalezeny',
+                        sLengthMenu: 'Show _MENU_ entries',
+                        sLoadingRecords: 'Loading...',
+                        sProcessing: 'In progress...',
+                        sSearch: 'Search:',
+                        sZeroRecords: 'No entries was found',
                         oPaginate: {
-                            sFirst: 'První',
-                            sLast: 'Poslední',
-                            sNext: 'Další',
-                            sPrevious: 'Předchozí'
+                            sFirst: 'First',
+                            sLast: 'Last',
+                            sNext: 'Next',
+                            sPrevious: 'Previous'
                         },
                         oAria: {
-                            sSortAscending: ': aktivujte pro řazení sloupce vzestupně',
-                            sSortDescending: ': aktivujte pro řazení sloupce sestupně'
+                            sSortAscending: ': activate to sort column ascending',
+                            sSortDescending: ': activate to sort column descending'
                         }
                     },
                     drawCallback: function () {
@@ -161,7 +161,7 @@
 
                     table.find('tfoot th').each(function () {
                         var title = $(this).text();
-                        if (title == "Akce" || title == "Select All")
+                        if (title == "Action" || title == "Select All")
                             $(this).html("");
                         else
                             $(this).html('<input type="text" placeholder="" />');
@@ -578,12 +578,12 @@
                         }
                     }
                     else {
-                        body.append('<tr><td colspan="' + colspan + '" class="cEmptyList">Žádné události</td></tr>');
+                        body.append('<tr><td colspan="' + colspan + '" class="cEmptyList">No events</td></tr>');
                     }
                 }
             }
             else {
-                body.append('<tr><td>Žádné události</td></tr>');
+                body.append('<tr><td>No events</td></tr>');
             }
             body.appendTo(table);
 

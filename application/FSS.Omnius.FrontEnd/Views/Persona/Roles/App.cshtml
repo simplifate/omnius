@@ -66,7 +66,7 @@ else
 @using (Html.BeginForm())
 {
     <div id="lowerPanel">
-        <h4>Role uživatelů pro aplikaci <span class="appName">@Model.AppName</span></h4>
+        <h4>User roles in application<span class="appName">@Model.AppName</span></h4>
         @Html.HiddenFor(a => a.AppID)
         @Html.HiddenFor(a => a.AppName)
         @if (Model.DeletedCols != null)
@@ -78,34 +78,34 @@ else
         }
 
         <div id="koko">
-            <button type="submit" name="submitButton" id="buttonSave" class="btn btn-primary" value="save">Uložit</button>
-            <button type="submit" name="submitButton" id="buttonAddColumn" class="btn btn-default" value="addRole">Přidat roli</button>
+            <button type="submit" name="submitButton" id="buttonSave" class="btn btn-primary" value="save">Save</button>
+            <button type="submit" name="submitButton" id="buttonAddColumn" class="btn btn-default" value="addRole">Add role</button>
         </div>
 
         @if (ViewBag.Saved == true)
         {
             <script>
-                alert("Uloženo.")
+                alert("Saved.")
             </script>
         }
 
         @if (ViewBag.BadNameRole == true)
         {
             <script>
-                alert("Nesprávný název role.")
+                alert("Incorect role name.")
             </script>
         }
         @if (ViewBag.BadPriorityRole == true)
         {
             <script>
-                alert("Nesprávná priorita role.")
+                alert("Incorect role priority.")
             </script>
         }
 
         @if (ViewBag.RolesAreEqual == true)
         {
             <script>
-                alert("Více rolí nemůže mít stejný název.")
+                alert("Multiple roles have same name")
                 </script>
         }
 
@@ -117,7 +117,7 @@ else
                 @Html.HiddenFor(a => a.RowHeaders[i].Id)
                 @Html.HiddenFor(a => a.RowHeaders[i].Name)
             }
-            <div class="modelErrorMessage">Tato aplikace nemá žádné role (tabulka Persona_AppRoles)</div>
+            <div class="modelErrorMessage">This application has no roles (table Persona_AppRoles)</div>
         }
         else
         {
@@ -153,7 +153,7 @@ else
                             if (Model.DeletedCols == null || (!Model.DeletedCols.Contains(x)))
                             {
                             <td style="align-items:center;" align="center">
-                                <button type="submit" name="submitButton" value="removeColumn@(x)" class="btn btn-danger" style="display:block">Odstranit</button>
+                                <button type="submit" name="submitButton" value="removeColumn@(x)" class="btn btn-danger" style="display:block">Delete</button>
                             </td>
                             }
 

@@ -11,12 +11,12 @@
     <title>@ViewBag.Title | Omnius</title>
     <link rel="stylesheet" href="@Services.GetFileVersion("/Content/CssLibs/Bundle.min.css")" />
     <link rel="stylesheet" href="@Services.GetFileVersion("/Content/Scss/Bundle/UserStyleBundle.min.css")" />
-    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/modernizr.min.js")"></script> 
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/modernizr.min.js")"></script>
     @RenderSection("Styles", false)
 </head>
 <body class="@Page.ModuleClass userLayout pageSpinnerShown">
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/jquery.min.js")"></script>
-    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.js")"></script>  
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.js")"></script>
     <div id="brandBar">
         <div class="logo">
             <img src="@Url.Content("~/Content/Images/LogoCrymicoooo.png")" alt="" />
@@ -44,8 +44,8 @@
             <div class="avatar"></div>
             @if (Context.GetLoggedUser() != null)
             {
-            <div class="fullName">@Context.GetLoggedUser().DisplayName</div>
-            <div class="commands">@Html.Raw(Context.GetLoggedUser().isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">odhlásit</a> | " : "")<a href="/Master/Home/Details">detail</a></div>
+                <div class="fullName">@Context.GetLoggedUser().DisplayName</div>
+                <div class="commands">@Html.Raw(Context.GetLoggedUser().isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">odhlásit</a> | " : "")<a href="/Master/Home/Details">detail</a></div>
             }
         </div>
         <div class="searchBoxMinimized">
@@ -54,16 +54,16 @@
         <div class="searchBox">
 
             <div class="searchBox">
-                <input type="text" placeholder="Vyhledat v aplikaci" class="searchInputField" name="search" />
+                <input type="text" placeholder="Search in application" class="searchInputField" name="search" />
                 <div class="searchIcon fa fa-search"></div>
             </div>
- 
+
         </div>
     </div>
     <div id="userLeftBar">
         <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
         <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
-        <div class="widgetLabel">Všechny aplikace</div>
+        <div class="widgetLabel">All applications</div>
         <div class="appList">
             @if (ViewData.ContainsKey("Apps"))
             {
@@ -77,14 +77,6 @@
                     </a>
                 }
             }
-        </div>
-        <div class="infoBox">
-            <div class="icon fa fa-info-circle"></div>
-            <div class="infoText">
-                Kliknutím na navigační šipku v hlavičce
-                můžete měnit způsob zobrazených
-                aplikací v menu.
-            </div>
         </div>
     </div>
     <script>

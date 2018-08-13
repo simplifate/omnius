@@ -3,15 +3,15 @@
 @if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
 {
     Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
-    @Html.Raw("Stránka Nenalezena");
+    @Html.Raw("Page not found");
 }
 else
 {
-    ViewBag.Title = "Stránka nenalezena";
+    ViewBag.Title = "Page not found";
     Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
 
     <link href="/Content/css/ErrorCss.css" rel="stylesheet" />
 
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.min.js")"></script>
-    <script>ShowAppNotification("Stránka nenalezena", "error")</script>
+    <script>ShowAppNotification("Page not found", "error")</script>
 }

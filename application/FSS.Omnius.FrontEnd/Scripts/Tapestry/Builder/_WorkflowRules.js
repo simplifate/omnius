@@ -5,8 +5,8 @@
 
     templates: {
         rule: '<div class="rule workflowRule"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;"></div></div><div class="swimlaneArea"></div></div>',
-        swimlane: '<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
-            + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>',
+        swimlane: '<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">If you want to specify role<br />'
+            + 'drag & drop in into this section</div></div></div><div class="swimlaneContentArea"></div></div>',
         item: ''
     },
     
@@ -162,7 +162,7 @@
             TB.changedSinceLastSave = true;
         }
         else {
-            alert('Pravidlo musí mít alspoň jednu swimlane, nelze smazat všechny.');
+            alert('Rule needs at least one swimlane, cannot delete all of them.');
         }
     },
 
@@ -333,7 +333,7 @@
         var targetBlockId = $('#wr-copy-target').val();
 
         if (!targetBlockId) {
-            alert('Vyberte cílový blok.');
+            alert('Select target block.');
         }
         else {
             var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '/copyWorkflow/' + wfrId + /target/ + targetBlockId;
@@ -343,11 +343,11 @@
                 data: {},
                 success: function (data) {
                     if (data) {
-                        alert('Workflow bylo úspěšně zkopírováno.');
+                        alert('Workflow was successfully copied.');
                         TB.dialog.close.apply(d);
                     }
                     else {
-                        alert('Workflow se nepodařilo zkopírovat.');
+                        alert('Error while copiing workflow.');
                     }
                 }
             })
@@ -465,7 +465,7 @@
             item.remove();
             if (swimlaneRolesArea.find(".roleItem").length == 0)
                 swimlaneRolesArea.append($('<div class="rolePlaceholder"><div class="rolePlaceholderLabel">'
-                    + 'Pokud chcete specifikovat roli<br />přetáhněte ji do této oblasti</div></div>'));
+                    + 'If you want to specify role<br />drag & drop in into this section</div></div>'));
             ChangedSinceLastSave = true; /// OBSOLATE
             TB.changedSinceLastSave = true;
         }
@@ -489,7 +489,7 @@
                     TB.wizard.open.apply(item, []);
                 }
                 else {
-                    alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                    alert("There are no options for this type of object.");
                     item.removeClass("activeItem");
                 }
                 break;
@@ -655,6 +655,7 @@
 
                 var $b = $('<span class="input-group-btn"><button type="button" id="Search" class="btn btn-default"><span class="fa fa-search"></span></button></span>');
                 $b.appendTo($ig);
+                $f.focus();
             }
         }  
     },

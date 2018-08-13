@@ -5,7 +5,7 @@
     Page.ModuleClass = "personaModule";
 }
 <div id="upperPanel">
-    <div class="panelLabel">Nový uživatel</div>
+    <div class="panelLabel">New user</div>
     <svg class="backgroundDecoration" width="540px" height="135px">
         <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
         <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
@@ -30,7 +30,7 @@
         <div class="form-group col-sm-6">
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.Label( "Jméno a příjmení")
+                    @Html.Label("First & last name")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.User.DisplayName, new {@class= "form-control"})
@@ -40,7 +40,7 @@
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.Label("Uživatelské jméno")
+                    @Html.Label("User name")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.User.UserName, new { @class = "form-control" })
@@ -50,7 +50,7 @@
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.NewPassword, "Heslo")
+                    @Html.LabelFor(x => x.NewPassword, "Password")
                 </div>
                 <div class="col-sm-7">
                     @Html.PasswordFor(x=>x.NewPassword, new { @class = "form-control" })
@@ -60,7 +60,7 @@
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.ConfirmPassword, "Heslo znovu")
+                    @Html.LabelFor(x => x.ConfirmPassword, "Password confirm")
                 </div>
                 <div class="col-sm-7">
                     @Html.PasswordFor(x=>x.ConfirmPassword, new { @class = "form-control" })
@@ -70,7 +70,7 @@
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.User.Company, "Firma")
+                    @Html.LabelFor(x => x.User.Company, "Company")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.User.Company, new { @class = "form-control" })
@@ -80,7 +80,7 @@
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.User.Department, "Oddělení")
+                    @Html.LabelFor(x => x.User.Department, "Department")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.User.Department, new { @class = "form-control" })
@@ -90,7 +90,7 @@
 
             <div class="form-group  col-sm-12 ">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.User.Team, "Tým")
+                    @Html.LabelFor(x => x.User.Team, "Team")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.User.Team, new { @class = "form-control" })
@@ -100,7 +100,7 @@
 
             <div class="form-group  col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.User.Job, "Práce")
+                    @Html.LabelFor(x => x.User.Job, "Job")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.User.Job, new { @class = "form-control" })
@@ -111,7 +111,7 @@
         <div class="form-group col-sm-6">
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.User.Address, "Adresa")
+                    @Html.LabelFor(x => x.User.Address, "Address")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.User.Address, new { @class = "form-control" })
@@ -131,7 +131,7 @@
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.User.MobilPhone, "Telefon")
+                    @Html.LabelFor(x => x.User.MobilPhone, "Phone")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.User.MobilPhone, new { @class = "form-control" })
@@ -141,7 +141,7 @@
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.User.WorkPhone, "Pracovní telefon")
+                    @Html.LabelFor(x => x.User.WorkPhone, "Work phone")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.User.WorkPhone, new { @class = "form-control" })
@@ -150,7 +150,7 @@
             </div>
         </div>
         <div class="clearfix"></div>
-        <button type="submit" class="btn btn-primary">Přidat</button>
-        @Html.ActionLink("Zpět", "Index","Account", null, new {@class="btn btn-default"})
+        <button type="submit" class="btn btn-primary">Create</button>
+        @Html.ActionLink("Back", "Index","Account", null, new {@class="btn btn-default"})
     }
 </div>

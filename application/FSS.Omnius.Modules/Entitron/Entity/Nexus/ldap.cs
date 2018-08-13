@@ -9,11 +9,11 @@
         public int? Id { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "NTLM doména")]
+        [Display(Name = "NTLM domain")]
         public string Domain_Ntlm { get; set; }
 
         [StringLength(255)]
-        [Display(Name = "Kerberos doména")]
+        [Display(Name = "Kerberos domain")]
         public string Domain_Kerberos { get; set; }
 
         [Required]
@@ -21,20 +21,20 @@
         public string Domain_Server { get; set; }
 
         [Required]
-        [Display(Name = "Uživatel")]
+        [Display(Name = "User")]
         public string Bind_User { get; set; }
 
         [Required]
-        [Display(Name = "Heslo")]
+        [Display(Name = "Password")]
         public string Bind_Password { get; set; }
 
-        [Display(Name = "Aktivní")]
+        [Display(Name = "Is active")]
         public bool Active { get; set; }
 
-        [Display(Name = "Použít SSL")]
+        [Display(Name = "Use SSL")]
         public bool Use_SSL { get; set; }
 
-        [Display(Name = "Výchozí")]
+        [Display(Name = "Is default")]
         public bool Is_Default { get; set; }
     }
 }

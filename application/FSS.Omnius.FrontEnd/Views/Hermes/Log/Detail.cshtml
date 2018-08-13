@@ -13,33 +13,33 @@
         <div id="ContentContainer">
 
             <div>
-                <h4>Detail záznamu</h4>
+                <h4>Details</h4>
                 <table class="details-list table table-striped">
                     <tr>
-                        <td>ID e-mailu:</td>
+                        <td>Id:</td>
                         <td>@ViewData["Id"]</td>
                     </tr>
                     <tr>
-                        <td>Datum vložení:</td>
+                        <td>Date send:</td>
                         <td>@ViewData["Date_Send"]</td>
                     </tr>
                     <tr>
-                        <td>Stav:</td>
+                        <td>Status:</td>
                         <td>@ViewData["Status"]</td>
                     </tr>
                     @if (!String.IsNullOrEmpty((string)ViewData["SMTP_Error"]))
                     {
                         <tr>
-                            <td>SMTP chyba:</td>
+                            <td>SMTP error:</td>
                             <td>@ViewData["SMTP_Error"]</td>
                         </tr>
                     }
                     <tr>
-                        <td>Odesílatel:</td>
+                        <td>Sender:</td>
                         <td>@ViewData["From_Name"] &lt;@ViewData["From_Email"]&gt;</td>
                     </tr>
                     <tr>
-                        <td>Příjemci:</td>
+                        <td>Recievers:</td>
                         <td>
                             @foreach (JToken recipient in (JToken)ViewData["To"])
                             {
@@ -50,7 +50,7 @@
                     @if ((JToken)ViewData["CC"] != null && ((JToken)ViewData["CC"]).Count() > 0)
                     {
                         <tr>
-                            <td>Kopie:</td>
+                            <td>Copy:</td>
                             <td>
                                 @foreach (JToken copy in (JToken)ViewData["CC"])
                                 {
@@ -62,7 +62,7 @@
                     @if ((JToken)ViewData["Bcc"] != null && ((JToken)ViewData["Bcc"]).Count() > 0)
                     {
                         <tr>
-                            <td>Skrytá kopie:</td>
+                            <td>Blind copy:</td>
                             <td>
                                 @foreach (JToken copy in (JToken)ViewData["Bcc"])
                                 {
@@ -72,7 +72,7 @@
                         </tr>
                     }
                     <tr>
-                        <td>Předmět:</td>
+                        <td>Subject:</td>
                         <td>@ViewData["Subject"]</td>
                     </tr>
                     <tr>

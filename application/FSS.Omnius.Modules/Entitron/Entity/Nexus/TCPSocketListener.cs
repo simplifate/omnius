@@ -13,19 +13,19 @@
         
         [Display(Name = "TCP Port")]
         public int Port { get; set; }
-        [Display(Name = "Velikost bufferu")]
+        [Display(Name = "Buffer size")]
         public int BufferSize { get; set; }
         [Required]
-        [Display(Name = "Blok")]
+        [Display(Name = "Block name")]
         public string BlockName { get; set; }
         [Required]
         [Display(Name = "Workflow")]
         public string WorkflowName { get; set; }
         [Required]
-        [Display(Name = "Název")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Display(Name = "Aplikace")]
+        [Display(Name = "Application")]
         [ImportExport(ELinkType.Parent, typeof(Application))]
         public int ApplicationId { get; set; }
         [ImportExport(ELinkType.Parent)]

@@ -17,7 +17,7 @@
     }
 }
 <div id="upperPanel">
-    <div class="panelLabel">Přístup k modulům</div>
+    <div class="panelLabel">Access to modules</div>
     <svg class="backgroundDecoration" width="540px" height="135px">
         <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
         <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
@@ -27,7 +27,7 @@
     <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
 </div>
 <div id="minimizedUpperPanel">
-    <div class="panelLabel">Přístup k modulům</div>
+    <div class="panelLabel">Access to modules</div>
     <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
 </div>
 <div id="lowerPanel">
@@ -37,7 +37,7 @@
     <div id="personaModulesContentContainer">
         @if (Model.Count == 0)
         {
-            <div class="modelErrorMessage">V databázi zatím nejsou žádná nastavení oprávnění k modulům (tabulka Persona_ModuleAccessPermissions)</div>
+            <div class="modelErrorMessage">There are no module access in DB (table Persona_ModuleAccessPermissions)</div>
         }
         else
         {

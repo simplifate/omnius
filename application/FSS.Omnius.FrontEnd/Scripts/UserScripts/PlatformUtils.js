@@ -4,11 +4,9 @@ if (!window.jQuery) {
     var message;
     if (/^Mozilla\/4\.0.*\bMSIE\b/.test(navigator.userAgent)) {
         // (emulované) IE5 .. IE8 se hlásí jako Mozilla/4.0, novější prohlížeče jako Mozilla/5.0 a fungují
-        message = "Omlouváme se, ale Vaše verze Internet Exploreru nepodporuje základní funkce jazyka Javascript, " +
-        "které jsou pro chod aplikace nezbytné.  Kontaktujte helpdesk nebo administrátory platformy. ";
+        message = "We are sorry, but your Internet explorer version does not support basic function of Javascript, that are necessary for application.";
     } else {
-        message = "Omlouváme se, ale verze Vašeho prohlížeče nepodporuje základní funkce jazyka Javascript, " +
-            "které jsou pro chod aplikace nezbytné.  Kontaktujte helpdesk nebo administrátory platformy. ";
+        message = "We are sorry, but your browser version does not support basic function of Javascript, that are necessary for application.";
     }
     var style = "body {background: white !important} body > * {display:none !important} div:first-child {display:block !important; margin: 25px; border: 5px solid red; padding: 25px; font-weight: bold}";
 
@@ -113,7 +111,7 @@ function CreateCzechDataTable(element, simpleMode) {
                 "loadingRecords": "Loading...",
                 "processing": "Processing...",
                 "search": "Search:",
-                "zeroRecords": "No matching records found",
+                "zeroRecords": "No matching entries found",
                 "paginate": {
                     "first": "First",
                     "last": "Last",
@@ -187,9 +185,9 @@ function CreateCzechDataTable(element, simpleMode) {
         main.on("change", function () {
             // Titles depending on state
             if (main.is(":checked")) {
-                main.attr("title", "Odoznačit vše");
+                main.attr("title", "Uncheck all");
             } else {
-                main.attr("title", "Označit vše");
+                main.attr("title", "Check all");
             }
 
             // Iterate all row checkboxes
@@ -215,7 +213,7 @@ function CreateCzechDataTable(element, simpleMode) {
             // If main isn't checked but row is, then check main !WITHOUT triggering EVENT!
             if (!main.is(":checked") && $(this).is(":checked")) {
                 main.prop("checked", true);
-                main.attr("title", "Odoznačit vše");
+                main.attr("title", "Uncheck all");
             }
         });
 

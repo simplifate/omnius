@@ -7,15 +7,15 @@
 
             <thead>
                 <tr>
-                    <th>Jméno</th>
-                    <th>Uživatelské jméno</th>
-                    <th>Firma</th>
-                    <th>Oddělení</th>
-                    <th>Tým</th>
-                    <th>Práce</th>
+                    <th>Name</th>
+                    <th>User name</th>
+                    <th>Company</th>
+                    <th>Department</th>
+                    <th>Team</th>
+                    <th>Job</th>
                     <th>Email</th>
-                    <th>Pracovní telefon</th>
-                    <th>Akce</th>
+                    <th>Work phone</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             @*<tbody>
@@ -41,7 +41,7 @@
             </tbody>*@
         </table>
     <div>
-        @Html.ActionLink("Přidat uživatele", "Create", new { }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Create user", "Create", new { }, new { @class = "btn btn-primary" })
     </div>
 <br />
     <div id="DetailUser"></div>
@@ -76,7 +76,7 @@
                        {
                              "data": null,
                              "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                                 $(nTd).html("<a data-ajax='true' data-ajax-mode='replace' data-ajax-update='#DetailUser'  href='/CORE/Account/Update/" + oData.Id + "'>" + 'Upravit' + "</a>  <a href='/CORE/Account/Delete/"+ oData.Id +"' onclick='return confirm('Opravdu chcete záznam smazat?')' title='Smazat'>Smazat</a>");
+                                 $(nTd).html("<a data-ajax='true' data-ajax-mode='replace' data-ajax-update='#DetailUser'  href='/CORE/Account/Update/" + oData.Id + "'>" + 'Edit' + "</a>  <a href='/CORE/Account/Delete/"+ oData.Id +"' onclick='return confirm('Really want to delete?')' title='Smazat'>Delete</a>");
                              }
                         }
                     ]

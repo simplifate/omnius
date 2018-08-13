@@ -37,13 +37,13 @@ $(function () {
     var currentModule = document.body.getAttribute("data-module");
 
     $(document).on("ajaxError", function (event, jqxhr, settings, thrownError) {
-        ShowAppNotification(jqxhr.responseText || "nastala chyba sítě", "error");
+        ShowAppNotification(jqxhr.responseText || "network error", "error");
     })
     $(window).on("error", function () {
-        ShowAppNotification("Nastala neočekávaná chyba", "error");
+        ShowAppNotification("Unexpected error", "error");
     })
     $("[data-ajax='true']").data("ajax-failure", function (xhr) {
-        ShowAppNotification(xhr.responseText || "nastala chyba sítě", "error");
+        ShowAppNotification(xhr.responseText || "network error", "error");
     }.toString()); 
 
     pageSpinner.hide();
@@ -123,12 +123,12 @@ $(function () {
     $("#maintenanceIndicator").on("click", function () {
         if (maintenanceModeActive) {
             $("#maintenanceIndicator").removeClass("maintenanceActive");
-            $("#maintenanceIndicator .indicatorLabel").text("vypnuta");
+            $("#maintenanceIndicator .indicatorLabel").text("Off");
             maintenanceModeActive = false;
         }
         else {
             $("#maintenanceIndicator").addClass("maintenanceActive");
-            $("#maintenanceIndicator .indicatorLabel").text("zapnuta");
+            $("#maintenanceIndicator .indicatorLabel").text("On");
             maintenanceModeActive = true;
         }
     });

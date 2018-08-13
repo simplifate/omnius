@@ -9,19 +9,19 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
     {
         public int Id { get; set; }
 
-        [Display(Name = "Název")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Display(Name = "Bázové URL")]
+        [Display(Name = "Base URL")]
         public string UriBasePath { get; set; }
 
-        [Display(Name = "Anonymní přihlášení?")]
+        [Display(Name = "Use anonymous login")]
         public bool AnonymousMode { get; set; }
 
-        [Display(Name = "Uživatel")]
+        [Display(Name = "User")]
         public string AuthUsername { get; set; }
 
-        [Display(Name = "Heslo")]
+        [Display(Name = "Password")]
         public string AuthPassword { get; set; }
     }
 

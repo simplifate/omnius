@@ -179,7 +179,7 @@
                 var uuids = this.getUuids();
 
                 if (target.is('.symbol')) {
-                    errors.push('Cyklus nemůže začínat symbolem. Upravte spojení manuálně a označte počáteční akci.');
+                    errors.push('Foreach cannot start with symbol. Change connection manualy and select starting action.');
                 }
                 else if (!foreach.find('.fa-play').length) {
                     target.append('<span class="fa fa-play"></span>');
@@ -193,7 +193,7 @@
                 }
                 else {
                     foreach.find('.fa-play').remove();
-                    errors.push('Nelze jednoznačně určit počáteční akci. Upravte spojení manuálně a označte počáteční akci.');
+                    errors.push('Ambiguously starting action. Change connection manualy and select starting action.');
                 }
             }
             // Zdroj je ve FE - cíl je mimo FE (považujme ho za konec)  
@@ -201,7 +201,7 @@
                 var type = this.getType();
 
                 if (target.is('.symbol')) {
-                    errors.push('Cyklus nemůže končit symbolem. Upravte spojení manuálně a označte koncovou akci.');
+                    errors.push('Foreach cannot end with symbol. Change connection manualy and select ending action.');
                 }
                 else if (!foreach.find('.fa-stop').length) {
                     source.append('<span class="fa fa-stop"></span>');
@@ -215,16 +215,16 @@
                 }
                 else {
                     foreach.find('.fa-stop').remove();
-                    errors.push('Nelze jednoznačně určit koncovou akci. Upravte spojení manuálně a označte koncovou akci.');
+                    errors.push('Ambiguously ending action. Change connection manualy and select ending action.');
                 }
             }
         });
 
         if (!foreach.find('.fa-play').length) {
-            errors.push('Nebyl nalezen začátek cyklu. Upravte spojení manuálně a označte počáteční akci.');
+            errors.push('Foreach start not found. Change connection manualy and select starting action.');
         }
         if (!foreach.find('.fa-stop').length) {
-            errors.push('Nebyl nalezen konec cyklu. Upravte spojení mauálně a označte koncovou akci.');
+            errors.push('Foreach end not found. Change connection manualy and select ending action.');
         }
 
         if (errors.length) {

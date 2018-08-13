@@ -8,7 +8,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "Úprava TCP socketu" : "Nový TCP socket")</h4>
+        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "Edit TCP socket" : "New TCP socket")</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -39,7 +39,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ApplicationId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.ApplicationId, (List<SelectListItem>)ViewData["ApplicationList"], "-- vyberte --", new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.ApplicationId, (List<SelectListItem>)ViewData["ApplicationList"], "-- Choose --", new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.ApplicationId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -47,7 +47,7 @@
         <div class="form-group">
             @Html.LabelFor(m => m.BlockName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.BlockName, new List<SelectListItem>(), Model != null ? "-- vyberte --" : "-- vyberte aplikaci --", new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.BlockName, new List<SelectListItem>(), Model != null ? "-- Choose --" : "-- Choose application --", new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.BlockName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -55,14 +55,14 @@
         <div class="form-group">
             @Html.LabelFor(m => m.WorkflowName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.WorkflowName, new List<SelectListItem>(), Model != null ? "-- vyberte --" : "-- vyberte blok --", new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.WorkflowName, new List<SelectListItem>(), Model != null ? "-- Choose --" : "-- Choose block --", new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.BlockName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Uložit" class="btn btn-omnius-blue" />
+                <input type="submit" value="Save" class="btn btn-omnius-blue" />
             </div>
         </div>
     </div>
@@ -103,7 +103,7 @@
         clearBlockList: function()
         {
             $('#BlockName > option').remove();
-            $('#BlockName').append('<option value="">' + ($('#ApplicationId').val().length ? '-- vyberte --' : '-- vyberte aplikaci --') + '</option>');
+            $('#BlockName').append('<option value="">' + ($('#ApplicationId').val().length ? '-- Choose --' : '-- Choose application --') + '</option>');
         },
 
         setBlockList: function(data)
@@ -147,7 +147,7 @@
 
         clearWorkflowList: function () {
             $('#WorkflowName > option').remove();
-            $('#WorkflowName').append('<option value="">' + ($('#BlockName').val().length ? '-- vyberte --' : '-- vyberte blok --') + '</option>');
+            $('#WorkflowName').append('<option value="">' + ($('#BlockName').val().length ? '-- Choose --' : '-- Choose block --') + '</option>');
         },
 
         setWorkflowList: function (data) {
@@ -168,6 +168,3 @@
 
 
 </script>
-
-
-

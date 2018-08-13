@@ -16,7 +16,7 @@
         public int? Id { get; set; }
 
         [Required]
-        [Display(Name = "Typ")]
+        [Display(Name = "Type")]
         public ExtDBType DB_Type { get; set; }
 
         [Required]
@@ -31,17 +31,17 @@
 
         [Required]
         [StringLength(255)]
-        [Display(Name = "Jméno databáze")]
+        [Display(Name = "Database name")]
         public string DB_Name { get; set; }
 
         [Required]
         [StringLength(255)]
-        [Display(Name = "Uživatel")]
+        [Display(Name = "User")]
         public string DB_User { get; set; }
 
         [Required]
         [StringLength(255)]
-        [Display(Name = "Heslo")]
+        [Display(Name = "Password")]
         public string DB_Password { get; set; }
 
         [Required]

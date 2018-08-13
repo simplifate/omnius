@@ -11,7 +11,7 @@
 <div id="lowerPanel">
     @Html.Partial("~/Views/Hermes/Hermes/Decoration.cshtml")
     <div id="smtpMenuArea" class="moduleSubMenuArea">
-        @Ajax.RouteLink("Přidat schránku", "Hermes", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
+        @Ajax.RouteLink("Add inbox", "Hermes", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
     </div>
     <div id="lowerPanelContainer">
         <table id="smtpTable" class="table table-bordered table-striped table-responsive table-omnius">
@@ -26,13 +26,13 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Název</th>
+                    <th>Id</th>
+                    <th>Name</th>
                     <th>Imap server</th>
                     <th>Imap port</th>
-                    <th>Uživatelské jméno</th>
-                    <th>Pravidla</th>
-                    <th>Akce</th>
+                    <th>User name</th>
+                    <th>Rules</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,12 +50,12 @@
                                      string.Format("{0} {1}", @s.IncomingEmailRule.Count(), Utilities.Numbering(@s.IncomingEmailRule.Count(), "pravidlo", "pravidla", "pravidel")),
                                      "HermesIncomingRule",
                                      new { @controller = "IncomingRule", @action = "Index", @mailboxId = s.Id },
-                                     new { @title = "Spravovat pravidla" }
+                                     new { @title = "Manage rules" }
                                  )</td>
                             <td class="table-row-action">
                                 @Ajax.RouteLink(" ", "Hermes", new { @action = "Detail", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
-                                @Ajax.RouteLink(" ", "Hermes", new { @action = "Edit", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer", OnFailure = "debugger;" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
-                                @Html.RouteLink(" ", "Hermes", new { @action = "Delete", @id = s.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
+                                @Ajax.RouteLink(" ", "Hermes", new { @action = "Edit", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer", OnFailure = "debugger;" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Edit" })
+                                @Html.RouteLink(" ", "Hermes", new { @action = "Delete", @id = s.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Delete", @onclick = "return confirm('Really want to delete?')" })
                             </td>
                         </tr>
                     }
@@ -63,7 +63,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="6">Nemáte nakonfigurovaný žádnou p�Tíchozí schránku</td>
+                        <td colspan="6">There is no inbox</td>
                     </tr>
                 }
             </tbody>

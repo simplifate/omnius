@@ -19,7 +19,7 @@ $(function () {
 
         $("#btnLoad").on("click", function () {
             if (ChangedSinceLastSave)
-                confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
+                confirmed = confirm("You have unsaved changes. Do you really want to discard unsaved changes");
             else
                 confirmed = true;
             if (confirmed) {
@@ -32,7 +32,7 @@ $(function () {
         });
         $("#btnOverview").on("click", function () {
             if (ChangedSinceLastSave)
-                confirmed = confirm("Máte neuložené změny, opravdu si přejete opustit blok?");
+                confirmed = confirm("You have unsaved changes. Do you really want to discard unsaved changes");
             else
                 confirmed = true;
             if (confirmed) {
@@ -45,7 +45,7 @@ $(function () {
         window.onbeforeunload = function () {
             if (ChangedSinceLastSave) {
                 pageSpinner.hide();
-                return "Máte neuložené změny, opravdu si přejete opustit blok?";
+                return "You have unsaved changes. Do you really want to discard unsaved changes";
             }
         };
         $("#btnOpenTableConditions").on("click", function () {
@@ -277,8 +277,7 @@ $(function () {
                 }
             });
             newRule = $('<div class="rule workflowRule" style="width: 766px; height: 180px; left: 40px; top: ' + (lowestRuleBottom + 20) + 'px;"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;">Pravidlo ' + (highestRuleNumber + 1) + '</div>'
-                + '</div><div class="swimlaneArea"><div class="swimlane" style="height: 100%;"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
-                + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>'
+                + '</div><div class="swimlaneArea"><div class="swimlane" style="height: 100%;"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">If you want to specify role<br />drag & drop in into this section</div></div></div><div class="swimlaneContentArea"></div></div>'
                 + '</div></div>');
             $("#workflowRulesPanel .scrollArea").append(newRule);
             newRule.draggable({

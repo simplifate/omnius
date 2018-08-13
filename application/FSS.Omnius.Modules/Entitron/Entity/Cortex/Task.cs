@@ -54,43 +54,43 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
 
         [Index(IsClustered = false, IsUnique = false)]
         [ForeignKey("Application")]
-        [Display(Name = "Aplikace")]
+        [Display(Name = "Application")]
         public int? AppId { get; set; }
 
-        [Display(Name = "Aktivní")]
+        [Display(Name = "Is active")]
         public bool Active { get; set; }
         
         [Required]
         [StringLength(255)]
-        [Display(Name = "Název")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Typ spuštění")]
+        [Display(Name = "Schedule type")]
         public ScheduleType Type { get; set; }
 
         [Required]
         [StringLength(400)]
-        [Display(Name = "URL úlohy")]
+        [Display(Name = "Task URL")]
         public string Url { get; set; }
 
-        [Display(Name = "Opakovat")]
+        [Display(Name = "Repeat")]
         public bool Repeat { get; set; }
 
         [Range(1, 1439)]
-        [Display(Name = "Opakovat každých")]
+        [Display(Name = "Repeat every (minutes)")]
         public RepetitionMinutes? Repeat_Minute { get; set; }
 
         [Range(1, 23)]
-        [Display(Name = "Po dobu")]
+        [Display(Name = "For")]
         public int? Repeat_Duration { get; set; }
 
         [Range(1,365)]
-        [Display(Name = "Opakovat každých")]
+        [Display(Name = "Repeat every (days)")]
         public int? Daily_Repeat { get; set; }
 
         [Range(1,52)]
-        [Display(Name = "Opakovat každých")]
+        [Display(Name = "Repeat every (week)")]
         public int? Weekly_Repeat { get; set; }
         
         // Flags: Days
@@ -99,11 +99,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
         public MonthlyType? Monthly_Type { get; set; }
 
         // Flags: Months
-        [Display(Name = "Měsíce")]
+        [Display(Name = "Months")]
         public int? Monthly_Months { get; set; }
 
         // Flags: DaysInMonth
-        [Display(Name = "Dny")]
+        [Display(Name = "Days")]
         public Int64? Monthly_Days { get; set; }
 
         // Flags: InModifiers
@@ -113,29 +113,29 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
         public int? Monthly_In_Days { get; set; }
 
         [Range(1,999)]
-        [Display(Name = "Doba nečinosti")]
+        [Display(Name = "Idle time")]
         public int? Idle_Time { get; set; }
 
         [Required]
         [Column(TypeName = "time")]
-        [Display(Name = "Začátek úlohy")]
+        [Display(Name = "Task start")]
         public TimeSpan Start_Time { get; set; }
 
         [Column(TypeName = "time")]
-        [Display(Name = "Konec úlohy")]
+        [Display(Name = "Task end")]
         public TimeSpan? End_Time { get; set; }
 
         [Column(TypeName = "time")]
-        [Display(Name = "Trvání")]
+        [Display(Name = "Duration")]
         public TimeSpan? Duration { get; set; }
 
         [Required]
         [Column(TypeName = "date")]
-        [Display(Name = "Datum spuštění")]
+        [Display(Name = "Start date")]
         public DateTime? Start_Date { get; set; }
 
         [Column(TypeName = "date")]
-        [Display(Name = "Datum ukončení")]
+        [Display(Name = "End date")]
         public DateTime? End_Date { get; set; }
 
         public virtual Application Application { get; set; } 

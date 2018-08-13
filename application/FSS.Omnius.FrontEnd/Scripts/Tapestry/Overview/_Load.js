@@ -8,7 +8,7 @@
         var confirmed = true;
 
         if (TO.changedSinceLastSave)
-            confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
+            confirmed = confirm("You have unsaved changes. Do you really want to discard unsaved changes");
             
         if (confirmed) {
             LoadMetablock();

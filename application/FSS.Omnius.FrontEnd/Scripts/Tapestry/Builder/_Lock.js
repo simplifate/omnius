@@ -21,9 +21,9 @@
         TB.lock.isLockedForCurrentUser = this.LockedForUserId == Number($('#currentUserId').val());
         TB.lock.LockedForUserName = this.LockedForUserName;
         if (TB.lock.isLockedForCurrentUser) {
-            $('#btnLock').html('Odemknout');
+            $('#btnLock').html('Unlock');
         } else {
-            $('#btnLock').html('Zamknout');
+            $('#btnLock').html('Lock');
 
         }
 
@@ -95,11 +95,11 @@
         }
 
         else if (result.lockStatusId == 3) {
-            alert('This block has been recently updated,please reload the latest version of it and try again');
+            alert('This block has been recently updated, please reload the latest version of it and try again');
         }
         else {
             //alert('This block has been locked by ' + result.lockedForUserName + ' ,please wait untill this user unlocks it');
-            var msg = ('The block is currently locked by user ' + result.lockedForUserName + ',are you sure you want to force locking this block? It can cause overwriting ' + result.lockedForUserName + '\'s work');
+            var msg = ('The block is currently locked by user ' + result.lockedForUserName + ', are you sure you want to force locking this block? It can cause overwriting ' + result.lockedForUserName + '\'s work');
 
             $('<div></div>').appendTo('body')
                 .html('<div><h6>' + msg + '</h6></div>')
@@ -132,20 +132,20 @@
 
     _onLock: function (result) {
         if (result) {
-            $('#btnLock').html('Odemknout');
+            $('#btnLock').html('Unlock');
             TB.lock.isLockedForCurrentUser = true;
         } else {
-            $('#btnLock').html('Zamknout');
+            $('#btnLock').html('Lock');
             TB.lock.isLockedForCurrentUser = false;
         }
     },
 
     _onUnlock: function (result) {
         if (result) {
-            $('#btnLock').html('Zamknout');
+            $('#btnLock').html('Lock');
             TB.lock.isLockedForCurrentUser = false;
         } else {
-            $('#btnLock').html('Odemknout');
+            $('#btnLock').html('Unlock');
             TB.lock.isLockedForCurrentUser = true;
         }
     },
@@ -185,7 +185,7 @@
                 break;
             }
             case 1: {
-                var msg = 'The block is currently locked by user ' + result.lockedForUserName + ',but u can press Lock button to Force Locking and overwrite his/her work';
+                var msg = 'The block is currently locked by user ' + result.lockedForUserName + ', but u can press Lock button to Force Locking and overwrite his/her work';
                 alert(msg);
 
                 break;

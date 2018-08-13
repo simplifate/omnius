@@ -9,10 +9,10 @@
         public int? Id { get; set; }
        
         [StringLength(255)]
-        [Display(Name = "Název")]
+        [Display(Name = "Name")]
         public string Name{ get; set; }
         
-        [Display(Name = "Definice")]
+        [Display(Name = "Definition")]
         [DataType(DataType.MultilineText)]
         public string Definition { get; set; }
     }

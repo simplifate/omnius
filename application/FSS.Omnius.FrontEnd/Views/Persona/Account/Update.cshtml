@@ -34,7 +34,7 @@
         <div class="form-group col-sm-6">
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.DisplayName, "Jméno a příjmení")
+                    @Html.LabelFor(x => x.DisplayName, "Full name")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.DisplayName, new { @class = "form-control" })
@@ -44,7 +44,7 @@
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.Company, "Firma")
+                    @Html.LabelFor(x => x.Company, "Company")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.Company, new { @class = "form-control" })
@@ -54,7 +54,7 @@
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.Department, "Oddělení")
+                    @Html.LabelFor(x => x.Department, "Department")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.Department, new { @class = "form-control" })
@@ -64,7 +64,7 @@
 
             <div class="form-group  col-sm-12 ">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.Team, "Tým")
+                    @Html.LabelFor(x => x.Team, "Team")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.Team, new { @class = "form-control" })
@@ -74,7 +74,7 @@
 
             <div class="form-group  col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.Job, "Práce")
+                    @Html.LabelFor(x => x.Job, "Job")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.Job, new { @class = "form-control" })
@@ -85,7 +85,7 @@
         <div class="form-group col-sm-6">
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.Address, "Adresa")
+                    @Html.LabelFor(x => x.Address, "Address")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.Address, new { @class = "form-control" })
@@ -105,7 +105,7 @@
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.MobilPhone, "Telefon")
+                    @Html.LabelFor(x => x.MobilPhone, "Phone")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.MobilPhone, new { @class = "form-control" })
@@ -115,7 +115,7 @@
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.WorkPhone, "Pracovní telefon")
+                    @Html.LabelFor(x => x.WorkPhone, "Work phone")
                 </div>
                 <div class="col-sm-7">
                     @Html.TextBoxFor(x => x.WorkPhone, new { @class = "form-control" })
@@ -124,7 +124,7 @@
             </div>
         </div>
         <div class="clearfix"></div>
-        <button type="submit" class="btn btn-primary">Upravit</button>
-        <button id="closeButton" class="btn btn-default">Zavřít</button>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button id="closeButton" class="btn btn-default">Cancel</button>
     }
 </div>

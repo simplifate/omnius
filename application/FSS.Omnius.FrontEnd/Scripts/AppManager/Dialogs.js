@@ -8,10 +8,10 @@ $(function () {
         width: 600,
         height: 320,
         buttons: {
-            "Uložit": function () {
+            "Save": function () {
                 appPropertiesDialog_SubmitData();
             },
-            "Zrušit": function () {
+            "Cancel": function () {
                 appPropertiesDialog.dialog("close");
             }
         },
@@ -90,10 +90,10 @@ $(function () {
         width: 600,
         height: 320,
         buttons: {
-            "Přidat": function () {
+            "Add": function () {
                 addAppDialog_SubmitData();
             },
-            "Zrušit": function () {
+            "Cancel": function () {
                 addAppDialog.dialog("close");
             }
         },
@@ -145,10 +145,10 @@ $(function () {
         width: 660,
         height: 380,
         buttons: {
-            "Exportovat": function () {
+            "Export": function () {
                 exportAppDialog_SubmitData();
             },
-            "Zrušit": function () {
+            "Cancel": function () {
                 exportAppDialog.dialog("close");
             }
         },

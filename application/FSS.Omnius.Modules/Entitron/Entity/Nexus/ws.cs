@@ -14,27 +14,27 @@
     {
         public int? Id { get; set; }
 
-        [Display(Name = "Typ webové služby")]
+        [Display(Name = "Web service type")]
         public WSType Type { get; set; }
 
         [StringLength(255)]
-        [Display(Name = "Název")]
+        [Display(Name = "Name")]
         public string Name{ get; set; }
 
         [StringLength(255)]
         [Display(Name = "WSDL URL")]
         public string WSDL_Url { get; set; }
 
-        [Display(Name = "WSDL XML soubor")]
+        [Display(Name = "WSDL XML file")]
         public byte[] WSDL_File { get; set; }
 
         [Display(Name = "REST Base URL")]
         public string REST_Base_Url { get; set; }
 
-        [Display(Name = "Uživatel")]
+        [Display(Name = "User")]
         public string Auth_User { get; set; }
 
-        [Display(Name = "Heslo")]
+        [Display(Name = "Password")]
         public string Auth_Password { get; set; }
 
         [Display(Name = "SOAP endpoint")]

@@ -184,7 +184,7 @@ $(function () {
             if (historyDialog.data("selectedCommitId")) {
                 historyDialog.dialog("close");
                 if (ChangedSinceLastSave)
-                    confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
+                    confirmed = confirm("You have unsaved changes. Do you really want to discard unsaved changes?");
                 else
                     confirmed = true;
                 if (confirmed) {
@@ -247,7 +247,7 @@ $(function () {
                             return value.Name == tableName;
                         })[0];
                         if (targetTable == undefined)
-                            alert("Požadovaná tabulka již není součástí schématu v Entitronu, nebo má nyní jiné Id.");
+                            alert("Selected table is no longer in DB scheme or table's id has changed.");
                         for (i = 0; i < targetTable.Columns.length; i++) {
                             newRow = $('<tr><td class="nameCell">' + targetTable.Columns[i].Name + '</td>'
                                 + '<td><input type="checkbox" class="showColumnCheckbox"></input>Show</td></tr>');

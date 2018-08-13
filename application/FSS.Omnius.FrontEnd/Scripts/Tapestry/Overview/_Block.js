@@ -1,5 +1,5 @@
 ﻿TO.block = {
-    
+
     contextItems: {
         'copy': { name: 'Copy...', icon: 'fa-clone' },
         'properties': { name: 'Properties...', icon: 'fa-cog' },
@@ -13,7 +13,7 @@
         $(document).on('dblclick', '.block', self._doubleClick);
     },
 
-    add: function() {
+    add: function () {
         var blockName = $(this).find('#block-name').val();
         var newBlock = $('<div class="block"><div class="blockName">' + blockName + '</div><div class="blockInfo"></div></div>');
 
@@ -24,12 +24,12 @@
         });
 
         instance.draggable(newBlock, { containment: 'parent' });
-        
+
         TO.changedSinceLastSave = true;
         TO.dialog.close.apply(this);
     },
 
-    copy: function() {
+    copy: function () {
 
         if (!$('#c-target-name').val().length) {
             alert('Vyberte cílový metablok.');
@@ -38,8 +38,8 @@
 
         var url = '/api/tapestry/{appId}/blocks/{blockId}/copy/{targetMetablockId}';
         url = url.replace(/\{appId\}/, $('#currentAppId').val())
-                 .replace(/\{blockId\}/, $(currentBlock).attr('blockid'))
-                 .replace(/\{targetMetablockId\}/, $('#c-target-name').val());
+            .replace(/\{blockId\}/, $(currentBlock).attr('blockid'))
+            .replace(/\{targetMetablockId\}/, $('#c-target-name').val());
 
         var d = this;
 
@@ -49,14 +49,14 @@
             data: {},
             success: function (data) {
                 if (data == true) {
-                    alert('Blok byl úspěšně zkopírován');
+                    alert('Block was successfully copied');
 
                     if ($('#currentMetablockId').val() == $('#c-target-name').val()) {
                         window.location.reload();
-                    } 
+                    }
                 }
                 else {
-                    alert('Blok se nepodařilo zkopírovat');
+                    alert('Error while copiing block');
                 }
                 TO.dialog.close.apply(d);
             }
@@ -66,19 +66,19 @@
     move: function () {
 
         if (!$('#c-target-name').val().length) {
-            alert('Vyberte cílový metablok.');
+            alert('Select target metablock.');
             return false;
         }
 
         if ($('#currentMetablockId').val() == $('#c-target-name').val()) {
-            alert('Block nelze přesunout. Již se ve vybraném metabloku nachází.');
+            alert('Block cannot move - it is already in selected metablock.');
             return false;
         }
 
         var url = '/api/tapestry/{appId}/blocks/{blockId}/move/{targetMetablockId}';
         url = url.replace(/\{appId\}/, $('#currentAppId').val())
-                 .replace(/\{blockId\}/, $(currentBlock).attr('blockid'))
-                 .replace(/\{targetMetablockId\}/, $('#c-target-name').val());
+            .replace(/\{blockId\}/, $(currentBlock).attr('blockid'))
+            .replace(/\{targetMetablockId\}/, $('#c-target-name').val());
 
         var d = this;
 
@@ -88,11 +88,11 @@
             data: {},
             success: function (data) {
                 if (data == true) {
-                    alert('Blok byl úspěšně přesunut');
+                    alert('Block was successfully moved');
                     window.location.reload();
                 }
                 else {
-                    alert('Blok se nepodařilo přesunout');
+                    alert('Error while moving block');
                     TO.dialog.close.apply(d);
                 }
             }
@@ -102,7 +102,7 @@
     /*************************************************/
     /* EVENTS                                        */
     /*************************************************/
-    _doubleClick: function() {
+    _doubleClick: function () {
         var blockToOpen = $(this);
 
         SaveMetablock(function () {
@@ -112,11 +112,11 @@
         });
     },
 
-    _addOpen: function() {
+    _addOpen: function () {
         $(this).find('#block-name').val('');
     },
 
-    _copyOpen: function() {
+    _copyOpen: function () {
         $('#c-block-name').html($(currentBlock).find('.blockName').text());
         $('#c-target-name').val('');
     },
@@ -137,7 +137,7 @@
                 });
                 options.$trigger.attr('isInitial', true);
                 options.$trigger.find('.blockInfo').text('Initial');
-                
+
                 TO.changedSinceLastSave = true;
                 break;
             }

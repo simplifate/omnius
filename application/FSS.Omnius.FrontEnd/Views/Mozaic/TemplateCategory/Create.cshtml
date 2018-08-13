@@ -28,11 +28,11 @@
     <div class="tileMenuArea">
         <a href="/Mozaic/TemplateCategory">
             <div id="mozaicMenuTemplates" class="tileMenuItem highlighted">
-                <div class="buttonLabel">Šablony</div>
+                <div class="buttonLabel">Templates</div>
             </div>
         </a>
         <div id="mozaicMenuPages" class="tileMenuItem">
-            <div class="buttonLabel">Stránky</div>
+            <div class="buttonLabel">Pages</div>
         </div>
         <div id="mozaicMenuCss" class="tileMenuItem">
             <div class="buttonLabel">CSS</div>
@@ -58,15 +58,15 @@
     <div id="ldapMenuArea" class="moduleSubMenuArea">
         @Html.ActionLink("Nová kategorie", "Create", "TemplateCategory", new { @class = "btn btn-omnius-blue fa fa-plus" })
     </div>
-    <h4 id="ContentContainer">
-        <h4>Nová kategorie</h4>
+    <div id="ContentContainer">
+        <h4>New category</h4>
         <div class="top-panel-content">
             @using (Html.BeginForm("Create", "TemplateCategory", FormMethod.Post))
             {
                 <div class="form-group col-sm-12" style="padding-top: 10px">
                     <div class="labels">
                         <label class="control-label col-sm-2">
-                            Název
+                            Name
                         </label>
                     </div>
                     <div class="col-sm-6">
@@ -76,7 +76,7 @@
                 <div class="form-group col-sm-12">
                     <div class="labels">
                         <label class="control-label col-sm-2">
-                            Předek
+                            Parent
                         </label>
                     </div>
                     <div class="col-sm-3">
@@ -86,7 +86,7 @@
                 <div class="form-group col-sm-12">
                     <div class="labels">
                         <label class="control-label col-sm-2">
-                            Potomek(ci)
+                            Children
                         </label>
                     </div>
                     <div id="children" class="col-sm-3">
@@ -94,12 +94,12 @@
                     </div>
                 </div>
                 <div class="col-sm-2">
-                    <button type="submit" class="btn btn-primary">Vytvořit kategorii</button>
+                    <button type="submit" class="btn btn-primary">Create category</button>
                 </div>
             }
             <div class="col-sm-4">
-                <button id="addChildren" class="btn btn-success">Přidat potomka</button>
-                @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
+                <button id="addChildren" class="btn btn-success">Add child</button>
+                @Html.ActionLink("Back", "Index", new { }, new { @class = "btn btn-default" })
             </div>
         </div>
     </div>

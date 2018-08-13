@@ -6,18 +6,18 @@
 @using (Html.BeginRouteForm("Nexus", new { @action = "Save" }, FormMethod.Post, new { @class = "form form-horizontal", enctype = "multipart/form-data" })) { 
     @Html.HiddenFor(m => m.Id);
     <div class="form-group">
-        <label for="APIName" class="control-label col-sm-2">Název:</label>
+        <label for="APIName" class="control-label col-sm-2">Name:</label>
         <div class="col-sm-10">
             @Html.TextBoxFor(m => m.Name, new { @id = "APIName", @maxlength = 50, @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        <label for="APIDefinition" class="control-label">Definice:</label>
+        <label for="APIDefinition" class="control-label">Definition:</label>
         @Html.TextAreaFor(m => m.Definition, new { @id = "APIDefinition", @class = "form-control", @style = "height:800px" })
     </div>
     <div class="form-group">
-        <button type="submit" id="saveButton" class="btn btn-primary pull-right">Uložit</button>
-        @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
+        <button type="submit" id="saveButton" class="btn btn-primary pull-right">Save</button>
+        @Html.ActionLink("Back", "Index", new { }, new { @class = "btn btn-default" })
     </div>
 
     <link href="~/Scripts/cm/lib/codemirror.css" rel="stylesheet" />

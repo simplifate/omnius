@@ -78,11 +78,11 @@
     <div class="tabs">
         <a href="/Mozaic/TemplateCategory/Index" class="btn btn-default">
             <span class="fa fa-book"></span>&nbsp;&nbsp;
-            Kategorie
+            Category
         </a>
         <a href="/Mozaic/Pages/Index" class="btn btn-default">
             <span class="fa fa-book"></span>&nbsp;&nbsp;
-            Stránky
+            Page
         </a>
         <a href="/Mozaic/Css/Index" class="btn btn-default">
             <span class="fa fa-book"></span>&nbsp;&nbsp;
@@ -100,9 +100,9 @@
         <table class="table table-bordered table-responsive">
             <thead>
             <tr>
-                <th>Název</th>
-                <th>Kategorie</th>
-                <th>Akce</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -115,19 +115,16 @@
                     </td>
                     <td>@t.Category.Name</td>
                     <td>
-                        @Ajax.RouteLink(" ", "Mozaic", new {@action = "Update", @id = t.Id}, new AjaxOptions() {InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer"}, new {@class = "fa fa-pencil btn btn-primary", @title = "Upravit"})
-                        @Html.RouteLink(" ", "Mozaic", new {@action = "Delete", @id = t.Id}, new {@class = "fa fa-trash btn btn-danger"})
+                        @Ajax.RouteLink(" ", "Mozaic", new {@action = "Update", @id = t.Id}, new AjaxOptions() {InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer"}, new {@class = "fa fa-pencil btn btn-primary", @title = "Edit"})
+                        @Html.RouteLink(" ", "Mozaic", new {@action = "Delete", @id = t.Id}, new { @title = "Delete", @class = "fa fa-trash btn btn-danger"} )
 
                     </td>
                 </tr>
             }
             </tbody>
         </table>
-        @Html.ActionLink("Nová šablona", "Create", "Template", new {@class = "btn btn-default"})
+        @Html.ActionLink("New template", "Create", "Template", new {@class = "btn btn-default"})
     </div>
 </div>
 <div id="ContentContainer" class="bottom-panel">
-
-
-    </div>
-
+</div>

@@ -6,11 +6,11 @@
     CortexController c = (CortexController)this.ViewContext.Controller;
 }
 <div>
-    <h4>Detail záznamu</h4>
+    <h4>Record detail</h4>
     <table class="details-list table table-striped">
         <tr>
             <td>@Html.DisplayNameFor(model => model.Active)</td>
-            <td>@(Model.Active == true ? "ano" : "ne")</td>
+            <td>@(Model.Active == true ? "Yes" : "No")</td>
         </tr>
         <tr>
             <td>@Html.DisplayNameFor(model => model.AppId)</td>
@@ -31,13 +31,13 @@
         @if(Model.Type == ScheduleType.DAILY) {
             <tr>
                 <td>@Html.DisplayNameFor(model => model.Daily_Repeat)</td>
-                <td>@(Model.Daily_Repeat) dní</td>
+                <td>@(Model.Daily_Repeat) days</td>
             </tr>
         }
         @if(Model.Type == ScheduleType.WEEKLY) {
             <tr>
                 <td>@Html.DisplayNameFor(model => model.Weekly_Repeat)</td>
-                <td>@Model.Weekly_Repeat týdnů v @c.ViewWeekDays((Days)Model.Weekly_Days)</td>
+                <td>@Model.Weekly_Repeat weeks in @c.ViewWeekDays((Days)Model.Weekly_Days)</td>
             </tr>
         }
         @if(Model.Type == ScheduleType.MONTHLY) {
@@ -47,7 +47,7 @@
             </tr>
             if(Model.Monthly_Type == MonthlyType.IN) {
                 <tr>
-                    <td>V</td>
+                    <td>At</td>
                     <td>
                         @c.ViewInModifiers(Model)<br />
                         @c.ViewWeekDays((Days)Model.Monthly_In_Days)
@@ -56,7 +56,7 @@
             }
             if(Model.Monthly_Type == MonthlyType.DAYS) {
                 <tr>
-                    <td>Dny</td>
+                    <td>Days</td>
                     <td>@c.ViewMonthDays(Model)</td>
                 </tr>
             }
@@ -64,24 +64,24 @@
         @if(Model.Type == ScheduleType.ONIDLE) {
             <tr>
                 <td>@Html.DisplayNameFor(model => model.Idle_Time)</td>
-                <td>@Html.DisplayFor(model => model.Idle_Time) minut</td>
+                <td>@Html.DisplayFor(model => model.Idle_Time) minutes</td>
             </tr>
         }
         @if(Model.Repeat) {
             <tr>
                 <td>@Html.DisplayNameFor(model => model.Repeat)</td>
-                <td>Každých @Model.Repeat_Minute minut po dobu @Model.Repeat_Duration hodin</td>
+                <td>Každých @Model.Repeat_Minute minutes for @Model.Repeat_Duration hours</td>
             </tr>
         }
         <tr>
-            <td>Začátek</td>
+            <td>Begin</td>
             <td>
                 @(Model.Start_Date != null ? ((DateTime)Model.Start_Date).ToString("dd.MM.yyyy") : "---")
                 @(Model.Start_Time != null ? ((TimeSpan)Model.Start_Time).ToString(@"hh\:mm") : "---")
             </td>
         </tr>
         <tr>
-            <td>Konec</td>
+            <td>End</td>
             <td>
                 @(Model.End_Date != null ? ((DateTime)Model.End_Date).ToString("dd.MM.yyyy") : "---")
                 @(Model.End_Time != null ? ((TimeSpan)Model.End_Time).ToString(@"hh\:mm") : "---")
@@ -90,6 +90,6 @@
 </table>
 </div>
 <p class="nexusDetailsButtons">
-    @Ajax.RouteLink("Upravit", "Cortex", new { @action = "Edit", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue" })
-    @Html.RouteLink("Smazat", "Cortex", new { @action = "Delete", @id = Model.Id }, new { @class = "btn btn-omnius-red" })
+    @Ajax.RouteLink("Edit", "Cortex", new { @action = "Edit", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue" })
+    @Html.RouteLink("Delete", "Cortex", new { @action = "Delete", @id = Model.Id }, new { @class = "btn btn-omnius-red" })
 </p>

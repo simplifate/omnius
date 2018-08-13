@@ -146,7 +146,7 @@ $(function () {
                 submitActionByForm(tableName, rowId, "DetailsAction");
             });
             table.on("click", ".rowDeleteAction", function () {
-                if (confirm('Jste si jistí?')) {
+                if (confirm('Are you sure?')) {
                     rowId = parseInt($(this).parents("tr").find("td:first").text());
                     var modelId = GetUrlParameter("modelId");
                     var tableName = table.attr("name");
@@ -467,7 +467,7 @@ $(function () {
                         alert("TODO: Save");
                         $(this).dialog("close")
                     },
-                    "Zrušit": function () {
+                    "Cancel": function () {
                         $(this).dialog("close");
                     }
                 }

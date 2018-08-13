@@ -7,7 +7,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "Úprava webové služby" : "Nová webová služba")</h4>
+        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "Edit web service" : "New web service")</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -88,7 +88,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Uložit" class="btn btn-omnius-blue" />
+                <input type="submit" value="Save" class="btn btn-omnius-blue" />
             </div>
         </div>
 </div>

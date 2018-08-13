@@ -49,20 +49,20 @@
         ShowDetail(id, '80%');
         return false;
     })
-    .on('click', "a[data-innerid]", function () {
-        var id = $(this).attr('data-innerid');
+        .on('click', "a[data-innerid]", function () {
+            var id = $(this).attr('data-innerid');
 
-        ShowDetail(id, '70%');
-        return false;
-    })
-    .on('click', '.pagination a[data-page]', function () {
-        $('#PageNumber').val($(this).attr('data-page'));
-        $('#filterLogForm').submit();
-        return false;
-    })
-    .on('click', '#filterLogForm #resetSearchForm', function () {
-        $('#filterLogForm').find('select').each(function () { this.selectedIndex = 0; }).end()
-                           .find('input[type=text]').val('').end()
-                           .submit();
-    });
+            ShowDetail(id, '70%');
+            return false;
+        })
+        .on('click', '.pagination a[data-page]', function () {
+            $('#PageNumber').val($(this).attr('data-page'));
+            $('#filterLogForm').submit();
+            return false;
+        })
+        .on('click', '#filterLogForm #resetSearchForm', function () {
+            $('#filterLogForm').find('select').each(function () { this.selectedIndex = 0; }).end()
+                .find('input[type=text]').val('').end()
+                .submit();
+        });
 });

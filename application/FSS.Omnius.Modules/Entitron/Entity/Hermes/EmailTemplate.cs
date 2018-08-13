@@ -10,11 +10,11 @@
     public partial class EmailTemplate : IEntity
     {
         public int Id { get; set; }
-        
+
         [Required]
         [StringLength(255)]
         [Index("HermesUniqueness", IsClustered = false, IsUnique = true, Order = 2)]
-        [Display(Name = "Název")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
         [Display(Name = "HTML e-mail")]
@@ -31,7 +31,7 @@
         public int? AppId { get; set; }
         [ImportExport(ELinkType.Parent)]
         public virtual Application Application { get; set; }
-        
+
         public EmailTemplate()
         {
             PlaceholderList = new HashSet<EmailPlaceholder>();

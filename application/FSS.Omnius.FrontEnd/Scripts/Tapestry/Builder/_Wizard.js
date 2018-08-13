@@ -140,7 +140,7 @@
 
         self.target = target;
 
-        var d = $('<div title="Průvodce parametry akce \'{action_name}\'"></div>');
+        var d = $('<div title="Wizard of action parameters \'{action_name}\'"></div>');
         d.attr('title', d.attr('title').replace(/\{action_name\}/, action.name));
         d.append(form);
 
@@ -212,7 +212,7 @@
                 }
             }
             else {
-                iSet.append('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné vstupní parametry</p></div></div>');
+                iSet.append('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">This action has no input prameters</p></div></div>');
             }
 
             if (action.outputVars.length || outputVarsValues.length) {
@@ -236,11 +236,11 @@
                 }
             }
             else {
-                oSet.append('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné výstupní parametry</p></div></div>');
+                oSet.append('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">This action has no output parameters</p></div></div>');
             }
         }
         else {
-            form.html('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné vstupní ani výstupní parametry</p></div></div>');
+            form.html('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">This action has no input and output parameters</p></div></div>');
         }
 
         d.dialog('open');
@@ -274,7 +274,7 @@
             TB.wizard.build.apply(this, []);
         }
         else {
-            var confirm = $('<div title="Jste si jistí?"><p class="text-nowrap">Nemáte vyplněné všechny povinné proměnné.<br><b>Opravdu chcete parametry uložit?</b></p></div>');
+            var confirm = $('<div title="Are you sure?"><p class="text-nowrap">Not all required parameters are filled.<br><b>Are you sure about saving?</b></p></div>');
             var context = this;
 
             confirm.dialog({
@@ -504,7 +504,7 @@
         }
         else {
             if (inputVar.unknown) {
-                addOn.append('<span class="fa fa-warning fa-fw" title="Neočekávaná vstupní proměnná"></span>');
+                addOn.append('<span class="fa fa-warning fa-fw" title="Unexpected input parameter"></span>');
 
                 var addOn2 = $('<div class="input-group-addon"></div>');
                 var del = $('<span class="fa fa-times fa-fw"></span>');
@@ -573,9 +573,9 @@
         }
 
         if (outputVar.unknown) {
-            var del = $('<span class="fa fa-times fa-fw" style="margin-left: 7px" title="Smazat"></span>');
+            var del = $('<span class="fa fa-times fa-fw" style="margin-left: 7px" title="Delete"></span>');
 
-            valueWrapper.prepend('<div class="input-group-addon"><span class="fa fa-warning fa-fw" title="Neočekávaná výstupní proměnná"></span></div>');
+            valueWrapper.prepend('<div class="input-group-addon"><span class="fa fa-warning fa-fw" title="Unexpected output parameter"></span></div>');
             addOn.append(del);
             del.click(TB.wizard._deleteUnexpectedVar);
         }

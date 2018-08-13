@@ -24,11 +24,11 @@
             CurrentAppId = $(this).parents("tr").attr("appId");
 
             if (typeof WebSocket === "undefined") {
-                ShowAppNotification("Váš prohlížeč nepodporuje webSockety, a nemůže být využit k aktualizaci aplikací", "error");
+                ShowAppNotification("Your browser does not support WebSockets, cannot continue!", "error");
                 return;
             }
 
-            appBuildDialog.dialog("option", { title: "aktualizuji " + $(this).parents("tr").data("displayName") }).empty().dialog("open");
+            appBuildDialog.dialog("option", { title: "Actualization " + $(this).parents("tr").data("displayName") + " in progress "}).empty().dialog("open");
             var messagesById = {};
 
             var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
@@ -81,11 +81,11 @@
             CurrentAppId = $(this).parents("tr").attr("appId");
 
             if (typeof WebSocket === "undefined") {
-                ShowAppNotification("Váš prohlížeč nepodporuje webSockety, a nemůže být využit k aktualizaci aplikací", "error");
+                ShowAppNotification("Your browser does not support WebSockets, cannot continue!", "error");
                 return;
             }
 
-            appBuildDialog.dialog("option", { title: "aktualizuji " + $(this).parents("tr").data("displayName") }).empty().dialog("open");
+            appBuildDialog.dialog("option", { title: "Actualization " + $(this).parents("tr").data("displayName") + " in progress " }).empty().dialog("open");
             var messagesById = {};
 
             var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/RebuildApp/' + CurrentAppId);

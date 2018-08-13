@@ -10,10 +10,10 @@
 <div id="lowerPanel">
     @Html.Partial("~/Views/Hermes/Hermes/Decoration.cshtml")
     <div id="ldapMenuArea" class="moduleSubMenuArea">
-        @Ajax.RouteLink("Přidat pravidlo", "HermesIncomingRule", new { @action = "Create", @mailboxId = ViewData["mailboxId"] }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
+        @Ajax.RouteLink("Create rule", "HermesIncomingRule", new { @action = "Create", @mailboxId = ViewData["mailboxId"] }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
     </div>
     <div id="lowerPanelContainer">
-        <h4 class="variableListTitle">@string.Format("Seznam pravidel pro schránku {0}", ViewData["MailboxName"])</h4>
+        <h4 class="variableListTitle">Rule list for inbox @ViewData["MailboxName"]</h4>
         <table id="ldapTable" class="table table-bordered table-striped table-responsive table-omnius">
             <colgroup>
                 <col>
@@ -24,11 +24,11 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th>Aplikace</th>
-                    <th>Blok</th>
+                    <th>Application</th>
+                    <th>Block</th>
                     <th>Workflow</th>
-                    <th>Název</th>
-                    <th>Akce</th>
+                    <th>Name</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,8 +42,8 @@
                             <td>@r.WorkflowName</td>
                             <td>@r.Name</td>
                             <td class="table-row-action">
-                                @Ajax.RouteLink(" ", "HermesIncomingRule", new { @action = "Edit", @mailboxId = ViewData["mailboxId"], @id = r.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
-                                @Html.RouteLink(" ", "HermesIncomingRule", new { @action = "Delete", @mailboxId = ViewData["mailboxId"], @id = r.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete pravidlo smazat?')" })
+                                @Ajax.RouteLink(" ", "HermesIncomingRule", new { @action = "Edit", @mailboxId = ViewData["mailboxId"], @id = r.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Edit" })
+                                @Html.RouteLink(" ", "HermesIncomingRule", new { @action = "Delete", @mailboxId = ViewData["mailboxId"], @id = r.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Delete", @onclick = "return confirm('Really want to delete?')" })
                             </td>
                         </tr>
                     }
@@ -51,7 +51,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="5">Nemáte nakonfigurována žádná pravidla</td>
+                        <td colspan="5">There are no rules</td>
                     </tr>
                 }
             </tbody>

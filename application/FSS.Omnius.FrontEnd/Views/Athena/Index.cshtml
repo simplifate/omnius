@@ -9,7 +9,7 @@
 <div id="lowerPanel">
     @Html.Partial("~/Views/Athena/Athena/Decoration.cshtml")
     <div id="taskMenuArea" class="moduleSubMenuArea">
-        @Html.RouteLink("Přidat graf", "Athena", new { @action = "Create" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
+        @Html.RouteLink("New graf", "Athena", new { @action = "Create" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
     </div>
     <div id="lowerPanelContainer">
         <table id="athenaTable" class="table table-bordered table-striped table-responsive table-omnius">
@@ -23,10 +23,10 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Název</th>
-                    <th>Identifikátor</th>
-                    <th>Aktivní</th>
-                    <th>Akce</th>
+                    <th>Name</th>
+                    <th>Identify</th>
+                    <th>Active</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,10 +38,10 @@
                             <td>@g.Id</td>
                             <td>@g.Name</td>
                             <td>@g.Ident</td>
-                            <td class="text-center">@(g.Active == true ? "ano" : "ne")</td>
+                            <td class="text-center">@(g.Active == true ? "Yes" : "No")</td>
                             <td class="table-row-action">
-                                @Html.RouteLink(" ", "Athena", new { @action = "Edit", @id = g.Id }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
-                                @Html.RouteLink(" ", "Athena", new { @action = "Delete", @id = g.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
+                                @Html.RouteLink(" ", "Athena", new { @action = "Edit", @id = g.Id }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Edit" })
+                                @Html.RouteLink(" ", "Athena", new { @action = "Delete", @id = g.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Delete", @onclick = "return confirm('Really you want to delete this item?')" })
                             </td>
                         </tr>
                     }
@@ -49,7 +49,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="5">Nemáte nakonfigurovaný žádný graf</td>
+                        <td colspan="5">There is no configured graph</td>
                     </tr>
                 }
             </tbody>

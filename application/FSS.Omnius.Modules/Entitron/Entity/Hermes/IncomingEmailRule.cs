@@ -12,7 +12,7 @@
         public int? Id { get; set; }
 
         [Required]
-        [Display(Name = "Blok")]
+        [Display(Name = "Block")]
         public string BlockName { get; set; }
 
         [Required]
@@ -20,7 +20,7 @@
         public string WorkflowName { get; set; }
         
         [Required]
-        [Display(Name = "Název")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
         
         [DataType(DataType.MultilineText)]
@@ -33,7 +33,7 @@
         public virtual IncomingEmail IncomingEmail { get; set; }
 
         [Required]
-        [Display(Name = "Aplikace")]
+        [Display(Name = "Application")]
         [ImportExport(ELinkType.Parent, typeof(Application))]
         public int ApplicationId { get; set; }
         [ImportExport(ELinkType.Parent)]

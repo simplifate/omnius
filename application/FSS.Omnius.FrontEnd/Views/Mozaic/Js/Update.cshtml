@@ -3,34 +3,34 @@
 @using (Ajax.BeginRouteForm("Mozaic", new { Controller = "Js", Action = "Update" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "form form-horizontal" }))
 {
     <div class="form-group">
-        <label for="JsAppName" class="control-label col-sm-2">Aplikace:</label>
+        <label for="JsAppName" class="control-label col-sm-2">Application:</label>
         <div class="col-sm-10">
-            @Html.DropDownListFor(m => m.ApplicationId, (List<SelectListItem>)ViewData["appList"], "-- vyberte --", new { @id = "JsAppName", @class = "form-control" })
+            @Html.DropDownListFor(m => m.ApplicationId, (List<SelectListItem>)ViewData["appList"], "-- Choose --", new { @id = "JsAppName", @class = "form-control" })
         </div>
     </div>
 
     <div class="form-group">
-        <label for="JsPageName" class="control-label col-sm-2">Stránka:</label>
+        <label for="JsPageName" class="control-label col-sm-2">Page:</label>
         <div class="col-sm-10">
-            @Html.DropDownListFor(m => m.MozaicBootstrapPageId, (List<SelectListItem>)ViewData["pageList"], "-- nevybráno --", new { @id = "JsPageName", @class = "form-control" })
+            @Html.DropDownListFor(m => m.MozaicBootstrapPageId, (List<SelectListItem>)ViewData["pageList"], "-- choose --", new { @id = "JsPageName", @class = "form-control" })
         </div>
     </div>
 
     <div class="form-group">
-        <label for="JsName" class="control-label col-sm-2">Název:</label>
+        <label for="JsName" class="control-label col-sm-2">Name:</label>
         <div class="col-sm-10">
             @Html.TextBoxFor(m => m.Name, new { @id = "JsName", @maxlength = 50, @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        <label for="JsValue" class="control-label col-sm-2">Js kód:</label>
+        <label for="JsValue" class="control-label col-sm-2">Js code:</label>
         <div class="col-sm-10">
             @Html.TextAreaFor(m => m.Value, new { @rows = "60", @style = "resize:vertical", @id = "JsValue", @resize = "vertical", @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        <button type="submit" id="saveButton" class="btn btn-primary pull-right">Uložit</button>
-        @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
+        <button type="submit" id="saveButton" class="btn btn-primary pull-right">Save</button>
+        @Html.ActionLink("Back", "Index", new { }, new { @class = "btn btn-default" })
     </div>
     
     <!-- Input validation -->
@@ -120,16 +120,3 @@
 
     </script>
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

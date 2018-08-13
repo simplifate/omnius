@@ -10,27 +10,27 @@
     <h4>Detail záznamu</h4>
     <table class="details-list table table-striped">
         <tr>        
-            <td>ID e-mailu:</td>
+            <td>Id:</td>
             <td>@Model.Id</td>
         </tr>
         <tr>
-            <td>Datum vložení:</td>
+            <td>Date inserted:</td>
             <td>@Model.Date_Inserted.ToString("g")</td>
         </tr>
         <tr>
-            <td>Datum k odeslání:</td>
+            <td>Date send after:</td>
             <td>@Model.Date_Send_After.ToString("g")</td>
         </tr>
         <tr>
-            <td>Stav:</td>
+            <td>Status:</td>
             <td>@Mailer.QueuStatusName((int)Model.Status)</td>
         </tr>
         <tr>
-            <td>Odesílatel:</td>
+            <td>Sender:</td>
             <td>@message["From"]["DisplayName"] &lt;@message["From"]["Address"]&gt;</td>
         </tr>
         <tr>
-            <td>Příjemci:</td>
+            <td>Recievers:</td>
             <td>
                 @foreach (JToken recipient in message["To"])
                 {
@@ -42,7 +42,7 @@
         @if (message["CC"] != null && message["CC"].Count() > 0)
         {
             <tr>
-                <td>Kopie:</td>
+                <td>Copy:</td>
                 <td>
                     @foreach (JToken copy in message["CC"])
                     {
@@ -54,7 +54,7 @@
         @if (message["Bcc"] != null && message["Bcc"].Count() > 0)
         {
             <tr>
-                <td>Skrytá kopie:</td>
+                <td>Blind copy:</td>
                 <td>
                     @foreach (JToken copy in message["Bcc"])
                     {
@@ -64,7 +64,7 @@
             </tr>
         }        
         <tr>
-            <td>Předmět:</td>
+            <td>Subject:</td>
             <td>@message["Subject"]</td>
         </tr>
         <tr>

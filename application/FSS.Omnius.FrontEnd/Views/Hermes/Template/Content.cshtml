@@ -23,13 +23,13 @@
     @Html.HiddenFor(model => model.Id);
     
     <div class="form-horizontal">
-        <h4>@Html.Raw(string.Format("Úprava obsahu e-mailu <em>{0}</em>", Model.Name))</h4>
+        <h4>Edit e-mail <em>@Model.Name</em></h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
             <div class="col-xs-12">
-                <h5>Proměnné</h5>
+                <h5>Variables</h5>
                 <ul class="placeholder-list">
                     @foreach (EmailPlaceholder p in Model.PlaceholderList.OrderBy(i => i.Num_Order))
                     {
@@ -56,19 +56,19 @@
 
                 <div id="Language@(lang.Key)">
                     <div class="form-group">
-                        <label for="content_From_Name_@lId" class="col-md-2 control-label">Jméno odesílatele:</label>
+                        <label for="content_From_Name_@lId" class="col-md-2 control-label">Sender name:</label>
                         <div class="col-md-10">
                             <input type="text" name="content.From_Name.@lId" value="@(content == null ? "" : content.From_Name)" id="content_From_Name_@lId" class="form-control" maxlength="255" />
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="content_From_Email_@lId" class="col-md-2 control-label">E-mail odesílatele:</label>
+                        <label for="content_From_Email_@lId" class="col-md-2 control-label">Sender e-mail:</label>
                         <div class="col-md-10">
                             <input type="email" name="content.From_Email.@lId" value="@(content == null ? "" : content.From_Email)" id="content_From_Email_@lId" class="form-control" maxlength="1000" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="content_Subject_@lId" class="col-md-2 control-label">Předmět:</label>
+                        <label for="content_Subject_@lId" class="col-md-2 control-label">Subject:</label>
                         <div class="col-md-10">
                             <input type="text" name="content.Subject.@lId" value="@(content == null ? "" : content.Subject)" id="content_Subject_@lId" class="form-control" maxlength="1000" />
                         </div>
@@ -82,7 +82,7 @@
                     @if(Model.Is_HTML)
                     {
                         <div class="form-group">
-                            <label for="content_Content_Plain_@lId" class="col-md-2 control-label">Obsah (plain):</label>
+                            <label for="content_Content_Plain_@lId" class="col-md-2 control-label">Text (plain):</label>
                             <div class="col-md-10">
                                 <textarea name="content.Content_Plain.@lId" id="content_Content_Plain_@lId" class="form-control editor-cm" rows="40" data-langid="@lId">@(content == null ? "" : content.Content_Plain)</textarea>
                             </div>
@@ -97,7 +97,7 @@
             <div class="col-xs-12">
                 <button type="submit" class="btn btn-omnius-blue">
                     <span class="fa fa-save"></span>&nbsp;&nbsp;
-                    Uložit
+                    Save
                 </button>
             </div>
         </div>

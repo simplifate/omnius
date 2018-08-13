@@ -40,11 +40,13 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             #region Rows headers
             if (masterApp.IsAllowedForAll)
             {
-                foreach (User u in masterContext.Users) {
+                foreach (User u in masterContext.Users)
+                {
                     rowHeaders.Add(new RowHeaderAppRolesForTable(u.Id, u.DisplayName));
                 }
             }
-            else {
+            else
+            {
                 //find ad_group =>
                 ADgroup adg = masterContext.ADgroups.SingleOrDefault(i => i.ApplicationId == Id);
                 if (adg != null)
@@ -66,7 +68,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 #region Data column prepare
                 //Creating a column length of rowHeaders.Count
                 bool[] boolColumn = new bool[rowHeaders.Count];
-                    
+
                 data.Add(boolColumn);
                 #endregion
 
@@ -90,8 +92,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                             throw new IndexOutOfRangeException("There is no user with this ID");
                         }
                     }
-                    if(index == rowHeaders.Count)
-                        data[x][index-1] = true;
+                    if (index == rowHeaders.Count)
+                        data[x][index - 1] = true;
                     else
                         data[x][index] = true;
                 }
@@ -131,7 +133,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                             model.DeletedCols = new List<int>();
 
                         model.DeletedCols.Add(colIndex);
-                    } 
+                    }
                     #endregion
                     break;
             }
@@ -150,8 +152,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                     ViewBag.Saved = false;
                     return View("App", model);
                 }
-              
-                
+
+
             }
 
             for (int i = 0; i < model.ColHeaders.Count; i++)
@@ -166,7 +168,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                             ViewBag.Saved = false;
                             return View("App", model);
                         }
-                  
+
                 }
                 if (String.IsNullOrEmpty(currHeader.Priority.ToString()) || currHeader.Priority == 0)
                 {
@@ -239,7 +241,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                         realRole.Application = app;
                         realRole.Name = colHeader.Name;
                         realRole.Priority = colHeader.Priority;
-                        if (realRole.Name == "Nová role")
+                        if (realRole.Name == "New role")
                         {
 
                         }
@@ -273,7 +275,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
 
                         colHeader.Id = realRole.Id;
                         #endregion
-                    } 
+                    }
                     #endregion
                 }
                 else
@@ -301,7 +303,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             {
                 foreach (var eve in e.EntityValidationErrors)
                 {
-                    string text = "Entity of type \""+ eve.Entry.Entity.GetType().Name + "\" in state \""+ eve.Entry.State + "\" has the following validation errors:";
+                    string text = "Entity of type \"" + eve.Entry.Entity.GetType().Name + "\" in state \"" + eve.Entry.State + "\" has the following validation errors:";
                     foreach (var ve in eve.ValidationErrors)
                     {
                         string message = "- Property: \"" + ve.PropertyName + "\", Error: \"" + ve.ErrorMessage + "\"";
@@ -329,7 +331,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             {
                 priority = 1;
             }
-            ColumnHeaderAppRolesForTable newColHeader = new ColumnHeaderAppRolesForTable(-1, "Nová role", priority);
+            ColumnHeaderAppRolesForTable newColHeader = new ColumnHeaderAppRolesForTable(-1, "New role", priority);
 
             if (model.ColHeaders == null)
             {
@@ -337,7 +339,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             }
 
             model.ColHeaders.Add(newColHeader);
-            context.AppRoles.Add(new PersonaAppRole { Name = "Nová role", Priority = priority, ApplicationId = model.AppID });
+            context.AppRoles.Add(new PersonaAppRole { Name = "New role", Priority = priority, ApplicationId = model.AppID });
             /*context.SaveChanges();*/
             #endregion
 
@@ -347,7 +349,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 model.Data = new List<bool[]>();
             }
 
-            model.Data.Add(new bool[model.RowHeaders.Count]); 
+            model.Data.Add(new bool[model.RowHeaders.Count]);
             #endregion
 
             return View("App", model);
