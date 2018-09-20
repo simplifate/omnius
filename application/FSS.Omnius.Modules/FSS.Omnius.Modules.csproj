@@ -1392,32 +1392,6 @@
     <Compile Include="Persona\AuthAD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tapestry2\Actions\ActionManager.cs" />
-    <Compile Include="Tapestry2\Actions\App\AS.cs" />
-    <Compile Include="Tapestry2\Actions\App\EPK.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_BuildIncomesSummary.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_CachedData.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_CacheRigStatusAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_CheckRigsStatusAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_EditRigPlacementAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_FixTransactionHistoryAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_GenerateComparisonGraphActiob.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_GenerateIncomeChartDataAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_GenerateRefreshJsonAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_GetIncomesAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_GetMusicoinBalance.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_GetWalletBalancesAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_GetZCashBalanceAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_JArrayJoinAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_LogRigsMessagesAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_ReadModbusValues.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_RecordRigHistoryAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_RigsSyncFromMinersApiAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_SaveDetailsForContainers.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_SaveHistoryForProfiles.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_SendAutoreportAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\Grid_SmoothChartDataAction.cs" />
-    <Compile Include="Tapestry2\Actions\App\XMU.cs" />
     <Compile Include="Tapestry2\Actions\Athena.cs" />
     <Compile Include="Tapestry2\Actions\DateTimed.cs" />
     <Compile Include="Tapestry2\Actions\Entitron.cs" />
@@ -1442,14 +1416,6 @@
     <Compile Include="Tapestry2\Services\Extend.cs" />
     <Compile Include="Tapestry2\Services\TapestryGenerateService.cs" />
     <Compile Include="Tapestry2\Tapestry.cs" />
-    <Compile Include="Tapestry\Actions\Apps\AuctionSystem\GenerateAuctionEvaluationsAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\AuctionSystem\GetWSO_Users.cs" />
-    <Compile Include="Tapestry\Actions\Apps\SmartCoasters\ParseValues.cs" />
-    <Compile Include="Tapestry\Actions\Apps\XMU\CreateMSSignature.cs" />
-    <Compile Include="Tapestry\Actions\Apps\XMU\DictionaryToDBItem.cs" />
-    <Compile Include="Tapestry\Actions\Apps\XMU\GetColdWalletsBalanceAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\XMU\MarketDeph Action.cs" />
-    <Compile Include="Tapestry\Actions\Apps\XMU\ParseExchangeRates.cs" />
     <Compile Include="Tapestry\Actions\DateTime\intToDatetimeAction.cs" />
     <Compile Include="Tapestry\Actions\DateTime\ParseDateTimeAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToJArray.cs" />
@@ -1466,31 +1432,6 @@
     <Compile Include="Tapestry\Actions\Entitron\JTokenToString.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ConvertJsonStringToJToken.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ImportCSVAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\BuildIncomesSummaryAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\CacheRigStatusAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\CheckRigsStatusAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\DeleteCacheDataAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\EditRigPlacementAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\FixTransactionHistoryAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\GenerateComparisonGraphActiob.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\GenerateIncomeChartDataAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\GenerateRefreshJsonAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\GetIncomesAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\GetMusicoinBalance.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\GetWalletBalancesAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\GetZCashBalanceAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\JArrayJoinAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\LogRigsMessagesAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\ReadCachedDataAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\ReadModbusValues.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\RecordRigHistoryAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\RigsSyncFromMinersApiAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\RigStatusSummaryAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\SaveDataToCacheAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\SaveDetailsForContainers.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\SaveHistoryForProfiles.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\SendAutoreportAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\Grid\SmoothChartDataAction.cs" />
     <Compile Include="Tapestry\Actions\Athena\CalibrateChartData.cs" />
     <Compile Include="Tapestry\Actions\Athena\CreateStaticCsvAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToDictionaryAction.cs" />
@@ -1602,7 +1543,6 @@
     <Compile Include="Tapestry\Actions\other\GetFolderFilesAction.cs" />
     <Compile Include="Tapestry\Actions\other\ObjectToJTokenAction.cs" />
     <Compile Include="Tapestry\Actions\DateTime\FormatDatetimeAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\AuctionSystem\LogToActivityProtocolAction.cs" />
     <Compile Include="Tapestry\Actions\DateTime\MergeDatetimeAction.cs" />
     <Compile Include="Tapestry\Actions\DateTime\ModifyDatetimeAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\RunSSHCommand.cs" />
@@ -1649,7 +1589,6 @@
     <Compile Include="Tapestry\Actions\Mozaic\ShowMessageAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\PersonaIdToRweAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\RweIdToPersonaAction.cs" />
-    <Compile Include="Tapestry\Actions\Apps\PIA\LogChangesAction.cs" />
     <Compile Include="Tapestry\Actions\DateTime\AddTimeSpanAction.cs" />
     <Compile Include="Tapestry\Actions\DateTime\TimeSpanAction.cs" />
     <Compile Include="Tapestry\Actions\Scheduler\UnregisterTaskAction.cs" />
@@ -1698,7 +1637,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Nexus\Proxy\" />
+    <Folder Include="Tapestry2\Actions\App\" />
     <Folder Include="Tapestry2\bin\temp\" />
+    <Folder Include="Tapestry\Actions\Apps\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\MSSQL\201511301834451_init.resx">
