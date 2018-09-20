@@ -27,7 +27,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // Init
-            DBEntities context = DBEntities.instance;
+            DBEntities context = COREobject.i.Context;
             ListJson<DBItem> data = (ListJson<DBItem>)vars["Data"];
             List<DBItem> ds = new List<DBItem>();
             string orderColumnName = null;

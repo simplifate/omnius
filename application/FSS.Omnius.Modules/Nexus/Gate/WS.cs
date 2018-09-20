@@ -16,6 +16,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Runtime.Serialization.Json;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Nexus.Gate
 {
@@ -235,7 +236,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
 
         private static Entitron.Entity.Nexus.WS GetModel(string serviceName)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             Entitron.Entity.Nexus.WS row = e.WSs.Single(m => m.Name == serviceName);
             return row;
         }

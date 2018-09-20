@@ -20,18 +20,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
-            DBConnection db = Modules.Entitron.Entitron.i;
+            DBConnection db = COREobject.i.Entitron;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
 
             if ((vars.ContainsKey("__TableName__") || (vars.ContainsKey("TableName"))) && (vars.ContainsKey("__ModelId__") || vars.ContainsKey("RowId")))
             {
                 int rowId = vars.ContainsKey("RowId") ? Convert.ToInt32(vars["RowId"]) : (int)vars["__ModelId__"];
-                DBItem model = vars.ContainsKey("TableName")
-                    ? db.Tabloid((string)vars["TableName"], searchInShared).SelectById(rowId)
-                    : db.Tabloid((string)vars["__TableName__"], searchInShared).SelectById(rowId);
-                model[(string)vars["ColumnName"]] = (int)vars["StateId"];
-                (model.Tabloid as DBTable).Update(model, rowId);
+                string tableName = vars.ContainsKey("TableName") ? (string)vars["TableName"] : (string)vars["__TableName__"];
+
+                DBTable table = db.Table(tableName, searchInShared);
+                DBItem change = new DBItem(db, table);
+                change[(string)vars["ColumnName"]] = (int)vars["StateId"];
+                table.Update(change, rowId);
+
                 db.SaveChanges();
             }
             else

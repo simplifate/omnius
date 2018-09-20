@@ -41,7 +41,7 @@
             {
                 <tr appId="@app.Id" data-display-name="@app.DisplayName">
                     <td>@app.DisplayName</td>
-                    @if (!@app.IsSystem)
+                    @if (!app.IsSystem)
                     {
                         <td><button class="btn btn-info btnOpenWorkflow">Tapestry</button></td>
                         <td><button class="btn btn-info btnOpenDbScheme">Entitron</button></td>
@@ -56,7 +56,7 @@
                     <td>@(app.IsPublished ? "Yes" : "No")</td>
                     <td class="isEnabledColumn">@(app.IsEnabled ? "Yes" : "No")</td>
                     <td class="actions">
-                        @if (!app.IsSystem)//id 30 mají sdílené tabulky
+                        @if (!app.IsSystem)
                         {
                             if (app.IsPublished)
                             {
@@ -73,7 +73,7 @@
                             }
                             else
                             {
-                                <button class="btn btn-primary btnValidate">Create</button>
+                                <button class="btn btn-primary btnRebuild">Create</button>
                             }
                             <button class="btn btn-default btnProperties">Options</button>
 
@@ -98,7 +98,7 @@
 <form id="openDbSchemeForm" method="post" action="/Entitron/DbDesigner">
     <input type="hidden" name="appId" />
 </form>
-<form id="openMozaicForm" method="post" action="/Mozaic/Editor">
+<form id="openMozaicForm" method="post" action="/Mozaic/Bootstrap">
     <input type="hidden" name="appId" />
 </form>
 <div id="app-properties-dialog" title="Vlastnosti aplikace">
@@ -108,17 +108,6 @@
                 <tr>
                     <td><label for="app-name">Name</label></td>
                     <td><input type="text" name="app-name" id="app-name" value=""></td>
-                </tr>
-                <tr>
-                    <td><label for="template">Template</label></td>
-                    <td>
-                        <select name="template" id="template">
-                            @foreach (MozaicCssTemplate template in (List<MozaicCssTemplate>)ViewData["Mozaic_CssTemplates"])
-                            {
-                                <option value="@template.Id">@template.Name</option>
-                            }
-                        </select>
-                    </td>
                 </tr>
                 <tr>
                     <td><label for="allowAllUsers">Allow for all users</label></td>
@@ -180,17 +169,6 @@
                 <tr>
                     <td><label for="app-name">Name</label></td>
                     <td><input type="text" name="app-name" id="app-name" value=""></td>
-                </tr>
-                <tr>
-                    <td><label for="template">Template</label></td>
-                    <td>
-                        <select name="template" id="template">
-                            @foreach (MozaicCssTemplate template in (List<MozaicCssTemplate>)ViewData["Mozaic_CssTemplates"])
-                            {
-                                <option value="@template.Id">@template.Name</option>
-                            }
-                        </select>
-                    </td>
                 </tr>
                 <tr>
                     <td><label for="tile-width">Icon width</label></td>

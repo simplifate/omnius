@@ -1,6 +1,8 @@
 ﻿body.adminAppModule {
     #upperPanel {
         height: 135px;
+        z-index:10000;
+        position:fixed;
     }
     #lowerPanel {
         top: 200px;

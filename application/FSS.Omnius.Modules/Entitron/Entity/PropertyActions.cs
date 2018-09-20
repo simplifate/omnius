@@ -108,74 +108,81 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             PropertyInfo[] properties = newEntity.GetType().GetProperties();
             foreach (PropertyInfo property in properties)
             {
-                object originValue = property.GetValue(originEntity);
-                object newValue = property.GetValue(newEntity);
-                
-                // action
-                foreach (var action in _actions)
+                try
                 {
-                    // if condition
-                    if (GlobalCondition(property, originValue, newValue) && action.Item1(property, originValue, newValue))
-                        // run action
-                        action.Item2(property, originEntity, newEntity, originValue, newValue);
-                }
+                    object originValue = property.GetValue(originEntity);
+                    object newValue = property.GetValue(newEntity);
 
-                // recurse
-                if (recurse && RecurseCondition(property, originValue, newValue))
-                {
-                    // IEntity
-                    if (property.PropertyType.GetInterfaces().Contains(typeof(IEntity)))
-                        Run((IEntity)originValue, (IEntity)newValue, deep + 1, recurse);
-
-                    // collection
-                    else if (property.PropertyType.GenericTypeArguments.Any() && property.PropertyType.GenericTypeArguments.First().GetInterfaces().Contains(typeof(IEntity)))
+                    // action
+                    foreach (var action in _actions)
                     {
-                        IEnumerator<IEntity> originEnumerator = (originValue as dynamic).GetEnumerator();
-                        IEnumerator<IEntity> newEnumerator = (newValue as dynamic).GetEnumerator();
-
-                        originEnumerator.Reset();
-                        newEnumerator.Reset();
-                        HashSet<dynamic> toAdd = new HashSet<dynamic>();
-                        while (newEnumerator.MoveNext())
-                        {
-                            // recurse
-                            if (originEnumerator.MoveNext())
-                                Run(originEnumerator.Current, newEnumerator.Current, deep + 1, recurse);
-                            // add new
-                            else
-                            {
-                                do
-                                {
-                                    if (addNew)
-                                        toAdd.Add((dynamic)newEnumerator.Current);
-
-                                    newItemFunc(newEnumerator.Current, deep);
-                                }
-                                while (newEnumerator.MoveNext());
-                            }
-                        }
-                        // remove old
-                        HashSet<dynamic> toRemove = new HashSet<dynamic>();
-                        while (originEnumerator.MoveNext())
-                        {
-                            if (removeOld)
-                                toRemove.Add((dynamic)originEnumerator.Current);
-
-                            oldItemFunc(originEnumerator.Current);
-                        }
-
-                        // update list
-                        if (addNew)
-                            foreach (dynamic item in toAdd)
-                            {
-                                addFunc(originValue, item);
-                            }
-                        if (removeOld)
-                            foreach (dynamic item in toRemove)
-                            {
-                                removeFunc(originValue, item);
-                            }
+                        // if condition
+                        if (GlobalCondition(property, originValue, newValue) && action.Item1(property, originValue, newValue))
+                            // run action
+                            action.Item2(property, originEntity, newEntity, originValue, newValue);
                     }
+
+                    // recurse
+                    if (recurse && RecurseCondition(property, originValue, newValue))
+                    {
+                        // IEntity
+                        if (property.PropertyType.GetInterfaces().Contains(typeof(IEntity)))
+                            Run((IEntity)originValue, (IEntity)newValue, deep + 1, recurse);
+
+                        // collection
+                        else if (property.PropertyType.GenericTypeArguments.Any() && property.PropertyType.GenericTypeArguments.First().GetInterfaces().Contains(typeof(IEntity)))
+                        {
+                            IEnumerator<IEntity> originEnumerator = (originValue as dynamic).GetEnumerator();
+                            IEnumerator<IEntity> newEnumerator = (newValue as dynamic).GetEnumerator();
+
+                            originEnumerator.Reset();
+                            newEnumerator.Reset();
+                            HashSet<dynamic> toAdd = new HashSet<dynamic>();
+                            while (newEnumerator.MoveNext())
+                            {
+                                // recurse
+                                if (originEnumerator.MoveNext())
+                                    Run(originEnumerator.Current, newEnumerator.Current, deep + 1, recurse);
+                                // add new
+                                else
+                                {
+                                    do
+                                    {
+                                        if (addNew)
+                                            toAdd.Add((dynamic)newEnumerator.Current);
+
+                                        newItemFunc(newEnumerator.Current, deep);
+                                    }
+                                    while (newEnumerator.MoveNext());
+                                }
+                            }
+                            // remove old
+                            HashSet<dynamic> toRemove = new HashSet<dynamic>();
+                            while (originEnumerator.MoveNext())
+                            {
+                                if (removeOld)
+                                    toRemove.Add((dynamic)originEnumerator.Current);
+
+                                oldItemFunc(originEnumerator.Current);
+                            }
+
+                            // update list
+                            if (addNew)
+                                foreach (dynamic item in toAdd)
+                                {
+                                    addFunc(originValue, item);
+                                }
+                            if (removeOld)
+                                foreach (dynamic item in toRemove)
+                                {
+                                    removeFunc(originValue, item);
+                                }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Exception in property [{property.Name}] of object [{originEntity.GetType().Name}({originEntity.GetId()})]", ex);
                 }
             }
         }

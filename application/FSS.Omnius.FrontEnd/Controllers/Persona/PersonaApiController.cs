@@ -2,13 +2,12 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
-using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using Logger;
 using FSS.Omnius.Modules.Entitron.DB;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Persona
 {
@@ -21,27 +20,25 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         {
             try
             {
-                using (var context = DBEntities.instance)
+                var context = COREobject.i.Context;
+                foreach(AjaxModuleAccessPermission ajaxPermission in postData.PermissionList)
                 {
-                    foreach(AjaxModuleAccessPermission ajaxPermission in postData.PermissionList)
-                    {
-                        var permission = context.ModuleAccessPermissions.Find(ajaxPermission.UserId);
+                    var permission = context.ModuleAccessPermissions.Find(ajaxPermission.UserId);
 
-                        permission.Core = ajaxPermission.Core;
-                        permission.Master = ajaxPermission.Master;
-                        permission.Tapestry = ajaxPermission.Tapestry;
-                        permission.Entitron = ajaxPermission.Entitron;
-                        permission.Mozaic = ajaxPermission.Mozaic;
-                        permission.Persona = ajaxPermission.Persona;
-                        permission.Nexus = ajaxPermission.Nexus;
-                        permission.Sentry = ajaxPermission.Sentry;
-                        permission.Hermes = ajaxPermission.Hermes;
-                        permission.Athena = ajaxPermission.Athena;
-                        permission.Watchtower = ajaxPermission.Watchtower;
-                        permission.Cortex = ajaxPermission.Cortex;
-                    }
-                    context.SaveChanges();
+                    permission.Core = ajaxPermission.Core;
+                    permission.Master = ajaxPermission.Master;
+                    permission.Tapestry = ajaxPermission.Tapestry;
+                    permission.Entitron = ajaxPermission.Entitron;
+                    permission.Mozaic = ajaxPermission.Mozaic;
+                    permission.Persona = ajaxPermission.Persona;
+                    permission.Nexus = ajaxPermission.Nexus;
+                    permission.Sentry = ajaxPermission.Sentry;
+                    permission.Hermes = ajaxPermission.Hermes;
+                    permission.Athena = ajaxPermission.Athena;
+                    permission.Watchtower = ajaxPermission.Watchtower;
+                    permission.Cortex = ajaxPermission.Cortex;
                 }
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -56,28 +53,26 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         {
             try
             {
-                using (var context = DBEntities.instance)
+                var context = COREobject.i.Context;
+                AjaxModuleAccessPermissionSettings result = new AjaxModuleAccessPermissionSettings();
+                result.PermissionList = context.ModuleAccessPermissions.Select(c => new AjaxModuleAccessPermission
                 {
-                    AjaxModuleAccessPermissionSettings result = new AjaxModuleAccessPermissionSettings();
-                    result.PermissionList = context.ModuleAccessPermissions.Select(c => new AjaxModuleAccessPermission
-                    {
-                        UserId = c.UserId,
-                        UserName = c.User.DisplayName,
-                        Core = c.Core,
-                        Master = c.Master,
-                        Tapestry = c.Tapestry,
-                        Entitron = c.Entitron,
-                        Mozaic = c.Mozaic,
-                        Persona =c.Persona,
-                        Nexus = c.Nexus,
-                        Sentry = c.Sentry,
-                        Hermes = c.Hermes,
-                        Athena = c.Athena,
-                        Watchtower = c.Watchtower,
-                        Cortex = c.Cortex
-                    }).ToList();
-                    return result;
-                }
+                    UserId = c.UserId,
+                    UserName = c.User.DisplayName,
+                    Core = c.Core,
+                    Master = c.Master,
+                    Tapestry = c.Tapestry,
+                    Entitron = c.Entitron,
+                    Mozaic = c.Mozaic,
+                    Persona =c.Persona,
+                    Nexus = c.Nexus,
+                    Sentry = c.Sentry,
+                    Hermes = c.Hermes,
+                    Athena = c.Athena,
+                    Watchtower = c.Watchtower,
+                    Cortex = c.Cortex
+                }).ToList();
+                return result;
             }
             catch (Exception ex)
             {
@@ -91,16 +86,15 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         public AjaxPersonaAppRoles LoadAppRoles(int appId)
         {
             try {
-                using (var context = DBEntities.instance) {
-                    AjaxPersonaAppRoles result = new AjaxPersonaAppRoles();
+                var context = COREobject.i.Context;
+                AjaxPersonaAppRoles result = new AjaxPersonaAppRoles();
 
-                    result.Roles = context.AppRoles.Where(r => r.ApplicationId == appId).Select(r => new AjaxPersonaAppRoles_Role()
-                    {
-                        Id = r.Id,
-                        Name = r.Name
-                    }).ToList();
-                    return result;
-                }
+                result.Roles = context.AppRoles.Where(r => r.ApplicationId == appId).Select(r => new AjaxPersonaAppRoles_Role()
+                {
+                    Id = r.Id,
+                    Name = r.Name
+                }).ToList();
+                return result;
             }
             catch (Exception ex) {
                 string errorMessage = $"Persona: error loading app roles (GET api/persona/app-roles). Exception message: {ex.Message}";
@@ -114,9 +108,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         {
             try
             {
-                DBEntities context = DBEntities.instance;
                 AjaxPersonaAppstates result = new AjaxPersonaAppstates();
-                DBConnection db = Modules.Entitron.Entitron.i;
+                DBConnection db = COREobject.i.Entitron;
                 if (db.Exists("WF_states", ETabloid.ApplicationTables|ETabloid.Views))
                 {
                     var statesList = db.Select("WF_states").ToList();

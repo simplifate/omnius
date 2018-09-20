@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Cortex
 {
@@ -38,7 +39,7 @@ namespace FSS.Omnius.Controllers.Cortex
 
         public ActionResult Index()
         {
-            DBEntities context = DBEntities.instance;
+            DBEntities context = COREobject.i.Context;
 
             ViewBag.ScheduleTypeNames = scheduleTypeNames;
             ViewBag.DaysNames = daysNames;
@@ -51,7 +52,7 @@ namespace FSS.Omnius.Controllers.Cortex
 
         public ActionResult Create()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
              
             ViewData["ApplicationList"] = e.Applications;
 
@@ -60,7 +61,7 @@ namespace FSS.Omnius.Controllers.Cortex
 
         public ActionResult Edit(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
 
             ViewData["ApplicationList"] = e.Applications;
 
@@ -69,7 +70,7 @@ namespace FSS.Omnius.Controllers.Cortex
 
         public ActionResult Detail(int? id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
 
             ViewData["ApplicationList"] = e.Applications;
             ViewData["ScheduleTypeNames"] = scheduleTypeNames;

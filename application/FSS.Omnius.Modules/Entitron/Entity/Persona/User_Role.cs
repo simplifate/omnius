@@ -1,5 +1,5 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity.Master;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -21,10 +21,17 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 
         public virtual User User { get; set; }
         public virtual Application Application { get; set; }
-        public PersonaAppRole getAppRole(DBEntities e = null)
+
+        private PersonaAppRole _appRole;
+        public PersonaAppRole AppRole
         {
-            e = e ?? DBEntities.instance;
-            return e.AppRoles.SingleOrDefault(r => r.Name == RoleName);
+            get
+            {
+                if (_appRole == null)
+                    _appRole = COREobject.i.Context.AppRoles.SingleOrDefault(r => r.Name == RoleName && r.ApplicationId == ApplicationId);
+
+                return _appRole;
+            }
         }
     }
 }

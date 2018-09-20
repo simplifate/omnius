@@ -18,8 +18,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            DBConnection db = Modules.Entitron.Entitron.i;
-            var context = DBEntities.appInstance(db.Application);
+            COREobject core = COREobject.i;
+            DBConnection db = core.Entitron;
+            var context = core.AppContext;
             var rweUsersTable = db.Table("Users");
 
             List<DBItem> results;

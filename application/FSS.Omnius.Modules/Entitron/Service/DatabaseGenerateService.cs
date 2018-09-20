@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
-using System.Web.Helpers;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.DB;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Entitron.Service
 {
@@ -18,35 +18,40 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
         private List<DBForeignKey> _entitronFKs;
 
-        public delegate void SendWs(string str);
+        private ModalProgressHandler<EModule> _progressHandler;
 
-        public DatabaseGenerateService()
+        public DatabaseGenerateService(ModalProgressHandler<EModule> progressHandler)
         {
             _entitronFKs = new List<DBForeignKey>();
+            _progressHandler = progressHandler ?? new ModalProgressHandler<EModule>(s => { });
         }
 
         /// <summary>
         /// </summary>
         /// <param name="dbSchemeCommit"></param>
-        public void GenerateDatabase(DbSchemeCommit dbSchemeCommit, CORE.CORE core, SendWs sendWs)
+        public void GenerateDatabase(DbSchemeCommit dbSchemeCommit, COREobject core)
         {
             if (dbSchemeCommit != null)
             {
                 try
                 {
-                    _db = Entitron.i;
-                    _ent = DBEntities.instance;
-                    _app = _db.Application;
+                    _db = core.Entitron;
+                    _ent = core.Context;
+                    _app = core.Application;
+
+                    _progressHandler.SetMessage("DropOldRelations", "Drop old relations");
+                    _progressHandler.SetMessage("GenerateTables", "Generate tables");
+                    _progressHandler.SetMessage("GenerateRelation", "Generate relations");
+                    _progressHandler.SetMessage("GenerateView", "Generate views");
+                    _progressHandler.SetMessage("DroppingOldTables", "Drop old tables");
 
                     DropOldRelations(dbSchemeCommit);
-                    GenerateTables(dbSchemeCommit, sendWs);
-                    sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace tabulek", id = "entitron-gentables" }));
+                    GenerateTables(dbSchemeCommit);
                     GenerateRelation(dbSchemeCommit);
-                    sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace relací" }));
                     GenerateView(dbSchemeCommit);
-                    sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace pohledů" }));
-                    DroppingOldTables(dbSchemeCommit, sendWs);
-                    sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "staré tabulky byly smazány", id = "entitron-deltables" }));
+                    DroppingOldTables(dbSchemeCommit);
+
+                    _progressHandler.SetMessage("", type: MessageType.Success);
                 }
                 catch(Exception)
                 {
@@ -59,25 +64,12 @@ namespace FSS.Omnius.Modules.Entitron.Service
             }
         }
 
-        public void GenerateDatabase(DbSchemeCommit dbSchemeCommit, CORE.CORE core)
+        private void GenerateTables(DbSchemeCommit dbSchemeCommit)
         {
-            GenerateDatabase(dbSchemeCommit, core, _ => { });
-        }
+            _progressHandler.SetMessage("GenerateTables", type: MessageType.InProgress, progressSteps: dbSchemeCommit.Tables.Count);
 
-        private void GenerateTables(DbSchemeCommit dbSchemeCommit, SendWs sendWs)
-        {
-            int progress = 0, progressMax = dbSchemeCommit.Tables.Count;
-            
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
-                sendWs(Json.Encode(new
-                {
-                    childOf = "entitron",
-                    id = "entitron-gentables",
-                    type = "info",
-                    message = $"probíhá aktualizace tabulek <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>"
-                }));
-
                 //// Table ////
                 DBTable entitronTable = _db.Table(efTable.Name);
                 // new
@@ -127,41 +119,49 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     }
                 }
 
-                progress++;
+                _progressHandler.IncrementProgress();
             } //end foreach efTable
 
             /// SAVE
             _db.SaveChanges();
             _ent.SaveChanges();
+
+            _progressHandler.SetMessage("GenerateTables", type: MessageType.Success);
         }
 
         private void GenerateRelation(DbSchemeCommit dbSchemeCommit)
         {
+            _progressHandler.SetMessage("GenerateRelation", type: MessageType.InProgress);
+
             // foreign keys in scheme, but not in database
             IEnumerable<DbRelation> newFK = dbSchemeCommit.Relations
                 .Where(rel => !_entitronFKs.Any(fk => fk.Compare(rel)));
-
-
+            
             //adding new FKs
             foreach (DbRelation designerFK in newFK)
             {
-                DBTable sourceTable = _db.Table(designerFK.LeftTable.Name);
-                DBTable targetTable = _db.Table(designerFK.RightTable.Name);
+                DBTable sourceTable = _db.Table(designerFK.SourceTable.Name);
+                DBTable targetTable = _db.Table(designerFK.TargetTable.Name);
                 
                 sourceTable.ForeignKeys.Add(new DBForeignKey(_db)
                 {
                     SourceTable = sourceTable,
                     TargetTable = targetTable,
-                    SourceColumn = designerFK.LeftColumn.Name,
-                    TargetColumn = designerFK.RightColumn.Name
+                    SourceColumn = designerFK.SourceColumn.Name,
+                    TargetColumn = designerFK.TargetColumn.Name
                 });
             }
 
             _db.SaveChanges();
+
+            _progressHandler.SetMessage("GenerateRelation", type: MessageType.Success);
         }
 
         private void GenerateView(DbSchemeCommit dbSchemeCommit)
         {
+            _progressHandler.SetMessage("GenerateView", type: MessageType.InProgress, progressSteps: dbSchemeCommit.Views.Count);
+
+            List<Exception> errors = new List<Exception>();
             Queue<DbView> que = new Queue<DbView>(dbSchemeCommit.Views);
             DbView firstError = null;
             while(que.Any())
@@ -184,16 +184,24 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     _db.SaveChanges();
                     firstError = null;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (firstError == null)
                         firstError = efView;
                     else if (firstError == efView)
-                        throw;
+                    {
+                        firstError = null;
+                        errors.Add(ex);
+                        continue;
+                    }
 
                     que.Enqueue(efView);
                 }
+
+                _progressHandler.IncrementProgress();
             }
+            if (errors.Any())
+                throw new OmniusMultipleException(errors);
 
             //list of views, which are in database, but not in scheme
             List<string> deleteViews = _db.List(ETabloid.Views)
@@ -205,32 +213,33 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 _db.ViewDrop(viewName);
             }
             _db.SaveChanges();
+
+            _progressHandler.SetMessage("GenerateView", type: MessageType.Success);
         }
 
-        private void DroppingOldTables(DbSchemeCommit dbSchemeCommit, SendWs sendWs)
+        private void DroppingOldTables(DbSchemeCommit dbSchemeCommit)
         {
+            _progressHandler.SetMessage("DroppingOldTables", type: MessageType.InProgress);
+
             //list of tables, which are in database, but not in scheme
             IEnumerable<string> deletedTables = _db.List(ETabloid.ApplicationTables)
                                 .Except(dbSchemeCommit.Tables.Select(x => x.Name));
 
+            _progressHandler.SetMessage("DroppingOldTables", progressSteps: deletedTables.Count());
+
             //dropping old tables(must be here, after dropping all constraints)
-            int progress = 0, progressMax = dbSchemeCommit.Tables.Count;
             foreach (string deleteTable in deletedTables)
             {
-                sendWs(Json.Encode(new
-                {
-                    childOf = "entitron",
-                    id = "entitron-deltables",
-                    type = "info",
-                    message = $"probíhá odstranění starých tabulek <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>"
-                }));
                 _db.TableDrop(new DBTable(_db) { Name = deleteTable });
                 _ent.ColumnMetadata.RemoveRange(_app.ColumnMetadata.Where(c => c.TableName == deleteTable));
-                progress++;
+
+                _progressHandler.IncrementProgress();
             }
             _db.SaveChanges();
+            
+            _progressHandler.SetMessage("DroppingOldTables", type: MessageType.Success);
         }
-        
+
         private void UpdateColumns(DBTable entitronTable, DbTable schemeTable)
         {
             // list scheme columns
@@ -254,6 +263,11 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
                         // meta
                         ColumnMetadata meta = entitronColumn.Metadata;
+                        if (meta == null)
+                        {
+                            meta = new ColumnMetadata { Application = _app, TableName = entitronTable.Name };
+                            _ent.ColumnMetadata.Add(meta);
+                        }
                         meta.ColumnName = efColumn.Name;
                         meta.ColumnDisplayName = efColumn.DisplayName;
                         _ent.SaveChanges();
@@ -321,6 +335,8 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
         private void DropOldRelations(DbSchemeCommit dbSchemeCommit)
         {
+            _progressHandler.SetMessage("DropOldRelations", type: MessageType.InProgress);
+
             foreach (string tableName in _db.List(ETabloid.ApplicationTables))
             {
                 _entitronFKs.AddRange(new DBTable(_db) { Name = tableName }.ForeignKeys);
@@ -337,6 +353,8 @@ namespace FSS.Omnius.Modules.Entitron.Service
             }
 
             _db.SaveChanges();
+
+            _progressHandler.SetMessage("DropOldRelations", type: MessageType.Success);
         }
 
         private List<DBIndex> MergeSchemeIndexUnique(DBTable table, DbTable designerTable)
@@ -347,7 +365,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
             // get unique columns (not PK)
             IEnumerable<DbColumn> uniqueColumns = designerTable.Columns.Where(c => c.Unique && !c.PrimaryKey);
             // get target of FK (not PK)
-            IEnumerable<DbColumn> targetOfForeignKey = designerTable.DbSchemeCommit.Relations.Where(r => r.RightTableId == designerTable.Id).Select(r => r.RightColumn).Where(c => !c.PrimaryKey);
+            IEnumerable<DbColumn> targetOfForeignKey = designerTable.DbSchemeCommit.Relations.Where(r => r.TargetTableId == designerTable.Id).Select(r => r.TargetColumn).Where(c => !c.PrimaryKey);
             foreach (DbColumn column in uniqueColumns.Concat(targetOfForeignKey))
             {
                 // exists index - update

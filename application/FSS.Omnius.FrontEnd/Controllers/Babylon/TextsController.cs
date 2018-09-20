@@ -9,6 +9,7 @@ using System.Linq;
 using System;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Babylon
 {
@@ -24,7 +25,7 @@ namespace FSS.Omnius.Controllers.Babylon
         {
             string fileName = "messages.pot";
 
-            DBEntities db = DBEntities.instance;
+            DBEntities db = COREobject.i.Context;
             Dictionary<string, string> data = new Dictionary<string, string>();
             foreach (Page row in db.Pages) {
                 data.Add(row.Id.ToString() + "-" + row.ViewName, row.ViewContent);
@@ -80,7 +81,7 @@ namespace FSS.Omnius.Controllers.Babylon
         public ActionResult GeneratePot(int id)
         {
             string fileName = "messages.pot";
-            DBEntities db = DBEntities.instance;
+            DBEntities db = COREobject.i.Context;
             string appName = db.Applications.SingleOrDefault(a => a.Id == id).Name;
             Dictionary<string, string> data = new Dictionary<string, string>();
             foreach (Page row in db.Pages)

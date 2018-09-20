@@ -554,12 +554,12 @@ $(function () {
                             break;
                         case "string":
                             currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
-                            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>is not empty</option></select>'));
                             break;
                         case "unknown":
                         default:
                             currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
-                            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>is not empty</option></select>'));
                     }
                 });
                 $(this).on("change", ".conditionOperatorCell select", function () {
@@ -632,13 +632,13 @@ $(function () {
                                 break;
                             case "string":
                                 conditionValueCell.append($('<input type="text"></input>'));
-                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>is not empty</option></select>'));
                                 conditionOperatorCell.find("select").val(currentConditionData.Operator);
                                 break;
                             case "unknown":
                             default:
                                 conditionValueCell.append($('<input type="text"></input>'));
-                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>is not empty</option></select>'));
                                 conditionOperatorCell.find("select").val(currentConditionData.Operator);
                         }
                         var optionSelected = $("option:selected", conditionOperatorCell);

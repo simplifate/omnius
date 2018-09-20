@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Web.Mvc;
+using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
@@ -32,7 +33,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         public RabbitMQListenerService()
         {
-            var context = DBEntities.instance;
+            var context = COREobject.i.Context;
 
 
             var factory = new ConnectionFactory() { HostName = "localhost" };
@@ -54,37 +55,37 @@ namespace FSS.Omnius.Modules.Nexus.Service
             var body = args.Body;
             var message = Encoding.UTF8.GetString(body);
 
-            using (DBEntities db = new DBEntities()) {
-                Entitron.Entity.Nexus.RabbitMQ listener = db.RabbitMQs.Where(q => q.Name == args.ConsumerTag).FirstOrDefault();
-                if (listener != null) {
-                    Block block = GetBlockWithWF(db, listener.ApplicationId.Value, listener.BlockName.RemoveDiacritics());
+            var core = COREobject.i;
+            DBEntities context = core.Context;
+            Entitron.Entity.Nexus.RabbitMQ listener = context.RabbitMQs.Where(q => q.Name == args.ConsumerTag).FirstOrDefault();
+            if (listener != null) {
+                Block block = GetBlockWithWF(context, listener.ApplicationId.Value, listener.BlockName.RemoveDiacritics());
 
-                    if (block != null) {
-                        var core = new CORE.CORE();
-                        Entitron.Entitron.Create(listener.Application);
+                if (block != null) {
+                    core.Application = listener.Application;
 
-                        try {
-                            PersonaAppRole role = db.AppRoles.FirstOrDefault(r => r.Name == "System" && r.ApplicationId == listener.ApplicationId);
-                            core.User = db.Users.FirstOrDefault(u => u.Users_Roles.Any(r => r.RoleName == role.Name && r.ApplicationId == role.ApplicationId));
+                    try {
+                        PersonaAppRole role = context.AppRoles.FirstOrDefault(r => r.Name == "System" && r.ApplicationId == listener.ApplicationId);
+                        core.User = context.Users.FirstOrDefault(u => u.Users_Roles.Any(r => r.RoleName == role.Name && r.ApplicationId == role.ApplicationId));
 
-                            OmniusInfo.Log($"Začátek zpracování RabbitMQ: {listener.Name} / Blok {listener.BlockName} / Button {listener.WorkflowName}", OmniusLogSource.Nexus, listener.Application, core.User);
+                        OmniusInfo.Log($"Začátek zpracování RabbitMQ: {listener.Name} / Blok {listener.BlockName} / Button {listener.WorkflowName}", OmniusLogSource.Nexus, listener.Application, core.User);
 
-                            FormCollection fc = new FormCollection();
-                            Dictionary<string, object> vars = new Dictionary<string, object>();
-                            vars.Add("__RabbitMQMessage__", message);
+                        FormCollection fc = new FormCollection();
+                        Dictionary<string, object> vars = new Dictionary<string, object>();
+                        vars.Add("__RabbitMQMessage__", message);
 
-                            var runResult = core.Tapestry.run(core.User, block, listener.WorkflowName, -1, fc, 0, null, vars);
+                        var runResult = new Modules.Tapestry.Tapestry(core).run(block, listener.WorkflowName, -1, fc, 0, null, vars);
 
-                            OmniusInfo.Log($"Konec zpracování RabbitMQ: {listener.Name} / Blok {listener.BlockName} / Button {listener.WorkflowName}", OmniusLogSource.Hermes, listener.Application, core.User);
+                        OmniusInfo.Log($"Konec zpracování RabbitMQ: {listener.Name} / Blok {listener.BlockName} / Button {listener.WorkflowName}", OmniusLogSource.Hermes, listener.Application, core.User);
 
-                            if (runResult.Item1.Errors.Count == 0) {
-                                listeners[args.ConsumerTag].Channel.BasicAck(args.DeliveryTag, false);
-                            }
-                        }
-                        catch (Exception e) {
-                            OmniusInfo.Log($"Chyba při zpracování RabbitMQ: {args.ConsumerTag} ({e})", OmniusLogSource.Nexus, null, null);
+                        if (runResult.Item1.Errors.Count == 0) {
+                            listeners[args.ConsumerTag].Channel.BasicAck(args.DeliveryTag, false);
                         }
                     }
+                    catch (Exception e) {
+                        OmniusInfo.Log($"Chyba při zpracování RabbitMQ: {args.ConsumerTag} ({e})", OmniusLogSource.Nexus, null, null);
+                    }
+                    
                 }
             }
         }
@@ -199,9 +200,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         private static Block GetBlockWithWF(DBEntities context, int appId, string blockName)
         {
-            return context.Blocks
-                .Include("SourceTo_ActionRules")
-                .FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.Name.ToLower() == blockName.ToLower());
+            return context.Blocks.FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.Name == blockName);
         }
 
         #endregion

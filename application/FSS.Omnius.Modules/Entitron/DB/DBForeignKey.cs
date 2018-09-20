@@ -37,10 +37,10 @@ namespace FSS.Omnius.Modules.Entitron.DB
         {
             return
                 _db.Application.Name == designerFK.DbSchemeCommit.Application.Name
-                && SourceTable.Name == designerFK.LeftTable.Name
-                && SourceColumn == designerFK.LeftColumn.Name
-                && TargetTable.Name == designerFK.RightTable.Name
-                && TargetColumn == designerFK.RightColumn.Name;
+                && SourceTable.Name == designerFK.SourceTable.Name
+                && SourceColumn == designerFK.SourceColumn.Name
+                && TargetTable.Name == designerFK.TargetTable.Name
+                && TargetColumn == designerFK.TargetColumn.Name;
         }
 
 

@@ -18,6 +18,7 @@ using System.IO;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 using System.ComponentModel.DataAnnotations;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Hermes
 {
@@ -30,17 +31,17 @@ namespace FSS.Omnius.Modules.Hermes
         private SmtpClient client;
         private JArray attachmentList = new JArray();
         private static Dictionary<int, string> queuStatusNames = new Dictionary<int, string>();
-        private int mailerLanguage;
+        private Locale mailerLanguage;
 
         public MailMessage mail;
 
         public Mailer(string serverName = "")
         {
-            mailerLanguage = 1;
+            mailerLanguage = Locale.cs;
             Init(serverName);
         }
 
-        public Mailer(string serverName, string templateName, Object model, int language)
+        public Mailer(string serverName, string templateName, Object model, Locale language)
         {
             mailerLanguage = language;
             Init(serverName);
@@ -49,7 +50,7 @@ namespace FSS.Omnius.Modules.Hermes
 
         private void Init(string serverName = "")
         {
-            e = DBEntities.instance;
+            e = COREobject.i.Context;
 
             if (string.IsNullOrEmpty(serverName))
             {
@@ -79,7 +80,7 @@ namespace FSS.Omnius.Modules.Hermes
 
             EmailTemplate template = e.EmailTemplates.Single(t => t.Name == templateName);
             plcs = template.PlaceholderList.OrderBy(p => p.Num_Order).ToList();
-            EmailTemplateContent contentModel = template.ContentList.Single(t => t.LanguageId == mailerLanguage);
+            EmailTemplateContent contentModel = template.ContentList.Single(t => t.LanguageId == (int)mailerLanguage);
 
             string subject = SetData(contentModel.Subject);
             string content = SetData(contentModel.Content);
@@ -90,6 +91,8 @@ namespace FSS.Omnius.Modules.Hermes
 
             if (!string.IsNullOrWhiteSpace(contentModel.From_Email))
                 mail.From = new MailAddress(contentModel.From_Email, contentModel.From_Name);
+            else
+                OmniusException.Log("Nutno vyplnit email odesílatele.");
 
             if (!string.IsNullOrWhiteSpace(subject))
                 mail.Subject = subject;
@@ -117,15 +120,18 @@ namespace FSS.Omnius.Modules.Hermes
             foreach (EmailPlaceholder p in plcs)
             {
                 string key = "{" + p.Prop_Name + "}";
-                if (regExpList.IsMatch(key)) {
+                if (regExpList.IsMatch(key))
+                {
                     Match m = regExpList.Match(key);
                     ParseList(ref content, p.Prop_Name, m.Groups[1].ToString(), GetValue(data, m.Groups[1].ToString()));
                 }
-                else if (regExpIf.IsMatch(key)) {
+                else if (regExpIf.IsMatch(key))
+                {
                     Match m = regExpIf.Match(key);
                     ParseIf(ref content, p.Prop_Name, GetValue(data, m.Groups[1].ToString()));
                 }
-                else if (!key.Contains('@')) {
+                else if (!key.Contains('@'))
+                {
                     object value = GetValue(data, p.Prop_Name);
                     content = content.Replace(key, value == null ? string.Empty : value.ToString());
                 }
@@ -137,7 +143,7 @@ namespace FSS.Omnius.Modules.Hermes
         public bool SendBySender(int? applicationId = null, DateTime? sendAfter = null)
         {
             EmailQueue item = new EmailQueue();
-            item.ApplicationId = applicationId;
+            item.ApplicationId = applicationId ?? e.Applications.Single(a => a.IsSystem).Id;
             item.Message = HermesUtils.SerializeMailMessage(mail, Formatting.Indented);
             item.Date_Send_After = sendAfter == null ? DateTime.UtcNow : (DateTime)sendAfter;
             item.Date_Inserted = DateTime.UtcNow;
@@ -221,7 +227,7 @@ namespace FSS.Omnius.Modules.Hermes
         public void RunSender()
         {
             DateTime now = DateTime.UtcNow;
-            List<EmailQueue> rows = e.EmailQueueItems.Where(m => m.Date_Send_After <= now).ToList();
+            List<EmailQueue> rows = e.EmailQueueItems.Where(m => m.Date_Send_After <= now && m.Status != EmailQueueStatus.error).ToList();
 
             foreach(EmailQueue row in rows)
             {
@@ -297,16 +303,11 @@ namespace FSS.Omnius.Modules.Hermes
         public void To(Dictionary<string,string>addressList)
         {
             mail.To.Clear();
-            foreach(KeyValuePair<string, string> addr in addressList) {
-                if (addr.Key != "")
-                    if (new EmailAddressAttribute().IsValid(addr.Key))
-                    {
-                        mail.To.Add(new MailAddress(addr.Key, addr.Value));
-                    }
-                    else
-                    {
-                        OmniusLog.Log($"User passed invalid email address '{addr.Key}'.", OmniusLogLevel.Warning, OmniusLogSource.Hermes);
-                    }
+            foreach(KeyValuePair<string, string> addr in addressList.Where(pair => pair.Key != "")) {
+                if (new EmailAddressAttribute().IsValid(addr.Key))
+                    mail.To.Add(new MailAddress(addr.Key, addr.Value));
+                else
+                    OmniusLog.Log($"User passed invalid email address '{addr.Key}'.", OmniusLogLevel.Warning, OmniusLogSource.Hermes);
             }
         }
 
@@ -333,16 +334,11 @@ namespace FSS.Omnius.Modules.Hermes
         public void BCC(Dictionary<string, string> addressList)
         {
             mail.Bcc.Clear();
-            foreach (KeyValuePair<string, string> addr in addressList) {
-                if (addr.Key != "")
-                    if (new EmailAddressAttribute().IsValid(addr.Key))
-                    {
-                        mail.Bcc.Add(new MailAddress(addr.Key, addr.Value));
-                    }
-                    else
-                    {
-                        OmniusLog.Log($"User passed invalid email address '{addr.Key}'.", OmniusLogLevel.Warning, OmniusLogSource.Hermes);
-                    }
+            foreach (KeyValuePair<string, string> addr in addressList.Where(pair => pair.Key != "")) {
+                if (new EmailAddressAttribute().IsValid(addr.Key))
+                    mail.Bcc.Add(new MailAddress(addr.Key, addr.Value));
+                else
+                    OmniusLog.Log($"User passed invalid email address '{addr.Key}'.", OmniusLogLevel.Warning, OmniusLogSource.Hermes);
             }
         }
 

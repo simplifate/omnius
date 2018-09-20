@@ -9,6 +9,7 @@
     using Entitron.Entity;
     using System.Web;
     using Interface;
+    using FSS.Omnius.Modules.CORE;
 
     public class Cortex
     {
@@ -49,7 +50,7 @@
 
         public int? Save(Task model)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             Task row = !model.Id.Equals(null) ? e.Tasks.Single(m => m.Id == model.Id) : new Task();
             Task original = !model.Id.Equals(null) ? e.Tasks.Single(m => m.Id == model.Id) : null;
 
@@ -95,7 +96,7 @@
 
         public void Delete(int taskId)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             Task row = e.Tasks.Single(m => m.Id == taskId);
 
             ICortexAPI api = GetAPI();
@@ -122,7 +123,7 @@
             oldDate = oldDate.AddSeconds(-oldDate.Second);
 
             ICortexAPI api = GetAPI();
-            List<Task> taskList = DBEntities.instance.Tasks.Where(t => t.Type == ScheduleType.ONCE).ToList();
+            List<Task> taskList = COREobject.i.Context.Tasks.Where(t => t.Type == ScheduleType.ONCE).ToList();
 
             List<Task> taskForDelete = new List<Task>();
             foreach (Task t in taskList)
@@ -143,7 +144,7 @@
                 {
                     api.Delete(t);
                 }
-                DBEntities.instance.Tasks.RemoveRange(taskForDelete);
+                COREobject.i.Context.Tasks.RemoveRange(taskForDelete);
             }
         }
 

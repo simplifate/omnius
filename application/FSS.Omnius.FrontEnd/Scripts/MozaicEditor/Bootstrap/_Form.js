@@ -35,7 +35,8 @@
         'legend': '<legend data-uic="form|legend" locked>Field group</legend>',
         'left-addon': '<div class="input-group-addon" data-uic="form|left-addon" locked><span data-uic="text|span">prefix</span></div>',
         'right-addon': '<div class="input-group-addon" data-uic="form|right-addon" locked><span data-uic="text|span">suffix</span></div>',
-        'form-control-feedback': '<span class="glyphicon glyphicon-remove form-control-feedback"></span>'
+        'form-control-feedback': '<span class="glyphicon glyphicon-remove form-control-feedback"></span>',
+        'option': '<option value="" data-uic="form|option" locked></option>'
     },
 
     options: {
@@ -89,6 +90,32 @@
                     attr: 'for',
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
+                }, {
+                    label: 'Switch',
+                    type: 'boolean',
+                    disallowFor: function () {
+                        return !($(this).find(':checkbox').length == 0);
+                    },
+                    options: {
+                        'switch': 'Switch'
+                    },
+                    get: MBE.options.hasClass,
+                    set: function (opt) {
+                        switch (opt.value) {
+                            case 'switch': {
+                                if ($(opt).is(':checked')) {
+                                    $(this).find('> .mbe-text-node').remove();
+                                    $(this).addClass(opt.value).append('<span data-uic="text|span" class="switch-slider"></span>');
+                                }
+                                else {
+                                    $(this).find('> .switch-slider').remove();
+                                    $(this).removeClass(opt.value).append('<span class="mbe-text-node">Checkbox</span>');
+                                }
+                                MBE.DnD.updateDOM();
+                                break;
+                            }
+                        }
+                    }
                 }]
             },
             'labelSize': {
@@ -112,10 +139,35 @@
                     set: function (opt) {
                         $('option', this).remove();
                         if (opt.value) {
-                            $(this).append('<option value="">' + opt.value + '</option>');
+                            var node = $(MBE.types.form.templates.option);
+                            node.html(opt.value);
+                            $(this).append(node);
                         }
+                        MBE.DnD.updateDOM();
                     }
                 }],
+            }
+        },
+        'option': {
+            'optionOptions': {
+                name: 'Option options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Value',
+                    type: 'text',
+                    attr: 'for',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Text',
+                    type: 'text',
+                    get: function () {
+                        return $(MBE.options.target).html();
+                    },
+                    set: function (opt) {
+                        $(this).html(opt.value);
+                    }
+                }]
             }
         },
         'static-control': {

@@ -4,7 +4,6 @@
     {
         public int Id { get; set; }
         public string DisplayName { get; set; }
-        public int CSSTemplateId { get; set; }
         public string Icon { get; set; }
         public int Color { get; set; }
         public int TileWidth { get; set; }
@@ -20,7 +19,7 @@
     }
     public class AjaxAppCoordinates : IEntity
     {
-        public string positionX { get; set; }
-        public string positionY { get; set; }
+        public int positionX { get; set; }
+        public int positionY { get; set; }
     }
 }

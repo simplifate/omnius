@@ -125,7 +125,7 @@ namespace Logger
         }
         
         // overloaded this to access "log" element config via string
-        public LogElement this[string name]
+        public new LogElement this[string name]
         {
             get
             {

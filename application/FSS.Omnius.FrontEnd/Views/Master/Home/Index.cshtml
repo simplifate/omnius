@@ -1,16 +1,16 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Master
 @using FSS.Omnius.Modules.Entitron.Entity
-@using System.Data.Entity
+@using FSS.Omnius.Modules.CORE
 
 @{
     Page.Title = "Omnius App Manager";
     Page.ModuleClass = "appManagerModule";
     Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
-    var LoggedUser = Context.GetLoggedUser();
+    var LoggedUser = COREobject.i.User;
 }
 
 <div class="appWorkspace">
-    @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name).Include("UsersApplications").ToList())
+    @foreach (Application app in (IEnumerable<Application>)ViewData["Apps"])
     {
         var positionX = 10;
         var positionY = 10;
@@ -23,7 +23,7 @@
         }
         else
         {
-            DBEntities db = DBEntities.instance;
+            DBEntities db = COREobject.i.Context;
             db.UsersApplications.Add(new UsersApplications() {ApplicationId = app.Id,UserId = LoggedUser.Id});
             db.SaveChanges();
         }

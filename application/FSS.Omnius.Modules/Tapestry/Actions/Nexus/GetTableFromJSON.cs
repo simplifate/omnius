@@ -24,7 +24,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            DBConnection db = Modules.Entitron.Entitron.i;
+            DBConnection db = COREobject.i.Entitron;
 
             var jArray = vars["InputJSON"] as JArray;
             List<DBItem> dbItems = new List<DBItem>();

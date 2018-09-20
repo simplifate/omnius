@@ -1,37 +1,23 @@
 $(function(){
-$(".modalType").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalProfile");
+  $("#Profiles_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalProfile");
   
-  var modal = function (type, obj) {
-			var userId = obj.parent().parent().children("td:nth-child(3)").text();
+  $("#Profiles_table").on("click", ".fa-edit", function () {
+			var userId = $(this).parent().parent().children("td:nth-child(2)").text();
             $("#modal_body_profile").html("");
   			$("#modal_name_profile").html("");
             $("#preloader_profile").css("display", "block");
-        $.ajax({
-        url: '/Persona/Account/GetAntiForgeryToken',
-        type: 'GET',
-        success: function (token) {
             $.ajax({
-                type: 'POST',
-                url: "/Xmu/WebDavUsersEdit?modelId="+userId+"&button=Save",
-                data: { 'type': type, '__RequestVerificationToken': token},
+                type: 'GET',
+                url: "/Xmu/WebDavUsersEdit?modelId="+userId,
                 success: function (response) {
                     var x = $(response)
                     $("#preloader_profile").css("display", "none");
                     $("#modal_body_profile").html(x.find("#modal_body_profile").html());
                     $("#modal_name_profile").html(x.find("#modal_name_profile").html());
-    				var table = $("#TableForLogs");
-              		BootstrapUserInit.DataTable.initTable(table);
-                	}
+                }
             });
-          }
-        })
-     };
-  $("#Profiles_table_nove").on("click", ".fa-edit", function () {var that = $(this); modal("1",that)});
-  $("#Profiles_table_schvalene").on("click", ".fa-edit", function () {var that = $(this); modal("2", that)});
-  $("#Profiles_table_zamitnute").on("click", ".fa-edit", function () {var that = $(this); modal("3", that)});
+        }); 
 });
-
-                        
 $(function(){
     var reload = function () {
                 var userId = $("#hiddenUserId").val();

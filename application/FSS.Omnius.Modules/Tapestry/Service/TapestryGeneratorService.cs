@@ -1,11 +1,11 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Helpers;
 
 namespace FSS.Omnius.Modules.Tapestry.Service
 {
@@ -13,13 +13,13 @@ namespace FSS.Omnius.Modules.Tapestry.Service
     {
         private string[] _splitGateways = new string[] { "gateway-x" };
 
-        private CORE.CORE _core;
+        private COREobject _core;
         private DBEntities _context;
         private DBEntities _masterContext;
         private Application _app;
         private bool _rebuildInAction;
         private Random _random;
-        private SendWS _sendWs;
+        private ModalProgressHandler<EModule> _progressHandler;
 
         private Dictionary<TapestryDesignerBlock, Block> _blockMapping;
         private HashSet<TapestryDesignerBlock> _blocksToBuild;
@@ -36,33 +36,46 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             _random = new Random();
         }
 
-        public Dictionary<TapestryDesignerBlock, Block> GenerateTapestry(CORE.CORE core, SendWS sendWs)
+        public Dictionary<TapestryDesignerBlock, Block> GenerateTapestry(COREobject core, ModalProgressHandler<EModule> progressHandler)
         {
             _core = core;
-            _sendWs = sendWs;
+            _progressHandler = progressHandler;
+            _app = core.Application;
 
-            //_context = DBEntities.instance;
-            Application app = core.Application;
-            _app = app.similarApp;
-
+            // block & metablock
             try
             {
                 // generate new
-                saveMetaBlock(app.TapestryDesignerRootMetablock, true);
-                saveBlocks(sendWs);
-                _context.SaveChanges();
+                progressHandler.SetMessage("block", "Generating metablocks and blocks", MessageType.InProgress, _app.TapestryDesignerMetablocks.Count);
+                saveMetablock(_app.TapestryDesignerRootMetablock, true);
+                progressHandler.SetMessage("block", "Generating metablocks and blocks completed", MessageType.Success);
             }
-            catch (Exception ex)
+            catch (Exception)
+            {
+                _context.DiscardChanges();
+                
+                throw;
+            }
+
+            // block content
+            try
+            {
+                progressHandler.SetMessage("blockContent", "Generating block content", MessageType.InProgress, _app.TapestryDesignerMetablocks.Sum(mb => mb.Blocks.Count));
+                saveBlocks();
+                _context.SaveChanges();
+                progressHandler.SetMessage("blockContent", "Generating block content completed", MessageType.Success);
+            }
+            catch (Exception)
             {
                 _context.DiscardChanges();
 
-                throw ex;
+                throw;
             }
 
             return _blockMapping;
         }
 
-        private WorkFlow saveMetaBlock(TapestryDesignerMetablock metaBlock, bool init = false)
+        private WorkFlow saveMetablock(TapestryDesignerMetablock metaBlock, bool init = false)
         {
             try
             {
@@ -83,9 +96,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 _context.SaveChanges();
 
                 // child meta block
-                foreach (TapestryDesignerMetablock childMetaBlock in metaBlock.Metablocks.Where(mb => !mb.IsDeleted))
+                foreach (TapestryDesignerMetablock childMetablock in metaBlock.Metablocks.Where(mb => !mb.IsDeleted))
                 {
-                    WorkFlow wf = saveMetaBlock(childMetaBlock);
+                    WorkFlow wf = saveMetablock(childMetablock);
                     wf.Parent = resultWF;
                 }
                 _context.SaveChanges();
@@ -123,8 +136,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                             IQueryable<int?> cgsToRemove = null;
                             if (_context != _masterContext)
                                 cgsToRemove = _context.ActionRules.Where(ar => (ar.SourceBlock.IsVirtualForBlockId == resultBlock.Id || ar.SourceBlockId == resultBlock.Id) && ar.ConditionGroup != null).Select(ar => ar.ConditionGroupId);
-
-                            _context.AttributeRules.RemoveRange(_context.AttributeRules.Where(ar => ar.BlockId == resultBlock.Id));
+                            
                             foreach(var ar in _context.ActionRules.Where(ar => ar.SourceBlockId == resultBlock.Id)) {
                                 ar.ConditionGroup = null;
                                 _context.ActionRules.Remove(ar);
@@ -176,42 +188,37 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     }
 
                 // DONE :)
+                _progressHandler.IncrementProgress("block");
                 return resultWF;
             }
             catch (Exception e)
             {
-                throw new Exception($"MetaBlock [{metaBlock.Name}]: {e.Message}", e);
+                throw new Exception($"Metablock [{metaBlock.Name}]: {e.Message}", e);
             }
         }
 
-        private void saveBlocks(SendWS sendWs)
+        private void saveBlocks()
         {
-            int progress = 0, progressMax = _blocksToBuild.Count();
             bool abort = false;
             foreach(TapestryDesignerBlock block in _blocksToBuild)
             {
-                progress++;
                 try
                 {
-                    sendWs(Json.Encode(new
-                    {
-                        id = "tapestry",
-                        type = "info",
-                        message = $"aktualizuji workflow <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>"
-                    }));
                     saveBlockContent(block);
+                    _progressHandler.IncrementProgress("blockContent");
                 }
                 catch (Exception e)
                 {
                     while (e.Message.Contains("An error occurred while updating the entries. See the inner exception for details."))
                         e = e.InnerException;
 
-                    sendWs(Json.Encode(new { childOf = "tapestry", message = $"{block.Name} - {e.Message}", abort = true }));
+                    _progressHandler.Error($"{block.Name} - {e.Message}");
                     abort = true;
                 }
             }
-            sendWs(Json.Encode(new { id = "tapestry", type = "info", message = "ukládám aktualizovaný workflow" }));
+            _progressHandler.SetMessage("blockContent", "Saving generated block content", MessageType.InProgress);
             _context.SaveChanges();
+
             if (abort)
                 throw new Exception("během aktualizace workflow došlo k chybám");
         }
@@ -270,13 +277,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 resultBlock.BootstrapPageId = pageIdList[0];
                 resultBlock.MozaicPage = mainPage;
             }
-            block.IsChanged = false;
+            //block.IsChanged = false;
         }
 
         private ResourceMappingPair saveResourceRule(TapestryDesignerResourceRule resourceRule, Application app, Dictionary<int, string> stateColumnMapping, Block resultBlock)
         {
-            AttributeRule result = new AttributeRule();
-
             foreach (TapestryDesignerResourceConnection connection in resourceRule.Connections)
             {
                 TapestryDesignerResourceItem source = connection.Source;
@@ -365,7 +370,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     TargetColumnName = target.ColumnName,
 
                     DataSourceParams = dataSourceParams,
-                    Block = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock]
+                    Block = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock],
+
+                    BlockName = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock].Name,
+                    ApplicationName = _app.Name
                 };
 
                 resultBlock.ResourceMappingPairs.Add(pair);
@@ -632,30 +640,18 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                                     generatedInputVariables = ";WSName=s$" + relatedConnections.Source.Label.Substring(4);
                             }
                         }
-
-                        if (item.ActionId == 300212 || item.ActionId == 19856) // Call jsonrpc over tcp, marketdeph
+                        if (item.ActionId == 3004 || item.ActionId == 3005 || item.ActionId == 3006 || item.ActionId == 3007) // ExtDB Select / Insert / Update / Delete
                         {
                             foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id))
                             {
-                                if (relatedConnections.Source.Label?.StartsWith("WS: ") ?? false)
-                                {
-                                    var ws = _context.WSs.SingleOrDefault(x => x.Name == relatedConnections.Source.Label.Substring(4));
-                                    generatedInputVariables = ";IpAddress=s$" + ws.REST_Base_Url.Split(':')[0].ToString() + ";Port=s$" + ws.REST_Base_Url.Split(':')[1].ToString();
-                                }
-
-                            }
-                        }
-
-                        if (item.ActionId == 3004 || item.ActionId == 3005 || item.ActionId == 3006 || item.ActionId == 3007) // ExtDB Select / Insert / Update / Delete
-                        {
-                            foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id)) {
                                 if (relatedConnections.Source.Label?.StartsWith("ExtDB: ") ?? false)
                                     generatedInputVariables = ";dbName=s$" + relatedConnections.Source.Label.Substring(7);
                             }
                         }
                         if (item.ActionId == 3008) // Send to RabbitMQ
                         {
-                            foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id)) {
+                            foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id))
+                            {
                                 if (relatedConnections.Source.Label?.StartsWith("RabbitMQ: ") ?? false)
                                     generatedInputVariables = ";rabbitMQ=s$" + relatedConnections.Source.Label.Substring(10);
                             }
@@ -682,13 +678,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         if (_blockMapping.ContainsKey(item.Target))
                             rule.TargetBlock = _blockMapping[item.Target];
                         else
-#warning poslat warning přes WS
-                            _sendWs(Json.Encode(new
-                            {
-                                id = "tapestry",
-                                type = "error",
-                                message = $"Block [{item.Target.Name}] not found!"
-                            }));
+                            _progressHandler.Error($"Block [{item.Target.Name}] not found!");
                         break;
 
                     case "symbol":
@@ -870,7 +860,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             {
                 rule.ActionRuleRights.Add(new Entitron.Entity.Persona.ActionRuleRight
                 {
-                    AppRole = _app.Roles.Single(r => r.Name == roleName),
+                    ApplicationId = _app.Id,
+                    AppRoleName = roleName,
                     Executable = true
                 });
             }

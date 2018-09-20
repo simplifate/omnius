@@ -1,5 +1,6 @@
 ﻿namespace FSS.Omnius.Modules.Entitron.Entity.Hermes
 {
+    using Newtonsoft.Json;
     using Master;
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -14,7 +15,7 @@
     [Table("Hermes_Email_Queue")]
     public partial class EmailQueue : IEntity
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         
         [DataType(DataType.Text)]
         public string Message { get; set; }
@@ -27,7 +28,7 @@
         [DataType(DataType.Text)]
         public string AttachmentList { get; set; }
         
-        public int? ApplicationId { get; set; }
+        public int ApplicationId { get; set; }
         public Application Application { get; set; }
 
         public EmailQueueStatus Status { get; set; }

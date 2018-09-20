@@ -9,6 +9,7 @@ using FSS.Omnius.Modules.Nexus.Service;
 using System;
 using System.Collections.Generic;
 using DbExtensions;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
@@ -18,7 +19,7 @@ namespace FSS.Omnius.Controllers.Nexus
         // GET: ExtDB list
         public ActionResult Index()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             ViewData["LdapServersCount"] = e.Ldaps.Count();
             ViewData["WebServicesCount"] = e.WSs.Count();
             ViewData["ExtDatabasesCount"] = e.ExtDBs.Count();
@@ -40,7 +41,7 @@ namespace FSS.Omnius.Controllers.Nexus
         [HttpPost]
         public ActionResult Save(ExtDB model)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             if (ModelState.IsValid)
             {
                 // Záznam již existuje - pouze upravujeme
@@ -73,19 +74,19 @@ namespace FSS.Omnius.Controllers.Nexus
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             return View("~/Views/Nexus/ExtDB/Detail.cshtml", e.ExtDBs.Single(m => m.Id == id));
         }
 
         public ActionResult Edit(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             return View("~/Views/Nexus/ExtDB/Form.cshtml", e.ExtDBs.Single(m => m.Id == id));
         }
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             ExtDB row = e.ExtDBs.Single(m => m.Id == id);
 
             e.ExtDBs.Remove(row);

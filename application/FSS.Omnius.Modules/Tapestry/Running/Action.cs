@@ -51,18 +51,20 @@ namespace FSS.Omnius.Modules.Tapestry
         {
             ActionResult results = new ActionResult();
 
-            if (((IEnumerable<object>)vars["DataSource"]).Count() > 0) {
-                CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                DBEntities context = DBEntities.appInstance(core.Application);
+            if (((IEnumerable<object>)vars["DataSource"]).Count() > 0)
+            {
+                COREobject core = COREobject.i;
+                DBEntities context = core.Context;
+
                 //List<ActionRule_Action> actions = context.ActionRule_Action.Where(a => a.VirtualParentId == actionRule_action.VirtualItemId).OrderBy(a => a.Order).ToList();
 
-                var startRule = context.ActionRules.Include("ActionRule_Actions").Where(a => a.ActionRule_Actions.Where(aa => aa.IsForeachStart == true && aa.VirtualParentId == actionRule_action.VirtualItemId).Any()).FirstOrDefault();
+                var startRule = context.ActionRules.Include("ActionRule_Actions").FirstOrDefault(a => a.ActionRule_Actions.Any(aa => aa.IsForeachStart == true && aa.VirtualParentId == actionRule_action.VirtualItemId));
                 if(startRule == null) {
                     return results;
                 }
 
                 foreach (object item in (IEnumerable<object>)vars["DataSource"]) {
-                    vars["__item__"] = item;
+                    vars[vars.ContainsKey("ItemName") ? (string)vars["ItemName"] : "__item__"] = item;
                     results.OutputData = vars;
 
                     var nextRule = startRule;
@@ -73,7 +75,7 @@ namespace FSS.Omnius.Modules.Tapestry
                             ActionResult result = null;
                             if (nextAction.ActionId == -1 && nextAction.VirtualAction == "foreach") { // foreach
                                 result = Action.RunForeach(remapedParams, nextAction);
-                                if (result.Type != ActionResultType.Error) {
+                                if (result.Type != MessageType.Error) {
                                     result.OutputData["__item__"] = item;
                                 }
                             }
@@ -83,7 +85,7 @@ namespace FSS.Omnius.Modules.Tapestry
                                 result = action.run(remapedParams, nextAction);
                             }
 
-                            if (result.Type == ActionResultType.Error) {
+                            if (result.Type == MessageType.Error) {
                                 foreach (IActionRule_Action reverseActionMap in nextRule.ActionRule_Actions.Where(a => a.Order < nextAction.Order).OrderByDescending(a => a.Order)) {
                                     var reverseAction = Action.All[reverseActionMap.ActionId];
                                     reverseAction.ReverseRun(results.ReverseInputData.Last());
@@ -116,7 +118,14 @@ namespace FSS.Omnius.Modules.Tapestry
             foreach (Type type in Assembly.GetAssembly(typeof(Action)).GetTypes().Where(t => t.IsSubclassOf(typeof(Action)) && !t.IsAbstract))
             {
                 Action action = (Action)Activator.CreateInstance(type);
-                _actions.Add(action.Id, action);
+                try
+                {
+                    _actions.Add(action.Id, action);
+                }
+                catch(ArgumentException)
+                {
+                    OmniusWarning.Log($"Action has duplicate Id [{action.Name}, {_actions[action.Id].Name}]", OmniusLogSource.Tapestry);
+                }
             }
         }
         
@@ -129,9 +138,9 @@ namespace FSS.Omnius.Modules.Tapestry
         public virtual ActionResult run(Dictionary<string, object> vars, IActionRule_Action actionRule_action)
         {
             Dictionary<string, object> outputVars = new Dictionary<string, object>();
-            ActionResultType outputStatus = ActionResultType.Success;
+            MessageType outputStatus = MessageType.Success;
             var invertedVar = new Dictionary<string, object>();
-            Message message = new Message();
+            Message message = new Message(COREobject.i);
 
             try
             {
@@ -139,10 +148,10 @@ namespace FSS.Omnius.Modules.Tapestry
             }
             catch (Exception ex)
             {
-                outputStatus = ActionResultType.Error;
+                outputStatus = MessageType.Error;
                 message.Errors.Add(ex.Message);
                 Logger.Log.Error(ex);
-                CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+                COREobject core = (COREobject)vars["__CORE__"];
                 OmniusApplicationException.Log(ex, OmniusLogSource.Tapestry, core.Application, actionRule_action.ActionRule.SourceBlock, actionRule_action, vars, core.User);
             }
 

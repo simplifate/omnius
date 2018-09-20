@@ -317,30 +317,30 @@ function LoadConditionColumns(parent) {
             break;
         case "string":
             currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
-            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>is not empty</option></select>'));
             break;
         case "unknown":
         default:
             currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
-            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>is not empty</option></select>'));
     }
 }
 var ConditionSetTemplate = '<div class="conditionSet"><div class="conditionSetHeading"><span class="conditionSetPrefix"> a</span>ll of these conditions must be met</div>'
     + '<div class="removeConditionSetIcon">X</div><table class="conditionTable"></table></div>';
 var ConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><select></select>'
-    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>is empty</option><option>is not empty</option></select></td><td class="conditionValueCell">'
+    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>is empty</option><option>is not empty</option><option>is in</option></select></td><td class="conditionValueCell">'
     + '<select><option selected="selected">True</option></select></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
     + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
     + '</tr>';
 var ManualInputConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><input type="text"></input>'
-    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>contains</option><option inputType="none">exists</option></select></td><td class="conditionValueCell">'
+    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>contains</option><option>is in</option><option inputType="none">exists</option></select></td><td class="conditionValueCell">'
     + '<input type="text"></input></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
     + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
     + '</tr>';
 var HermesConditionSetTemplate = '<div class="conditionSet"><div class="conditionSetHeading"><span class="conditionSetPrefix"> a</span>ll of these conditions must be met</div>'
     + '<div class="removeConditionSetIcon">X</div><table class="conditionTable"></table></div>';
 var HermesConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><select class="form-control" style="width:auto"><option value="From">From</option><option value="CC">CC</option><option value="Subject">Subject</option><option value="Body">Body</option></select>'
-    + '</td><td class="conditionOperatorCell"><select class="form-control" style="width:auto"><option value="contains" selected="selected">contains</option><option value="BeginWith">begins with</option><option value="EndWith">ends with</option><option value="IsEmpty" data-inputType="none">is empty</option><option value="IsNotEmpty" data-inputType="none">is not empty</option></select></td><td class="conditionValueCell">'
+    + '</td><td class="conditionOperatorCell"><select class="form-control" style="width:auto"><option value="contains" selected="selected">contains</option><option value="BeginWith">begins with</option><option value="EndWith">ends with</option><option value="IsEmpty" data-inputType="none">is empty</option><option value="IsNotEmpty" data-inputType="none">is not empty</option><option>is not empty</option></select></td><td class="conditionValueCell">'
     + '<input type="text" value="" class="form-control" /></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
     + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
     + '</tr>';

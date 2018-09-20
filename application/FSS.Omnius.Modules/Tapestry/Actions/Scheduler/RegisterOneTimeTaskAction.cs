@@ -1,9 +1,10 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Cortex;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
+using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Configuration;
-using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron.Entity.Cortex;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -18,11 +19,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            Application app = COREobject.i.Application;
 
             bool isutc = vars.ContainsKey("InputIsUtc") ? (bool)vars["InputIsUtc"] : false;
             string hostname = TapestryUtils.GetServerHostName();
-            string appName = core.Application.Name;
+            string appName = app.Name;
             string blockName = (string)vars["Block"];
             string button = vars.ContainsKey("Button") ? (string)vars["Button"] : "";
             int modelId = vars.ContainsKey("ModelId") ? (int)vars["ModelId"] : -1;
@@ -33,7 +34,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             string targetUrl;
 
-            targetUrl = $"{hostname}/{appName}/{blockName}/Get?modelId={modelId}&User=scheduler&Password=194GsQwd/AgB4ZZnf_uF";
+            if (serverName == "localhost")
+                targetUrl = $"https://omnius-as.azurewebsites.net/{appName}/{blockName}/Get?modelId={modelId}&User={systemAccName}&Password={systemAccPass}";
+            else
+                targetUrl = $"{hostname}/{appName}/{blockName}/Get?modelId={modelId}&User={systemAccName}&Password={systemAccPass}";
 
             if (button != "")
                 targetUrl += $"&button={button}";
@@ -61,7 +65,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             var newTask = new Task
             {
-                AppId = core.Application.Id,
+                AppId = app.Id,
                 Active = true,
                 Name = taskName,
                 Type = ScheduleType.ONCE,

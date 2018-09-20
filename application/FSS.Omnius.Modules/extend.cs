@@ -137,7 +137,8 @@ namespace System
             {
                 if (source.ContainsKey(pair.Key))
                 {
-                    if (pair.Key as string == "DataSource") {
+                    if (pair.Key as string == "DataSource")
+                    {
                         continue;
                     }
                     source[pair.Key] = pair.Value;
@@ -145,6 +146,7 @@ namespace System
                 else
                     source.Add(pair.Key, pair.Value);
             }
+
         }
         public static void AddOrUpdateRange<TKey, TValue>(this Dictionary<TKey, TValue> source, IEnumerable<KeyValuePair<TKey, TValue>> range)
         {
@@ -272,6 +274,38 @@ namespace System
             // \140 grave accent
 
             return System.Text.RegularExpressions.Regex.Replace(input, @"(\\)([\000\010\011\012\015\032\042\047\134\140])", "$2");
+        }
+
+        /// <summary>
+        /// list to tuple
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        public static void Deconstruct<T>(this IList<T> list, out T first, out T second)
+        {
+            if (list.Count < 2)
+                throw new Exception("list has no 2 values");
+
+            first = list[0];
+            second = list[1];
+        }
+        
+        public static bool AnyInner(this Exception exception, Func<Exception, bool> expression)
+        {
+            if (exception == null)
+                return false;
+
+            return expression(exception) || exception.InnerException.AnyInner(expression);
+        }
+
+        public static bool AllInner(this Exception exception, Func<Exception, bool> expression)
+        {
+            if (exception == null)
+                return false;
+
+            return expression(exception) && exception.InnerException.AllInner(expression);
         }
     }
 }

@@ -9,6 +9,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic.Bootstrap;
 using System.Web.Helpers;
 using System.IO;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Mozaic
 {
@@ -18,24 +19,24 @@ namespace FSS.Omnius.Controllers.Mozaic
         // GET: Js
         public ActionResult Index()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
 
             return View(e.Js);
         }
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             Js js = e.Js.SingleOrDefault(x => x.Id == id);
 
-            return View(js);
+            return PartialView(js);
         }
 
         #region Updates
         // Start update environment
         public ActionResult Update(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             Js js = e.Js.SingleOrDefault(x => x.Id == id);
 
             return SetUpdateJs(js);
@@ -43,21 +44,19 @@ namespace FSS.Omnius.Controllers.Mozaic
 
         public ActionResult SetUpdateJs(Js js)
         {
-            DBEntities e = DBEntities.instance;
-
-            List<SelectListItem> appList = new List<SelectListItem>();
-            foreach (Application app in e.Applications) {
-                appList.Add(new SelectListItem() { Value = app.Id.ToString(), Text = app.Name, Selected = js == null ? false : (js.ApplicationId == app.Id) });
-            }
-
+            DBEntities e = COREobject.i.Context;
+            
             List<SelectListItem> pageList = new List<SelectListItem>();
-            if (js != null && js.Application != null) {
-                foreach (MozaicBootstrapPage page in js.Application.MozaicBootstrapPages) {
+            if (js == null)
+                foreach (MozaicBootstrapPage page in e.MozaicBootstrapPages.OrderBy(p => p.ParentApp_Id))
+                {
+                    pageList.Add(new SelectListItem() { Value = page.Id.ToString(), Text = $"{page.ParentApp.Name}: {page.Name}", Selected = false });
+                }
+            else
+                foreach (MozaicBootstrapPage page in js.MozaicBootstrapPage.ParentApp.MozaicBootstrapPages) {
                     pageList.Add(new SelectListItem() { Value = page.Id.ToString(), Text = page.Name, Selected = js.MozaicBootstrapPageId == page.Id });
                 }
-            }
-
-            ViewData["appList"] = appList;
+            
             ViewData["pageList"] = pageList;
 
             return PartialView("Update", js);
@@ -68,7 +67,7 @@ namespace FSS.Omnius.Controllers.Mozaic
         [ValidateInput(false)]
         public ActionResult Update(Js model)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
 
             if (string.IsNullOrWhiteSpace(model.Name)) {
                 return View("Update", model);
@@ -80,16 +79,17 @@ namespace FSS.Omnius.Controllers.Mozaic
             //SassCompiler compiler = new SassCompiler();
             //var cssText = compiler.Compile(model.Value, OutputStyle.Compressed, true);
 
+            model.MozaicBootstrapPage = e.MozaicBootstrapPages.Find(model.MozaicBootstrapPageId);
             string path = GetJsFilePath(model);
             System.IO.File.WriteAllText(path, model.Value);
 
-            return View("BaseIndex", e.Js);
+            return PartialView("BaseIndex", e.Js);
         }
         #endregion
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             Js js = e.Js.SingleOrDefault(x => x.Id == id);
 
             System.IO.File.Delete(GetJsFilePath(js));
@@ -104,16 +104,12 @@ namespace FSS.Omnius.Controllers.Mozaic
 
         public ActionResult Create()
         {
-            Js newJs = new Js();
-            newJs.Name = "NewJS";
-            newJs.Value = "";
-
-            return SetUpdateJs(newJs);
+            return SetUpdateJs(null);
         }
 
         public ActionResult GetPageList(int appId)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
 
             List<Dictionary<string, string>> pages = new List<Dictionary<string, string>>();
             foreach (MozaicBootstrapPage page in e.Applications.Single(a => a.Id == appId).MozaicBootstrapPages) {
@@ -130,8 +126,8 @@ namespace FSS.Omnius.Controllers.Mozaic
 
         private string GetJsFilePath(Js model)
         {
-            DBEntities e = DBEntities.instance;
-            Application app = e.Applications.Single(a => a.Id == model.ApplicationId);
+            DBEntities e = COREobject.i.Context;
+            Application app = e.Applications.Single(a => a.Id == model.MozaicBootstrapPage.ParentApp_Id);
 
             string applicationJSPath = AppDomain.CurrentDomain.BaseDirectory + $"\\Scripts\\UserScripts\\Application\\" + app.Name;
 

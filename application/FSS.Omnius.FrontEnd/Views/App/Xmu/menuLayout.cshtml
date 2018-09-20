@@ -1,9 +1,6 @@
-@{ FSS.Omnius.FrontEnd.Utils.T t = new FSS.Omnius.FrontEnd.Utils.T( (string)ViewData["locale"] ); }
+@{ FSS.Omnius.FrontEnd.Utils.T t = new FSS.Omnius.FrontEnd.Utils.T( (FSS.Omnius.Modules.CORE.Locale)ViewData["locale"] ); }
     <ul  id=appMenu>
-@if (Context.GetLoggedUser().canUseBlock("User",117)){            <li>
-                    <a href="/Xmu/Sepa">@(t._("Sepa"))</a>
-            </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
+@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/Overview">@(t._("Overview"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
@@ -19,6 +16,9 @@
                     <a href="/Xmu/AtsBot">@(t._("ATS Bot"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
+                    <a href="/Xmu/TradingFeeLevel">@(t._("Trading Fee Level"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
                     <a href="/Xmu/BankAccount">@(t._("Bank Account"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Grand Vizier",117)){            <li>
@@ -31,12 +31,9 @@
                     <a href="/Xmu/Log">@(t._("Log"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Grand Vizier",117)){            <li>
+                    <a href="/Xmu/FeeUser">@(t._("Fee User"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Grand Vizier",117)){            <li>
                     <a href="/Xmu/UserMessages">@(t._("User messages"))</a>
-            </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin,Vizier,Grand Vizier,SupportKyc",117)){            <li>
-                    <a href="/Xmu/Usersprofile">@(t._("UsersProfile"))</a>
-            </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin,Janissary,Vizier,Grand Vizier",117)){            <li>
-                    <a href="/Xmu/FeeSettings">@(t._("Fee settings"))</a>
             </li>
 }    </ul>

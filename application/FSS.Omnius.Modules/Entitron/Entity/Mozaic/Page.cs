@@ -1,9 +1,10 @@
 namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
     using Tapestry;
-
+    
     [Table("Mozaic_Pages")]
     public partial class Page : IEntity
     {
@@ -11,7 +12,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public Page()
         {
             Blocks = new HashSet<Block>();
-            Css = new HashSet<Css>();
         }
 
         public int Id { get; set; }
@@ -25,9 +25,5 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public bool IsBootstrap { get; set; }
 
         public virtual ICollection<Block> Blocks { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Css> Css { get; set; }
-        
     }
 }

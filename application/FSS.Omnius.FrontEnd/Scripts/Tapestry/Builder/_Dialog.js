@@ -128,6 +128,17 @@ TB.dialog.dialogList = {
             open: TB.foreach._setDatasourceOpen
         }
     },
+    foreachItemName: {
+        target: '#foreach-itemname-dialog',
+        submit: TB.foreach.setItemName,
+        options: {
+            buttons: [
+                { text: 'Save', click: TB.foreach.setItemName, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TB.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TB.foreach._setItemNameOpen
+        }
+    },
     foreachName: {
         target: '#foreach-name-dialog',
         submit: TB.foreach.setName,

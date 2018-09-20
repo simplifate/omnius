@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System.Data.Common;
 using System.Collections.Generic;
 using FSS.Omnius.Modules.Nexus.Service;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Nexus.Gate
 {
@@ -18,7 +19,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
 
         public ExtDB(string serverName, string dbName)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
 
             Entitron.Entity.Nexus.ExtDB row = e.ExtDBs.Single(m => m.DB_Server == serverName && m.DB_Alias == dbName);
             if (row == null) {

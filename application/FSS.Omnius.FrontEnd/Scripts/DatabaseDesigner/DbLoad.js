@@ -105,8 +105,8 @@
                 }
             }
             for (i = 0; i < data.Relations.length; i++) {
-                sourceDiv = $("#database-container .dbColumn[dbColumnId='" + data.Relations[i].LeftColumn + "']");
-                targetDiv = $("#database-container .dbColumn[dbColumnId='" + data.Relations[i].RightColumn + "']");
+                sourceDiv = $("#database-container .dbColumn[dbColumnId='" + data.Relations[i].SourceColumn + "']");
+                targetDiv = $("#database-container .dbColumn[dbColumnId='" + data.Relations[i].TargetColumn + "']");
                 newConnection = instance.connect({ source: sourceDiv.attr("id"), target: targetDiv.attr("id"), editable: true });
                 $(newConnection).data("relationType", data.Relations[i].Type);
                 switch (data.Relations[i].Type) {

@@ -109,6 +109,28 @@ namespace FSS.Omnius.Modules.Tapestry
         /// <param name="token">Parsovaný objekt</param>
         /// <param name="parsedColumns">Kolekce výsledných řádků</param>
         /// <param name="colName">Nositel jména sloupce, měl by začít null</param>
+        public static void ParseJObject(JObject token, Dictionary<string, object> parsedColumns, string colName = null)
+        {
+            foreach (JProperty item in token.Properties())
+            {
+                if (item.Value.Type == JTokenType.Object)
+                {
+                    ParseJObject((JObject)item.Value, parsedColumns, (string.IsNullOrEmpty(colName)) ? item.Name : colName + "_" + item.Name);
+                }
+                else
+                {
+                    parsedColumns.Add((string.IsNullOrEmpty(colName)) ? item.Name : colName + "_" + item.Name, item.Value.ToObject<object>());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Převede několikaúrovňový JObject na slovník v podstatě na na formát JProperty.Name:JProperty.Value.
+        /// Příklad: "money":{"actual":{"btc":{"amount":... na money_actual_btc_amount
+        /// </summary>
+        /// <param name="token">Parsovaný objekt</param>
+        /// <param name="parsedColumns">Kolekce výsledných řádků</param>
+        /// <param name="colName">Nositel jména sloupce, měl by začít null</param>
         public static void ParseJObjectRecursively(JObject token, Dictionary<string, object> parsedColumns, string colName = null)
         {
             foreach (JProperty item in token.Properties())

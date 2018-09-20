@@ -7,7 +7,8 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using FSS.Omnius.Modules.Hermes;
 using Microsoft.AspNet.Identity.Owin;
-using C = FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Persona;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
@@ -42,7 +43,7 @@ namespace FSS.Omnius.Controllers.Hermes
         [PersonaAuthorize(NeedsAdmin = true, Module = "Hermes")]
         public ActionResult Index()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
             ViewData["EmailQueueCount"] = e.EmailQueueItems.Count();
@@ -53,7 +54,7 @@ namespace FSS.Omnius.Controllers.Hermes
         [PersonaAuthorize(NeedsAdmin = true, Module = "Hermes")]
         public ActionResult Detail(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             
             return PartialView("~/Views/Hermes/Queue/Detail.cshtml", e.EmailQueueItems.Single(m => m.Id == id));
         }
@@ -61,7 +62,7 @@ namespace FSS.Omnius.Controllers.Hermes
         [PersonaAuthorize(NeedsAdmin = true, Module = "Hermes")]
         public ActionResult Delete(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             EmailQueue row = e.EmailQueueItems.Single(m => m.Id == id);
 
             e.EmailQueueItems.Remove(row);
@@ -79,11 +80,11 @@ namespace FSS.Omnius.Controllers.Hermes
             if (!isAuthorized)
                 return new Http403Result();
 
-            C.CORE core = HttpContext.GetCORE();
+            COREobject core = COREobject.i;
 
             if (core.User == null) {
                 redirect = false;
-                core.User = core.Persona.AuthenticateUser(userName);
+                core.User = Persona.GetAuthenticatedUser(userName, false, Request);
             }
 
             Mailer mailer = new Mailer(serverName);

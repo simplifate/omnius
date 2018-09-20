@@ -28,7 +28,7 @@ namespace FSS.Omnius.Modules.Watchtower
             { OmniusLogSource.Master, "vytváření a správa aplikace" },
             { OmniusLogSource.Nexus, "integrace" },
             { OmniusLogSource.Watchtower, "záznam do protokolu činností" },
-            { OmniusLogSource.User, "uživatel" }
+            { OmniusLogSource.User, "záznam z wokflow" }
         };
         public static void Log(string Message, OmniusLogLevel level, OmniusLogSource source = OmniusLogSource.none, Application application = null, User user = null)
         {
@@ -116,7 +116,7 @@ namespace FSS.Omnius.Modules.Watchtower
 
         public void Save(DBEntities context = null)
         {
-            context = context ?? DBEntities.instance;
+            context = context ?? COREobject.i.Context;
             context.LogItems.Add(toLogItem());
             context.SaveChanges();
             Send();
@@ -191,7 +191,7 @@ namespace FSS.Omnius.Modules.Watchtower
             {
                 try
                 {
-                    user = DBEntities.instance.Users.SingleOrDefault(u => u.UserName == HttpContext.Current.User.Identity.Name);
+                    user = COREobject.i.Context.Users.SingleOrDefault(u => u.UserName == HttpContext.Current.User.Identity.Name);
                 }
                 catch (Exception)
                 { }
@@ -210,7 +210,7 @@ namespace FSS.Omnius.Modules.Watchtower
             {
                 try
                 {
-                    user = DBEntities.instance.Users.SingleOrDefault(u => u.UserName == HttpContext.Current.User.Identity.Name);
+                    user = COREobject.i.Context.Users.SingleOrDefault(u => u.UserName == HttpContext.Current.User.Identity.Name);
                 }
                 catch (Exception)
                 { }

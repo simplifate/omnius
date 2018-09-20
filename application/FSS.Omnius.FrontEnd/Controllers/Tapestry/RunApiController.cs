@@ -20,42 +20,40 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
         [HttpPost]
         public JToken Run(string appName, string button, [FromBody]JToken body, string blockIdentify, [FromUri]int modelId = -1)
         {
-            CORE core = new CORE();
-            User currentUser = User.GetLogged(core);
+            COREobject core = COREobject.i;
+            DBEntities context = core.Context;
+            User currentUser = core.User;
             var fc = new M.FormCollection();
             var inputObject = body as JObject;
             if (inputObject != null)
                 foreach (var pair in inputObject)
                     fc.Add(pair.Key, pair.Value.ToString());
-
-            using (DBEntities context = DBEntities.instance)
+            
+            // get block
+            Block block = null;
+            try
             {
-                // get block
-                Block block = null;
-                try
-                {
-                    int blockId = Convert.ToInt32(blockIdentify);
-                    block = context.Blocks.FirstOrDefault(b => b.Id == blockId);
-                }
-                catch (FormatException)
-                {
-                    block = context.Blocks.FirstOrDefault(b => b.Name.ToLower() == blockIdentify.ToLower() && b.WorkFlow.ApplicationId == core.Application.Id);
-                }
-
-                try
-                {
-                    block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Application.Id && w.InitBlockId != null).InitBlock;
-                }
-                catch (NullReferenceException)
-                {
-                    return null;
-                }
-
-                // RUN
-                var result = core.Tapestry.jsonRun(currentUser, block, button, modelId, fc);
-
-                return result;
+                int blockId = Convert.ToInt32(blockIdentify);
+                block = context.Blocks.FirstOrDefault(b => b.Id == blockId);
             }
+            catch (FormatException)
+            {
+                block = context.Blocks.FirstOrDefault(b => b.Name.ToLower() == blockIdentify.ToLower() && b.WorkFlow.ApplicationId == core.Application.Id);
+            }
+
+            try
+            {
+                block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Application.Id && w.InitBlockId != null).InitBlock;
+            }
+            catch (NullReferenceException)
+            {
+                return null;
+            }
+
+            // RUN
+            var result = new Modules.Tapestry.Tapestry(core).jsonRun(block, button, modelId, fc);
+
+            return result;
         }
 
         /** 
@@ -67,47 +65,45 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
         {
             try
             {
-                using (var context = DBEntities.instance)
+                DBEntities context = COREobject.i.Context;
+                var result = new List<Object>();
+
+                var blocksList = new List<AjaxTapestryDesignerBlock>();
+                var metablocksList = new List<AjaxTapestryDesignerMetablock>();                 
+                var requestedApp = context.Applications.Find(appId);
+
+                foreach (var block in context.TapestryDesignerBlocks.Where(b => b.IsDeleted && b.ParentMetablock.ParentAppId == appId))
                 {
-                    var result = new List<Object>();
-
-                    var blocksList = new List<AjaxTapestryDesignerBlock>();
-                    var metablocksList = new List<AjaxTapestryDesignerMetablock>();                 
-                    var requestedApp = context.Applications.Find(appId);
-
-                    foreach (var block in context.TapestryDesignerBlocks.Where(b => b.IsDeleted && b.ParentMetablock.ParentAppId == appId))
+                    blocksList.Add(new AjaxTapestryDesignerBlock
                     {
-                        blocksList.Add(new AjaxTapestryDesignerBlock
-                        {
-                            Id = block.Id,
-                            Name = block.Name,
-                            PositionX = block.PositionX,
-                            PositionY = block.PositionY,
-                            MenuOrder = block.MenuOrder,
-                            IsInitial = block.IsInitial,
-                            IsInMenu = block.IsInMenu
-                        });
-                    }
-
-                    foreach (var metablock in requestedApp.TapestryDesignerMetablocks.Where(b => b.IsDeleted))
-                    {
-                        metablocksList.Add(new AjaxTapestryDesignerMetablock
-                        {
-                            Id = metablock.Id,
-                            Name = metablock.Name,
-                            PositionX = metablock.PositionX,
-                            PositionY = metablock.PositionY,
-                            ParentAppId = metablock.ParentAppId,
-                            IsInitial = metablock.IsInitial,
-                            IsInMenu = metablock.IsInMenu,
-                        });
-                    }
-
-                    result.Add(blocksList);
-                    result.Add(metablocksList);
-                    
-                    return result;
+                        Id = block.Id,
+                        Name = block.Name,
+                        PositionX = block.PositionX,
+                        PositionY = block.PositionY,
+                        MenuOrder = block.MenuOrder,
+                        IsInitial = block.IsInitial,
+                        IsInMenu = block.IsInMenu
+                    });
                 }
+
+                foreach (var metablock in requestedApp.TapestryDesignerMetablocks.Where(b => b.IsDeleted))
+                {
+                    metablocksList.Add(new AjaxTapestryDesignerMetablock
+                    {
+                        Id = metablock.Id,
+                        Name = metablock.Name,
+                        PositionX = metablock.PositionX,
+                        PositionY = metablock.PositionY,
+                        ParentAppId = metablock.ParentAppId,
+                        IsInitial = metablock.IsInitial,
+                        IsInMenu = metablock.IsInMenu,
+                    });
+                }
+
+                result.Add(blocksList);
+                result.Add(metablocksList);
+                    
+                return result;
             }
             catch (Exception ex)
             {

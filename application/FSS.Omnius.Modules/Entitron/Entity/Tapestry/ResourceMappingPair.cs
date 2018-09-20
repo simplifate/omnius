@@ -31,6 +31,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string DataSourceParams { get; set; }
         public int BlockId { get; set; }
         public virtual Block Block { get; set; }
+
+        [Required]
+        public string BlockName { get; set; }
+        [Required]
+        public string ApplicationName { get; set; }
         
         // TO remove
         public string TargetType { get; set; }

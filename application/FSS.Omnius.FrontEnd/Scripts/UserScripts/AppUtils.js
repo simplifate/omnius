@@ -272,6 +272,18 @@ function RecalculatePanelDimensions(panel) {
     panel.width(panelWidth);
     panel.height(panelHeight);
 }
+function findGetParameter(parameterName) {
+    var result = null,
+        tmp = [];
+    location.search
+        .substr(1)
+        .split("&")
+        .forEach(function (item) {
+            tmp = item.split("=");
+            if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+        });
+    return result;
+}
 $(function () {
     $(document).on("click", ".mozaicForm [data-ajax='true']", function () {
         pageSpinner.show();

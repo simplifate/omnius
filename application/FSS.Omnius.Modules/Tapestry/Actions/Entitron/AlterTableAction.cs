@@ -25,7 +25,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
             // init
-            DBConnection db = Modules.Entitron.Entitron.i;
+            COREobject core = COREobject.i;
+            DBConnection db = core.Entitron;
             int ColumnCount = vars.Keys.Where(k => k.StartsWith("ColumnName[") && k.EndsWith("]")).Count();
 
             //find table we want to alter and delete
@@ -83,7 +84,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             db.SaveChanges();
 
-            new DatabaseGenerateService().GenerateDatabase(lastCommit, (CORE.CORE)vars["__CORE__"], x => { });
+            new DatabaseGenerateService(null).GenerateDatabase(lastCommit, (COREobject)vars["__CORE__"]);
 
             // return
         }

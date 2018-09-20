@@ -733,7 +733,7 @@
 
     filterContent: function (node) {
         var tmpNode = node.clone(true);
-
+        
         tmpNode.find('span.mbe-text-node').each(function () {
             $(this).replaceWith(this.innerHTML);
         });

@@ -24,7 +24,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             var listOfDBItems = new List<DBItem>();
             listOfDBItems = (List<DBItem>)vars["ListOfData"];
-            var context = DBEntities.instance;
+            var context = COREobject.i.Context;
 
             var urlDictionary = new Dictionary<string, object>();
             if (vars.ContainsKey("Dictionary"))
@@ -50,13 +50,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
                 string emailAddress = newDictionary["__email"].ToString();
                 recipients.Add(emailAddress, emailAddress);
-
-                int selectedLocale = 1;
+                
                 var user = context.Users.Where(u => u.Email == emailAddress).FirstOrDefault();
-                if (user != null && user.LocaleId == 2)
-                    selectedLocale = 2;
 
-                Mailer mail = new Mailer("", (string)vars["Template"], newDictionary, selectedLocale);
+                Mailer mail = new Mailer("", (string)vars["Template"], newDictionary, user?.Locale ?? Locale.cs);
 
                 if(vars.ContainsKey("SendAsBCC") && (bool)vars["SendAsBCC"] == true) {
                     mail.BCC(recipients);

@@ -2,26 +2,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
     public class ActionResult
     {
         public Message Message { get; set; }
-        public ActionResultType Type { get; set; }
+        public MessageType Type { get; set; }
         public Dictionary<string, object> OutputData { get; set; }
         public List<Dictionary<string, object>> ReverseInputData { get; set; }
 
         public ActionResult()
         {
-            Message = new Message();
-            Type = ActionResultType.Success;
+            Message = new Message(COREobject.i);
+            Type = MessageType.Success;
             OutputData = new Dictionary<string, object>();
             ReverseInputData = new List<Dictionary<string, object>>();
         }
-        public ActionResult(ActionResultType type, Dictionary<string, object> outputData, Dictionary<string, object> reverseInputData, Message message)
+        public ActionResult(MessageType type, Dictionary<string, object> outputData, Dictionary<string, object> reverseInputData, Message message)
         {
             Type = type;
             Message = message;
@@ -53,13 +51,5 @@ namespace FSS.Omnius.Modules.Tapestry
 
             return result;
         }
-    }
-
-    public enum ActionResultType
-    {
-        Success,
-        Info,
-        Warning,
-        Error
     }
 }

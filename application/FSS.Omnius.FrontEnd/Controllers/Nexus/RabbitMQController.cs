@@ -8,6 +8,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Web.Helpers;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Nexus.Service;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
@@ -16,7 +17,7 @@ namespace FSS.Omnius.Controllers.Nexus
     {
         public ActionResult Index()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             
             ViewData["LdapServersCount"] = e.Ldaps.Count();
             ViewData["WebServicesCount"] = e.WSs.Count();
@@ -33,7 +34,7 @@ namespace FSS.Omnius.Controllers.Nexus
 
         public ActionResult Create()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             
             List<SelectListItem> appList = new List<SelectListItem>();
             foreach(Application a in e.Applications.OrderBy(a => a.Name)) {
@@ -47,7 +48,7 @@ namespace FSS.Omnius.Controllers.Nexus
         [HttpPost]
         public ActionResult Save(RabbitMQ model, int? id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             if (ModelState.IsValid)
             {
                 // Záznam ji. existuje - pouze upravujeme
@@ -78,7 +79,7 @@ namespace FSS.Omnius.Controllers.Nexus
         
         public ActionResult Edit(int? id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             RabbitMQ model = e.RabbitMQs.Single(l => l.Id == id);
 
             List<SelectListItem> appList = new List<SelectListItem>();
@@ -93,7 +94,7 @@ namespace FSS.Omnius.Controllers.Nexus
 
         public ActionResult Delete(int? id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             RabbitMQ row = e.RabbitMQs.Single(l => l.Id == id);
 
             if (row == null)
@@ -111,7 +112,7 @@ namespace FSS.Omnius.Controllers.Nexus
 
         public ActionResult LoadBlockList(int appId, string selectedBlockName)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             TapestryDesignerMetablock root = e.TapestryDesignerMetablocks.Where(b => b.ParentAppId == appId && b.ParentMetablock_Id == null).FirstOrDefault();
 
             BlockJsonResponse blockList = LoadFromMetablock(root, 0, selectedBlockName);   
@@ -121,7 +122,7 @@ namespace FSS.Omnius.Controllers.Nexus
 
         public ActionResult LoadWorkflowList(string blockName, int appId, string selectedWorkflowName)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             List<SelectListItem> result = new List<SelectListItem>();
 
             TapestryDesignerBlock block = e.TapestryDesignerBlocks.Where(b => b.Name == blockName && b.ParentMetablock.ParentAppId == appId).SingleOrDefault();

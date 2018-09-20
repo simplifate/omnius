@@ -6,6 +6,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Data.Entity.Validation;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Persona
 {
@@ -18,9 +19,9 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         {
             ViewBag.Saved = false;
 
-            DBEntities masterContext = DBEntities.instance;
+            DBEntities masterContext = COREobject.i.Context;
             Application masterApp = masterContext.Applications.Find(Id);
-            DBEntities context = DBEntities.appInstance(masterApp);
+            DBEntities context = COREobject.i.AppContext;
             Application app = masterApp.similarApp;
 
             if (app == null)
@@ -180,7 +181,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             #endregion
 
             #region Save model
-            var context = DBEntities.instance;
+            var context = COREobject.i.Context;
             Application app = context.Applications.Find(model.AppID);
 
             #region Column headers + data
@@ -320,7 +321,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
 
         private ActionResult addColumn(AjaxPersonaAppRolesForTable model)
         {
-            var context = DBEntities.instance;
+            var context = COREobject.i.Context;
             #region ColHeader
             int priority;
             if (context.AppRoles.Count(r => r.ApplicationId == model.AppID) > 0)

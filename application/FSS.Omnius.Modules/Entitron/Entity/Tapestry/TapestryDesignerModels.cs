@@ -20,7 +20,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         State,
         Port
     }
-    [Table("TapestryDesigner_MetaBlocks")]
+    [Table("TapestryDesigner_Metablocks")]
     public class TapestryDesignerMetablock : IEntity
     {
         public int Id { get; set; }
@@ -261,6 +261,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public int Id { get; set; }
 
+        [StringLength(50)]
         public string Name { get; set; }
         public string Comment { get; set; }
         public bool CommentBottom { get; set; }
@@ -268,7 +269,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionY { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        [StringLength(100)]
         public string DataSource { get; set; }
+        [StringLength(50)]
+        public string ItemName { get; set; }
+        public bool IsParallel { get; set; }
 
         [ImportExport(ELinkType.LinkChild)]
         public ICollection<TapestryDesignerWorkflowItem> WorkflowItems { get; set; }
@@ -356,6 +361,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool? IsForeachEnd { get; set; }
         public string Condition { get; set; }
         public string SymbolType { get; set; }
+        public bool HasParallelLock { get; set; }
 
         [ImportExport(ELinkType.LinkOptional, typeof(TapestryDesignerSubflow))]
         public int? ParentSubflowId { get; set; }
@@ -474,7 +480,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual TapestryDesignerResourceRule ResourceRule { get; set; }
     }
     [Table("TapestryDesigner_Conditions")]
-    public class TapestryDesignerCondition : IEntity
+    public partial class TapestryDesignerCondition : IEntity
     {
         public int Id { get; set; }
         public int Index { get; set; }
@@ -490,7 +496,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual TapestryDesignerConditionSet TapestryDesignerConditionSet { get; set; }
     }
     [Table("TapestryDesigner_ConditionSets")]
-    public class TapestryDesignerConditionSet : IEntity
+    public partial class TapestryDesignerConditionSet : IEntity
     {
         public int Id { get; set; }
 
@@ -511,7 +517,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
     [Table("TapestryDesigner_ConditionGroups")]
-    public class TapestryDesignerConditionGroup : IEntity
+    public partial class TapestryDesignerConditionGroup : IEntity
     {
         public int Id { get; set; }
 

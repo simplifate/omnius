@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -58,6 +58,7 @@
       <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -90,6 +91,10 @@
     </Reference>
     <Reference Include="NGettext, Version=0.6.1.0, Culture=neutral, PublicKeyToken=08d3d1c89dfd2985, processorArchitecture=MSIL">
       <HintPath>..\packages\NGettext.0.6.2\lib\net45\NGettext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NSass.Core, Version=0.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NSass.Core.0.0.3.0\lib\net40\NSass.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
@@ -254,6 +259,7 @@
     <Compile Include="Controllers\Athena\AthenaApiController.cs" />
     <Compile Include="Controllers\Compass\CompassController.cs" />
     <Compile Include="Controllers\CustomCaptchaValidator.cs" />
+    <Compile Include="Controllers\Cortex\CrontabController.cs" />
     <Compile Include="Controllers\Entitron\DbController.cs" />
     <Compile Include="Controllers\Hermes\IncomingController.cs" />
     <Compile Include="Controllers\Hermes\IncomingRuleController.cs" />
@@ -262,25 +268,20 @@
     <Compile Include="Controllers\CORE\Utilities.cs" />
     <Compile Include="Controllers\CORE\ErrorController.cs" />
     <Compile Include="Controllers\Cortex\CortexController.cs" />
-    <Compile Include="Controllers\Cortex\CrontabController.cs" />
     <Compile Include="Controllers\Hermes\HermesApiController.cs" />
     <Compile Include="Controllers\Hermes\PlaceholderController.cs" />
     <Compile Include="Controllers\Hermes\LogController.cs" />
     <Compile Include="Controllers\Hermes\QueueController.cs" />
     <Compile Include="Controllers\Hermes\TemplateController.cs" />
     <Compile Include="Controllers\Hermes\SMTPController.cs" />
-    <Compile Include="Controllers\LoggedUserHelper.cs" />
     <Compile Include="Controllers\Master\AppAdminManagerController.cs" />
     <Compile Include="Controllers\Master\AppManagerApiController.cs" />
     <Compile Include="Controllers\Mozaic\BootstrapController.cs" />
     <Compile Include="Controllers\Mozaic\JsController.cs" />
-    <Compile Include="Controllers\Mozaic\CssController.cs" />
     <Compile Include="Controllers\Mozaic\EditorController.cs" />
     <Compile Include="Controllers\Mozaic\MozaicBootstrapApiController.cs" />
     <Compile Include="Controllers\Mozaic\MozaicEditorApiController.cs" />
     <Compile Include="Controllers\Mozaic\PageController.cs" />
-    <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
-    <Compile Include="Controllers\Mozaic\TemplateController.cs" />
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
     <Compile Include="Controllers\Nexus\RabbitMQController.cs" />
     <Compile Include="Controllers\Nexus\TCPSocketController.cs" />
@@ -293,6 +294,9 @@
     <Compile Include="Controllers\Persona\PersonaApiController.cs" />
     <Compile Include="Controllers\Persona\RightsController.cs" />
     <Compile Include="Controllers\Persona\RolesController.cs" />
+    <Compile Include="Controllers\Tapestry2\RestController.cs" />
+    <Compile Include="Controllers\Tapestry2\RunApiController.cs" />
+    <Compile Include="Controllers\Tapestry2\RunController.cs" />
     <Compile Include="Controllers\Tapestry\OverviewController.cs" />
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
@@ -317,14 +321,11 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Utils\Builder\SharedTableBuilder.cs" />
     <Compile Include="Utils\Translation\JsTranslationsCollection.cs" />
     <Compile Include="Utils\Translation\TranslationUtils.cs" />
     <Compile Include="Utils\IDispatchable.cs" />
     <Compile Include="Utils\Auth\SamlUtil.cs" />
     <Compile Include="Views\MyRazorViewEngine.cs" />
-    <Compile Include="Views\MyVirtualFile.cs" />
-    <Compile Include="Views\MyVirtualPathProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Start\Logo Crymico.png" />
@@ -339,17 +340,43 @@
     <Content Include="Content\CssLibs\Bundle.min.css">
       <DependentUpon>Bundle.css</DependentUpon>
     </Content>
-    <Content Include="Content\CssLibs\calenstyle-iconfont.css" />
-    <Content Include="Content\CssLibs\calenstyle.css" />
     <Content Include="Content\CssLibs\ErrorCss.css" />
     <Content Include="Content\CssLibs\jquery.countdown.css" />
     <Content Include="Content\CssLibs\jquery.datetimepicker.css" />
     <Content Include="Content\CssLibs\select.dataTables.min.css" />
-    <Content Include="Content\Fonts\calenstyle-iconfont.svg" />
+    <Content Include="Content\Fonts\feather-webfont.svg" />
     <Content Include="Content\Fonts\innogy\Innogy-Bold.svg" />
     <Content Include="Content\Fonts\innogy\Innogy-Light.svg" />
     <Content Include="Content\Fonts\innogy\Innogy-Medium.svg" />
     <Content Include="Content\Fonts\innogy\Innogy-Regular.svg" />
+    <Content Include="Content\Images\crymico_network2.png" />
+    <Content Include="Content\Images\down_widget.png" />
+    <Content Include="Content\Images\GridIcon\assets.png" />
+    <Content Include="Content\Images\GridIcon\DCR.png" />
+    <Content Include="Content\Images\GridIcon\down_widget.png" />
+    <Content Include="Content\Images\fss_brick_logo_tr.png" />
+    <Content Include="Content\Images\GridIcon\accepted.png" />
+    <Content Include="Content\Images\GridIcon\bad_sign.png" />
+    <Content Include="Content\Images\GridIcon\bitcoin_black.png" />
+    <Content Include="Content\Images\GridIcon\bitcoin_color.png" />
+    <Content Include="Content\Images\GridIcon\bitcoin_white.png" />
+    <Content Include="Content\Images\GridIcon\ether_black.png" />
+    <Content Include="Content\Images\GridIcon\ether_color.png" />
+    <Content Include="Content\Images\GridIcon\ether_white.png" />
+    <Content Include="Content\Images\GridIcon\exchange_white.png" />
+    <Content Include="Content\Images\GridIcon\LTC.png" />
+    <Content Include="Content\Images\GridIcon\LTC_dark.png" />
+    <Content Include="Content\Images\GridIcon\music.png" />
+    <Content Include="Content\Images\GridIcon\ok_sign.png" />
+    <Content Include="Content\Images\GridIcon\rejected.png" />
+    <Content Include="Content\Images\GridIcon\stock_drop.png" />
+    <Content Include="Content\Images\GridIcon\stock_raise.png" />
+    <Content Include="Content\Images\GridIcon\warning.png" />
+    <Content Include="Content\Images\GridIcon\XMR.png" />
+    <Content Include="Content\Images\GridIcon\zcash_black.png" />
+    <Content Include="Content\Images\GridIcon\zcash_color.png" />
+    <Content Include="Content\Images\GridIcon\zcash_white.png" />
+    <Content Include="Content\Images\hashrate.png" />
     <Content Include="Content\Images\Icons\bitcoin_black.png" />
     <Content Include="Content\Images\Icons\dash_black.png" />
     <Content Include="Content\Images\Icons\doge_black.png" />
@@ -365,8 +392,18 @@
     <Content Include="Content\Images\Icons\zcash_black.png" />
     <Content Include="Content\Images\innogy_logo_H_n_4C_ly.svg" />
     <Content Include="Content\Images\LogoCrymico.png" />
-    <Content Include="Content\Images\resize-handle.png" />
     <Content Include="Content\Images\TapestryIcons\circle-event.png" />
+    <Content Include="Content\Images\login-background.png" />
+    <Content Include="Content\Images\login-background.png" />
+    <Content Include="Content\Images\Logo_Crymico.png" />
+    <Content Include="Content\Images\Logo_Crymico_w2.png" />
+    <Content Include="Content\Images\log_back.png" />
+    <Content Include="Content\Images\man.jpg" />
+    <Content Include="Content\Images\MinerMonitor.png" />
+    <Content Include="Content\Images\modalpreloader.gif" />
+    <Content Include="Content\Images\my-yields-mockup.png" />
+    <Content Include="Content\Images\GridIcon\ok_widget.png" />
+    <Content Include="Content\Images\ok_widget.png" />
     <Content Include="Content\Images\TapestryIcons\envelope-start.png" />
     <Content Include="Content\CssLibs\PagedList.css" />
     <Content Include="Content\Fonts\context-menu-icons.eot" />
@@ -374,10 +411,20 @@
     <Content Include="Content\Fonts\context-menu-icons.woff" />
     <Content Include="Content\Fonts\context-menu-icons.woff2" />
     <Content Include="Content\Locale\en\LC_MESSAGES\Omnius.mo" />
-    <Content Include="Content\Fonts\calenstyle-iconfont.eot" />
-    <Content Include="Content\Fonts\calenstyle-iconfont.ttf" />
-    <Content Include="Content\Fonts\calenstyle-iconfont.woff" />
+    <Content Include="Content\Fonts\feather-webfont.eot" />
+    <Content Include="Content\Fonts\feather-webfont.ttf" />
+    <Content Include="Content\Fonts\feather-webfont.woff" />
+    <Content Include="Content\Fonts\LatoLatin-Regular.eot" />
+    <Content Include="Content\Fonts\LatoLatin-Regular.ttf" />
+    <Content Include="Content\Fonts\LatoLatin-Regular.woff" />
+    <Content Include="Content\Fonts\LatoLatin-Regular.woff2" />
+    <Content Include="Content\Fonts\NexaFreeBoldwebfont.eot" />
+    <Content Include="Content\Fonts\NexaFreeBoldwebfont.ttf" />
+    <Content Include="Content\Fonts\NexaFreeBoldwebfont.woff" />
     <None Include="Content\Scss\AppTiles.scss" />
+    <Content Include="Content\Images\VirtualDashboard.png" />
+    <Content Include="Content\Images\GridIcon\warn_widget.png" />
+    <Content Include="Content\Images\warn_widget.png" />
     <Content Include="Content\Scss\BootstrapUserLayout.scss" />
     <None Include="Content\Scss\Bundle\AdminStyleBundle.scss" />
     <None Include="Content\Scss\Bundle\UserStyleBundle.scss" />
@@ -539,8 +586,14 @@
     <Content Include="Content\Fonts\fontawesome-webfont.svg" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="NSass.Wrapper\NSass.Wrapper.x64.dll" />
+    <Content Include="NSass.Wrapper\NSass.Wrapper.x86.dll" />
     <Content Include="Scripts\AppManager\AdminInit.js" />
     <Content Include="Scripts\Athena\Main.js" />
+    <Content Include="Scripts\Bundles\bundle.js" />
+    <Content Include="Scripts\Bundles\bundle.min.js">
+      <DependentUpon>bundle.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\Bundles\omniusAdminScripts.js" />
     <Content Include="Scripts\Bundles\omniusAdminScripts.min.js">
       <DependentUpon>omniusAdminScripts.js</DependentUpon>
@@ -735,8 +788,6 @@
     <Content Include="Scripts\CommonLibraries\Highcharts\themes\grid.js" />
     <Content Include="Scripts\CommonLibraries\Highcharts\themes\sand-signika.js" />
     <Content Include="Scripts\CommonLibraries\Highcharts\themes\skies.js" />
-    <Content Include="Scripts\CommonLibraries\jQuery\calenstyle-i18n-en.js" />
-    <Content Include="Scripts\CommonLibraries\jQuery\calenstyle.min.js" />
     <Content Include="Scripts\CommonLibraries\jQuery\dataTables.select.min.js" />
     <Content Include="Scripts\CommonLibraries\jQuery\jquery-2.2.3.js" />
     <Content Include="Scripts\CommonLibraries\jQuery\jquery-collision.min.js" />
@@ -774,6 +825,8 @@
     <Content Include="Scripts\CommonLibraries\Other\RuleDetailViewModel.js" />
     <Content Include="Scripts\CommonLibraries\Other\RuleListViewModel.js" />
     <Content Include="Scripts\CommonLibraries\Other\spectrum.js" />
+    <Content Include="Scripts\CommonLibraries\Other\vue.js" />
+    <Content Include="Scripts\CommonLibraries\Other\vue.min.js" />
     <Content Include="Scripts\DatabaseDesigner\DatabaseDesigner.js" />
     <Content Include="Scripts\DatabaseDesigner\_Lock.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\Clipboard.js" />
@@ -801,6 +854,12 @@
     <Content Include="Scripts\MozaicEditor\Bootstrap\_Table.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\_Text.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\_UI.js" />
+    <Content Include="Scripts\Swagger\swagger-editor-bundle.js" />
+    <Content Include="Scripts\Swagger\swagger-editor-standalone-preset.js" />
+    <Content Include="Scripts\Swagger\swagger-editor.css" />
+    <Content Include="Scripts\Swagger\swagger-editor.js" />
+    <Content Include="Scripts\Swagger\validation.worker.js" />
+    <Content Include="Scripts\Tapestry\Builder\Debug.js" />
     <Content Include="Scripts\Tapestry\Builder\TapestryBuilder.js" />
     <Content Include="Scripts\Tapestry\Builder\_Context.js" />
     <Content Include="Scripts\Tapestry\Builder\_Foreach.js" />
@@ -829,14 +888,24 @@
     <Content Include="Scripts\UserScripts\Application\Ifrs9\Value.js" />
     <Content Include="Scripts\UserScripts\Application\Leaderboard\leaderboardJS.js" />
     <Content Include="Scripts\UserScripts\Application\TicketSupport\highlightJS.js" />
+    <Content Include="Scripts\UserScripts\Application\VozovyPark\InputColor.js" />
+    <Content Include="Scripts\UserScripts\Application\VozovyPark\selectCategory.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\ajax.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\broadcastMessagesJS.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\broadcastMessages_editJS.js" />
-    <Content Include="Scripts\UserScripts\Application\Xmu\funkce.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\LogMSModal.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\Modal.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\ModalWebDav.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\TrezorTest.js.js" />
+    <Content Include="Scripts\UserScripts\Application\Grid\GridHome.js" />
+    <Content Include="Scripts\UserScripts\Application\Grid\GridMain.js" />
+    <Content Include="Scripts\UserScripts\Application\Grid\LoadDiv.js" />
+    <Content Include="Scripts\UserScripts\Application\Grid\NewReleaseNotes.js" />
+    <Content Include="Scripts\UserScripts\Application\Grid\RigConfigJs.js" />
+    <Content Include="Scripts\UserScripts\Application\Grid\RigPlacement.js" />
+    <Content Include="Scripts\UserScripts\Application\Grid\RigPlacementView.js" />
+    <Content Include="Scripts\UserScripts\Application\Grid\ServiceStatus.js" />
+    <Content Include="Scripts\UserScripts\Application\Grid\specificrigconfigJS.js" />
     <Content Include="Scripts\UserScripts\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
     <Content Include="Scripts\UserScripts\BootstrapUserInit.js" />
@@ -1320,6 +1389,7 @@
     <Content Include="Content\Fonts\innogy\Innogy-Regular.eot" />
     <Content Include="Content\Fonts\innogy\Innogy-Regular.ttf" />
     <Content Include="Content\Fonts\innogy\Innogy-Regular.woff" />
+    <Content Include="Content\Locale\en\LC_MESSAGES\Omnius.mo" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
     <Content Include="Scripts\cm\addon\dialog\dialog.css" />
@@ -1800,153 +1870,20 @@
     <Content Include="Scripts\Tapestry\Utils.js" />
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />
     <Content Include="Scripts\Watchtower\Init.js" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Master\Home\Index.cshtml" />
-    <Content Include="Views\Persona\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Persona\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Persona\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Persona\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Persona\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Persona\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Persona\Account\Login.cshtml" />
-    <Content Include="Views\Persona\Account\Register.cshtml" />
-    <Content Include="Views\Persona\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Persona\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Persona\Account\SendCode.cshtml" />
-    <Content Include="Views\Persona\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Persona\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Persona\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Persona\Manage\Index.cshtml" />
-    <Content Include="Views\Persona\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Persona\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Persona\Manage\VerifyPhoneNumber.cshtml" />
-    <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Tapestry\Builder\Index.cshtml" />
-    <Content Include="Views\Persona\Rules\Index.cshtml" />
-    <Content Include="Views\Persona\Rules\RuleDetail.cshtml" />
-    <Content Include="Views\Entitron\DbDesigner\Index.cshtml" />
-    <Content Include="Views\Nexus\LDAP\Form.cshtml" />
-    <Content Include="Views\Nexus\LDAP\Detail.cshtml" />
-    <Content Include="Views\Tapestry\Overview\index.cshtml" />
-    <Content Include="Views\Shared\_OmniusAdminLayout.cshtml" />
-    <Content Include="Views\CORE\Portal\Index.cshtml" />
-    <Content Include="Views\CORE\Portal\ModuleAdmin.cshtml" />
-    <Content Include="Views\CORE\Portal\UsersOnline.cshtml" />
-    <Content Include="Views\CORE\Portal\ActiveProfile.cshtml" />
-    <Content Include="Views\Nexus\LDAP\Index.cshtml" />
-    <Content Include="Views\Shared\_PartialViewAjaxLayout.cshtml" />
-    <Content Include="Views\CORE\Builder\Create.cshtml" />
-    <Content Include="Views\CORE\Builder\Details.cshtml" />
-    <Content Include="Views\CORE\Builder\Index.cshtml" />
-    <Content Include="Views\CORE\Builder\Update.cshtml" />
-    <Content Include="Views\Nexus\Nexus\Index.cshtml" />
-    <Content Include="Views\Mozaic\Template\Index.cshtml" />
-    <Content Include="Views\Mozaic\Template\Detail.cshtml" />
-    <Content Include="Views\Mozaic\Template\Create.cshtml" />
-    <Content Include="Views\Mozaic\Template\Update.cshtml" />
-    <Content Include="Views\Mozaic\TemplateCategory\Index.cshtml" />
-    <Content Include="Views\Mozaic\TemplateCategory\Detail.cshtml" />
-    <Content Include="Views\Mozaic\TemplateCategory\Create.cshtml" />
-    <Content Include="Views\Mozaic\TemplateCategory\Update.cshtml" />
-    <Content Include="Views\Nexus\LDAP\Search.cshtml" />
-    <Content Include="Views\Nexus\LDAP\GroupList.cshtml" />
-    <Content Include="Views\Mozaic\Page\Create.cshtml" />
-    <Content Include="Views\Mozaic\Page\Index.cshtml" />
-    <Content Include="Views\Shared\_OmniusUserLayout.cshtml" />
-    <Content Include="Views\Master\AppAdminManager\Index.cshtml" />
-    <Content Include="Views\Master\Home\Help.cshtml" />
-    <Content Include="Views\Nexus\WS\Form.cshtml" />
-    <Content Include="Views\Nexus\WS\Detail.cshtml" />
-    <Content Include="Views\Nexus\WS\Test.cshtml" />
-    <Content Include="Views\Nexus\WS\Index.cshtml" />
-    <Content Include="Views\Master\Home\Details.cshtml" />
-    <Content Include="Views\Nexus\ExtDB\Index.cshtml" />
-    <Content Include="Views\Nexus\ExtDB\Detail.cshtml" />
-    <Content Include="Views\Nexus\ExtDB\Form.cshtml" />
-    <Content Include="Views\Nexus\ExtDB\Test.cshtml" />
-    <Content Include="Views\Hermes\Hermes\Decoration.cshtml" />
-    <Content Include="Views\Hermes\Hermes\Header.cshtml" />
-    <Content Include="Views\Persona\Rights\Index.cshtml">
-      <BrowseToURL>~/Rights/ActionIndex</BrowseToURL>
-    </Content>
-    <Content Include="Views\Hermes\SMTP\Index.cshtml" />
-    <Content Include="Views\Hermes\SMTP\Form.cshtml" />
-    <Content Include="Views\Hermes\SMTP\Detail.cshtml" />
-    <Content Include="Views\Hermes\Template\Index.cshtml" />
-    <Content Include="Views\Hermes\Template\Form.cshtml" />
-    <Content Include="Views\Hermes\Template\Detail.cshtml" />
-    <Content Include="Views\Hermes\Placeholder\Index.cshtml" />
-    <Content Include="Views\Hermes\Placeholder\Form.cshtml" />
-    <Content Include="Views\Hermes\Placeholder\NumOrder.cshtml" />
-    <Content Include="Views\Hermes\Template\Content.cshtml" />
-    <Content Include="Views\Hermes\SMTP\Test.cshtml" />
-    <Content Include="Views\Nexus\Nexus\Header.cshtml" />
-    <Content Include="Views\Nexus\Nexus\Decoration.cshtml" />
-    <Content Include="Views\Watchtower\Log\Index.cshtml" />
-    <Content Include="Views\Nexus\WebDAV\Index.cshtml" />
-    <Content Include="Views\Nexus\WebDAV\Detail.cshtml" />
-    <Content Include="Views\Nexus\WebDAV\Form.cshtml" />
-    <Content Include="Views\Persona\Modules\Index.cshtml" />
-    <Content Include="Views\Hermes\Log\Detail.cshtml" />
-    <Content Include="Views\Hermes\Queue\Index.cshtml" />
-    <Content Include="Views\Hermes\Queue\Detail.cshtml" />
-    <Content Include="Views\Persona\Roles\App.cshtml" />
-    <Content Include="Views\Mozaic\Css\Index.cshtml" />
-    <Content Include="Views\Mozaic\UpperPanel.cshtml" />
-    <Content Include="Views\Mozaic\Css\Detail.cshtml" />
-    <Content Include="Views\CORE\Error\UserNotAuthorized.cshtml" />
-    <Content Include="Views\CORE\Error\PageNotFound.cshtml" />
-    <Content Include="Views\CORE\Error\InternalServerError.cshtml" />
-    <Content Include="Views\Mozaic\Css\Update.cshtml" />
-    <Content Include="Views\Mozaic\Css\BaseIndex.cshtml" />
-    <Content Include="Views\Persona\Account\Index.cshtml" />
-    <Content Include="Views\Persona\Account\Create.cshtml" />
-    <Content Include="Views\Persona\Account\Update.cshtml" />
-    <Content Include="Views\Persona\Account\Detail.cshtml" />
-    <Content Include="Views\Mozaic\Editor\Index.cshtml" />
-    <Content Include="Views\Persona\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Persona\Account\AjaxIndex.cshtml" />
-    <Content Include="Views\Tapestry\Overview\MenuOrder.cshtml" />
-    <Content Include="Views\Shared\_ApplicationMenu.cshtml" />
-    <Content Include="Views\Shared\_OmniusUserAppLayout.cshtml" />
-    <Content Include="Views\Master\Service\RecoverApp.cshtml" />
-    <Content Include="Views\Cortex\Form.cshtml" />
-    <Content Include="Views\Cortex\Index.cshtml" />
-    <Content Include="Views\Cortex\Cortex\Header.cshtml" />
-    <Content Include="Views\Cortex\Cortex\Decoration.cshtml" />
-    <Content Include="Views\Cortex\Detail.cshtml" />
-    <Content Include="Views\Mozaic\Bootstrap\Index.cshtml" />
-    <Content Include="Views\Compass\Compass\AjaxIndex.cshtml" />
-    <Content Include="Views\Compass\Compass\Index.cshtml" />
-    <Content Include="Views\Mozaic\Bootstrap\Workspace.cshtml" />
-    <Content Include="Views\Mozaic\Js\BaseIndex.cshtml" />
-    <Content Include="Views\Mozaic\Js\Detail.cshtml" />
-    <Content Include="Views\Mozaic\Js\Index.cshtml" />
-    <Content Include="Views\Mozaic\Js\Update.cshtml" />
-    <Content Include="Views\Hermes\Incoming\Detail.cshtml" />
-    <Content Include="Views\Hermes\Incoming\Form.cshtml" />
-    <Content Include="Views\Hermes\Incoming\Index.cshtml" />
-    <Content Include="Views\Hermes\IncomingRule\Form.cshtml" />
-    <Content Include="Views\Hermes\IncomingRule\Index.cshtml" />
-    <Content Include="Views\App\PodporaRegistruSmluv\menuLayout.cshtml" />
-    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\22.cshtml" />
-    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\23.cshtml" />
-    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\24.cshtml" />
-    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\25.cshtml" />
-    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\26.cshtml" />
+    <Content Include="Views\App\App2\menuLayout.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\menuLayout.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\22.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\23.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\24.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\25.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\26.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\27.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\29.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\30.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\31.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\32.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\33.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\45.cshtml" />
     <Content Include="Views\App\EvidencePeriodik\menuLayout.cshtml" />
     <Content Include="Views\App\EvidencePeriodik\Page\10.cshtml" />
     <Content Include="Views\App\EvidencePeriodik\Page\1038.cshtml" />
@@ -2000,47 +1937,48 @@
     <Content Include="Views\App\EvidencePeriodik\Page\55.cshtml" />
     <Content Include="Views\App\EvidencePeriodik\Page\67.cshtml" />
     <Content Include="Views\App\EvidencePeriodik\Page\9.cshtml" />
+    <Content Include="Views\App\Ifrs9\menuLayout.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\74.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\75.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\76.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\77.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\78.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\79.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\80.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\81.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\82.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\83.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\86.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\87.cshtml" />
+    <Content Include="Views\App\Leaderboard\menuLayout.cshtml" />
+    <Content Include="Views\App\Leaderboard\Page\Bootstrap\88.cshtml" />
+    <Content Include="Views\App\Leaderboard\Page\Bootstrap\89.cshtml" />
+    <Content Include="Views\App\MailingEngine\menuLayout.cshtml" />
+    <Content Include="Views\App\MailingEngine\Page\1115.cshtml" />
+    <Content Include="Views\App\MailingEngine\Page\1116.cshtml" />
+    <Content Include="Views\App\MailingEngine\Page\Bootstrap\28.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\menuLayout.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\22.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\23.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\24.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\25.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\26.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\27.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\29.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\30.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\31.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\menuLayout.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1000.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1001.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1002.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1003.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1005.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1006.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1007.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1008.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1009.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1010.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1011.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1012.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1013.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1014.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1015.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1016.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1017.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1018.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1019.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1020.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1021.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1022.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1023.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1024.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1025.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1027.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1029.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1030.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1033.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1040.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1045.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1046.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1047.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1048.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1049.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1050.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1051.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1052.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1053.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\1054.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1055.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1082.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1092.cshtml" />
@@ -2059,52 +1997,12 @@
     <Content Include="Views\App\PortalInternichAuditu2\Page\1109.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1110.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\1111.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\932.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\938.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\939.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\940.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\941.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\942.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\943.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\944.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\945.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\946.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\947.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\948.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\949.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\950.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\951.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\952.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\953.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\954.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\955.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\956.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\957.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\958.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\959.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\960.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\961.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\962.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\963.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\964.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\965.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\966.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\967.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\968.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\969.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\970.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\971.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\972.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\973.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\974.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\976.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\977.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\978.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\979.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\980.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\981.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\982.cshtml" />
-    <Content Include="Views\App\PortalInternichAuditu2\Page\983.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\984.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\985.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\986.cshtml" />
@@ -2121,62 +2019,6 @@
     <Content Include="Views\App\PortalInternichAuditu2\Page\997.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\998.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\999.cshtml" />
-    <Content Include="Views\App\MailingEngine\menuLayout.cshtml" />
-    <Content Include="Views\App\MailingEngine\Page\1114.cshtml" />
-    <Content Include="Views\App\MailingEngine\Page\1115.cshtml" />
-    <Content Include="Views\App\MailingEngine\Page\1116.cshtml" />
-    <Content Include="Views\App\MailingEngine\Page\Bootstrap\28.cshtml" />
-    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\27.cshtml" />
-    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\29.cshtml" />
-    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\30.cshtml" />
-    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\31.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\menuLayout.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\22.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\23.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\24.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\25.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\26.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\27.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\29.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\30.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\31.cshtml" />
-    <Content Include="Views\Nexus\API\Detail.cshtml" />
-    <Content Include="Views\Nexus\API\Form.cshtml" />
-    <Content Include="Views\Nexus\API\Index.cshtml" />
-    <Content Include="Views\Babylon\Babylon\Decoration.cshtml" />
-    <Content Include="Views\Babylon\Babylon\Header.cshtml" />
-    <Content Include="Views\Babylon\Texts\Index.cshtml" />
-    <Content Include="Views\App\App2\menuLayout.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\32.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\33.cshtml" />
-    <Content Include="Views\Athena\Athena\Decoration.cshtml" />
-    <Content Include="Views\Athena\Athena\DecorationForm.cshtml" />
-    <Content Include="Views\Athena\Athena\Header.cshtml" />
-    <Content Include="Views\Athena\Detail.cshtml" />
-    <Content Include="Views\Athena\Form.cshtml" />
-    <Content Include="Views\Athena\Index.cshtml" />
-    <Content Include="Views\App\Xmu\menuLayout.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\34.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\35.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\36.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\37.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\38.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\39.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\40.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\41.cshtml" />
-    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\45.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\46.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\47.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\48.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\49.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\50.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\51.cshtml" />
-    <Content Include="Views\App\VozovyPark\menuLayout.cshtml" />
-    <Content Include="Views\App\VozovyPark\Page\Bootstrap\52.cshtml" />
-    <Content Include="Views\App\VozovyPark\Page\Bootstrap\53.cshtml" />
-    <Content Include="Views\App\VozovyPark\Page\Bootstrap\54.cshtml" />
-    <Content Include="Views\App\VozovyPark\Page\Bootstrap\55.cshtml" />
-    <Content Include="Views\App\VozovyPark\Page\Bootstrap\58.cshtml" />
     <Content Include="Views\App\TicketSupport\menuLayout.cshtml" />
     <Content Include="Views\App\TicketSupport\Page\1125.cshtml" />
     <Content Include="Views\App\TicketSupport\Page\Bootstrap\60.cshtml" />
@@ -2186,25 +2028,40 @@
     <Content Include="Views\App\TicketSupport\Page\Bootstrap\64.cshtml" />
     <Content Include="Views\App\TicketSupport\Page\Bootstrap\66.cshtml" />
     <Content Include="Views\App\TicketSupport\Page\Bootstrap\67.cshtml" />
+    <Content Include="Views\App\VozovyPark\menuLayout.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\52.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\53.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\54.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\55.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\58.cshtml" />
+    <Content Include="Views\App\Xmu\menuLayout.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\100.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\101.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\102.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\103.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\104.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\34.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\35.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\36.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\37.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\38.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\39.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\40.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\41.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\455.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\46.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\47.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\48.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\49.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\50.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\51.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\564.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\565.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\566.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\567.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\68.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\70.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\69.cshtml" />
-    <Content Include="Views\App\Ifrs9\menuLayout.cshtml" />
-    <Content Include="Views\App\Ifrs9\Page\Bootstrap\74.cshtml" />
-    <Content Include="Views\App\Ifrs9\Page\Bootstrap\75.cshtml" />
-    <Content Include="Views\App\Ifrs9\Page\Bootstrap\76.cshtml" />
-    <Content Include="Views\App\Ifrs9\Page\Bootstrap\77.cshtml" />
-    <Content Include="Views\App\Ifrs9\Page\Bootstrap\78.cshtml" />
-    <Content Include="Views\App\Ifrs9\Page\Bootstrap\79.cshtml" />
-    <Content Include="Views\App\Ifrs9\Page\Bootstrap\80.cshtml" />
-    <Content Include="Views\App\Ifrs9\Page\Bootstrap\81.cshtml" />
-    <Content Include="Views\App\Ifrs9\Page\Bootstrap\82.cshtml" />
-    <Content Include="Views\App\Ifrs9\Page\Bootstrap\83.cshtml" />
-    <Content Include="Views\App\Ifrs9\Page\Bootstrap\86.cshtml" />
-    <Content Include="Views\App\Leaderboard\Page\Bootstrap\88.cshtml" />
-    <Content Include="Views\App\Leaderboard\Page\Bootstrap\89.cshtml" />
-    <Content Include="Views\App\Ifrs9\Page\Bootstrap\87.cshtml" />
-    <Content Include="Views\App\Leaderboard\menuLayout.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\70.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\71.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\72.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\73.cshtml" />
@@ -2218,42 +2075,294 @@
     <Content Include="Views\App\Xmu\Page\Bootstrap\97.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\98.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\99.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\100.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\101.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\102.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\103.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\104.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\455.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\564.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\565.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\566.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\567.cshtml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Master\Home\Index.cshtml" />
+    <Content Include="Views\Persona\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Persona\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Persona\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Persona\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Persona\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Persona\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Persona\Account\Login.cshtml" />
+    <Content Include="Views\Persona\Account\Register.cshtml" />
+    <Content Include="Views\Persona\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Persona\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Persona\Account\SendCode.cshtml" />
+    <Content Include="Views\Persona\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Persona\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Persona\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Persona\Manage\Index.cshtml" />
+    <Content Include="Views\Persona\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Persona\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Persona\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Tapestry\Builder\Index.cshtml" />
+    <Content Include="Views\Persona\Rules\Index.cshtml" />
+    <Content Include="Views\Persona\Rules\RuleDetail.cshtml" />
+    <Content Include="Views\Entitron\DbDesigner\Index.cshtml" />
+    <Content Include="Views\Nexus\LDAP\Form.cshtml" />
+    <Content Include="Views\Nexus\LDAP\Detail.cshtml" />
+    <Content Include="Views\Tapestry\Overview\index.cshtml" />
+    <Content Include="Views\Shared\_OmniusAdminLayout.cshtml" />
+    <Content Include="Views\CORE\Portal\Index.cshtml" />
+    <Content Include="Views\CORE\Portal\ModuleAdmin.cshtml" />
+    <Content Include="Views\CORE\Portal\UsersOnline.cshtml" />
+    <Content Include="Views\CORE\Portal\ActiveProfile.cshtml" />
+    <Content Include="Views\Nexus\LDAP\Index.cshtml" />
+    <Content Include="Views\Shared\_PartialViewAjaxLayout.cshtml" />
+    <Content Include="Views\CORE\Builder\Create.cshtml" />
+    <Content Include="Views\CORE\Builder\Details.cshtml" />
+    <Content Include="Views\CORE\Builder\Index.cshtml" />
+    <Content Include="Views\CORE\Builder\Update.cshtml" />
+    <Content Include="Views\Nexus\Nexus\Index.cshtml" />
+    <Content Include="Views\Nexus\LDAP\Search.cshtml" />
+    <Content Include="Views\Nexus\LDAP\GroupList.cshtml" />
+    <Content Include="Views\Mozaic\Page\Create.cshtml" />
+    <Content Include="Views\Mozaic\Page\Index.cshtml" />
+    <Content Include="Views\Shared\_OmniusUserLayout.cshtml" />
+    <Content Include="Views\Master\AppAdminManager\Index.cshtml" />
+    <Content Include="Views\Master\Home\Help.cshtml" />
+    <Content Include="Views\Nexus\WS\Form.cshtml" />
+    <Content Include="Views\Nexus\WS\Detail.cshtml" />
+    <Content Include="Views\Nexus\WS\Test.cshtml" />
+    <Content Include="Views\Nexus\WS\Index.cshtml" />
+    <Content Include="Views\Master\Home\Details.cshtml" />
+    <Content Include="Views\Nexus\ExtDB\Index.cshtml" />
+    <Content Include="Views\Nexus\ExtDB\Detail.cshtml" />
+    <Content Include="Views\Nexus\ExtDB\Form.cshtml" />
+    <Content Include="Views\Nexus\ExtDB\Test.cshtml" />
+    <Content Include="Views\Hermes\Hermes\Decoration.cshtml" />
+    <Content Include="Views\Hermes\Hermes\Header.cshtml" />
+    <Content Include="Views\Persona\Rights\Index.cshtml">
+      <BrowseToURL>~/Rights/ActionIndex</BrowseToURL>
+    </Content>
+    <Content Include="Views\Hermes\SMTP\Index.cshtml" />
+    <Content Include="Views\Hermes\SMTP\Form.cshtml" />
+    <Content Include="Views\Hermes\SMTP\Detail.cshtml" />
+    <Content Include="Views\Hermes\Template\Index.cshtml" />
+    <Content Include="Views\Hermes\Template\Form.cshtml" />
+    <Content Include="Views\Hermes\Template\Detail.cshtml" />
+    <Content Include="Views\Hermes\Placeholder\Index.cshtml" />
+    <Content Include="Views\Hermes\Placeholder\Form.cshtml" />
+    <Content Include="Views\Hermes\Placeholder\NumOrder.cshtml" />
+    <Content Include="Views\Hermes\Template\Content.cshtml" />
+    <Content Include="Views\Hermes\SMTP\Test.cshtml" />
+    <Content Include="Views\Nexus\Nexus\Header.cshtml" />
+    <Content Include="Views\Nexus\Nexus\Decoration.cshtml" />
+    <Content Include="Views\Watchtower\Log\Index.cshtml" />
+    <Content Include="Views\Nexus\WebDAV\Index.cshtml" />
+    <Content Include="Views\Nexus\WebDAV\Detail.cshtml" />
+    <Content Include="Views\Nexus\WebDAV\Form.cshtml" />
+    <Content Include="Views\Persona\Modules\Index.cshtml" />
+    <Content Include="Views\Hermes\Log\Detail.cshtml" />
+    <Content Include="Views\Hermes\Queue\Index.cshtml" />
+    <Content Include="Views\Hermes\Queue\Detail.cshtml" />
+    <Content Include="Views\Persona\Roles\App.cshtml" />
+    <Content Include="Views\Mozaic\UpperPanel.cshtml" />
+    <Content Include="Views\CORE\Error\UserNotAuthorized.cshtml" />
+    <Content Include="Views\CORE\Error\PageNotFound.cshtml" />
+    <Content Include="Views\CORE\Error\InternalServerError.cshtml" />
+    <Content Include="Views\Persona\Account\Index.cshtml" />
+    <Content Include="Views\Persona\Account\Create.cshtml" />
+    <Content Include="Views\Persona\Account\Update.cshtml" />
+    <Content Include="Views\Persona\Account\Detail.cshtml" />
+    <Content Include="Views\Mozaic\Editor\Index.cshtml" />
+    <Content Include="Views\Persona\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Persona\Account\AjaxIndex.cshtml" />
+    <Content Include="Views\Tapestry\Overview\MenuOrder.cshtml" />
+    <Content Include="Views\Shared\_ApplicationMenu.cshtml" />
+    <Content Include="Views\Shared\_OmniusUserAppLayout.cshtml" />
+    <Content Include="Views\Master\Service\RecoverApp.cshtml" />
+    <Content Include="Views\Cortex\Form.cshtml" />
+    <Content Include="Views\Cortex\Index.cshtml" />
+    <Content Include="Views\Cortex\Cortex\Header.cshtml" />
+    <Content Include="Views\Cortex\Cortex\Decoration.cshtml" />
+    <Content Include="Views\Cortex\Detail.cshtml" />
+    <Content Include="Views\Mozaic\Bootstrap\Index.cshtml" />
+    <Content Include="Views\Compass\Compass\AjaxIndex.cshtml" />
+    <Content Include="Views\Compass\Compass\Index.cshtml" />
+    <Content Include="Views\Mozaic\Bootstrap\Workspace.cshtml" />
+    <Content Include="Views\Mozaic\Js\BaseIndex.cshtml" />
+    <Content Include="Views\Mozaic\Js\Detail.cshtml" />
+    <Content Include="Views\Mozaic\Js\Index.cshtml" />
+    <Content Include="Views\Mozaic\Js\Update.cshtml" />
+    <Content Include="Views\Hermes\Incoming\Detail.cshtml" />
+    <Content Include="Views\Hermes\Incoming\Form.cshtml" />
+    <Content Include="Views\Hermes\Incoming\Index.cshtml" />
+    <Content Include="Views\Hermes\IncomingRule\Form.cshtml" />
+    <Content Include="Views\Hermes\IncomingRule\Index.cshtml" />
+    <Content Include="Views\Nexus\API\Detail.cshtml" />
+    <Content Include="Views\Nexus\API\Form.cshtml" />
+    <Content Include="Views\Nexus\API\Index.cshtml" />
+    <Content Include="Views\Babylon\Babylon\Decoration.cshtml" />
+    <Content Include="Views\Babylon\Babylon\Header.cshtml" />
+    <Content Include="Views\Babylon\Texts\Index.cshtml" />
+    <Content Include="Views\Athena\Athena\Decoration.cshtml" />
+    <Content Include="Views\Athena\Athena\DecorationForm.cshtml" />
+    <Content Include="Views\Athena\Athena\Header.cshtml" />
+    <Content Include="Views\Athena\Detail.cshtml" />
+    <Content Include="Views\Athena\Form.cshtml" />
+    <Content Include="Views\Athena\Index.cshtml" />
+    <Content Include="Scripts\Swagger\swagger-editor-bundle.js.map" />
+    <Content Include="Scripts\Swagger\swagger-editor-standalone-preset.js.map" />
+    <Content Include="Scripts\Swagger\swagger-editor.css.map" />
     <Content Include="Views\Nexus\TCPSocket\Form.cshtml" />
     <Content Include="Views\Nexus\TCPSocket\Index.cshtml" />
     <Content Include="Views\Nexus\RabbitMQ\Form.cshtml" />
     <Content Include="Views\Nexus\RabbitMQ\Index.cshtml" />
+    <Content Include="Scripts\Swagger\swagger-editor.js.map" />
+    <Content Include="Scripts\Swagger\validation.worker.js.map" />
+    <Content Include="Views\App\App1\Page\1126.cshtml" />
+    <Content Include="Views\App\App1\Page\139.cshtml" />
+    <Content Include="Views\App\App1\Page\238.cshtml" />
+    <Content Include="Views\App\App1\Page\239.cshtml" />
+    <Content Include="Views\App\App1\Page\240.cshtml" />
+    <Content Include="Views\App\App1\Page\241.cshtml" />
+    <Content Include="Views\App\App1\Page\242.cshtml" />
+    <Content Include="Views\App\App1\Page\243.cshtml" />
+    <Content Include="Views\App\App1\Page\244.cshtml" />
+    <Content Include="Views\App\App1\Page\245.cshtml" />
+    <Content Include="Views\App\App1\Page\246.cshtml" />
+    <Content Include="Views\App\App1\Page\247.cshtml" />
+    <Content Include="Views\App\App1\Page\248.cshtml" />
+    <Content Include="Views\App\App1\Page\249.cshtml" />
+    <Content Include="Views\App\App1\Page\250.cshtml" />
+    <Content Include="Views\App\App1\Page\251.cshtml" />
+    <Content Include="Views\App\App1\Page\252.cshtml" />
+    <Content Include="Views\App\App1\Page\253.cshtml" />
+    <Content Include="Views\App\App1\Page\254.cshtml" />
+    <Content Include="Views\App\App1\Page\255.cshtml" />
+    <Content Include="Views\App\App1\Page\256.cshtml" />
+    <Content Include="Views\App\App1\Page\257.cshtml" />
+    <Content Include="Views\App\App1\Page\258.cshtml" />
+    <Content Include="Views\App\App1\Page\259.cshtml" />
+    <Content Include="Views\App\App1\Page\260.cshtml" />
+    <Content Include="Views\App\App1\Page\261.cshtml" />
+    <Content Include="Views\App\App1\Page\262.cshtml" />
+    <Content Include="Views\App\App1\Page\263.cshtml" />
+    <Content Include="Views\App\App1\Page\264.cshtml" />
+    <Content Include="Views\App\App1\Page\265.cshtml" />
+    <Content Include="Views\App\App1\Page\323.cshtml" />
+    <Content Include="Views\App\App1\Page\57.cshtml" />
+    <Content Include="Views\App\App1\Page\58.cshtml" />
+    <Content Include="Views\App\App1\Page\7.cshtml" />
+    <Content Include="Views\App\App1\Page\Bootstrap\571.cshtml" />
+    <Content Include="Views\App\App1\Page\Bootstrap\572.cshtml" />
+    <Content Include="Views\App\App1\Page\Bootstrap\573.cshtml" />
+    <Content Include="Views\App\App2\Page\1034.cshtml" />
+    <Content Include="Views\App\App2\Page\1035.cshtml" />
+    <Content Include="Views\App\App2\Page\1042.cshtml" />
+    <Content Include="Views\App\App2\Page\1043.cshtml" />
+    <Content Include="Views\App\App2\Page\1044.cshtml" />
+    <Content Include="Views\App\App2\Page\8.cshtml" />
+    <Content Include="Views\App\App2\Page\876.cshtml" />
+    <Content Include="Views\App\App2\Page\877.cshtml" />
+    <Content Include="Views\App\App2\Page\878.cshtml" />
+    <Content Include="Views\App\App2\Page\879.cshtml" />
+    <Content Include="Views\App\App2\Page\880.cshtml" />
+    <Content Include="Views\App\App2\Page\881.cshtml" />
+    <Content Include="Views\App\App2\Page\882.cshtml" />
+    <Content Include="Views\App\App2\Page\883.cshtml" />
+    <Content Include="Views\App\App2\Page\884.cshtml" />
+    <Content Include="Views\App\App2\Page\885.cshtml" />
+    <Content Include="Views\App\App2\Page\886.cshtml" />
+    <Content Include="Views\App\App2\Page\887.cshtml" />
+    <Content Include="Views\App\App2\Page\888.cshtml" />
+    <Content Include="Views\App\App2\Page\889.cshtml" />
+    <Content Include="Views\App\App2\Page\890.cshtml" />
+    <Content Include="Views\App\App2\Page\Bootstrap\1.cshtml" />
+    <Content Include="Views\App\App2\Page\Bootstrap\2.cshtml" />
+    <Content Include="Views\App\App2\Page\Bootstrap\3.cshtml" />
+    <Content Include="Views\App\App2\Page\Bootstrap\4.cshtml" />
+    <Content Include="Views\App\App2\Page\Bootstrap\42.cshtml" />
+    <Content Include="Views\App\App2\Page\Bootstrap\43.cshtml" />
+    <Content Include="Views\App\App2\Page\Bootstrap\44.cshtml" />
+    <Content Include="Views\App\App2\Page\Bootstrap\5.cshtml" />
+    <Content Include="Views\App\App2\Page\Bootstrap\9.cshtml" />
+    <Content Include="Views\App\Crm\Page\Bootstrap\611.cshtml" />
+    <Content Include="Views\App\DokumentaceVzor\menuLayout.cshtml" />
+    <Content Include="Views\App\DokumentaceVzor\Page\Bootstrap\56.cshtml" />
+    <Content Include="Views\App\DokumentaceVzor\Page\Bootstrap\57.cshtml" />
+    <Content Include="Views\App\Euc1\menuLayout.cshtml" />
+    <Content Include="Views\App\HodorovaTestovaciAplikace\menuLayout.cshtml" />
+    <Content Include="Views\App\HodorovaTestovaciAplikace\Page\934.cshtml" />
+    <Content Include="Views\App\HodorovaTestovaciAplikace\Page\935.cshtml" />
+    <Content Include="Views\App\HodorovaTestovaciAplikace\Page\936.cshtml" />
+    <Content Include="Views\App\HodorovaTestovaciAplikace\Page\937.cshtml" />
+    <Content Include="Views\App\MailingEngine2\menuLayout.cshtml" />
+    <Content Include="Views\App\MailingEngine2\Page\1119.cshtml" />
+    <Content Include="Views\App\MailingEngine\Page\1117.cshtml" />
+    <Content Include="Views\App\PetrovaAplikace\menuLayout.cshtml" />
+    <Content Include="Views\App\PetrovaAplikace\Page\1112.cshtml" />
+    <Content Include="Views\App\PetrovaAplikace\Page\1113.cshtml" />
+    <Content Include="Views\App\Petrovatestovaci\menuLayout.cshtml" />
+    <Content Include="Views\App\Petrovatestovaci\Page\1073.cshtml" />
+    <Content Include="Views\App\PortalInternichAuditu2\Page\1070.cshtml" />
+    <Content Include="Views\App\PortalInternichAuditu2\Page\1120.cshtml" />
+    <Content Include="Views\App\PortalInternichAuditu2\Page\1121.cshtml" />
+    <Content Include="Views\App\PortalInternichAuditu2\Page\1122.cshtml" />
+    <Content Include="Views\App\PortalInternichAuditu2\Page\1123.cshtml" />
+    <Content Include="Views\App\TestApp\menuLayout.cshtml" />
+    <Content Include="Views\App\TestApp\Page\116.cshtml" />
+    <Content Include="Views\App\TestApp\Page\Bootstrap\84.cshtml" />
+    <Content Include="Views\App\TestApp\Page\Bootstrap\85.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\578.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\581.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\582.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\583.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\584.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\585.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\586.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\59.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\568.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\569.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\570.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\576.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\579.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\580.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\587.cshtml" />
-    <Content Include="Views\App\Xmu\Page\Bootstrap\588.cshtml" />
-    <Content Include="Views\Cortex\Crontab\Create.cshtml" />
     <Content Include="Views\Cortex\Crontab\Index.cshtml" />
-    <Content Include="Views\Cortex\Crontab\Update.cshtml" />
     <Content Include="Views\Cortex\Crontab\_form.cshtml" />
+    <Content Include="Views\Cortex\Crontab\Create.cshtml" />
+    <Content Include="Views\Cortex\Crontab\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\App\App2\Page\" />
+    <Folder Include="Views\App\EvidencePeriodik\Page\Bootstrap\" />
     <Folder Include="Views\App\PortalInternichAuditu2\Page\Bootstrap\" />
+    <Folder Include="Views\App\SharedTables\Page\Bootstrap\" />
+    <Folder Include="Views\App\Tapestry2\Page\Bootstrap\" />
+    <Folder Include="Views\App\TestJanFlorian\Page\" />
+    <Folder Include="Views\App\Test\Page\" />
+    <Folder Include="Views\Db\" />
+    <Folder Include="Views\Run\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FSS.Omnius.Modules\FSS.Omnius.Modules.csproj">
+      <Project>{d3f13b6a-a0d7-4f4f-8026-296ff8b34713}</Project>
+      <Name>FSS.Omnius.Modules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ND.Logger\ND.Logger.csproj">
+      <Project>{b2dcda47-f205-491e-a588-ba598feb69c0}</Project>
+      <Name>ND.Logger</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="MSXML2">
@@ -2301,7 +2410,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54446</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
@@ -2320,8 +2429,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

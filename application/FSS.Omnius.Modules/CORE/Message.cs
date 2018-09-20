@@ -1,21 +1,19 @@
-﻿using FSS.Omnius.Modules.Tapestry;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.CORE
 {
     public class Message
     {
-        private ActionResultType? _type;
+        private COREobject _core;
+        private MessageType? _type;
 
         public List<string> Errors { get; set; }
         public List<string> Success { get; set; }
         public List<string> Warnings { get; set; }
         public List<string> Info { get; set; }
-        public ActionResultType Type
+        public MessageType Type
         {
             get
             {
@@ -28,13 +26,14 @@ namespace FSS.Omnius.Modules.CORE
             }
         }
 
-        public Message()
+        public Message(COREobject core)
         {
             Errors = new List<string>();
             Warnings = new List<string>();
             Info = new List<string>();
             Success = new List<string>();
 
+            _core = core;
             _type = null;
         }
 
@@ -52,26 +51,26 @@ namespace FSS.Omnius.Modules.CORE
         {
             if (Errors.Count > 0)
             {
-                _type = ActionResultType.Error;
-                return string.Join("<br/>", Errors);
+                _type = MessageType.Error;
+                return string.Join("<br/>", Errors.Select(m => _core.Translator._(m)));
             }
 
             if (Success.Count > 0)
             {
-                _type = ActionResultType.Success;
-                return string.Join("<br/>", Success);
+                _type = MessageType.Success;
+                return string.Join("<br/>", Success.Select(m => _core.Translator._(m)));
             }
 
             if (Warnings.Count > 0)
             {
-                _type = ActionResultType.Warning;
-                return string.Join("<br/>", Warnings);
+                _type = MessageType.Warning;
+                return string.Join("<br/>", Warnings.Select(m => _core.Translator._(m)));
             }
-            
-            _type = ActionResultType.Info;
-            return string.Join("<br/>", Info);
+
+            _type = MessageType.Info;
+            return string.Join("<br/>", Info.Select(m => _core.Translator._(m)));
         }
-        public Tuple<ActionResultType, string> All()
+        public Tuple<MessageType, string> All()
         {
             throw new NotImplementedException();
         }
@@ -79,13 +78,22 @@ namespace FSS.Omnius.Modules.CORE
         private void refreshType()
         {
             if (Errors.Count > 0)
-                _type = ActionResultType.Error;
+                _type = MessageType.Error;
             else if (Success.Count > 0)
-                _type = ActionResultType.Success;
+                _type = MessageType.Success;
             else if (Warnings.Count > 0)
-                _type = ActionResultType.Warning;
+                _type = MessageType.Warning;
             else
-                _type = ActionResultType.Info;
+                _type = MessageType.Info;
         }
+    }
+
+    public enum MessageType
+    {
+        Success,
+        Info,
+        Warning,
+        Error,
+        InProgress
     }
 }

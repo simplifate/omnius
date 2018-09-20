@@ -1,47 +1,65 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.CORE;
+using System;
 using System.Collections.Generic;
-using FSS.Omnius.Modules.CORE;
 using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.other
 {
     [OtherRepository]
-    class ParseDateTimeAction : Action
+    class ParseDatetime : Action
     {
-        public override int Id => 18712;
+        public override int Id
+        {
+            get
+            {
+                return 200;
+            }
+        }
 
-        public override string[] InputVar => new string[] { "Input", "?Format" };
+        public override string[] InputVar
+        {
+            get
+            {
+                return new string[] { "Input" };
+            }
+        }
 
-        public override string Name => "Parse DateTime";
+        public override string Name
+        {
+            get
+            {
+                return "Parse Datetime";
+            }
+        }
 
-        public override string[] OutputVar => new string[] { "Result","HasError" };
+        public override string[] OutputVar
+        {
+            get
+            {
+                return new string[] { "Result" };
+            }
+        }
 
-        public override int? ReverseActionId => null;
+        public override int? ReverseActionId
+        {
+            get
+            {
+                return null;
+            }
+        }
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            try
-            {
-                string format = vars.ContainsKey("Format") ? (string)vars["Format"] : "";
-                CultureInfo provider = CultureInfo.InvariantCulture;
-                if(format != "")
-                {
-                    outputVars["Result"] = DateTime.ParseExact(vars["Input"].ToString(), format, provider);
-                    outputVars["HasError"] = false;
-                }
-                else
-                {
-                    outputVars["Result"] = DateTime.Parse(vars["Input"].ToString());
-                    outputVars["HasError"] = false;
-                }
+            string input = (string)vars["Input"];
+            DateTime datetime;
+            DateTime.TryParseExact(input,
+                                new string[] { "d.M.yyyy H:mm:ss", "d.M.yyyy", "H:mm:ss", "yyyy-MM-ddTHH:mm", "dd.MM.yyyy HH:mm", },
+                                CultureInfo.InvariantCulture, DateTimeStyles.None, out datetime);
 
-            }
-            catch (FormatException)
-            {
-                outputVars["Result"] = null;
-                outputVars["HasError"] = true;
-            }
-
+            outputVars["Result"] = datetime;
         }
     }
 }

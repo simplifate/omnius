@@ -1,14 +1,14 @@
 $(function() {
-      $(".notes").each(function() {
-        var modelId = $(this).attr('year');
+      $(".notesu").each(function() {
+        var modelId = $(this).attr('date');
         var item = $(this);
         $.ajax({
           type: 'GET',
-          url: '/VozovyPark/DataMesic?modelId=' + modelId,
+          url: '/VozovyPark/DateDate?modelId=' + modelId,
           data: {},
           success: function (data) {
             var x = $(data)
-            $(item).html(x.find("#accordion-2").html());
+            $(item).html(x.find("#accordio-1").html());
       }
     });
       });

@@ -1,4 +1,5 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using Logger;
 using System;
@@ -19,15 +20,13 @@ namespace FSS.Omnius.FrontEnd.Controllers.Hermes
             try
             {
                 List<HermesAjaxTransferEmailTemplate> result = new List<HermesAjaxTransferEmailTemplate>();
-                using (var context = DBEntities.instance)
-                {
-                    foreach (var template in context.EmailTemplates.Where(t => t.AppId == appId)) {
-                        result.Add(new HermesAjaxTransferEmailTemplate()
-                        {
-                            Id = template.Id,
-                            Name = template.Name
-                        });
-                    }
+                var context = COREobject.i.Context;
+                foreach (var template in context.EmailTemplates.Where(t => t.AppId == appId)) {
+                    result.Add(new HermesAjaxTransferEmailTemplate()
+                    {
+                        Id = template.Id,
+                        Name = template.Name
+                    });
                 }
                 return result;
             }

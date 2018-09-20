@@ -15,10 +15,10 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Persona;
 using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json.Linq;
 using YamlDotNet.Serialization;
-using C = FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
@@ -28,7 +28,7 @@ namespace FSS.Omnius.Controllers.Tapestry
         public static DateTime startTime;
         public static DateTime prepareEnd;
 
-        private C.CORE core;
+        private COREobject core;
         private DBEntities context;
 
         private ApplicationUserManager _userManager;
@@ -66,12 +66,10 @@ namespace FSS.Omnius.Controllers.Tapestry
             string apiName = fragments[1];
             NameValueCollection fc = new NameValueCollection();
             fc.Add(Request.Form);
-            
-            core = HttpContext.GetCORE();
-            Modules.Entitron.Entitron.Create(appName);
-            core.User = User.GetLogged(core);
-            context = DBEntities.appInstance(core.Application);
-            var masterContext = DBEntities.instance;
+
+            core = COREobject.i;
+            context = core.AppContext;
+            var masterContext = core.Context;
 
             if(core.User == null && !TryBasicAuth()) {
                 Response.StatusCode = 401;
@@ -213,9 +211,9 @@ namespace FSS.Omnius.Controllers.Tapestry
             }
 
             if (Response.StatusCode == 200) {
-                Message message = new Message();
-                var result = core.Tapestry.jsonRun(core.User, block, wfName, -1, fc, out message);
-                if(message.Type == Modules.Tapestry.ActionResultType.Error) {
+                Message message = new Message(core);
+                var result = new Modules.Tapestry.Tapestry(core).jsonRun(block, wfName, -1, fc, out message);
+                if(message.Type == MessageType.Error) {
                     Response.StatusCode = 500;
                     if (isJsonRpc) {
                         response["jsonrpc"] = (string)rpc["jsonrpc"];
@@ -268,7 +266,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 string password = credentials.Substring(separator + 1);
 
                 if (CheckUser(name, password)) {
-                    core.User = core.Persona.AuthenticateUser(name);
+                    core.User = Persona.GetAuthenticatedUser(name, false, Request);
                     return true;
                 }
                 else {

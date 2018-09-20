@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using System.Web;
 using System.Text.RegularExpressions;
 using FSS.Omnius.Modules.Entitron.Entity.Athena;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
 {
@@ -22,6 +23,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
 
         static Regex vars = new Regex(@"\{var([\d]+)\}");
         static Regex uics = new Regex(@"__UIC_\d+__");
+        bool isVueJsApp = false;
 
         public Builder(DBEntities context, string viewFolder)
         {
@@ -44,17 +46,17 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             StringBuilder sb = new StringBuilder();
 
             sb.Append("@{ Layout = \"~/Views/Shared/_OmniusUserAppLayout.cshtml\"; }");
+            sb.Append("@using FSS.Omnius.Modules.CORE\n");
             sb.Append("@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData[\"formState\"]; }");
             sb.Append(@"<div class=""mozaicBootstrapPage"">");
             sb.Append(RenderComponents(currentPage.Components.Where(c => c.ParentComponent == null).OrderBy(c => c.NumOrder).ToList()));
             sb.Append("</div>");
 
-            if(currentPage.ParentApp.Js.Count() > 0) {
-                foreach(Js js in currentPage.ParentApp.Js) {
-                    if(js.MozaicBootstrapPageId == null || js.MozaicBootstrapPageId == currentPage.Id) {
-                        sb.Append($@"<script type=""text/javascript"" src=""/Scripts/UserScripts/Application/{currentPage.ParentApp.Name}/{js.Name}.js""></script>");
-                    }
-                }
+            if (isVueJsApp)
+                sb.Append($@"<script type=""text/javascript"" src=""/Scripts/CommonLibraries/vue.js""></script>");
+            foreach (Js js in currentPage.Js)
+            {
+                sb.Append($@"<script type=""text/javascript"" src=""@Services.GetFileVersion(""/Scripts/UserScripts/Application/{currentPage.ParentApp.Name}/{js.Name}.js"")""></script>");
             }
 
             currentPage.CompiledPartialView = sb.ToString();
@@ -70,208 +72,218 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
         {
             bool isParentHtml = !string.IsNullOrEmpty(parentHtml);
 
-            foreach (MozaicBootstrapComponent c in componentList) {
-                Dictionary<string, string> p = MozaicPropertiesParser.ParseMozaicPropertiesString(c.Properties);
+            try
+            {
+                foreach (MozaicBootstrapComponent c in componentList)
+                {
+                    Dictionary<string, string> p = MozaicPropertiesParser.ParseMozaicPropertiesString(c.Properties);
                 
-                string html = "";
-                switch(c.UIC) {
-                    /***** CONTAINERS *****/
-                    case "containers|container":                html = RenderDefault(c, p); break;
-                    case "containers|panel":                    html = RenderPanel(c, p); break;
-                    case "containers|panel-heading":            html = RenderDefault(c, p); break;
-                    case "containers|panel-body":               html = RenderDefault(c, p); break;
-                    case "containers|panel-footer":             html = RenderDefault(c, p); break;
-                    case "containers|tabs":                     html = RenderDefault(c, p); break;
-                    case "containers|tab":                      html = RenderDefault(c, p); break;
-                    case "containers|tab-items":                html = RenderDefault(c, p); break;
-                    case "containers|tab-content":              html = RenderDefault(c, p); break;
-                    case "containers|tab-pane":                 html = RenderDefault(c, p); break;
-                    case "containers|accordion":                html = RenderDefault(c, p); break;
-                    case "containers|well":                     html = RenderDefault(c, p); break;
-                    case "containers|list":                     html = RenderDefault(c, p); break;
-                    case "containers|list-item":                html = RenderDefault(c, p); break;
-                    case "containers|div":                      html = RenderDefault(c, p); break;
-                    case "containers|list-group":               html = RenderDefault(c, p); break;
-                    case "containers|list-group-div":           html = RenderDefault(c, p); break;
-                    case "containers|list-group-item":          html = RenderDefault(c, p); break;
-                    case "containers|list-group-item-link":     html = RenderDefault(c, p); break;
-                    case "containers|list-group-item-button":   html = RenderDefault(c, p); break;
-                    /***** CONTROLS *****/
-                    case "controls|button":                     html = RenderButton(c, p); break;
-                    case "controls|button-group":               html = RenderDefault(c, p); break;
-                    case "controls|button-toolbar":             html = RenderDefault(c, p); break;
-                    case "controls|split-button":               html = RenderDefault(c, p); break;
-                    case "controls|button-dropdown":            html = RenderDefault(c, p); break;
-                    case "controls|dropdown-menu":              html = RenderDefault(c, p); break;
-                    case "controls|dropdown-menu-item":         html = RenderDefault(c, p); break;
-                    case "controls|dropdown-menu-header":       html = RenderDefault(c, p); break;
-                    case "controls|dropdown-menu-divider":      html = RenderDefault(c, p); break;
-                    case "controls|link":                       html = RenderDefault(c, p); break;
-                    /***** FORM *****/
-                    case "form|form":                           html = RenderForm(c, p); break;
-                    case "form|form-group":                     html = RenderDefault(c, p); break;
-                    case "form|label":                          html = RenderLabel(c, p); break;
-                    case "form|input-text":                     html = RenderInput(c, p); break;
-                    case "form|input-email":                    html = RenderInput(c, p); break;
-                    case "form|input-color":                    html = RenderInput(c, p); break;
-                    case "form|select":                         html = RenderSelect(c, p); break;
-                    case "form|input-tel":                      html = RenderInput(c, p); break;
-                    case "form|input-date":                     html = RenderDateInput(c, p); break;
-                    case "form|input-number":                   html = RenderInput(c, p); break;
-                    case "form|input-range":                    html = RenderInput(c, p); break;
-                    case "form|input-hidden":                   html = RenderInput(c, p); break;
-                    case "form|input-url":                      html = RenderInput(c, p); break;
-                    case "form|input-search":                   html = RenderInput(c, p); break;
-                    case "form|input-password":                 html = RenderInput(c, p); break;
-                    case "form|input-file":                     html = RenderInput(c, p); break;
-                    case "form|textarea":                       html = RenderTextarea(c, p); break;
-                    case "form|checkbox-group":                 html = RenderDefault(c, p); break;
-                    case "form|radio-group":                    html = RenderDefault(c, p); break;
-                    case "form|checkbox":                       html = RenderCheckbox(c, p); break;
-                    case "form|radio":                          html = RenderRadio(c, p); break;
-                    case "form|static-control":                 html = RenderDefault(c, p); break;
-                    case "form|help-text":                      html = RenderDefault(c, p); break;
-                    case "form|input-group":                    html = RenderDefault(c, p); break;
-                    case "form|fieldset":                       html = RenderDefault(c, p); break;
-                    case "form|legend":                         html = RenderDefault(c, p); break;
-                    case "form|left-addon":                     html = RenderDefault(c, p); break;
-                    case "form|right-addon":                    html = RenderDefault(c, p); break;
-                    case "form|form-control-feedback":          html = RenderDefault(c, p); break;
-                    /***** GRID *****/
-                    case "grid|row":                            html = RenderDefault(c, p); break;
-                    case "grid|column":                         html = RenderDefault(c, p); break;
-                    case "grid|clearfix":                       html = RenderDefault(c, p); break;
-                    /***** IMAGE *****/
-                    case "image|image":                         html = RenderDefault(c, p); break;
-                    case "image|icon":                          html = RenderDefault(c, p); break;
-                    case "image|figure":                        html = RenderDefault(c, p); break;
-                    case "image|figcaption":                    html = RenderDefault(c, p); break;
-                    /***** MISC *****/
-                    case "misc|custom-code":                    html = RenderDefault(c, p); break;
-                    case "misc|modal":                          html = RenderDefault(c, p); break;
-                    case "misc|modal-header":                   html = RenderDefault(c, p); break;
-                    case "misc|modal-body":                     html = RenderDefault(c, p); break;
-                    case "misc|modal-footer":                   html = RenderDefault(c, p); break;
-                    case "misc|badge":                          html = RenderDefault(c, p); break;
-                    case "misc|tag":                            html = RenderDefault(c, p); break;
-                    case "misc|caret":                          html = RenderDefault(c, p); break;
-                    case "misc|close":                          html = RenderDefault(c, p); break;
-                    case "misc|hr":                             html = RenderDefault(c, p); break;
-                    case "misc|responsive-embed":               html = RenderDefault(c, p); break;
-                    case "misc|progressBar":                    html = RenderDefault(c, p); break;
-                    case "misc|breadcrumbs":                    html = RenderDefault(c, p); break;
-                    case "misc|breadcrumbs-item":               html = RenderDefault(c, p); break;
-                    case "misc|breadcrumbs-active":             html = RenderDefault(c, p); break;
-                    case "misc|breadcrumbs-inactive":           html = RenderDefault(c, p); break;
-                    case "misc|embed": 							html = RenderEmbed(c, p); 	break;
-                    /***** PAGE *****/
-                    case "page|page-header":                    html = RenderDefault(c, p); break;
-                    case "page|header":                         html = RenderDefault(c, p); break;
-                    case "page|footer":                         html = RenderDefault(c, p); break;
-                    case "page|hgroup":                         html = RenderDefault(c, p); break;
-                    case "page|section":                        html = RenderDefault(c, p); break;
-                    case "page|article":                        html = RenderDefault(c, p); break;
-                    case "page|aside":                          html = RenderDefault(c, p); break;
-                    /***** TABLE *****/
-                    case "table|table":                         html = RenderDefault(c, p); break;
-                    case "table|tr":                            html = RenderDefault(c, p); break;
-                    case "table|cell":                          html = RenderDefault(c, p); break;
-                    case "table|td":                            html = RenderDefault(c, p); break;
-                    case "table|th":                            html = RenderDefault(c, p); break;
-                    case "table|thead":                         html = RenderDefault(c, p); break;
-                    case "table|tbody":                         html = RenderDefault(c, p); break;
-                    case "table|tfoot":                         html = RenderDefault(c, p); break;
-                    case "table|caption":                       html = RenderDefault(c, p); break;
-                    /***** TEXT *****/
-                    case "text|heading":                        html = RenderDefault(c, p); break;
-                    case "text|paragraph":                      html = RenderDefault(c, p); break;
-                    case "text|alert":                          html = RenderDefault(c, p); break;
-                    case "text|blockquote":                     html = RenderDefault(c, p); break;
-                    case "text|small":                          html = RenderDefault(c, p); break;
-                    case "text|strong":                         html = RenderDefault(c, p); break;
-                    case "text|italic":                         html = RenderDefault(c, p); break;
-                    case "text|span":                           html = RenderDefault(c, p); break;
-                    /***** UI *****/
-                    case "ui|nv-list":                          html = RenderNVList(c, p); break;
-                    case "ui|data-table":                       html = RenderDataTable(c, p); break;
-                    case "ui|countdown":                        html = RenderCountdown(c, p); break;
-                    case "ui|wizzard":                          html = RenderDefault(c, p); break;
-                    case "ui|wizzard-body":                     html = RenderDefault(c, p); break;
-                    case "ui|wizzard-phase":                    html = RenderDefault(c, p); break;
-                    case "ui|event-calendar":                   html = RenderEventCalendar(c, p); break;
-                    /***** FUNCTIONS *****/
-                    case "functions|foreach": 					html = RenderForeach(c, p); break;
-                    case "functions|if": 						html = RenderIf(c, p); 		break;
-                    /***** DEFAULT *****/
-                    default:
-                        {
-                            if (c.UIC != null && c.UIC.StartsWith("athena"))
+                    string html = "";
+                    switch(c.UIC)
+                    {
+                        /***** CONTAINERS *****/
+                        case "containers|container":                html = RenderDefault(c, p); break;
+                        case "containers|panel":                    html = RenderPanel(c, p); break;
+                        case "containers|panel-heading":            html = RenderDefault(c, p); break;
+                        case "containers|panel-body":               html = RenderDefault(c, p); break;
+                        case "containers|panel-footer":             html = RenderDefault(c, p); break;
+                        case "containers|tabs":                     html = RenderDefault(c, p); break;
+                        case "containers|tab":                      html = RenderDefault(c, p); break;
+                        case "containers|tab-items":                html = RenderDefault(c, p); break;
+                        case "containers|tab-content":              html = RenderDefault(c, p); break;
+                        case "containers|tab-pane":                 html = RenderDefault(c, p); break;
+                        case "containers|accordion":                html = RenderDefault(c, p); break;
+                        case "containers|well":                     html = RenderDefault(c, p); break;
+                        case "containers|list":                     html = RenderDefault(c, p); break;
+                        case "containers|list-item":                html = RenderDefault(c, p); break;
+                        case "containers|div":                      html = RenderDefault(c, p); break;
+                        case "containers|list-group":               html = RenderDefault(c, p); break;
+                        case "containers|list-group-div":           html = RenderDefault(c, p); break;
+                        case "containers|list-group-item":          html = RenderDefault(c, p); break;
+                        case "containers|list-group-item-link":     html = RenderDefault(c, p); break;
+                        case "containers|list-group-item-button":   html = RenderDefault(c, p); break;
+                        /***** CONTROLS *****/
+                        case "controls|button":                     html = RenderButton(c, p); break;
+                        case "controls|button-group":               html = RenderDefault(c, p); break;
+                        case "controls|button-toolbar":             html = RenderDefault(c, p); break;
+                        case "controls|split-button":               html = RenderDefault(c, p); break;
+                        case "controls|button-dropdown":            html = RenderDefault(c, p); break;
+                        case "controls|dropdown-menu":              html = RenderDefault(c, p); break;
+                        case "controls|dropdown-menu-item":         html = RenderDefault(c, p); break;
+                        case "controls|dropdown-menu-header":       html = RenderDefault(c, p); break;
+                        case "controls|dropdown-menu-divider":      html = RenderDefault(c, p); break;
+                        case "controls|link":                       html = RenderDefault(c, p); break;
+                        /***** FORM *****/
+                        case "form|form":                           html = RenderForm(c, p); break;
+                        case "form|form-group":                     html = RenderDefault(c, p); break;
+                        case "form|label":                          html = RenderLabel(c, p); break;
+                        case "form|input-text":                     html = RenderInput(c, p); break;
+                        case "form|input-email":                    html = RenderInput(c, p); break;
+                        case "form|input-color":                    html = RenderInput(c, p); break;
+                        case "form|select":                         html = RenderSelect(c, p); break;
+                        case "form|input-tel":                      html = RenderInput(c, p); break;
+                        case "form|input-date":                     html = RenderDateInput(c, p); break;
+                        case "form|input-number":                   html = RenderInput(c, p); break;
+                        case "form|input-range":                    html = RenderInput(c, p); break;
+                        case "form|input-hidden":                   html = RenderInput(c, p); break;
+                        case "form|input-url":                      html = RenderInput(c, p); break;
+                        case "form|input-search":                   html = RenderInput(c, p); break;
+                        case "form|input-password":                 html = RenderInput(c, p); break;
+                        case "form|input-file":                     html = RenderInput(c, p); break;
+                        case "form|textarea":                       html = RenderTextarea(c, p); break;
+                        case "form|checkbox-group":                 html = RenderDefault(c, p); break;
+                        case "form|radio-group":                    html = RenderDefault(c, p); break;
+                        case "form|checkbox":                       html = RenderCheckbox(c, p); break;
+                        case "form|radio":                          html = RenderRadio(c, p); break;
+                        case "form|static-control":                 html = RenderDefault(c, p); break;
+                        case "form|help-text":                      html = RenderDefault(c, p); break;
+                        case "form|input-group":                    html = RenderDefault(c, p); break;
+                        case "form|fieldset":                       html = RenderDefault(c, p); break;
+                        case "form|legend":                         html = RenderDefault(c, p); break;
+                        case "form|left-addon":                     html = RenderDefault(c, p); break;
+                        case "form|right-addon":                    html = RenderDefault(c, p); break;
+                        case "form|form-control-feedback":          html = RenderDefault(c, p); break;
+                        /***** GRID *****/
+                        case "grid|row":                            html = RenderDefault(c, p); break;
+                        case "grid|column":                         html = RenderDefault(c, p); break;
+                        case "grid|clearfix":                       html = RenderDefault(c, p); break;
+                        /***** IMAGE *****/
+                        case "image|image":                         html = RenderDefault(c, p); break;
+                        case "image|icon":                          html = RenderDefault(c, p); break;
+                        case "image|figure":                        html = RenderDefault(c, p); break;
+                        case "image|figcaption":                    html = RenderDefault(c, p); break;
+                        /***** MISC *****/
+                        case "misc|custom-code":                    html = RenderDefault(c, p); break;
+                        case "misc|modal":                          html = RenderDefault(c, p); break;
+                        case "misc|modal-header":                   html = RenderDefault(c, p); break;
+                        case "misc|modal-body":                     html = RenderDefault(c, p); break;
+                        case "misc|modal-footer":                   html = RenderDefault(c, p); break;
+                        case "misc|badge":                          html = RenderDefault(c, p); break;
+                        case "misc|tag":                            html = RenderDefault(c, p); break;
+                        case "misc|caret":                          html = RenderDefault(c, p); break;
+                        case "misc|close":                          html = RenderDefault(c, p); break;
+                        case "misc|hr":                             html = RenderDefault(c, p); break;
+                        case "misc|responsive-embed":               html = RenderDefault(c, p); break;
+                        case "misc|progressBar":                    html = RenderDefault(c, p); break;
+                        case "misc|breadcrumbs":                    html = RenderDefault(c, p); break;
+                        case "misc|breadcrumbs-item":               html = RenderDefault(c, p); break;
+                        case "misc|breadcrumbs-active":             html = RenderDefault(c, p); break;
+                        case "misc|breadcrumbs-inactive":           html = RenderDefault(c, p); break;
+                        case "misc|embed": 							html = RenderEmbed(c, p); 	break;
+                        /***** PAGE *****/
+                        case "page|page-header":                    html = RenderDefault(c, p); break;
+                        case "page|header":                         html = RenderDefault(c, p); break;
+                        case "page|footer":                         html = RenderDefault(c, p); break;
+                        case "page|hgroup":                         html = RenderDefault(c, p); break;
+                        case "page|section":                        html = RenderDefault(c, p); break;
+                        case "page|article":                        html = RenderDefault(c, p); break;
+                        case "page|aside":                          html = RenderDefault(c, p); break;
+                        /***** TABLE *****/
+                        case "table|table":                         html = RenderDefault(c, p); break;
+                        case "table|tr":                            html = RenderDefault(c, p); break;
+                        case "table|cell":                          html = RenderDefault(c, p); break;
+                        case "table|td":                            html = RenderDefault(c, p); break;
+                        case "table|th":                            html = RenderDefault(c, p); break;
+                        case "table|thead":                         html = RenderDefault(c, p); break;
+                        case "table|tbody":                         html = RenderDefault(c, p); break;
+                        case "table|tfoot":                         html = RenderDefault(c, p); break;
+                        case "table|caption":                       html = RenderDefault(c, p); break;
+                        /***** TEXT *****/
+                        case "text|heading":                        html = RenderDefault(c, p); break;
+                        case "text|paragraph":                      html = RenderDefault(c, p); break;
+                        case "text|alert":                          html = RenderDefault(c, p); break;
+                        case "text|blockquote":                     html = RenderDefault(c, p); break;
+                        case "text|small":                          html = RenderDefault(c, p); break;
+                        case "text|strong":                         html = RenderDefault(c, p); break;
+                        case "text|italic":                         html = RenderDefault(c, p); break;
+                        case "text|span":                           html = RenderDefault(c, p); break;
+                        /***** UI *****/
+                        case "ui|nv-list":                          html = RenderNVList(c, p); break;
+                        case "ui|data-table":                       html = RenderDataTable(c, p); break;
+                        case "ui|countdown":                        html = RenderCountdown(c, p); break;
+                        case "ui|wizzard":                          html = RenderDefault(c, p); break;
+                        case "ui|wizzard-body":                     html = RenderDefault(c, p); break;
+                        case "ui|wizzard-phase":                    html = RenderDefault(c, p); break;
+                        /***** FUNCTIONS *****/
+                        case "functions|foreach": 					html = RenderForeach(c, p); break;
+                        case "functions|if": 						html = RenderIf(c, p); 		break;
+                        /***** DEFAULT *****/
+                        default:
                             {
-                                html = RenderAthena(c, p);
+                                if (c.UIC != null && c.UIC.StartsWith("athena"))
+                                {
+                                    html = RenderAthena(c, p);
+                                }
+                                else
+                                {
+                                    html = RenderDefault(c, p);
+                                }
+                                break;
                             }
-                            else
-                            {
-                                html = RenderDefault(c, p);
-                            }
-                            break;
-                        }
-                }
-
-                if (c.ChildComponents.Count > 0) {
-                    html = RenderComponents(c.ChildComponents.OrderBy(cc => cc.NumOrder).ToList(), html);
-                }
-
-                if (isParentHtml) {
-                    parentHtml = parentHtml.Replace($"__UIC_{c.NumOrder}__", html);
-                }
-                else {
-                    parentHtml += html;
-                }
-
-                
-                
-                /*else if (c.Type == "wizard-phases") {
-                    var phaseLabelArray = !string.IsNullOrEmpty(c.Content) ? c.Content.Split(';').ToList() : new List<string>();
-                    int labelCount = phaseLabelArray.Count;
-                    int activePhase = 1;
-                    if (!string.IsNullOrEmpty(c.Properties)) {
-                        string[] nameValuePair = c.Properties.Split('=');
-                        if (nameValuePair.Length == 2) {
-                            if (nameValuePair[0].ToLower() == "activephase")
-                                activePhase = int.Parse(nameValuePair[1]);
-                        }
                     }
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-                    stringBuilder.Append($"<div class=\"wizard-phases-frame\"></div><svg class=\"phase-background\" width=\"846px\" height=\"84px\">");
-                    stringBuilder.Append($"<defs><linearGradient id=\"grad-light\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">");
-                    stringBuilder.Append($"<stop offset=\"0%\" style=\"stop-color:#dceffa ;stop-opacity:1\" /><stop offset=\"100%\"");
-                    stringBuilder.Append($"style =\"stop-color:#8dceed;stop-opacity:1\" /></linearGradient>");
-                    stringBuilder.Append($"<linearGradient id=\"grad-blue\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">");
-                    stringBuilder.Append($"<stop offset=\"0%\" style=\"stop-color:#0099cc;stop-opacity:1\" />");
-                    stringBuilder.Append($"<stop offset=\"100%\" style=\"stop-color:#0066aa;stop-opacity:1\" /></linearGradient></defs>");
 
-                    stringBuilder.Append($"<path d=\"M0 0 L0 88 L 280 88 L324 44 L280 0 Z\"");
-                    stringBuilder.Append($"fill =\"url({(activePhase == 1 ? "#grad-blue" : "#grad-light")})\" />");
-                    stringBuilder.Append($"<path d=\"M280 88 L324 44 L280 0 L560 0 L604 44 L560 88 Z\"");
-                    stringBuilder.Append($"fill =\"url({(activePhase == 2 ? "#grad-blue" : "#grad-light")})\" />");
-                    stringBuilder.Append($"<path d=\"M560 0 L604 44 L560 88 L850 88 L850 0 Z\"");
-                    stringBuilder.Append($"fill =\"url({(activePhase == 3 ? "#grad-blue" : "#grad-light")})\" /></svg>");
+                    if (c.ChildComponents.Count > 0)
+                    {
+                        html = RenderComponents(c.ChildComponents.OrderBy(cc => cc.NumOrder).ToList(), html);
+                    }
+                    
+                    if (isParentHtml)
+                    {
+                        parentHtml = parentHtml.Replace($"__UIC_{c.NumOrder}__", html);
+                    }
+                    else
+                    {
+                        parentHtml += html;
+                    }
 
-                    stringBuilder.Append($"<div class=\"phase phase1 {(activePhase == 1 ? "phase-active" : "")} {(activePhase > 1 ? "phase-done" : "")}\"><div class=\"phase-icon-circle\">");
-                    stringBuilder.Append($"{(activePhase > 1 ? "<div class=\"fa fa-check phase-icon-symbol\"></div>" : "<div class=\"phase-icon-number\">1</div>")}</div>");
-                    stringBuilder.Append($"<div class=\"phase-label\">{(labelCount >= 1 ? phaseLabelArray[0] : "Fáze 1")}</div></div>");
 
-                    stringBuilder.Append($"<div class=\"phase phase2 {(activePhase == 2 ? "phase-active" : "")} {(activePhase > 2 ? "phase-done" : "")}\"><div class=\"phase-icon-circle\">");
-                    stringBuilder.Append($"{(activePhase > 2 ? "<div class=\"fa fa-check phase-icon-symbol\"></div>" : "<div class=\"phase-icon-number\">2</div>")}</div>");
-                    stringBuilder.Append($"<div class=\"phase-label\">{(labelCount >= 2 ? phaseLabelArray[1] : "Fáze 2")}</div></div>");
 
-                    stringBuilder.Append($"<div class=\"phase phase3 {(activePhase == 3 ? "phase-active" : "")}\"><div class=\"phase-icon-circle\">");
-                    stringBuilder.Append($"<div class=\"phase-icon-number\">3</div></div>");
-                    stringBuilder.Append($"<div class=\"phase-label\">{(labelCount >= 3 ? phaseLabelArray[2] : "Fáze 3")}</div></div>");
+                    /*else if (c.Type == "wizard-phases") {
+                        var phaseLabelArray = !string.IsNullOrEmpty(c.Content) ? c.Content.Split(';').ToList() : new List<string>();
+                        int labelCount = phaseLabelArray.Count;
+                        int activePhase = 1;
+                        if (!string.IsNullOrEmpty(c.Properties)) {
+                            string[] nameValuePair = c.Properties.Split('=');
+                            if (nameValuePair.Length == 2) {
+                                if (nameValuePair[0].ToLower() == "activephase")
+                                    activePhase = int.Parse(nameValuePair[1]);
+                            }
+                        }
+                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                        stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                        stringBuilder.Append($"<div class=\"wizard-phases-frame\"></div><svg class=\"phase-background\" width=\"846px\" height=\"84px\">");
+                        stringBuilder.Append($"<defs><linearGradient id=\"grad-light\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">");
+                        stringBuilder.Append($"<stop offset=\"0%\" style=\"stop-color:#dceffa ;stop-opacity:1\" /><stop offset=\"100%\"");
+                        stringBuilder.Append($"style =\"stop-color:#8dceed;stop-opacity:1\" /></linearGradient>");
+                        stringBuilder.Append($"<linearGradient id=\"grad-blue\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">");
+                        stringBuilder.Append($"<stop offset=\"0%\" style=\"stop-color:#0099cc;stop-opacity:1\" />");
+                        stringBuilder.Append($"<stop offset=\"100%\" style=\"stop-color:#0066aa;stop-opacity:1\" /></linearGradient></defs>");
 
-                    stringBuilder.Append($"</{c.Tag}>");
-                }*/
+                        stringBuilder.Append($"<path d=\"M0 0 L0 88 L 280 88 L324 44 L280 0 Z\"");
+                        stringBuilder.Append($"fill =\"url({(activePhase == 1 ? "#grad-blue" : "#grad-light")})\" />");
+                        stringBuilder.Append($"<path d=\"M280 88 L324 44 L280 0 L560 0 L604 44 L560 88 Z\"");
+                        stringBuilder.Append($"fill =\"url({(activePhase == 2 ? "#grad-blue" : "#grad-light")})\" />");
+                        stringBuilder.Append($"<path d=\"M560 0 L604 44 L560 88 L850 88 L850 0 Z\"");
+                        stringBuilder.Append($"fill =\"url({(activePhase == 3 ? "#grad-blue" : "#grad-light")})\" /></svg>");
+
+                        stringBuilder.Append($"<div class=\"phase phase1 {(activePhase == 1 ? "phase-active" : "")} {(activePhase > 1 ? "phase-done" : "")}\"><div class=\"phase-icon-circle\">");
+                        stringBuilder.Append($"{(activePhase > 1 ? "<div class=\"fa fa-check phase-icon-symbol\"></div>" : "<div class=\"phase-icon-number\">1</div>")}</div>");
+                        stringBuilder.Append($"<div class=\"phase-label\">{(labelCount >= 1 ? phaseLabelArray[0] : "Fáze 1")}</div></div>");
+
+                        stringBuilder.Append($"<div class=\"phase phase2 {(activePhase == 2 ? "phase-active" : "")} {(activePhase > 2 ? "phase-done" : "")}\"><div class=\"phase-icon-circle\">");
+                        stringBuilder.Append($"{(activePhase > 2 ? "<div class=\"fa fa-check phase-icon-symbol\"></div>" : "<div class=\"phase-icon-number\">2</div>")}</div>");
+                        stringBuilder.Append($"<div class=\"phase-label\">{(labelCount >= 2 ? phaseLabelArray[1] : "Fáze 2")}</div></div>");
+
+                        stringBuilder.Append($"<div class=\"phase phase3 {(activePhase == 3 ? "phase-active" : "")}\"><div class=\"phase-icon-circle\">");
+                        stringBuilder.Append($"<div class=\"phase-icon-number\">3</div></div>");
+                        stringBuilder.Append($"<div class=\"phase-label\">{(labelCount >= 3 ? phaseLabelArray[2] : "Fáze 3")}</div></div>");
+
+                        stringBuilder.Append($"</{c.Tag}>");
+                    }*/
+                }
+            }
+            catch (Exception)
+            {
             }
 
             return parentHtml;
@@ -374,6 +386,13 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
 
 
         #region RENDER METHODS
+
+        private string RenderVueApp(MozaicBootstrapComponent c, Dictionary<string, string> properties)
+        {
+            //include vue.min.js
+            isVueJsApp = true;
+            return RenderDefault(c, properties);
+        }
 
         private string RenderDefault(MozaicBootstrapComponent c, Dictionary<string, string> properties)
         {
@@ -627,7 +646,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
         private string RenderForeach(MozaicBootstrapComponent c, Dictionary<string, string> properties)
         {
             StringBuilder html = new StringBuilder();
-
+            
             string varName = GetAttribute(c.Attributes, "data-varname");
             string type = GetAttribute(c.Attributes, "data-type");
             string attrs = BuildAttributes(c, new List<string>() { "data-varname", "data-type" });
@@ -687,13 +706,16 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             StringBuilder html = new StringBuilder();
             string attrs = BuildAttributes(c);
             properties["raw"] = "true";
-            
+
+            string property = "csv";
+            string chartSource = !properties.ContainsKey(property) ? "{var1}" : properties[property].Replace("\\n", "\n");
+
             string[] kv = c.UIC.Split('|');
             string graphId = kv[1];
 
-            Graph graph = DBEntities.instance.Graph.FirstOrDefault(g => g.Ident == graphId);
+            Graph graph = COREobject.i.Context.Graph.FirstOrDefault(g => g.Ident == graphId);
             string gHtml = graph.Html.Replace("{ident}", c.ElmId + "_graph");
-            string js = "<script>" + graph.Js.Replace("{data}", "{var1}").Replace("{ident}", c.ElmId + "_graph") + "</script>";
+            string js = "<script>" + graph.Js.Replace("{data}", chartSource).Replace("{ident}", c.ElmId + "_graph") + "</script>";
             string css = !string.IsNullOrEmpty(graph.Css) ? "<style type=\"text/css\" rel=\"stylesheet\">" + graph.Css.Replace("{ident}", c.ElmId + "_graph") + "</style>" : "";
 
             Dictionary<string, string> replace = new Dictionary<string, string>();
@@ -703,29 +725,6 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             
             html.Append($"<{c.Tag} {attrs}>{GetContent(c, properties, replace)}</{c.Tag}>");
 
-            return html.ToString();
-        }
-
-        private string RenderEventCalendar(MozaicBootstrapComponent c, Dictionary<string, string> properties)
-        {
-            StringBuilder html = new StringBuilder();
-
-            byte[] optionsBytes = Convert.FromBase64String(GetAttribute(c.Attributes, "data-options"));
-            string options = Encoding.UTF8.GetString(optionsBytes);
-
-            string attrs = BuildAttributes(c, new List<string>() { "data-options" });
-            
-            if (properties.ContainsKey("raw") && properties["raw"].ToLower() == "true") {
-                html.Append($"<{c.Tag} {attrs}>{GetContent(c, properties)}</{c.Tag}>");
-            }
-            else {
-                html.Append($"<{c.Tag} {attrs}>{(HttpUtility.HtmlDecode(GetContent(c, properties)))}</{c.Tag}>");
-            }
-
-            html.Append("@section scripts {\n");
-            html.Append($"<script>var {c.ElmId}JsonData = @Html.Raw((ViewData.FirstOrDefault(v => v.Key.EndsWith(\"{c.ElmId}\")).Value ?? new Newtonsoft.Json.Linq.JArray()).ToString());</script>");
-            html.Append($"<script>{options}</script>\n");
-            html.Append("}");
             return html.ToString();
         }
 
@@ -814,7 +813,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             
             return html;
         }
-        
+
         #endregion
     }
 }

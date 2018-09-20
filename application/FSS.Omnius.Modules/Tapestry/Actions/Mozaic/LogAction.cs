@@ -20,7 +20,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // init
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            COREobject core = COREobject.i;
 
             string msg = vars.ContainsKey("Message") ? (string)vars["Message"] : string.Empty;
             OmniusLogLevel level = vars.ContainsKey("Level") ? (OmniusLogLevel)vars["Level"] : OmniusLogLevel.Info;

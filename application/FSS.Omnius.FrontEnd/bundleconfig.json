@@ -22,8 +22,6 @@
       "Scripts/CommonLibraries/Other/d3.min.js",
       "Scripts/CommonLibraries/jQuery/jquery.storageapi.min.js",
       "Scripts/CommonLibraries/jQuery/jquery.cookie.js",
-      "Scripts/CommonLibraries/jQuery/calenstyle.min.js",
-      "Scripts/CommonLibraries/jQuery/calenstyle-i18n-en.js",
 
       // highcharts
       "Scripts/CommonLibraries/Highcharts/highstock.js",
@@ -73,6 +71,7 @@
       "Scripts/Tapestry/Builder/_Context.js",
       "Scripts/Tapestry/Builder/_Wizard.js",
       "Scripts/Tapestry/Builder/_Lock.js",
+      "Scripts/Tapestry/Builder/Debug.js",
 
       "Scripts/Portal/ModuleAdmin.js",
       "Scripts/Portal/Init.js",
@@ -156,9 +155,7 @@
       "Content/CssLibs/jquery.dataTables.min.css",
       "Content/CssLibs/font-awesome.min.css",
       "Content/CssLibs/spectrum.css",
-      "Content/CssLibs/select.dataTables.min.css",
-      "Content/CssLibs/calenstyle.css",
-      "Content/CssLibs/calenstyle-iconfont.css"
+      "Content/CssLibs/select.dataTables.min.css"
     ]
   },
   {

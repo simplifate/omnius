@@ -12,6 +12,7 @@ using System.Linq;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using System.Text;
 using System.Text.RegularExpressions;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Entitron
 {
@@ -19,7 +20,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Entitron
     {
         //public string ViewsToMySQL(int id)
         //{
-        //    DBEntities context = DBEntities.instance;
+        //    DBEntities context = COREobject.i.Context;
         //    Application application = context.Applications.Find(id);
         //    DbSchemeCommit commit = application.DatabaseDesignerSchemeCommits.OrderByDescending(sc => sc.Timestamp).First();
 
@@ -71,7 +72,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Entitron
         {
             try
             {
-                DBConnection db = E.Entitron.i;
+                DBConnection db = COREobject.i.Entitron;
                 IDbCommand cmd = db.CommandSet.Command;
 
                 cmd.CommandText =

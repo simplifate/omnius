@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using FSS.Omnius.Modules.Entitron.DB;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron;
-using Newtonsoft.Json.Linq;
+using FSS.Omnius.Modules.Entitron.DB;
+using System.Data;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -25,7 +25,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
             // init
-            DBConnection db = Modules.Entitron.Entitron.i;
+            DBConnection db = COREobject.i.Entitron;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
 
@@ -77,7 +77,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     // Zjistíme, jestli ten slupec v tabulce vůbec existuje
                     string columnName = pair.Name.ToLowerInvariant();
                     if(!columnExists.ContainsKey(columnName)) {
-                        DBColumn column = table.Columns.Where(c => c.Name == columnName).FirstOrDefault();
+                        DBColumn column = table.Columns.Where(c => c.Name.ToLowerInvariant() == columnName).FirstOrDefault();
 
                         columnExists.Add(columnName, column);
                         if(column != null) {
@@ -85,12 +85,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                         }
                     }
 
-                    if(columnExists[columnName] != null) { 
-                        entity[columnName] = DataType.ConvertTo(columnType[columnName], (string)pair);
+                    if(columnExists[columnName] != null) {
+                        var columnInfo = columnExists[columnName];
+                        entity[columnInfo.Name] = DataType.ConvertTo(columnType[columnName], pair);
                     }
                 }
                 table.Add(entity);
             }
+
             db.SaveChanges();
 
             // return

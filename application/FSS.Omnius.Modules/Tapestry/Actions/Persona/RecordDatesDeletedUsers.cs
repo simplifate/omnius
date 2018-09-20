@@ -24,6 +24,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
 		public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
 		{
+            DBEntities context = COREobject.i.Context;
+
 			// Table of old users in AD
 			List<DBItem> oldData = (List<DBItem>)vars["OldData"];
 
@@ -46,13 +48,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 			foreach (DBItem removedUser in removedUsers)
 			{
 				string sapid1 = (string)removedUser["sapid1"];
-				var user = DBEntities.instance.Users.SingleOrDefault(c => c.UserName == sapid1 && c.DeletedBySync == null);
+				var user = context.Users.SingleOrDefault(c => c.UserName == sapid1 && c.DeletedBySync == null);
 
 				if (user != null)
 					user.DeletedBySync = DateTime.Now;
 			}
 
-			DBEntities.instance.SaveChanges();
+            context.SaveChanges();
 			outputVars["Result"] = oldData;
 		}
 	}

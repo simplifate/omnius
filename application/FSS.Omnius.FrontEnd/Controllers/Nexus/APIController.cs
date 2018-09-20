@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Collections;
 using Newtonsoft.Json.Linq;
 using System.Collections.Specialized;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
@@ -20,7 +21,7 @@ namespace FSS.Omnius.Controllers.Nexus
         // GET: API
         public ActionResult Index()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             ViewData["LdapServersCount"] = e.Ldaps.Count();
             ViewData["WebServicesCount"] = e.WSs.Count();
             ViewData["ExtDatabasesCount"] = e.ExtDBs.Count();
@@ -42,7 +43,7 @@ namespace FSS.Omnius.Controllers.Nexus
         [HttpPost]
         public ActionResult Save(API model)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             if (ModelState.IsValid)
             {
                 // Záznam již existuje - pouze upravujeme
@@ -70,19 +71,19 @@ namespace FSS.Omnius.Controllers.Nexus
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             return View("~/Views/Nexus/API/Detail.cshtml", e.APIs.Single(m => m.Id == id));
         }
 
         public ActionResult Edit(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             return View("~/Views/Nexus/API/Form.cshtml", e.APIs.Single(m => m.Id == id));
         }
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             API row = e.APIs.Single(m => m.Id == id);
 
             e.APIs.Remove(row);

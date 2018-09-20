@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             Dictionary<string, object> sourceDictionary = (Dictionary<string, object>)vars["Dictionary"];
 
-            var item = new DBItem(Modules.Entitron.Entitron.i, null, sourceDictionary);
+            var item = new DBItem(COREobject.i.Entitron, null, sourceDictionary);
 
             outputVars["Result"] = item;
 

@@ -26,7 +26,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            if(!vars.ContainsKey(InputVar[0]))
+            COREobject core = COREobject.i;
+            DBEntities context = core.Context;
+
+            if (!vars.ContainsKey(InputVar[0]))
             {
                 throw new Exception($"Input Var {InputVar[0]} was not defined for WebDavUploadAction!");
             }
@@ -34,10 +37,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             var files = HttpContext.Current.Request.Files;
             if (files == null)
                 return;
-
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            string appName = core.Application.Name;
-            var context = DBEntities.appInstance(core.Application);
+            
             foreach (string fileName in files)
             {
                 HttpPostedFile file = HttpContext.Current.Request.Files[fileName];

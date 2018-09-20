@@ -24,12 +24,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 		public override int? ReverseActionId => null;
 
 		public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
-		{
-			try
-			{
-				CORE.CORE core = (CORE.CORE) vars["__CORE__"];
-				var context = DBEntities.appInstance(core.Application);
+        {
+            COREobject core = COREobject.i;
+            DBEntities context = core.Context;
 
+            try
+			{
                 string dbName = (string)vars["dbName"];
                 string tableName = (string)vars["TableName"];
                 JToken data = (JToken)vars["Data"];
@@ -70,7 +70,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 			catch (Exception e)
 			{
 				string errorMsg = e.Message;
-				CORE.CORE core = (CORE.CORE)vars["__CORE__"];
 				OmniusException.Log(e, OmniusLogSource.Nexus, core.Application, core.User);
 				outputVars["Result"] = String.Empty;
 				outputVars["Error"] = true;

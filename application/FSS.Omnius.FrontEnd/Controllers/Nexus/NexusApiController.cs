@@ -10,6 +10,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using Logger;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Nexus
 {
@@ -22,56 +23,61 @@ namespace FSS.Omnius.FrontEnd.Controllers.Nexus
         {
             try
             {
-                using (var context = DBEntities.instance)
+                var context = COREobject.i.Context;
+                Application app = context.Applications.First(a => a.Id == appId);
+                AjaxTransferNexusModel result = new AjaxTransferNexusModel();
+
+                foreach (Ldap item in context.Ldaps.OrderBy(l => l.Domain_Server))
                 {
-                    Application app = context.Applications.First(a => a.Id == appId);
-                    AjaxTransferNexusModel result = new AjaxTransferNexusModel();
-
-                    foreach(Ldap item in context.Ldaps.OrderBy(l => l.Domain_Server)) {
-                        result.Ldap.Add(new AjaxTransferNexusLDAP()
-                        {
-                            Id = item.Id,
-                            Name = item.Domain_Server
-                        });
-                    }
-                    foreach(WS item in context.WSs.OrderBy(w => w.Name)) {
-                        result.WS.Add(new AjaxTrasferNexuWS()
-                        {
-                            Id = item.Id,
-                            Name = item.Name,
-                            Type = item.Type
-                        });
-                    }
-                    foreach(WebDavServer item in context.WebDavServers.OrderBy(s => s.Name)) {
-                        result.WebDAV.Add(new AjaxTransferNexusWebDAV()
-                        {
-                            Id = item.Id,
-                            Name = item.Name
-                        });
-                    }
-                    foreach(Smtp item in context.SMTPs.OrderBy(s => s.Name)) {
-                        result.SMTP.Add(new AjaxTransferHermesSMTP()
-                        {
-                            Id = item.Id,
-                            Name = item.Name
-                        });
-                    }
-                    foreach(ExtDB item in context.ExtDBs.OrderBy(d => d.DB_Name)) {
-                        result.ExtDB.Add(new AjaxTransferNexusExtDB()
-                        {
-                            Id = item.Id,
-                            Name = item.DB_Alias,
-                        });
-                    }
-                    foreach(RabbitMQ item in context.RabbitMQs.Where(q => q.Type == ChannelType.SEND).OrderBy(q => q.Name)) {
-                        result.RabbitMQ.Add(new AjaxTransferRabbitMQ() {
-                            Id = item.Id,
-                            Name = item.Name,
-                        });
-                    }
-
-                    return result;
+                    result.Ldap.Add(new AjaxTransferNexusLDAP()
+                    {
+                        Id = item.Id,
+                        Name = item.Domain_Server
+                    });
                 }
+                foreach (WS item in context.WSs.OrderBy(w => w.Name))
+                {
+                    result.WS.Add(new AjaxTrasferNexuWS()
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        Type = item.Type
+                    });
+                }
+                foreach (WebDavServer item in context.WebDavServers.OrderBy(s => s.Name))
+                {
+                    result.WebDAV.Add(new AjaxTransferNexusWebDAV()
+                    {
+                        Id = item.Id,
+                        Name = item.Name
+                    });
+                }
+                foreach (Smtp item in context.SMTPs.OrderBy(s => s.Name))
+                {
+                    result.SMTP.Add(new AjaxTransferHermesSMTP()
+                    {
+                        Id = item.Id,
+                        Name = item.Name
+                    });
+                }
+                foreach (ExtDB item in context.ExtDBs.OrderBy(d => d.DB_Name))
+                {
+                    result.ExtDB.Add(new AjaxTransferNexusExtDB()
+                    {
+                        Id = item.Id,
+                        Name = item.DB_Alias,
+                    });
+                }
+                foreach (RabbitMQ item in context.RabbitMQs.Where(q => q.Type == ChannelType.SEND).OrderBy(q => q.Name))
+                {
+                    result.RabbitMQ.Add(new AjaxTransferRabbitMQ()
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                    });
+                }
+
+                return result;
             }
             catch (Exception ex)
             {

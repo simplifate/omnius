@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
+    using FSS.Omnius.Modules.CORE;
     using Master;
     using System;
     using Tapestry;
@@ -42,11 +43,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 
             if (IsModal)
             {
-                stringBuilder.Append("@{T t = new T( (string)ViewData[\"locale\"] );}");
+                stringBuilder.Append("@{T t = new T((FSS.Omnius.Modules.CORE.Locale)ViewData[\"locale\"]);}");
                 stringBuilder.Append("@{ Layout = \"~/Views/Shared/_PartialViewAjaxLayout.cshtml\"; }");
             }
             else {
-                stringBuilder.Append("@{T t = new T( (string)ViewData[\"locale\"] );}");
+                stringBuilder.Append("@{T t = new T((FSS.Omnius.Modules.CORE.Locale)ViewData[\"locale\"]);}");
                 stringBuilder.Append("@{ Layout = \"~/Views/Shared/_OmniusUserAppLayout.cshtml\"; }");
 				stringBuilder.Append("@{Dictionary<string, string> formState = (Dictionary<string, string>)ViewData[\"formState\"]; }");
             }
@@ -98,12 +99,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             }
                         }
                     }
-                    using (DBEntities context = DBEntities.instance)
-                    {
-                        var wfItem = context.TapestryDesignerWorkflowItems.Where(i => i.ComponentName == c.Name).OrderByDescending(i => i.Id).FirstOrDefault();
-                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"button\" value=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{(wfItem != null && wfItem.isAjaxAction != null && wfItem.isAjaxAction.Value ? " runAjax" : "")}\" buttonName=\"{c.Name}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                        stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\">@(t._(\"{c.Label}\"))</{c.Tag}>");
-                    }
+                    DBEntities context = COREobject.i.Context;
+                    var wfItem = context.TapestryDesignerWorkflowItems.Where(i => i.ComponentName == c.Name).OrderByDescending(i => i.Id).FirstOrDefault();
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"button\" value=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{(wfItem != null && wfItem.isAjaxAction != null && wfItem.isAjaxAction.Value ? " runAjax" : "")}\" buttonName=\"{c.Name}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\">@(t._(\"{c.Label}\"))</{c.Tag}>");
                 }
                 else if (c.Type == "button-dropdown")
                 {

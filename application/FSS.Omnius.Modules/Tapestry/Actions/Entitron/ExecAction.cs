@@ -21,8 +21,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
             // init
-            DBConnection db = Modules.Entitron.Entitron.i;
-            
+            DBConnection db = COREobject.i.Entitron;
+
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             int paramsCount = vars.Keys.Where(k => k.StartsWith("CondColumn[") && k.EndsWith("]")).Count();
             string procedureName = (string)vars["ProcedureName"];

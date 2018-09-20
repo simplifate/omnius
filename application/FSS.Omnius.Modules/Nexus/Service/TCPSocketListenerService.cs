@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
@@ -46,34 +47,32 @@ namespace FSS.Omnius.Modules.Nexus.Service
         
         public static void onNewMessage(byte[] body, string listenerName)
         {
-            using (DBEntities db = new DBEntities()) {
-                TCPSocketListener listener = db.TCPListeners.Where(l => l.Name == listenerName).FirstOrDefault();
-                if(listener != null) {
-                    Block block = GetBlockWithWF(db, listener.ApplicationId, listener.BlockName.RemoveDiacritics());
+            var core = COREobject.i;
+            DBEntities context = core.Context;
+            TCPSocketListener listener = context.TCPListeners.Where(l => l.Name == listenerName).FirstOrDefault();
+            if(listener != null) {
+                Block block = GetBlockWithWF(context, listener.ApplicationId, listener.BlockName.RemoveDiacritics());
 
-                    if (block != null) {
-                        var core = new CORE.CORE();
-                        Entitron.Entitron.Create(listener.Application);
+                if (block != null) {
+                    core.Application = listener.Application;
 
-                        try {
-                            PersonaAppRole role = db.AppRoles.FirstOrDefault(r => r.Name == "System" && r.ApplicationId == listener.ApplicationId);
-                            core.User = db.Users.FirstOrDefault(u => u.Users_Roles.Any(r => r.RoleName == role.Name && r.ApplicationId == role.ApplicationId));
-                        }
-                        catch (Exception e) {
-                            OmniusInfo.Log($"Chyba při zpracování socketu: {listenerName} ({e})", OmniusLogSource.Nexus, null, null);
-                        }
-
-                        OmniusInfo.Log($"Začátek zpracování socketu: {listener.Name} / Blok {listener.BlockName} / Button {listener.WorkflowName}", OmniusLogSource.Nexus, listener.Application, core.User);
-                        
-                        FormCollection fc = new FormCollection();
-                        Dictionary<string, object> vars = new Dictionary<string, object>();
-                        vars.Add("__SocketRequestBody__", body);
-
-                        var runResult = core.Tapestry.run(core.User, block, listener.WorkflowName, -1, fc, 0, null, vars);
-
-                        OmniusInfo.Log($"Konec zpraconání mailu: {listener.Name} / Blok {listener.BlockName} / Button {listener.WorkflowName}", OmniusLogSource.Hermes, listener.Application, core.User);
+                    try {
+                        PersonaAppRole role = context.AppRoles.FirstOrDefault(r => r.Name == "System" && r.ApplicationId == listener.ApplicationId);
+                        core.User = context.Users.FirstOrDefault(u => u.Users_Roles.Any(r => r.RoleName == role.Name && r.ApplicationId == role.ApplicationId));
+                    }
+                    catch (Exception e) {
+                        OmniusInfo.Log($"Chyba při zpracování socketu: {listenerName} ({e})", OmniusLogSource.Nexus, null, null);
                     }
 
+                    OmniusInfo.Log($"Začátek zpracování socketu: {listener.Name} / Blok {listener.BlockName} / Button {listener.WorkflowName}", OmniusLogSource.Nexus, listener.Application, core.User);
+                        
+                    FormCollection fc = new FormCollection();
+                    Dictionary<string, object> vars = new Dictionary<string, object>();
+                    vars.Add("__SocketRequestBody__", body);
+
+                    var runResult = new Modules.Tapestry.Tapestry(core).run(block, listener.WorkflowName, -1, fc, 0, null, vars);
+
+                    OmniusInfo.Log($"Konec zpraconání mailu: {listener.Name} / Blok {listener.BlockName} / Button {listener.WorkflowName}", OmniusLogSource.Hermes, listener.Application, core.User);
                 }
             }
         }

@@ -52,7 +52,7 @@
         var x = (e.pageX - this.target.offset().left);
         var y = (e.pageY - this.target.offset().top);
 
-        var items = this.target.find('> .item, > .symbol');
+        var items = this.target.find('.item, .symbol');
         for (var i = 0; i < items.length; i++) {
             this.itemsCache.push({
                 element: items.eq(i),

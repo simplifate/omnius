@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.IO;
+using System.Linq;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.DB;
 
@@ -14,7 +16,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
         public override int? ReverseActionId => null;
 
-        public override string[] InputVar => new string[] { "Data", "?Delimiter", "?ExportPath" };
+        public override string[] InputVar => new string[] { "?TableName", "?Data", "?Columns", "?Delimiter", "?ExportPath" };
 
         public override string Name => "Export to CSV";
 
@@ -22,34 +24,51 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            // Init
-            List<string> rows = new List<string>();
+            /// Init
+            DBConnection db = COREobject.i.Entitron;
             string exportPath = vars.ContainsKey("ExportPath") ? (string)vars["ExportPath"] : null;
-
-            List<DBItem> data = (List<DBItem>)vars["Data"];
             string delimiter = vars.ContainsKey("Delimiter") ? (string)vars["Delimiter"] : ";";
+            StringBuilder result = new StringBuilder();
 
-            // Připravíme CSV
-            //nastavit header
-            List<string> header = new List<string>();
-            foreach (string column in data[0].getColumnNames())
+            /// get data
+            // from vars
+            List<DBItem> data = vars.ContainsKey("Data")
+                ? (List<DBItem>)vars["Data"]
+                : new List<DBItem>();
+            // from table
+            if (vars.ContainsKey("TableName"))
             {
-                header.Add($"{column}");
-            }
-            rows.Add(string.Join(delimiter, header));
-            
-            foreach(DBItem item in data) 
-            {
-                List<string> row = new List<string>();
-                foreach(string column in data[0].getColumnNames()) {
-                    row.Add($"{item[column].ToString()}");
-                }
-                rows.Add(string.Join(delimiter, row));
+                var innerOutputVars = new Dictionary<string, object>();
+                new Entitron.SelectAction().InnerRun(vars, innerOutputVars, null, message);
+                data.AddRange((IEnumerable<DBItem>)innerOutputVars["Data"]);
             }
 
-            string csv = string.Join("\r\n", rows);
+            /// get columns
+            IEnumerable<string> columns = null;
+            // from vars
+            if (vars.ContainsKey("Columns"))
+            {
+                if (vars["Columns"] is string)
+                    columns = (vars["Columns"] as string).Split(';');
+                else if (vars["Columns"] is IEnumerable<string>)
+                    columns = (vars["Columns"] as IEnumerable<string>);
+            }
+            // from item
+            else if (data.Count > 0)
+                columns = data.First().getColumnNames();
 
-            if (string.IsNullOrEmpty(exportPath)) //send to browser
+            /// generate csv
+            // header
+            result.AppendLine(string.Join(delimiter, columns));
+            // data
+            foreach (var item in data)
+            {
+                result.AppendLine(string.Join(delimiter, columns.Select(c => item[c].ToString())));
+            }
+
+            /// return
+            // send to browser
+            if (string.IsNullOrEmpty(exportPath))
             {
                 HttpContext context = HttpContext.Current;
                 HttpResponse response = context.Response;
@@ -58,13 +77,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                 response.Charset = Encoding.GetEncoding(1250).EncodingName;
                 response.ContentEncoding = Encoding.GetEncoding(1250);
                 response.AddHeader("content-disposition", "attachment; filename=export.csv");
-                response.Write(csv);
+                response.Write(result.ToString());
                 response.Flush();
                 response.Close();
             }
-            else //save file to server
+            //save file to server
+            else
             {
-                File.WriteAllText(exportPath, csv);
+                File.WriteAllText(exportPath, result.ToString());
             }
         }
     }

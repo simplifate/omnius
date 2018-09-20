@@ -28,15 +28,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 
             int fileId = Convert.ToInt32(vars[InputVar[0]]);
 
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            var entities = DBEntities.appInstance(core.Application);
-            FileMetadata fmd = entities.FileMetadataRecords.Find(fileId);
+            COREobject core = COREobject.i;
+            DBEntities context = core.Context;
+            FileMetadata fmd = context.FileMetadataRecords.Find(fileId);
 
             IFileSyncService serviceFileSync = new WebDavFileSyncService();
             serviceFileSync.DownloadFile(fmd);
 
-            HttpContext context = HttpContext.Current;
-            HttpResponse response = context.Response;
+            HttpContext httpContext = HttpContext.Current;
+            HttpResponse response = httpContext.Response;
 
             response.Clear();
             response.StatusCode = 202;

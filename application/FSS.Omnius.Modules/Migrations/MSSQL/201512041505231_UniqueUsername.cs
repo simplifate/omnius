@@ -7,12 +7,12 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
     {
         public override void Up()
         {
-            CreateIndex("dbo.Persona_Users", "username", unique: true);
+            CreateIndex("dbo.Persona_Users", "UserName", unique: true);
         }
         
         public override void Down()
         {
-            DropIndex("dbo.Persona_Users", new[] { "username" });
+            DropIndex("dbo.Persona_Users", new[] { "UserName" });
         }
     }
 }

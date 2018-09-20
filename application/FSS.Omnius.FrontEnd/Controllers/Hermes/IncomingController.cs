@@ -6,6 +6,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using FSS.Omnius.Modules.Hermes;
 using System.Net.Mail;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
@@ -15,7 +16,7 @@ namespace FSS.Omnius.Controllers.Hermes
         // GET: SMTP
         public ActionResult Index()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
             ViewData["EmailQueueCount"] = e.EmailQueueItems.Count();
@@ -34,7 +35,7 @@ namespace FSS.Omnius.Controllers.Hermes
         [HttpPost]
         public ActionResult Save(IncomingEmail model)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             if (ModelState.IsValid)
             {
                 // Záznam ji. existuje - pouze upravujeme
@@ -67,19 +68,19 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             return View("~/Views/Hermes/Incoming/Detail.cshtml", e.IncomingEmail.Single(m => m.Id == id));
         }
 
         public ActionResult Edit(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             return View("~/Views/Hermes/Incoming/Form.cshtml", e.IncomingEmail.Single(m => m.Id == id));
         }
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             IncomingEmail row = e.IncomingEmail.Single(m => m.Id == id);
 
             IncomingEmailListener.RemoveListener(row.Name);

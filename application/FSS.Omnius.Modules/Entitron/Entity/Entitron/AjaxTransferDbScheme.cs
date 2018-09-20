@@ -28,11 +28,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     }
     public class AjaxTransferViewColumnList: IEntity
     {
-        public List<string> Columns { get; set; }
-
         public AjaxTransferViewColumnList()
         {
             Columns = new List<string>();
         }
+        public AjaxTransferViewColumnList(List<string> columns)
+        {
+            Columns = columns;
+        }
+
+        public List<string> Columns { get; set; }
     }
 }

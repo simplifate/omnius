@@ -63,7 +63,7 @@ namespace FSS.Omnius.Modules.Entitron.Queryable.Cond
         }
         public ConditionConcat LessOrEqual(object value)
         {
-            _cond.i.operation = ">=";
+            _cond.i.operation = "<=";
             _cond.i.operation_params.Add(value);
 
             return new ConditionConcat(_cond);

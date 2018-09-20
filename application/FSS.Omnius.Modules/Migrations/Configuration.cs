@@ -22,6 +22,7 @@ namespace FSS.Omnius.Modules.Migrations
 
             /// provider-specific attrs
             /// - Migration directory
+            /// - Namespace
             Entitron.ParseConnectionString("DefaultConnection");
             switch (Entitron.DefaultDBType)
             {
@@ -79,12 +80,21 @@ namespace FSS.Omnius.Modules.Migrations
             {
                 var store = new UserStore<User, Iden_Role, int, UserLogin, Iden_User_Role, UserClaim>(context);
                 var manager = new UserManager<User, int>(store);
-                var user = new User { UserName = "admin", DisplayName = "Admin", Email = "admin@example.com", isLocalUser = true, localExpiresAt = DateTime.UtcNow, LastLogin = DateTime.UtcNow, LastLogout = DateTime.UtcNow, CurrentLogin = DateTime.UtcNow };
+                var user = new User { UserName = "admin", DisplayName = "Admin", Email = "admin@example.com", AuthTypeId = 1, localExpiresAt = DateTime.UtcNow, LastLogin = DateTime.UtcNow, LastLogout = DateTime.UtcNow, CurrentLogin = DateTime.UtcNow };
 
                 manager.Create(user, "pass132");
 
                 user.ModuleAccessPermission = new ModuleAccessPermission { Athena = true, Babylon = true, Core = true, Cortex = true, Entitron = true, Hermes = true, Master = true, Mozaic = true, Nexus = true, Persona = true, Sentry = true, Tapestry = true, Watchtower = true, User = user };
                 user.ADgroup_Users.Add(new ADgroup_User { ADgroup = systemAD, User = user });
+
+                var guest = new User { UserName = "guest", DisplayName = "Guest", Email = "guest@example.com", AuthTypeId = 1, localExpiresAt = DateTime.UtcNow, LastLogin = DateTime.UtcNow, LastLogout = DateTime.UtcNow, CurrentLogin = DateTime.UtcNow };
+                var sheduler = new User { UserName = "sheduler", DisplayName = "Scheduler", Email = "scheduler@example.com", AuthTypeId = 1, localExpiresAt = DateTime.UtcNow, LastLogin = DateTime.UtcNow, LastLogout = DateTime.UtcNow, CurrentLogin = DateTime.UtcNow };
+
+                manager.Create(guest, "password");
+                manager.Create(sheduler, "hp)(&^&%NE.>ouae");
+
+                guest.ModuleAccessPermission = new ModuleAccessPermission();
+                sheduler.ModuleAccessPermission = new ModuleAccessPermission();
             }
 
             // default app

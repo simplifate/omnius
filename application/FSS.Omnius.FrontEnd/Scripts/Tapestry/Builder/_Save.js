@@ -271,7 +271,9 @@
             Width: Math.round(foreach.width()),
             Height: Math.round(foreach.height()),
             WorkflowItems: items,
-            DataSource: foreach.attr('data-datasource')
+            DataSource: foreach.attr('data-datasource'),
+            ItemName: foreach.attr('data-itemname'),
+            IsParallel: foreach.attr('data-parallel') == true
         };
     },
 
@@ -302,7 +304,8 @@
             ConditionSets: item.data('conditionSets'),
             SymbolType: item.attr('symbolType'),
             IsForeachStart: item.find('.fa-play').length > 0,
-            IsForeachEnd: item.find('.fa-stop').length > 0
+            IsForeachEnd: item.find('.fa-stop').length > 0,
+            HasParallelLock: item.attr('data-parallel-lock') == true
         };
     },
 

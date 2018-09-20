@@ -1,8 +1,7 @@
-﻿@using FSS.Omnius.Modules.Entitron.Entity
-@using FSS.Omnius.Modules.Entitron.Entity.Master
-@using FSS.Omnius.Modules.Entitron.Entity.Tapestry
+﻿@using FSS.Omnius.Modules.Entitron.DB
 @using FSS.Omnius.Modules.Entitron.Entity.Mozaic
 @using FSS.Omnius.Modules.CORE
+@using FSS.Omnius.Modules.Entitron.Entity.Master
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +15,7 @@
 </head>
 <body class="@Page.ModuleClass userLayout pageSpinnerShown">
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/jquery.min.js")"></script>
-    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.js")"></script>
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.min.js")"></script>  
     <div id="brandBar">
         <div class="logo">
             <img src="@Url.Content("~/Content/Images/LogoCrymicoooo.png")" alt="" />
@@ -25,7 +24,7 @@
     <div id="userTopBar">
         <div class="icon" id="toggleMenuIcon"><div class="fa fa-bars"></div></div>
         <a href="/Master"><div class="icon activeIcon" id="appManagerIcon"><div class="fa fa-th"></div></div></a>
-        @if (Context.GetLoggedUser() != null && Context.GetLoggedUser().isAdmin())
+        @if (FSS.Omnius.Modules.CORE.COREobject.i.User != null && FSS.Omnius.Modules.CORE.COREobject.i.User.IsAdmin)
         {
             <a href="/CORE"><div class="icon" id="adminSectionIcon"><div class="fa fa-cog"></div></div></a>
         }
@@ -34,18 +33,44 @@
         <div class="clientTitleArea">
             <div class="clientTitle">Omnius</div>
         </div>
+        @if (ViewData.ContainsKey("profiles"))
+        {
+            <div class="profileSelectArea">
+                <select id="profileSelect">
+                    @{
+                        <option value="-1">All Profiles</option>
+                        foreach (var profile in (List<DBItem>)ViewData["profiles"])
+                        {
+                            if ((int?)ViewData["selectedProfile"] == (int?)profile["ProfileId"])
+                            {
+                                <option value="@profile["ProfileId"]" selected>@profile["Name"]</option>
+                            }
+                            else
+                            {
+                                <option value="@profile["ProfileId"]">@profile["Name"]</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+                        }
+        <div class="searchBox">
 
+                <input type="text" class="searchInputField" name="search" />
+                <div class="searchIcon">&#xe036;</div>
+
+            <div class="notificationIcon">&#xe006;</div>
+        </div>
         <div class="userBoxMinimized">
             <div class="notificationIcon fa fa-bell"></div>
             <div class="avatar icon"></div>
         </div>
         <div class="userBox">
-            <div class="notificationIcon fa fa-bell"></div>
             <div class="avatar"></div>
-            @if (Context.GetLoggedUser() != null)
+            @if (FSS.Omnius.Modules.CORE.COREobject.i.User != null)
             {
-                <div class="fullName">@Context.GetLoggedUser().DisplayName</div>
-                <div class="commands">@Html.Raw(Context.GetLoggedUser().isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">odhlásit</a> | " : "")<a href="/Master/Home/Details">detail</a></div>
+            <div class="fullName">@FSS.Omnius.Modules.CORE.COREobject.i.User.DisplayName</div>
+            <div class="commands">@Html.Raw(FSS.Omnius.Modules.CORE.COREobject.i.User.Auth.AllowLogout ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">Logout</a> | " : "")<a href="/Master/Home/Details">Details</a></div>
             }
         </div>
         <div class="searchBoxMinimized">

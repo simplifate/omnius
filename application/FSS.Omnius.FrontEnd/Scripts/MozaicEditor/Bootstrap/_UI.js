@@ -1,212 +1,4 @@
-﻿var CalenStyleDefaultSettings = "var __id__Options = {\n" +
-    "    sectionsList: ['Header', 'Calendar', 'EventList', 'FilterBar'],\n" +
-    "    eventTooltipContent: 'Default',\n" +
-    "    duration: 'Default',\n" +
-    "    durationStrings: BootstrapUserInit.EventCalendar.DEFAULT_DURATION_STRINGS,\n" +
-    "    viewsToDisplay: [{\n" +
-    "        viewName: 'DetailedMonthView',\n" +
-    "        viewDisplayName: 'Month (detail)'\n" +
-    "    }, {\n" +
-    "        viewName: 'MonthView',\n" +
-    "        viewDisplayName: 'Month (simple)'\n" +
-    "    }, {\n" +
-    "        viewName: 'WeekView',\n" +
-    "        viewDisplayName: 'Week'\n" +
-    "    }, {\n" +
-    "        viewName: 'DayView',\n" +
-    "        viewDisplayName: 'Day'\n" +
-    "    }, {\n" +
-    "        viewName: 'AgendaView',\n" +
-    "        viewDisplayName: 'Agenda'\n" +
-    "    }, {\n" +
-    "        viewName: 'WeekPlannerView',\n" +
-    "        viewDisplayName: 'Week planner'\n" +
-    "    }, {\n" +
-    "        viewName: 'QuickAgendaView',\n" +
-    "        viewDisplayName: 'Quick agenda'\n" +
-    "    }, {\n" +
-    "        viewName: 'TaskPlannerView',\n" +
-    "        viewDisplayName: 'Task planner'\n" +
-    "    }, {\n" +
-    "        viewName: 'CustomView',\n" +
-    "        viewDisplayName: 'Custom'\n" +
-    "    }, {\n" +
-    "        viewName: 'DayEventListView',\n" +
-    "        viewDisplayName: 'Day event list'\n" +
-    "    }, {\n" +
-    "        viewName: 'DayEventDetailView',\n" +
-    "        viewDisplayName: 'Day event detail'\n" +
-    "    }\n" +
-    "    ],\n" +
-    "    visibleView: 'MonthView',\n" +
-    "    selectedDate: new Date(),\n" +
-    "    headerComponents: BootstrapUserInit.EventCalendar.DEFAULT_HEADER_COMPONENTS,\n" +
-    "    headerSectionsList: {\n" +
-    "        left: ['MenuDropdownIcon', 'DatePickerIcon', 'TodayButton'],\n" +
-    "        center: ['PreviousButton', 'HeaderLabel', 'NextButton'],\n" +
-    "        right: ['FullscreenButton']\n" +
-    "    },\n" +
-    "    dropdownMenuElements: ['ViewsToDisplay'],\n" +
-    "    formatSeparatorDateTime: ' ',\n" +
-    "    formatSeparatorDate: '-',\n" +
-    "    formatSeparatorTime: ':',\n" +
-    "    inputDateTimeFormat: 'yyyy-dd-MM HH:mm:ss',\n" +
-    "    calDataSource: [{\n" +
-    "        sourceFetchType: 'ALL',\n" +
-    "        sourceType: 'JSON',\n" +
-    "        source: {\n" +
-    "            eventSource: window['__id__JsonData']\n" +
-    "        }\n" +
-    "    }],\n" +
-    "    eventDuration: 30,\n" +
-    "    allDayEventDuration: 1,\n" +
-    "    timeIndicatorUpdationInterval: 15,\n" +
-    "    unitTimeInterval: 30,\n" +
-    "    timeLabels: 'Hour',\n" +
-    "    inputTZOffset: '+00:00',\n" +
-    "    tz: 'Europe/Prague',\n" +
-    "    outputTZOffset: '+00:00',\n" +
-    "    weekStartDay: 1,\n" +
-    "    weekNumCalculation: 'Europe/ISO',\n" +
-    "    daysInCustomView: 4,\n" +
-    "    daysInDayListView: 7,\n" +
-    "    daysInAppointmentView: 4,\n" +
-    "    agendaViewDuration: 'Month',\n" +
-    "    daysInAgendaView: 15,\n" +
-    "    agendaViewTheme: 'Timeline1',\n" +
-    "    quickAgendaViewDuration: 'Week',\n" +
-    "    daysInQuickAgendaView: 5,\n" +
-    "    taskPlannerViewDuration: 'Week',\n" +
-    "    daysInTaskPlannerView: 5,\n" +
-    "    transitionSpeed: 600,\n" +
-    "    actionOnDayClickInMonthView: 'ModifyEventList',\n" +
-    "    eventIndicatorInMonthView: 'Events',\n" +
-    "    eventIndicatorInDatePicker: 'DayNumberBold',\n" +
-    "    eventIndicatorInDayListView: 'DayHighlight',\n" +
-    "    averageEventsPerDayForDayHighlightView: 5,\n" +
-    "    hiddenEventsIndicatorLabel: '+(count) more',\n" +
-    "    hiddenEventsIndicatorAction: 'ShowEventDialog',\n" +
-    "    is24Hour: true,\n" +
-    "    showDaysWithNoEventsInAgendaView: false,\n" +
-    "    fixedHeightOfWeekPlannerViewCells: false,\n" +
-    "    fixedHeightOfTaskPlannerView: true,\n" +
-    "    showTransition: true,\n" +
-    "    fixedNumOfWeeksInMonthView: false,\n" +
-    "    displayWeekNumInMonthView: false,\n" +
-    "    hideExtraEvents: true,\n" +
-    "    addEventsInMonthView: true,\n" +
-    "    displayEventsInMonthView: true,\n" +
-    "    isDragNDropInMonthView: false,\n" +
-    "    isTooltipInMonthView: true,\n" +
-    "    isDragNDropInDetailView: false,\n" +
-    "    isResizeInDetailView: false,\n" +
-    "    isTooltipInDetailView: true,\n" +
-    "    isDragNDropInQuickAgendaView: false,\n" +
-    "    isTooltipInQuickAgendaView: true,\n" +
-    "    isDragNDropInTaskPlannerView: false,\n" +
-    "    isTooltipInTaskPlannerView: true,\n" +
-    "    isTooltipInAppointmentView: true,\n" +
-    "    changeCalendarBorderColorInJS: false,\n" +
-    "    deleteOldDataWhileNavigating: false,\n" +
-    "    onlyTextForNonAllDayEvents: true,\n" +
-    "    excludeNonBusinessHours: false,\n" +
-    "    isNonBusinessHoursDroppable: false,\n" +
-    "    isRestrictedSectionDroppable: false,\n" +
-    "    actionBarHeight: 30,\n" +
-    "    filterBarPosition: 'Left',\n" +
-    "    filterBarHeight: 200,\n" +
-    "    filterBarWidth: 200,\n" +
-    "    eventFilterCriteria: [{\n" +
-    "        keyName: 'calendarId',\n" +
-    "        keyDisplayName: 'Calendars',\n" +
-    "        dataType: 'String',\n" +
-    "        selectedValues: ['work', 'personal'],\n" +
-    "        values: ['work', 'personal']\n" +
-    "    }],\n" +
-    "    noneSelectedFilterAction: 'SelectAll',\n" +
-    "    calendarBorderColor: 'FFFFFF',\n" +
-    "    extraMonthsForDataLoading: 1,\n" +
-    "    datasetModificationRule: 'Default',\n" +
-    "    changeColorBasedOn: 'EventCalendar',\n" +
-    "    borderColor: '',\n" +
-    "    textColor: 'FFFFFF',\n" +
-    "    eventColorsArray: ['C0392B', 'D2527F', '674172', '4183D7', '336E7B', '36D7B7', '68C3A3', 'E87E04', '6C7A89', 'F9690E'],\n" +
-    "    eventIcon: 'cs-icon-Event',\n" +
-    "    hideEventIcon: {\n" +
-    "        Default: false,\n" +
-    "        DetailedMonthView: false,\n" +
-    "        MonthView: false,\n" +
-    "        WeekView: false,\n" +
-    "        DayView: false,\n" +
-    "        CustomView: false,\n" +
-    "        QuickAgendaView: false,\n" +
-    "        TaskPlannerView: false,\n" +
-    "        DayEventDetailView: false,\n" +
-    "        AgendaView: false,\n" +
-    "        WeekPlannerView: false\n" +
-    "    },\n" +
-    "    hideEventTime: {\n" +
-    "        Default: false,\n" +
-    "        DetailedMonthView: false,\n" +
-    "        MonthView: false,\n" +
-    "        WeekView: false,\n" +
-    "        DayView: false,\n" +
-    "        CustomView: false,\n" +
-    "        QuickAgendaView: false,\n" +
-    "        TaskPlannerView: false,\n" +
-    "        DayEventDetailView: false,\n" +
-    "        AgendaView: false,\n" +
-    "        WeekPlannerView: false\n" +
-    "    },\n" +
-    "    businessHoursSource: [\n" +
-    "        { day: 0, times: [{ startTime: '00:00', endTime: '24:00' }] },\n" +
-    "        { day: 1, times: [{ startTime: '00:00', endTime: '24:00' }] },\n" +
-    "        { day: 2, times: [{ startTime: '00:00', endTime: '24:00' }] },\n" +
-    "        { day: 3, times: [{ startTime: '10:00', endTime: '24:00' }] },\n" +
-    "        { day: 4, times: [{ startTime: '00:00', endTime: '24:00' }] },\n" +
-    "        { day: 5, times: [{ startTime: '10:00', endTime: '24:00' }] },\n" +
-    "        { day: 6, times: [{ startTime: '00:00', endTime: '24:00' }] }\n" +
-    "    ],\n" +
-    "    eventOrTaskStatusIndicators: [\n" +
-    "        { name: 'Overdue', color: 'E74C3C' },\n" +
-    "        { name: 'Completed', color: '27AE60' },\n" +
-    "        { name: 'InProgress', color: 'F1C40F' }\n" +
-    "    ],\n" +
-    "    adjustViewOnWindowResize: true,\n" +
-    "    useHammerjsAsGestureLibrary: false,\n" +
-    "\n" +
-    "    // CALLBACKS\n" +
-    "    initialize: null,\n" +
-    "    modifyHeaderViewLabels: null,\n" +
-    "    addEventHandlersInHeader: null,\n" +
-    "    dataLoadingStart: null,\n" +
-    "    dataLoadingEnd: null,\n" +
-    "    cellClicked: null,\n" +
-    "    viewLoaded: null,\n" +
-    "    previousButtonClicked: null,\n" +
-    "    nextButtonClicked: null,\n" +
-    "    todayButtonClicked: null,\n" +
-    "    visibleViewChanged: null,\n" +
-    "    modifyCustomView: null,\n" +
-    "    displayEventListDialog: null,\n" +
-    "    eventInADialogClicked: null,\n" +
-    "    displayEventsForPeriodInListInAgendaView: null,\n" +
-    "    eventRendered: null,\n" +
-    "    eventsAddedInView: null,\n" +
-    "    timeSlotsAddedInView: null,\n" +
-    "    timeSlotClicked: null,\n" +
-    "    saveChangesOnEventDrop: null,\n" +
-    "    saveChangesOnEventResize: null,\n" +
-    "    modifyActionBarView: null,\n" +
-    "    addDaySummaryInTaskPlannerView: null,\n" +
-    "    displayEventsForPeriodInList: BootstrapUserInit.EventCalendar.displayEventsForPeriodInList,\n" +
-    "    eventListAppended: BootstrapUserInit.EventCalendar.adjustList,\n" +
-    "    slotTooltipContent: BootstrapUserInit.EventCalendar.getSlotTooltipContent,\n" +
-    "    eventClicked: BootstrapUserInit.EventCalendar.defaultEventDetail,\n" +
-    "    modifyFilterBarView: BootstrapUserInit.EventCalendar.renderFilters\n" +
-    "};";
-
-MBE.types.ui = {
+﻿MBE.types.ui = {
 
     templates: {
         'horizontal-form-row': '<div></div>',
@@ -235,8 +27,7 @@ MBE.types.ui = {
                                 '<div class="phase-icon-number">1</div>' +
                             '</div>' +
                             '<div class="phase-label">Fáze 1</div>' + 
-                        '</div>',
-        'event-calendar': '<div class="event-calendar"></div>'
+                        '</div>'
     },
 
     templatesName: {
@@ -246,8 +37,7 @@ MBE.types.ui = {
         'countdown': 'Countdown',
         'wizzard': 'Wizzard phases',
         'wizzard-body': 'Wizzard body#hide',
-        'wizzard-phase': 'Wizzard phase#hide',
-        'event-calendar': 'Event calendar'
+        'wizzard-phase': 'Wizzard phase#hide'
     },
 
     options: {
@@ -369,33 +159,6 @@ MBE.types.ui = {
                     }
                 }]
             }
-        },
-        'event-calendar': {
-            'eventCalendarOptions': {
-                name: 'Calendar options',
-                type: 'group',
-                groupItems: [
-                    {
-                        label: 'Options',
-                        type: 'cm',
-                        showLabel: true,
-                        syntax: 'text/javascript',
-                        rows: 6,
-                        attr: 'data-options',
-                        help: 'Replace __id__ on line #1 and #58 (default) with desired element ID.<br>' +
-                            'Default data source is select from table or view converted into JArray (Cast variable action) as <i>_uic_{ID}</i> in init workflow.<br>' +
-                            'If you want different datasource, You must implement it yourself.<br>' +
-                            'More info about supported options can be found <a href="https://www.jqueryscript.net/time-clock/Mobile-friendly-Drag-Drop-Event-Calendar-Plugin-CalenStyle.html" target="_blank">here</a>.',
-                        get: function (opt) {
-                            var text = $(this).attr(opt.attr);
-                            return text && text.length ? atob(text) : CalenStyleDefaultSettings;
-                        },
-                        set: function (input) {
-                            $(this).attr('data-options', input.value.length ? btoa(input.value) : '');
-                        }
-                    }
-                ]
-            }
         }
     }, 
     
@@ -424,7 +187,6 @@ MBE.types.ui = {
 
         MBE.io.onLoad.push(MBE.types.ui._onLoad);
         MBE.DnD.onDrop.push(MBE.types.ui._drop);
-        MBE.DnD.onDragOver.push(MBE.types.ui._onDragOver);
         MBE.onBeforeDelete['ui|data-table'] = MBE.types.ui._beforeDelete;
 
         $(document)
@@ -468,13 +230,6 @@ MBE.types.ui = {
         $('table.dataTable', MBE.workspace).each(function () {
             MBE.types.ui.initDataTable.apply(this, []);
         });
-    },
-
-    _onDragOver: function (object) {
-        if (this.is('.event-calendar')) {
-            return false;
-        }
-        return true;
     },
 
     buildHorizontalFormRow: function()

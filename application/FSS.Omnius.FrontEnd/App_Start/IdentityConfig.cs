@@ -4,15 +4,14 @@ using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using FSS.Omnius.FrontEnd.Models;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.FrontEnd
 {
@@ -88,8 +87,7 @@ namespace FSS.Omnius.FrontEnd
                 manager.UserTokenProvider = 
                     new DataProtectorTokenProvider<User, int>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
-
-            Modules.Persona.Persona.userManager = manager;
+            
             return manager;
         }
     }
@@ -110,6 +108,24 @@ namespace FSS.Omnius.FrontEnd
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+        }
+        
+        public void OmniusSignIn(User user, bool isPersistent, bool rememberBrowser)
+        {
+            this.SignIn(user, isPersistent, rememberBrowser);
+            user.Login();
+        }
+        public async Task<SignInStatus> OmniusPasswordSignInAsync(string userName, string password, bool isPersistent, bool shouldLockout)
+        {
+            SignInStatus status = await PasswordSignInAsync(userName, password, isPersistent, shouldLockout);
+            if (status == SignInStatus.Success)
+            {
+                COREobject core = COREobject.i;
+                User user = core.Context.Users.Single(u => u.UserName == userName);
+                user.Login();
+            }
+
+            return status;
         }
     }
 }

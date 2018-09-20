@@ -21,8 +21,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            DBConnection db = Modules.Entitron.Entitron.i;
+            COREobject core = COREobject.i;
+            DBConnection db = core.Entitron;
             DBTable evaluationTable = db.Table("auctions_evaluations");
             //var demandsView = core.Entitron.GetDynamicView("DemandsVsCapacity");
 

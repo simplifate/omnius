@@ -14,6 +14,7 @@ using FSS.Omnius.Modules.Watchtower;
 using Newtonsoft.Json.Linq;
 using S22.Imap;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Hermes
 {
@@ -44,43 +45,41 @@ namespace FSS.Omnius.Modules.Hermes
 
         private static void onNewMessage(object sender, IdleMessageEventArgs e, string incomingMailboxName)
         {
-            using (DBEntities db = new DBEntities()) {
-                MailMessage mail = e.Client.GetMessage(e.MessageUID, FetchOptions.Normal);
+            COREobject core = COREobject.i;
+            MailMessage mail = e.Client.GetMessage(e.MessageUID, FetchOptions.Normal);
 
-                IncomingEmail email = db.IncomingEmail.SingleOrDefault(m => m.Name == incomingMailboxName);
-                if(email != null && email.IncomingEmailRule.Count() > 0) {
-                    foreach(IncomingEmailRule rule in email.IncomingEmailRule) {
-                        bool result = EvaluateRule(rule, mail);
+            IncomingEmail email = core.Context.IncomingEmail.SingleOrDefault(m => m.Name == incomingMailboxName);
+            if(email != null && email.IncomingEmailRule.Count() > 0) {
+                foreach(IncomingEmailRule rule in email.IncomingEmailRule) {
+                    bool result = EvaluateRule(rule, mail);
 
-                        if(result) 
+                    if(result) 
+                    {
+                        Block block = GetBlockWithWF(core.Context, rule.ApplicationId, rule.BlockName.RemoveDiacritics());
+                        if (block != null) 
                         {
-                            Block block = GetBlockWithWF(db, rule.ApplicationId, rule.BlockName.RemoveDiacritics());
-                            if (block != null) 
-                            {
-                                var core = new CORE.CORE();
-                                Entitron.Entitron.Create(rule.Application);
+                            core.Application = rule.Application;
 
-                                try {
-                                    PersonaAppRole role = db.AppRoles.FirstOrDefault(r => r.Name == "System" && r.ApplicationId == rule.ApplicationId);
-                                    core.User = db.Users.FirstOrDefault(u => u.Users_Roles.Any(r => r.RoleName == role.Name && r.ApplicationId == role.ApplicationId));
-                                }
-                                catch (Exception) {
-                                }
-
-                                OmniusInfo.Log($"Začátek zpracování mailu: {email.Name} / Pravidlo {rule.Name} / Blok {rule.BlockName} / Button {rule.WorkflowName}", OmniusLogSource.Hermes, rule.Application, core.User);
-                                
-                                FormCollection fc = new FormCollection(new NameValueCollection()
-                                {
-                                    { "MailFrom", mail.From.Address },
-                                    { "MailCC", string.Join(";", mail.CC.Select(cc => cc.Address).ToList()) },
-                                    { "MailSubject", mail.Subject },
-                                    { "MailBody", mail.Body },
-                                });
-                                
-                                var runResult = core.Tapestry.run(core.User, block, rule.WorkflowName, -1, fc, 0);
-
-                                OmniusInfo.Log($"Konec zpraconání mailu: {email.Name} / Pravidlo {rule.Name} / Blok {rule.BlockName} / Button {rule.WorkflowName}", OmniusLogSource.Hermes, rule.Application, core.User);
+                            try {
+                                PersonaAppRole role = core.Context.AppRoles.FirstOrDefault(r => r.Name == "System" && r.ApplicationId == rule.ApplicationId);
+                                core.User = core.Context.Users.FirstOrDefault(u => u.Users_Roles.Any(r => r.RoleName == role.Name && r.ApplicationId == role.ApplicationId));
                             }
+                            catch (Exception) {
+                            }
+
+                            OmniusInfo.Log($"Začátek zpracování mailu: {email.Name} / Pravidlo {rule.Name} / Blok {rule.BlockName} / Button {rule.WorkflowName}", OmniusLogSource.Hermes, rule.Application, core.User);
+                                
+                            FormCollection fc = new FormCollection(new NameValueCollection()
+                            {
+                                { "MailFrom", mail.From.Address },
+                                { "MailCC", string.Join(";", mail.CC.Select(cc => cc.Address).ToList()) },
+                                { "MailSubject", mail.Subject },
+                                { "MailBody", mail.Body },
+                            });
+                                
+                            var runResult = new Tapestry.Tapestry(core).run(block, rule.WorkflowName, -1, fc, 0);
+
+                            OmniusInfo.Log($"Konec zpraconání mailu: {email.Name} / Pravidlo {rule.Name} / Blok {rule.BlockName} / Button {rule.WorkflowName}", OmniusLogSource.Hermes, rule.Application, core.User);
                         }
                     }
                 }

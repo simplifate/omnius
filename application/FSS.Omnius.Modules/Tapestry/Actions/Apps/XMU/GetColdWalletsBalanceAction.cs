@@ -30,7 +30,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            DBConnection db = Modules.Entitron.Entitron.i;
+            COREobject core = COREobject.i;
+            DBConnection db = core.Entitron;
 
             DBTable hotAndCold = db.Table("hot_and_cold_wallets", false);
             var hotAndColdList = hotAndCold.Select().ToList();
@@ -65,10 +66,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             }
                             break;
                         case "ltc":
-                            var resultLtc = GetResponse(string.Format("https://chain.so/api/v2/get_address_balance/LTC/{0}", coldWallet["address"].ToString()));
+                            var resultLtc = GetResponse(string.Format("https://api.blockcypher.com/v1/ltc/main/addrs/{0}/balance", coldWallet["address"].ToString()));
                             if (resultLtc != null)
                             {
-                                coldWallet["balance"] = ((JValue)resultLtc["data"]["confirmed_balance"]).ToObject<double>();
+                                coldWallet["balance"] = ((JValue)resultLtc["final_balance"]).ToObject<double>();
                                 hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
                             }
                             break;
@@ -103,15 +104,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
                             }
                             break;
-                        //case "xvg":
-                        //    var resultXvg = GetResponse(string.Format("https://verge-blockchain.info/ext/getbalance/{0}", coldWallet["address"].ToString()));
-                        //    if (resultXvg != null && resultXvg is JValue)
-                        //    {
-                        //        coldWallet["balance"] = ((JValue)resultXvg).ToObject<double>();
-                        //        hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
+                        case "xvg":
+                            var resultXvg = GetResponse(string.Format("https://verge-blockchain.info/ext/getbalance/{0}", coldWallet["address"].ToString()));
+                            if (resultXvg != null && resultXvg is JValue)
+                            {
+                                coldWallet["balance"] = ((JValue)resultXvg).ToObject<double>();
+                                hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
 
-                        //    }
-                        //    break;
+                            }
+                            break;
 
                         case "neo":
                             var resultNeo = GetResponse(string.Format("https://data.ripple.com/v2/accounts/{0}/balances", coldWallet["address"].ToString()));
@@ -127,14 +128,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                                 }
                             }
                             break;
-                        //case "etc":
-                        //    var resultEtc = GetResponse(string.Format("https://etcchain.com/api/v1/getAddressBalance?address={0}", coldWallet["address"].ToString()));
-                        //    if (resultEtc != null)
-                        //    {
-                        //        coldWallet["balance"] = ((JValue)resultEtc["balance"]).ToObject<double>();
-                        //        hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
-                        //    }
-                        //    break;
+                        case "etc":
+                            var resultEtc = GetResponse(string.Format("https://etcchain.com/api/v1/getAddressBalance?address={0}", coldWallet["address"].ToString()));
+                            if (resultEtc != null)
+                            {
+                                coldWallet["balance"] = ((JValue)resultEtc["balance"]).ToObject<double>();
+                                hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
+                            }
+                            break;
 
                         case "xmr":
                             var resultXmr = GetResponse();
@@ -146,9 +147,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             break;
                     }
                 }
-                catch (Exception e) {
-                    string errorMsg = e.Message;
-                    CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+                catch (Exception e)
+                {
                     OmniusException.Log(e,OmniusLogSource.Tapestry, core.Application, core.User);
                 } 
             }
@@ -164,7 +164,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             httpWebRequest.Accept = "application/json";
             httpWebRequest.Timeout = 120000;
 
-          var response = httpWebRequest.GetResponse();
+            try
+            {
+                var response = httpWebRequest.GetResponse();
                 Stream responseStream = response.GetResponseStream();
                 StreamReader responseReader = new StreamReader(responseStream);
                 string outputJsonString = responseReader.ReadToEnd();
@@ -178,12 +180,18 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 {
                     return null;
                 }
-           
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         private JToken GetResponse()
         {
-            string method = "getbalance";
+            try
+            {
+                string method = "getbalance";
 
                 string rpcVersion = "2.0";
                 //get username and password from rpc service 
@@ -222,7 +230,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     return jtokenResult;
 
                 }
-          
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
 {
@@ -14,7 +15,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
     {
         public ActionResult Index(FormCollection formParams)
         {
-            DBEntities context = DBEntities.instance;
+            COREobject core = COREobject.i;
+            DBEntities context = core.Context;
             JArray metablockList = JArray.Parse("[]");
 
             if (Request.HttpMethod == "POST")
@@ -24,7 +26,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                 if (formParams["appId"] != null)
                 {
                     int appId = int.Parse(formParams["appId"]);
-                    HttpContext.GetLoggedUser().DesignAppId = appId;
+                    core.User.DesignAppId = appId;
                     context.SaveChanges();
                     var app = context.Applications.Find(appId);
                     var rootMetablock = app.TapestryDesignerRootMetablock;
@@ -67,7 +69,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
             }
             else
             {
-                var userApp = HttpContext.GetLoggedUser().DesignApp;
+                var userApp = core.User.DesignApp;
                 if (userApp == null)
                     userApp = context.Applications.First();
                 ViewData["metablockId"] = userApp.TapestryDesignerRootMetablock.Id;
@@ -78,7 +80,6 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
             }
 
             ViewData["metablockList"] = metablockList;
-
             return View();
         }
 
@@ -87,43 +88,41 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
             TapestryDesignerMetablock parentMetablock;
             List<TapestryDesignerMenuItem> model = new List<TapestryDesignerMenuItem>();
 
-            using (DBEntities context = DBEntities.instance) 
-            {
-                parentMetablock = context.TapestryDesignerMetablocks.Include("Metablocks")
-                                                                    .Include("Blocks")
-                                                                    .Include("ParentMetablock")
-                                                                    .Where(m => m.Id == id).First();
+            DBEntities context = COREobject.i.Context;
+            parentMetablock = context.TapestryDesignerMetablocks.Include("Metablocks")
+                                                                .Include("Blocks")
+                                                                .Include("ParentMetablock")
+                                                                .Where(m => m.Id == id).First();
 
-                foreach(TapestryDesignerMetablock mb in parentMetablock.Metablocks.Where(mb => !mb.IsDeleted)) {
-                    model.Add(new TapestryDesignerMenuItem()
-                    {
-                        Id = mb.Id,
-                        Name = mb.Name,
-                        IsInitial = mb.IsInitial,
-                        IsInMenu = mb.IsInMenu,
-                        MenuOrder = mb.MenuOrder,
-                        IsBlock = false,
-                        IsMetablock = true
-                    });
-                }
-                foreach(TapestryDesignerBlock b in parentMetablock.Blocks.Where(b => !b.IsDeleted)) {
-                    model.Add(new TapestryDesignerMenuItem()
-                    {
-                        Id = b.Id,
-                        Name = b.Name,
-                        IsInitial = b.IsInitial,
-                        IsInMenu = b.IsInMenu,
-                        MenuOrder = b.MenuOrder,
-                        IsBlock = true,
-                        IsMetablock = false
-                    });
-                }
-
-                Application app = GetApplication(parentMetablock, id, context);
-                ViewData["appName"] = app.Name;
-                ViewData["metablockName"] = parentMetablock.Name;
-                ViewData["metablockId"] = parentMetablock.Id;
+            foreach(TapestryDesignerMetablock mb in parentMetablock.Metablocks.Where(mb => !mb.IsDeleted)) {
+                model.Add(new TapestryDesignerMenuItem()
+                {
+                    Id = mb.Id,
+                    Name = mb.Name,
+                    IsInitial = mb.IsInitial,
+                    IsInMenu = mb.IsInMenu,
+                    MenuOrder = mb.MenuOrder,
+                    IsBlock = false,
+                    IsMetablock = true
+                });
             }
+            foreach(TapestryDesignerBlock b in parentMetablock.Blocks.Where(b => !b.IsDeleted)) {
+                model.Add(new TapestryDesignerMenuItem()
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    IsInitial = b.IsInitial,
+                    IsInMenu = b.IsInMenu,
+                    MenuOrder = b.MenuOrder,
+                    IsBlock = true,
+                    IsMetablock = false
+                });
+            }
+
+            Application app = GetApplication(parentMetablock, id, context);
+            ViewData["appName"] = app.Name;
+            ViewData["metablockName"] = parentMetablock.Name;
+            ViewData["metablockId"] = parentMetablock.Id;
 
             return View("~/Views/Tapestry/Overview/MenuOrder.cshtml", model);
         }

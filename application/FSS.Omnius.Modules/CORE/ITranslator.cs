@@ -11,5 +11,4 @@ namespace FSS.Omnius.Modules.CORE
         string _(string sourceString);
         string _(string sourceString, params object[] args);
     }
-
 }

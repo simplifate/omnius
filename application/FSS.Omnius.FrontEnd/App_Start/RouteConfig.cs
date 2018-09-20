@@ -130,19 +130,36 @@ namespace FSS.Omnius.FrontEnd
 
             // RUN
             routes.MapRoute(
-                name: "Run",
-                url: "{appName}/{blockIdentify}",
-                defaults: new { controller = "Run", action = "Index", blockIdentify = UrlParameter.Optional},
-                namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry" }
+                name: "Run2",
+                url: "T2/{appName}/{blockName}",
+                defaults: new { controller = "Run", action = "Index", blockName = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry2" }
+            );
+            routes.MapRoute(
+                name: "Get2",
+                url: "T2/{appName}/{blockIdentify}/Get",
+                defaults: new { controller = "UnauthorizedRun", action = "Get", blockIdentify = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry2" }
+            );
+            routes.MapRoute(
+                name: "GetJson2",
+                url: "T2/{appName}/{blockIdentify}/GetJson",
+                defaults: new { controller = "UnauthorizedRun", action = "GetJson", blockIdentify = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry2" }
             );
 
+            routes.MapRoute(
+                name: "Run",
+                url: "{appName}/{blockIdentify}",
+                defaults: new { controller = "Run", action = "Index", blockIdentify = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry" }
+            );
             routes.MapRoute(
                 name: "Get",
                 url: "{appName}/{blockIdentify}/Get",
                 defaults: new { controller = "UnauthorizedRun", action = "Get", blockIdentify = UrlParameter.Optional },
                 namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry" }
             );
-
             routes.MapRoute(
                 name: "GetJson",
                 url: "{appName}/{blockIdentify}/GetJson",
@@ -162,7 +179,7 @@ namespace FSS.Omnius.FrontEnd
             routes.MapRoute(
                 name: "Default",
                 url: "",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                defaults: new { controller = "Home", action = "RedirectToDefault", id = UrlParameter.Optional },
                 namespaces: new string[] { "FSS.Omnius.Controllers.Master" }
             );
         }

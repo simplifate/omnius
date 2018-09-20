@@ -16,6 +16,8 @@ using FSS.Omnius.Modules.Entitron;
 using System.Data.SqlClient;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.DB;
+using Newtonsoft.Json.Linq;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Entitron
 {
@@ -46,8 +48,8 @@ namespace FSS.Omnius.Controllers.Entitron
         {
             try
             {
-                var context = DBEntities.instance;
-                
+                var context = COREobject.i.Context;
+
                 var result = new List<AjaxTransferCommitHeader>();
                 var requestedApp = context.Applications.Find(appId);
                 foreach (var commit in requestedApp.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp))
@@ -97,47 +99,44 @@ namespace FSS.Omnius.Controllers.Entitron
         [HttpGet]
         public int getLastCommitId(int appId)
         {
-            using (var context = DBEntities.instance)
-            {
-                var app = context.Applications.Find(appId);
-                int lastCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
+            var context = COREobject.i.Context;
+            var app = context.Applications.Find(appId);
+            int lastCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
 
-                return lastCommitId;
-            }
+            return lastCommitId;
         }
 
 
         [Route("api/database/apps/{appId}/isSchemeLocked/{userId}/{CurrentSchemeCommitId}")]
         [HttpGet]
-        public AjaxSchemeLockingStatus isSchemeLocked(int appId,int userId,int CurrentSchemeCommitId)
+        public AjaxSchemeLockingStatus isSchemeLocked(int appId, int userId, int CurrentSchemeCommitId)
         {
-            using (var context = DBEntities.instance)
+            var context = COREobject.i.Context;
+            var result = new AjaxSchemeLockingStatus();
+            var app = context.Applications.Find(appId);
+            int? lastCommitId = -1;
+            if (CurrentSchemeCommitId != -1)
+                lastCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
+            var lockedForUserId = context.Applications.Find(appId).SchemeLockedForUserId;
+            if (lockedForUserId != null && userId != lockedForUserId)//if scheme is locked 
             {
-                var result = new AjaxSchemeLockingStatus();
-                var app = context.Applications.Find(appId);
-                int? lastCommitId = -1;
-                if(CurrentSchemeCommitId != -1)
-                    lastCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
-                var lockedForUserId = context.Applications.Find(appId).SchemeLockedForUserId;
-                if (lockedForUserId != null && userId != lockedForUserId)//if scheme is locked 
-                {
-                    string lockForUserName = context.Users.FirstOrDefault(u => u.Id == app.SchemeLockedForUserId).DisplayName;
-                    return new AjaxSchemeLockingStatus() { lockStatusId = 1, lockedForUserName = lockForUserName };
-                }
-                else if (lockedForUserId != null && lockedForUserId == userId)
-                { //if scheme is locked for me
-                    if (lastCommitId == null || (lastCommitId != null && lastCommitId == CurrentSchemeCommitId))
-                    {
-                        return new AjaxSchemeLockingStatus() { lockStatusId = 2, lockedForUserName = "" };
-
-                    }
-                    else {
-                        return new AjaxSchemeLockingStatus() { lockStatusId = 3, lockedForUserName = "" };
-                    }
-                }
-                else //if its not locked
-                    return new AjaxSchemeLockingStatus() { lockStatusId = 0, lockedForUserName = "" };
+                string lockForUserName = context.Users.FirstOrDefault(u => u.Id == app.SchemeLockedForUserId).DisplayName;
+                return new AjaxSchemeLockingStatus() { lockStatusId = 1, lockedForUserName = lockForUserName };
             }
+            else if (lockedForUserId != null && lockedForUserId == userId)
+            { //if scheme is locked for me
+                if (lastCommitId == null || (lastCommitId != null && lastCommitId == CurrentSchemeCommitId))
+                {
+                    return new AjaxSchemeLockingStatus() { lockStatusId = 2, lockedForUserName = "" };
+
+                }
+                else
+                {
+                    return new AjaxSchemeLockingStatus() { lockStatusId = 3, lockedForUserName = "" };
+                }
+            }
+            else //if its not locked
+                return new AjaxSchemeLockingStatus() { lockStatusId = 0, lockedForUserName = "" };
         }
 
 
@@ -145,40 +144,38 @@ namespace FSS.Omnius.Controllers.Entitron
         [HttpGet]
         public bool LockScheme(int appId, int userId)
         {
-            using (var context = DBEntities.instance)
+            try
             {
-                try {
-                    var app = context.Applications.Find(appId);
-                    app.SchemeLockedForUserId = userId;
-                    context.SaveChanges();
-                    return true;
-                } catch (Exception ex)
-                {
-                    var errorMessage = $"DatabaseDesigner: error when locking the latest commit (GET api/database/apps/{appId}/commits/latest). " +
-                   $"Exception message: {ex.Message}";
-                    throw GetHttpInternalServerErrorResponseException(errorMessage);
-                }
+                var context = COREobject.i.Context;
+                var app = context.Applications.Find(appId);
+                app.SchemeLockedForUserId = userId;
+                context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"DatabaseDesigner: error when locking the latest commit (GET api/database/apps/{appId}/commits/latest). " +
+                $"Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
         [Route("api/database/apps/{appId}/UnlockScheme/{userId}/")]
         [HttpGet]
         public bool UnlockScheme(int appId, int userId)
         {
-            using (var context = DBEntities.instance)
+            try
             {
-                try
-                {
-                    var app = context.Applications.Find(appId);
-                    app.SchemeLockedForUserId = null;
-                    context.SaveChanges();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    var errorMessage = $"DatabaseDesigner: error when unlocking the latest commit (GET api/database/apps/{appId}/commits/latest). " +
-                   $"Exception message: {ex.Message}";
-                    throw GetHttpInternalServerErrorResponseException(errorMessage);
-                }
+                var context = COREobject.i.Context;
+                var app = context.Applications.Find(appId);
+                app.SchemeLockedForUserId = null;
+                context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"DatabaseDesigner: error when unlocking the latest commit (GET api/database/apps/{appId}/commits/latest). " +
+                $"Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
         [Route("api/database/apps/{appId}/commits/latest")]
@@ -205,7 +202,7 @@ namespace FSS.Omnius.Controllers.Entitron
         [HttpPost]
         public AjaxTransferViewColumnList GetViewScheme(int appId, string viewName)
         {
-            DBConnection db = Modules.Entitron.Entitron.i;
+            DBConnection db = COREobject.i.Entitron;
 
             AjaxTransferViewColumnList list = new AjaxTransferViewColumnList() { Columns = db.Tabloid(viewName).Columns.Select(c => c.Name).ToList() };
 
@@ -214,123 +211,121 @@ namespace FSS.Omnius.Controllers.Entitron
 
         [Route("api/database/apps/{appId}/commits")]
         [HttpPost]
-        public void SaveScheme(int appId, AjaxTransferDbScheme postData)
+        public int SaveScheme(int appId, AjaxTransferDbScheme postData)
         {
             bool dbSchemeLocked = false;
             try
             {
                 DbSchemeCommit commit = new DbSchemeCommit();
-                using (var context = DBEntities.instance)
+                var context = COREobject.i.Context;
+                var requestedApp = context.Applications.Find(appId);
+                requestedApp.SchemeLockedForUserId = null;
+                if (requestedApp.DbSchemeLocked)
+                    throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
+                requestedApp.DbSchemeLocked = dbSchemeLocked = true;
+                requestedApp.EntitronChangedSinceLastBuild = true;
+                requestedApp.TapestryChangedSinceLastBuild = true;
+                context.SaveChanges();
+                commit.Timestamp = DateTime.UtcNow;
+                commit.CommitMessage = postData.CommitMessage;
+                requestedApp.DatabaseDesignerSchemeCommits.Add(commit);
+                Dictionary<int, int> tableIdMapping = new Dictionary<int, int>();
+                Dictionary<int, int> columnIdMapping = new Dictionary<int, int>();
+                Dictionary<int, DbColumn> columnMapping = new Dictionary<int, DbColumn>();
+
+                foreach (var ajaxTable in postData.Tables)
                 {
-                    var requestedApp = context.Applications.Find(appId);
-                    requestedApp.SchemeLockedForUserId = null;
-                    if (requestedApp.DbSchemeLocked)
-                        throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
-                    requestedApp.DbSchemeLocked = dbSchemeLocked = true;
-                    requestedApp.EntitronChangedSinceLastBuild = true;
-                    requestedApp.TapestryChangedSinceLastBuild = true;
-                    context.SaveChanges();
-                    commit.Timestamp = DateTime.UtcNow;
-                    commit.CommitMessage = postData.CommitMessage;
-                    requestedApp.DatabaseDesignerSchemeCommits.Add(commit);
-                    Dictionary<int, int> tableIdMapping = new Dictionary<int, int>();
-                    Dictionary<int, int> columnIdMapping = new Dictionary<int, int>();
-                    Dictionary<int, DbColumn> columnMapping = new Dictionary<int, DbColumn>();
-
-                    foreach (var ajaxTable in postData.Tables)
+                    int ajaxTableId = ajaxTable.Id;
+                    DbTable newTable = new DbTable { Name = ajaxTable.Name, PositionX = ajaxTable.PositionX, PositionY = ajaxTable.PositionY };
+                    foreach (var column in ajaxTable.Columns)
                     {
-                        int ajaxTableId = ajaxTable.Id;
-                        DbTable newTable = new DbTable { Name = ajaxTable.Name, PositionX = ajaxTable.PositionX, PositionY = ajaxTable.PositionY };
-                        foreach (var column in ajaxTable.Columns)
+                        int ajaxColumnId = column.Id;
+                        DbColumn newColumn = new DbColumn
                         {
-                            int ajaxColumnId = column.Id;
-                            DbColumn newColumn = new DbColumn
-                            {
-                                Name = column.Name,
-                                DisplayName = column.DisplayName,
-                                Type = column.Type,
-                                PrimaryKey = column.PrimaryKey,
-                                AllowNull = column.AllowNull,
-                                DefaultValue = column.DefaultValue,
-                                ColumnLength = column.ColumnLength,
-                                ColumnLengthIsMax = column.ColumnLengthIsMax,
-                                Unique = column.Unique
-                            };
-                            newTable.Columns.Add(newColumn);
-                            context.SaveChanges();
-                            columnMapping.Add(ajaxColumnId, newColumn);
-                        }
-                        foreach (var index in ajaxTable.Indices)
-                        {
-                            string columnNamesString = "";
-                            if (index.ColumnNames.Count > 0)
-                            {
-                                for (int i = 0; i < index.ColumnNames.Count - 1; i++)
-                                    columnNamesString += index.ColumnNames[i] + ",";
-                                columnNamesString += index.ColumnNames.Last();
-                            }
-                            DbIndex newIndex = new DbIndex
-                            {
-                                Name = index.Name,
-                                Unique = index.Unique,
-                                ColumnNames = columnNamesString
-                            };
-                            newTable.Indices.Add(newIndex);
-                        }
-                        commit.Tables.Add(newTable);
+                            Name = column.Name,
+                            DisplayName = column.DisplayName,
+                            Type = column.Type,
+                            PrimaryKey = column.PrimaryKey,
+                            AllowNull = column.AllowNull,
+                            DefaultValue = column.DefaultValue,
+                            ColumnLength = column.ColumnLength,
+                            ColumnLengthIsMax = column.ColumnLengthIsMax,
+                            Unique = column.Unique
+                        };
+                        newTable.Columns.Add(newColumn);
                         context.SaveChanges();
-                        tableIdMapping.Add(ajaxTableId, newTable.Id);
-                            foreach (var column in ajaxTable.Columns)
-                            {
-                                DbColumn col =
-                                    newTable.Columns.SingleOrDefault(x => x.Name.ToLower() == columnMapping[column.Id].Name.ToLower());
-
-                                columnIdMapping.Add(column.Id, col.Id);
-                            }
+                        columnMapping.Add(ajaxColumnId, newColumn);
                     }
-                    foreach (var ajaxRelation in postData.Relations)
+                    foreach (var index in ajaxTable.Indices)
                     {
-
-                        int leftTable = tableIdMapping[ajaxRelation.LeftTable];
-                        int rightTable = tableIdMapping[ajaxRelation.RightTable];
-                        int leftColumn = columnIdMapping[ajaxRelation.LeftColumn];
-                        int rightColumn = columnIdMapping[ajaxRelation.RightColumn];
-                        string name = commit.Tables.SingleOrDefault(x=>x.Id==rightTable).Name + commit.Tables.SingleOrDefault(x => x.Id == rightTable).Columns.SingleOrDefault(x=>x.Id==rightColumn).Name + "_" + commit.Tables.SingleOrDefault(x => x.Id == leftTable).Name + commit.Tables.SingleOrDefault(x => x.Id == leftTable).Columns.SingleOrDefault(x => x.Id == leftColumn).Name;
-                        commit.Relations.Add(new DbRelation
+                        string columnNamesString = "";
+                        if (index.ColumnNames.Count > 0)
                         {
-                            LeftTableId = leftTable,
-                            RightTableId = rightTable,
-                            LeftColumnId = leftColumn,
-                            RightColumnId = rightColumn,
-                            Type = ajaxRelation.Type,
-                            Name = name
-                        });
-                    }
-                    foreach (var ajaxView in postData.Views)
-                    {
-                        commit.Views.Add(new DbView
+                            for (int i = 0; i < index.ColumnNames.Count - 1; i++)
+                                columnNamesString += index.ColumnNames[i] + ",";
+                            columnNamesString += index.ColumnNames.Last();
+                        }
+                        DbIndex newIndex = new DbIndex
                         {
-                            Name = ajaxView.Name,
-                            Query = ajaxView.Query,
-                            PositionX = ajaxView.PositionX,
-                            PositionY = ajaxView.PositionY
-                        });
+                            Name = index.Name,
+                            Unique = index.Unique,
+                            ColumnNames = columnNamesString
+                        };
+                        newTable.Indices.Add(newIndex);
                     }
-                    requestedApp.DbSchemeLocked = dbSchemeLocked = false;
-                    commit.IsComplete = true;
+                    commit.Tables.Add(newTable);
                     context.SaveChanges();
+                    tableIdMapping.Add(ajaxTableId, newTable.Id);
+                    foreach (var column in ajaxTable.Columns)
+                    {
+                        DbColumn col =
+                            newTable.Columns.SingleOrDefault(x => x.Name.ToLower() == columnMapping[column.Id].Name.ToLower());
+
+                        columnIdMapping.Add(column.Id, col.Id);
+                    }
                 }
+                foreach (var ajaxRelation in postData.Relations)
+                {
+                    int sourceTable = tableIdMapping[ajaxRelation.SourceTable];
+                    int targetTable = tableIdMapping[ajaxRelation.TargetTable];
+                    int sourceColumn = columnIdMapping[ajaxRelation.SourceColumn];
+                    int targetColumn = columnIdMapping[ajaxRelation.TargetColumn];
+                    DbTable targetTableDb = commit.Tables.SingleOrDefault(x => x.Id == targetTable);
+                    DbTable sourceTableDb = commit.Tables.SingleOrDefault(x => x.Id == sourceTable);
+                    string name = targetTableDb.Name + targetTableDb.Columns.SingleOrDefault(x => x.Id == targetColumn).Name + "_" + sourceTableDb.Name + sourceTableDb.Columns.SingleOrDefault(x => x.Id == sourceColumn).Name;
+                    commit.Relations.Add(new DbRelation
+                    {
+                        SourceTableId = sourceTable,
+                        TargetTableId = targetTable,
+                        SourceColumnId = sourceColumn,
+                        TargetColumnId = targetColumn,
+                        Type = ajaxRelation.Type,
+                        Name = name
+                    });
+                }
+                foreach (var ajaxView in postData.Views)
+                {
+                    commit.Views.Add(new DbView
+                    {
+                        Name = ajaxView.Name,
+                        Query = ajaxView.Query,
+                        PositionX = ajaxView.PositionX,
+                        PositionY = ajaxView.PositionY
+                    });
+                }
+                requestedApp.DbSchemeLocked = dbSchemeLocked = false;
+                commit.IsComplete = true;
+                context.SaveChanges();
+                return commit.Id;
             }
             catch (Exception ex)
             {
                 if (dbSchemeLocked)
                 {
-                    using (var context = DBEntities.instance)
-                    {
-                        var requestedApp = context.Applications.Find(appId);
-                        requestedApp.DbSchemeLocked = false;
-                        context.SaveChanges();
-                    }
+                    var context = COREobject.i.Context;
+                    var requestedApp = context.Applications.Find(appId);
+                    requestedApp.DbSchemeLocked = false;
+                    context.SaveChanges();
                 }
                 var errorMessage = "DatabaseDesigner: an error occurred when saving the database scheme (POST api/database/apps/{appId}/commits). " +
                         $"Exception message: {ex.Message}";
@@ -341,7 +336,7 @@ namespace FSS.Omnius.Controllers.Entitron
 
         public void SaveChanges(DbSchemeCommit SchemeCommit)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             foreach (DbTable schemeTable in SchemeCommit.Tables)
             {
                 IEnumerable<DbTable> removeTables = SchemeCommit.Tables.Where(x1 => !e.DbTables.Any(x2 => x2.Id == x1.Id));
@@ -416,11 +411,11 @@ namespace FSS.Omnius.Controllers.Entitron
                 {
                     DbRelation databaseRelation = e.DbRelation.SingleOrDefault(x => x.Id == schemeRelation.Id);
 
-                    if (databaseRelation.LeftTableId != schemeRelation.LeftTableId) databaseRelation.LeftTableId = schemeRelation.LeftTableId;
-                    if (databaseRelation.RightTableId != schemeRelation.RightTableId) databaseRelation.RightTableId = schemeRelation.RightTableId;
-                    if (databaseRelation.LeftColumnId != schemeRelation.LeftColumnId) databaseRelation.LeftColumnId = schemeRelation.LeftColumnId;
-                    if (databaseRelation.RightColumnId != schemeRelation.RightColumnId) databaseRelation.RightColumnId = schemeRelation.RightColumnId;
-                    if (databaseRelation.Type != schemeRelation.Type) databaseRelation.Type = schemeRelation.Type;
+                    databaseRelation.SourceTableId = schemeRelation.SourceTableId;
+                    databaseRelation.TargetTableId = schemeRelation.TargetTableId;
+                    databaseRelation.SourceColumnId = schemeRelation.SourceColumnId;
+                    databaseRelation.TargetColumnId = schemeRelation.TargetColumnId;
+                    databaseRelation.Type = schemeRelation.Type;
                 }
             }
 
@@ -446,43 +441,43 @@ namespace FSS.Omnius.Controllers.Entitron
         /// <exception cref="InstanceNotFoundException">Not found commit for commitId</exception>
         private AjaxTransferDbScheme GetCommit(int appId, int commitId = -1)
         {
-            using (var context = DBEntities.instance)
+            var context = COREobject.i.Context;
+            var result = new AjaxTransferDbScheme();
+            var requestedCommit = FetchDbSchemeCommit(appId, commitId, context);
+            int? lockedForUserId = context.Applications.Find(appId).SchemeLockedForUserId;
+            result.SchemeLockedForUserId = lockedForUserId; //set the lockedForUserId for ajax model
+            if (lockedForUserId != null)
             {
-                var result = new AjaxTransferDbScheme();
-                var requestedCommit = FetchDbSchemeCommit(appId, commitId, context);
-                int? lockedForUserId = context.Applications.Find(appId).SchemeLockedForUserId;
-                result.SchemeLockedForUserId = lockedForUserId; //set the lockedForUserId for ajax model
-                if(lockedForUserId != null){
-                    result.SchemeLockedForUserName = context.Users.SingleOrDefault(u => u.Id == result.SchemeLockedForUserId).DisplayName;
-                }
-                if (commitId == -1 && requestedCommit != null) {
-                    DbSchemeCommit sharedCommit = FetchDbSchemeCommit(Application.SystemApp().Id, commitId, context);
-                    AjaxTransferDbScheme sharedScheme = new AjaxTransferDbScheme();
-                    
-					SetAttributesRequestCommitTables(sharedCommit, sharedScheme);
-                    SetAttributesRequestCommitRelations(sharedCommit, sharedScheme);
-                    SetAttributesRequestCommitViews(sharedCommit, sharedScheme);
-                    sharedScheme.CurrentSchemeCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
-                    result.Shared = sharedScheme;
-                    if (requestedCommit == null)
-                    {
-                        return result;
-                    }
-                }
+                result.SchemeLockedForUserName = context.Users.SingleOrDefault(u => u.Id == result.SchemeLockedForUserId).DisplayName;
+            }
+            if (commitId == -1 && requestedCommit != null)
+            {
+                DbSchemeCommit sharedCommit = FetchDbSchemeCommit(Application.SystemApp().Id, commitId, context);
+                AjaxTransferDbScheme sharedScheme = new AjaxTransferDbScheme();
 
-                //Latest commit was requested, but there are no commits yet. Returning an empty commit.
+                SetAttributesRequestCommitTables(sharedCommit, sharedScheme);
+                SetAttributesRequestCommitRelations(sharedCommit, sharedScheme);
+                SetAttributesRequestCommitViews(sharedCommit, sharedScheme);
+                sharedScheme.CurrentSchemeCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
+                result.Shared = sharedScheme;
                 if (requestedCommit == null)
                 {
-                    return new AjaxTransferDbScheme() { CurrentSchemeCommitId = null} ;
+                    return result;
                 }
-                result.CurrentSchemeCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
-
-                SetAttributesRequestCommitTables(requestedCommit, result);
-                SetAttributesRequestCommitRelations(requestedCommit, result);
-                SetAttributesRequestCommitViews(requestedCommit, result);
-
-                return result;
             }
+
+            //Latest commit was requested, but there are no commits yet. Returning an empty commit.
+            if (requestedCommit == null)
+            {
+                return new AjaxTransferDbScheme() { CurrentSchemeCommitId = null };
+            }
+            result.CurrentSchemeCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
+
+            SetAttributesRequestCommitTables(requestedCommit, result);
+            SetAttributesRequestCommitRelations(requestedCommit, result);
+            SetAttributesRequestCommitViews(requestedCommit, result);
+
+            return result;
         }
         private static HttpResponseException GetHttpInternalServerErrorResponseException(string errorMessage)
         {
@@ -516,10 +511,10 @@ namespace FSS.Omnius.Controllers.Entitron
             {
                 result.Relations.Add(new AjaxTransferDbRelation
                 {
-                    LeftColumn = relation.LeftColumnId,
-                    LeftTable = relation.LeftTableId,
-                    RightColumn = relation.RightColumnId,
-                    RightTable = relation.RightTableId,
+                    SourceColumn = relation.SourceColumnId,
+                    SourceTable = relation.SourceTableId,
+                    TargetColumn = relation.TargetColumnId,
+                    TargetTable = relation.TargetTableId,
                     Type = relation.Type
                 });
             }
@@ -572,8 +567,16 @@ namespace FSS.Omnius.Controllers.Entitron
             try
             {
                 if (commitId == -1)
-                    requestedCommit = context.Applications.Find(appId).DatabaseDesignerSchemeCommits
-                        .OrderByDescending(o => o.Timestamp).FirstOrDefault();
+
+                    if (context.Applications.Find(appId).DatabaseDesignerSchemeCommits.Count > 0)
+                    {
+                        requestedCommit = context.Applications.Find(appId).DatabaseDesignerSchemeCommits
+                            .OrderByDescending(o => o.Timestamp).FirstOrDefault();
+                    }
+                    else {
+                        return null;
+                    }
+
                 else
                     requestedCommit = context.DBSchemeCommits.Find(commitId);
             }
@@ -590,6 +593,27 @@ namespace FSS.Omnius.Controllers.Entitron
                 throw new InstanceNotFoundException(errorString);
             }
             return requestedCommit;
+        }
+
+        [Route("api/grid/rig_configs/{container_id}/")]
+        [HttpGet]
+        public JObject test(int container_id)
+        {
+            string conString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(conString))
+            {
+                con.Open();
+                string query = $@"SELECT Rig_ip, config.GPU_piece as 'gpus'
+FROM Entitron_Grid_RigPlacement as placement
+INNER JOIN Entitron_Grid_RigConfig as config ON placement.TestRigConfigId = config.id
+WHERE Container_id = {container_id};";
+                SqlCommand command = new SqlCommand(query, con);
+                SqlDataReader reader = command.ExecuteReader();
+                JObject response = new JObject();
+                while (reader.Read())
+                    response.Add(reader["Rig_ip"].ToString().Split(':')[0], (int)reader["gpus"]);
+                return response;
+            }
         }
     }
 }

@@ -5,7 +5,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using Master;
 
-    [Table("MozaicB_Page")]
+    [Table("MozaicBootstrap_Page")]
     public class MozaicBootstrapPage : IEntity
     {
         public int Id { get; set; }

@@ -7,6 +7,7 @@ using System.Web;
 using FSS.Omnius.Modules.Entitron.Service;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Master
 {
@@ -15,14 +16,15 @@ namespace FSS.Omnius.Controllers.Master
     {
         public FileStreamResult BackupApp(int id)
         {
-            Application app = DBEntities.instance.Applications.Find(id);
+            COREobject core = COREobject.i;
+            core.Application = core.Context.Applications.Find(id);
 
-            var backupService = new BackupGeneratorService(DBEntities.appInstance(app));
+            var backupService = new BackupGeneratorService(core.AppContext);
             string jsonText = backupService.ExportApplication(id, Request.Form);
             var byteArray = Encoding.UTF8.GetBytes(jsonText);
             var stream = new MemoryStream(byteArray);
 
-            return File(stream, "application/force-download", app.Name + ".json");
+            return File(stream, "application/force-download", core.Application.Name + ".json");
         }
         public ActionResult RecoverApp()
         {

@@ -9,14 +9,21 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     public class ColumnMetadata : IEntity
     {
         public int Id { get; set; }
-        
-        public string TableName { get; set; }
-        public string ColumnName { get; set; }
-        public string ColumnDisplayName { get; set; }
 
-        [ForeignKey("Application")]
+        [Required]
+        [MaxLength(50)]
+        [Index("UX_Entitron_ColumnMetadata", IsUnique = true, Order = 2)]
+        public string TableName { get; set; }
+        [Required]
+        [MaxLength(50)]
+        [Index("UX_Entitron_ColumnMetadata", IsUnique = true, Order = 3)]
+        public string ColumnName { get; set; }
+        [MaxLength(100)]
+        public string ColumnDisplayName { get; set; }
+        
+        [Index("UX_Entitron_ColumnMetadata", IsUnique = true, Order = 1)]
         [ImportExport(ELinkType.Parent, typeof(Application))]
-        public int Application_Id { get; set; } 
+        public int ApplicationId { get; set; } 
         [ImportExport(ELinkType.Parent)]
         public virtual Application Application { get; set; }
     }

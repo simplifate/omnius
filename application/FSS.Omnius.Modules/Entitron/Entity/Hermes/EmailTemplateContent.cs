@@ -37,7 +37,7 @@
         [Index(IsClustered = false, IsUnique = false)]
         [ForeignKey("Hermes_Email_Template")]
         [ImportExport(ELinkType.Parent, typeof(EmailTemplate))]
-        public int? Hermes_Email_Template_Id { get; set; }
+        public int Hermes_Email_Template_Id { get; set; }
         [ImportExport(ELinkType.Parent)]
         public EmailTemplate Hermes_Email_Template { get; set; }
     }

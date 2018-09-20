@@ -11,7 +11,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic.Bootstrap
     using System.ComponentModel.DataAnnotations.Schema;
     using Newtonsoft.Json;
 
-    [Table("MozaicB_Components")]
+    [Table("MozaicBootstrap_Components")]
     public class MozaicBootstrapComponent : IEntity
     {
         public int Id { get; set; }

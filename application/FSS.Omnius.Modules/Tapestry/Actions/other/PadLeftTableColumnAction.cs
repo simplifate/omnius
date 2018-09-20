@@ -16,7 +16,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            DBConnection db = Modules.Entitron.Entitron.i;
+            DBConnection db = COREobject.i.Entitron;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
             DBTable table = db.Table((string)vars["TableName"], searchInShared);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-
+using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
@@ -12,11 +12,12 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
         // GET: Editor
         public ActionResult Index(FormCollection formParams)
         {
-            var context = DBEntities.instance;
+            COREobject core = COREobject.i;
+            DBEntities context = core.Context;
             if (formParams["appId"] != null)
             {
                 int appId = int.Parse(formParams["appId"]);
-                HttpContext.GetLoggedUser().DesignAppId = appId;
+                core.User.DesignAppId = appId;
                 context.SaveChanges();
                 ViewData["appId"] = appId;
                 ViewData["pageId"] = formParams["pageId"];
@@ -24,7 +25,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
             }
             else
             {
-                var userApp = HttpContext.GetLoggedUser().DesignApp;
+                var userApp = core.User.DesignApp;
                 if (userApp == null)
                     userApp = context.Applications.First();
                 ViewData["appId"] = userApp.Id;

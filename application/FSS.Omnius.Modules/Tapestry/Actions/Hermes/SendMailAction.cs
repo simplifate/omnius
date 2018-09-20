@@ -21,14 +21,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            var context = DBEntities.instance;
+            var context = COREobject.i.Context;
             var dataDictionary = new Dictionary<string, object>();
             if (vars.ContainsKey("Data"))
                 dataDictionary = (Dictionary<string, object>)vars["Data"];
             string templateName = (string)vars["Template"];
 
-            Mailer czechMailer = new Mailer("", templateName, dataDictionary, 1);
-            Mailer englishMailer = new Mailer("", templateName, dataDictionary, 2);
+            Mailer czechMailer = new Mailer("", templateName, dataDictionary, Locale.cs);
+            Mailer englishMailer = new Mailer("", templateName, dataDictionary, Locale.en);
 
             var recipientsCzechOutput = new Dictionary<string, string>();
             var recipientsEnglishOutput = new Dictionary<string, string>();
@@ -42,7 +42,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                 foreach (var addressPair in recipientsInputDict)
                 {
                     var user = context.Users.Where(u => u.Email == addressPair.Key).FirstOrDefault();
-                    if (user != null && user.LocaleId == 2)
+                    if (user != null && user.Locale == Locale.en)
                         recipientsEnglishOutput.Add(addressPair.Key, addressPair.Value);
                     else
                         recipientsCzechOutput.Add(addressPair.Key, addressPair.Value);
@@ -57,7 +57,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                 foreach (var addressPair in bccInputDict)
                 {
                     var user = context.Users.Where(u => u.Email == addressPair.Key).FirstOrDefault();
-                    if (user != null && user.LocaleId == 2)
+                    if (user != null && user.Locale == Locale.en)
                         bccEnglishOutput.Add(addressPair.Key, addressPair.Value);
                     else
                         bccCzechOutput.Add(addressPair.Key, addressPair.Value);

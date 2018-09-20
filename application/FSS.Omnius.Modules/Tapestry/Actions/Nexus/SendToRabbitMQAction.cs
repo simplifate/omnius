@@ -27,9 +27,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            try {
-                CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                var context = DBEntities.appInstance(core.Application);
+            COREobject core = COREobject.i;
+            DBEntities context = core.Context;
+
+            try
+            {
 
                 string rabbitMQName = (string)vars["rabbitMQ"];
                 object messageObject = vars["Message"];

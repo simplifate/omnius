@@ -1,4 +1,5 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Cortex;
 using System.Linq;
 using System.Web.Mvc;
@@ -9,20 +10,21 @@ namespace FSS.Omnius.FrontEnd.Controllers.Cortex
     {
         public ActionResult Index()
         {
-            return View(DBEntities.instance.CrontabTask.Where(ct => !ct.IsDeleted));
+            var allTasks = COREobject.i.Context.CrontabTask.Where(ct => !ct.IsDeleted);
+            return View(allTasks);
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            var context = DBEntities.instance;
+            var context = COREobject.i.Context;
             ViewData["apps"] = context.Applications.Select(app => new { app.DisplayName, app.Name, app.Id }).ToList().Select(app => new SelectListItem { Text = app.DisplayName ?? app.Name, Value = app.Id.ToString() });
             return View(new CrontabTask());
         }
         [HttpPost]
         public ActionResult Create(CrontabTask crontabTask)
         {
-            var context = DBEntities.instance;
+            var context = COREobject.i.Context;
 
             if (!ModelState.IsValid)
             {
@@ -40,7 +42,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Cortex
         [HttpGet]
         public ActionResult Update(int Id)
         {
-            var context = DBEntities.instance;
+            var context = COREobject.i.Context;
             CrontabTask crontabTask = context.CrontabTask.Find(Id);
             ViewData["apps"] = context.Applications.Select(app => new { app.DisplayName, app.Name, app.Id }).ToList().Select(app => new SelectListItem { Text = app.DisplayName ?? app.Name, Value = app.Id.ToString(), Selected = app.Id == crontabTask.ApplicationId });
             return View(crontabTask);
@@ -48,7 +50,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Cortex
         [HttpPost]
         public ActionResult Update(CrontabTask crontabTask)
         {
-            var context = DBEntities.instance;
+            var context = COREobject.i.Context;
 
             if (!ModelState.IsValid)
             {
@@ -67,7 +69,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Cortex
         [HttpPost]
         public ActionResult Delete(int Id)
         {
-            var context = DBEntities.instance;
+            var context = COREobject.i.Context;
             CrontabTask crontabTask = context.CrontabTask.Find(Id);
             crontabTask.End();
             crontabTask.IsDeleted = true;

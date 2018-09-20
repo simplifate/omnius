@@ -6,7 +6,7 @@
     templates: {
         rule: '<div class="rule workflowRule"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;"></div></div><div class="swimlaneArea"></div></div>',
         swimlane: '<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">If you want to specify role<br />'
-            + 'drag & drop in into this section</div></div></div><div class="swimlaneContentArea"></div></div>',
+            + 'drag & drop in into this section</div></div></div><div class="swimlaneContentArea"><div class="debug"><span class="fa fa-play-circle debug-run"></span></div></div></div>',
         item: ''
     },
     
@@ -48,6 +48,7 @@
         'group-to-foreach': { name: 'Group to foreach', icon: 'fa-repeat', disabled: TB.foreach.cannotBeGruped },
         'set-as-fe-start': { name: 'Set as foreach start', icon: 'fa-play', disabled: TB.foreach.isNotInForeach },
         'set-as-fe-end': { name: 'Set as foreach end', icon: 'fa-stop', disabled: TB.foreach.isNotInForeach },
+        'parallel-lock': { name: 'Set/unset as parallel lock', icon: 'fa-lock' },
         'sep2': '---------',
         'delete': { name: 'Delete', icon: 'fa-trash' }
     },
@@ -143,6 +144,7 @@
         }
 
         self.aliveSwimlane(swimlane);
+        DEBUG.alive(swimlane);
     },
 
     removeSwimlane: function () {
@@ -219,6 +221,10 @@
             item.append('<span class="fa fa-play"></span>');
         if (itemData.IsForeachEnd)
             item.append('<span class="fa fa-stop"></span>');
+        if (itemData.HasParallelLock) {
+            item.attr('data-parallel-lock', '1');
+            item.append('<span class="fa fa-lock"></span>');
+        }
        
         if (itemData.TypeClass == 'actionItem') {
             if (itemData.Name) item.append('<span class="itemName">' + itemData.Name + '</span>');
@@ -562,6 +568,15 @@
             }
             case 'set-as-fe-end': {
                 TB.foreach.setEnd.apply(options.$trigger, []);
+                break;
+            }
+            case 'parallel-lock': {
+                var setLock = !(item.attr('data-parallel-lock') == true);
+                item.attr('data-parallel-lock', setLock ? '1' : '0');
+                if (setLock)
+                    item.append('<span class="fa fa-lock"></span>');
+                else
+                    item.find('span.fa-lock').remove();
                 break;
             }
         }

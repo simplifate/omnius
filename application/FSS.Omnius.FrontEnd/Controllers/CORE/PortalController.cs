@@ -1,9 +1,4 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Entitron.Entity.Master;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using FSS.Omnius.Modules.Persona;
 using System.Web.Mvc;
 
 namespace FSS.Omnius.Controllers.CORE
@@ -14,8 +9,7 @@ namespace FSS.Omnius.Controllers.CORE
         // GET: Portal
         public ActionResult Index()
         {
-            Modules.CORE.CORE core = HttpContext.GetCORE();
-            ViewBag.loggedUserCount = core.Persona.GetLoggedCount();
+            ViewBag.loggedUserCount = Persona.GetLoggedCount();
 
             return View();
         }

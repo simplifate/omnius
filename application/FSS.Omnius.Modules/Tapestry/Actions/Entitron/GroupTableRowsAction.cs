@@ -24,49 +24,46 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
+            // init
             List<DBItem> tableData = (List<DBItem>)vars["TableData"];
             string groupingColumn = (string)vars["GroupingColumn"];
-            List<DBItem> result = new List<DBItem>();
             int dtSensitivity = vars.ContainsKey("DateTimeSensitivity") ? Convert.ToInt32((vars["DateTimeSensitivity"])) : 3;
-            // If table contains more than 0 rows
+            List<DBItem> result = new List<DBItem>();
+            List<DBItem> sortedTableData = tableData.OrderBy(c => c[groupingColumn]).ToList();
+            
+            //
             if (tableData.Count > 0)
             {
-                // Sort tableData at first
-                List<DBItem> sortedTableData = tableData.OrderBy(c => c[groupingColumn]).ToList();
-                DBItem element = sortedTableData[0];
-                for (int i = 0; i < sortedTableData.Count; i++)
-                {
-                    var isLastElement = false;
-                    var currentRow = sortedTableData[i];
-                    bool isDateTime = currentRow[groupingColumn] is DateTime; ;
-                    if ((!isDateTime && currentRow[groupingColumn].ToString() == element[groupingColumn].ToString()) || (isDateTime && (Convert.ToDateTime(currentRow[groupingColumn]) - Convert.ToDateTime(element[groupingColumn])).TotalMinutes <= dtSensitivity))
-                    {
-                        foreach (string columnName in element.getColumnNames())
-                        {
-                            if ((element[columnName] is int || element[columnName] is double) && columnName.ToUpper() != "id".ToUpper())
-                            {
-                                double current = currentRow[columnName] != DBNull.Value ? Convert.ToDouble(currentRow[columnName]) : 0;
-                                current += element[columnName] != DBNull.Value ? Convert.ToDouble(element[columnName]) : 0;
-                                element[columnName] = current;
-                                if (i == sortedTableData.Count - 1)
-                                {
-                                    element[columnName] = current;
-                                    isLastElement = true;
-                                }
-                            }
-                        }
-                        if(isLastElement)
-                            result.Add(element);
-                    }
-                    else
-                    {
-                        result.Add(element);
+                // isDateTime - use DateTimeSensitivity
+                bool isDateTime = sortedTableData[0][groupingColumn] is DateTime;
 
-                        element = currentRow;
-                        if (i == sortedTableData.Count - 1)
-                            result.Add(currentRow);
+                // Sort tableData at first
+                for (int i = 0; i < (sortedTableData.Count - 1); i++)
+                {
+                    var currentRow = sortedTableData[i];
+                    var nextRow = sortedTableData[i+1];
+                    
+                    // groups
+                    if ((!isDateTime && currentRow[groupingColumn].ToString() == nextRow[groupingColumn].ToString()) 
+                        || (isDateTime && System.Math.Abs((Convert.ToDateTime(currentRow[groupingColumn]) - Convert.ToDateTime(nextRow[groupingColumn])).TotalMinutes) <= dtSensitivity))
+                    {
+                        // sum column - add to nextColumn
+                        // skip id, group column, non-numeric
+                        foreach (string columnName in currentRow.getColumnNames().Where(c => c.ToLower() != DBCommandSet.PrimaryKey.ToLower() && c != groupingColumn && (currentRow[c] is int || currentRow[c] is double)))
+                        {
+                            double current = currentRow[columnName] != DBNull.Value ? Convert.ToDouble(currentRow[columnName]) : 0;
+                            current += nextRow[columnName] != DBNull.Value ? Convert.ToDouble(nextRow[columnName]) : 0;
+                            nextRow[columnName] = current;
+                        }
                     }
+
+                    // different item - stop grouping
+                    else
+                        result.Add(currentRow);
                 }
+
+                // add last item
+                result.Add(sortedTableData.Last());
             }
 
             outputVars["Result"] = result;

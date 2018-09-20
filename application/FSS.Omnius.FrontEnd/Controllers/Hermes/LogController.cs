@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Web.Mvc;
+using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using Newtonsoft.Json.Linq;
@@ -11,7 +12,7 @@ namespace FSS.Omnius.Controllers.Hermes
     {
         public ActionResult Detail(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
 
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();

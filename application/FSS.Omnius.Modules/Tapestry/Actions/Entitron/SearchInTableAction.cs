@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.DB;
 
@@ -20,10 +21,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // init
-            DBConnection db = Modules.Entitron.Entitron.i;
+            DBConnection db = COREobject.i.Entitron;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
-            
+
             string query = "";
             if (vars.ContainsKey("SearchMode"))
             {
@@ -44,7 +45,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             else
                 query = (string)vars["Query"] + "%";
 
-            outputVars["Data"] = db.Table((string)vars["TableName"], searchInShared).Select()
+            outputVars["Data"] = db.Select((string)vars["TableName"], searchInShared)
                 .Where(c => c.Column((string)vars["ColumnName"]).LikeCaseInsensitive(query)).ToList();
         }
     }

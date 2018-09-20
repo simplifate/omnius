@@ -6,6 +6,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using FSS.Omnius.Modules.Hermes;
 using System.Net.Mail;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
@@ -15,7 +16,7 @@ namespace FSS.Omnius.Controllers.Hermes
         // GET: SMTP
         public ActionResult Index()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
             ViewData["EmailQueueCount"] = e.EmailQueueItems.Count();
@@ -33,7 +34,7 @@ namespace FSS.Omnius.Controllers.Hermes
         [HttpPost]
         public ActionResult Save(Smtp model)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             if (ModelState.IsValid)
             {
                 // Záznam již existuje - pouze upravujeme
@@ -64,19 +65,19 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             return View("~/Views/Hermes/SMTP/Detail.cshtml", e.SMTPs.Single(m => m.Id == id));
         }
 
         public ActionResult Edit(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             return View("~/Views/Hermes/SMTP/Form.cshtml", e.SMTPs.Single(m => m.Id == id));
         }
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             Smtp row = e.SMTPs.Single(m => m.Id == id);
 
             e.SMTPs.Remove(row);
@@ -91,7 +92,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Test()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             
             Dictionary<string, object> model = new Dictionary<string, object>();
             model.Add("count", e.WSs.Count());
@@ -99,7 +100,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
             FileMetadata file = e.FileMetadataRecords.First();
 
-            Mailer mail = new Mailer("Test", "Seznam WS", model, 1);
+            Mailer mail = new Mailer("Test", "Seznam WS", model, Modules.CORE.Locale.cs);
             mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
             mail.Attachment(new KeyValuePair<int, string>(file.Id, file.Filename));
             mail.SendMail();
@@ -111,7 +112,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult TestSender()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             /*Modules.Entitron.Entity.Nexus.Ldap m = e.Ldaps.Single(l => l.Is_Default == true);
             
             Mailer mail = new Mailer("Test", "Založení AD serveru", m);
@@ -124,7 +125,7 @@ namespace FSS.Omnius.Controllers.Hermes
             model.Add("count", e.WSs.Count());
             model.Add("ws", e.WSs);
 
-            Mailer mail = new Mailer("Test", "Seznam WS", model, 1);
+            Mailer mail = new Mailer("Test", "Seznam WS", model, Modules.CORE.Locale.cs);
             mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
             mail.Attachment(new KeyValuePair<int, string>(1, "neexistujici-soubor.doc"));
             mail.SendBySender();

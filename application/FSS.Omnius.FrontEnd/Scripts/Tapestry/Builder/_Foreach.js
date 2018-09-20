@@ -1,7 +1,9 @@
 ﻿TB.foreach = {
 
     contextItems: {
+        'parallel': { name: 'Set/unset as parallel', icon: 'fa-code-fork' },
         'datasource': { name: 'Set datasource...', icon: 'fa-database' },
+        'item-name': { name: 'Item name', icon: 'fa-file-o' },
         'name': { name: 'Name...', icon: 'fa-tag' },
         'comment': { name: 'Comment...', icon: 'fa-comment' },
         'break': { name: 'Break foreach', icon: 'fa-times-circle' }
@@ -70,6 +72,7 @@
             TB.dialog.open('foreachDatasource');
             TB.changedSinceLastSave = true;
             ChangedSinceLastSave = true; /// OBSOLATE
+            self.target.attr('data-itemname', '__item__'); // default value
         }
     },
 
@@ -114,14 +117,21 @@
         if (foreachData.DataSource) {
             foreach.attr('data-datasource', foreachData.DataSource);
         }
+        if (foreachData.IsParallel) {
+            foreach.attr('data-parallel', '1');
+        }
         if (foreachData.Name) {
             foreach.append('<span class="foreachName">' + foreachData.Name + '</span>');
         }
         if (foreachData.Comment) {
             foreach.append('<span class="foreachComment' + (foreachData.CommentBottom ? ' bottom' : '') + (foreachData.Name ? ' withName' : '') + '">' + foreachData.Comment + '</span>');
         }
+        foreach.attr('data-itemname', foreachData.ItemName ? foreachData.ItemName : '__item__');
 
         foreach.append('<span class="fa fa-repeat fa-spin"></span>');
+        if (foreachData.IsParallel == true) {
+            foreach.append('<span class="fa fa-code-fork"></span>');
+        }
         parentSwimlane.find('.swimlaneContentArea').append(foreach);
         this.alive(foreach, blockLoad);
 
@@ -265,6 +275,14 @@
         TB.dialog.close.apply(this);
     },
 
+    setItemName: function () {
+        var self = TB.foreach;
+        var itemName = $(this).find('#ForeachItemName').val();
+
+        self.target.attr('data-itemname', itemName);
+        TB.dialog.close.apply(this);
+    },
+
     setName: function () {
         var self = TB.foreach;
         var name = $(this).find('#ForeachName').val();
@@ -336,9 +354,24 @@
     _contextAction: function (key, options) {
         var self = TB.foreach;
         switch (key) {
+            case 'parallel': {
+                self.target = options.$trigger;
+                var setParallel = !(self.target.attr('data-parallel') == true);
+                self.target.attr('data-parallel', setParallel ? '1' : '0');
+                if (setParallel)
+                    self.target.append('<span class="fa fa-code-fork"></span>');
+                else
+                    self.target.find('span.fa-code-fork').remove();
+                break;
+            }
             case 'datasource': {
                 self.target = options.$trigger;
                 TB.dialog.open('foreachDatasource');
+                break;
+            }
+            case 'item-name': {
+                self.target = options.$trigger;
+                TB.dialog.open('foreachItemName');
                 break;
             }
             case 'name': {
@@ -376,6 +409,11 @@
             delay: 0,
             source: variables
         });
+    },
+
+    _setItemNameOpen: function () {
+        var t = TB.foreach.target;
+        $(this).find('#ForeachItemName').val(t.attr('data-itemname'));
     },
 
     _setNameOpen: function () {

@@ -6,9 +6,9 @@ using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Entitron.Service
 {
-    public class ConditionalFilteringService : IConditionalFilteringService
+    public class ConditionalFilteringService
     {
-        public bool MatchConditionSets(ICollection<TapestryDesignerConditionSet> conditionSets, DBItem entitronRow, Dictionary<string, object> tapestryVars)
+        public static bool MatchConditionSets(ICollection<TapestryDesignerConditionSet> conditionSets, DBItem entitronRow, Dictionary<string, object> tapestryVars)
         {
             bool result = true;
             foreach (var conditionSet in conditionSets)
@@ -20,7 +20,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
             }
             return result;
         }
-        private bool matchConditionSet(TapestryDesignerConditionSet conditionSet, DBItem entitronRow, Dictionary<string, object> tapestryVars)
+        private static bool matchConditionSet(TapestryDesignerConditionSet conditionSet, DBItem entitronRow, Dictionary<string, object> tapestryVars)
         {
             bool result = true;
             foreach (var condition in conditionSet.Conditions)
@@ -32,7 +32,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
             }
             return result;
         }
-        private bool matchCondition(TapestryDesignerCondition condition, DBItem entitronRow, Dictionary<string, object> tapestryVars)
+        private static bool matchCondition(TapestryDesignerCondition condition, DBItem entitronRow, Dictionary<string, object> tapestryVars)
         {
             object leftOperand;
             if (condition.Variable[0] == '#')
@@ -79,6 +79,8 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     return value.ToString().Length > 0;
                 case "contains":
                     return ((string)leftOperand).Contains(value.ToString());
+                case "is in":
+                    return ((List<object>)value).Contains(leftOperand);
             }
             return true;
         }

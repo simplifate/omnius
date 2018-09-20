@@ -26,7 +26,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             JArray jarray = (JArray)vars["JArray"];
             if (jarray.HasValues)
             {
-                DBConnection db = Modules.Entitron.Entitron.i;
+                DBConnection db = COREobject.i.Entitron;
 
                 bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
 

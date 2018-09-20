@@ -6,6 +6,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Watchtower;
 using FSS.Omnius.Modules.Watchtower;
 using FSS.Omnius.FrontEnd.Models;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Watchtower
 {
@@ -15,7 +16,7 @@ namespace FSS.Omnius.Controllers.Watchtower
         public ActionResult Index(LogFilter filter)
         {
             // INIT
-            DBEntities context = DBEntities.instance;
+            DBEntities context = COREobject.i.Context;
             filter.Fill(context);
 
             int perPage = 20;
@@ -77,7 +78,7 @@ namespace FSS.Omnius.Controllers.Watchtower
         [AllowAnonymous]
         public ActionResult DeleteObsolete()
         {
-            DBEntities context = DBEntities.instance;
+            DBEntities context = COREobject.i.Context;
 
             var olderThan = DateTime.Now.AddDays(-30);
 
@@ -91,7 +92,7 @@ namespace FSS.Omnius.Controllers.Watchtower
 
         public JsonResult GetRow(int id)
         {
-            DBEntities context = DBEntities.instance;
+            DBEntities context = COREobject.i.Context;
             LogItem item = context.LogItems.Find(id);
 
             LogItem current = item;

@@ -17,17 +17,16 @@ else
     ViewBag.Title = ViewData["exception"];
     Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
 
-    <link href="/Content/css/ErrorCss.css" rel="stylesheet" />
+    <link href="~/Content/CssLibs/ErrorCss.css" rel="stylesheet" />
 
-    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.min.js")"></script>
     <script>
         @if (ViewData["exception"] != null)
     {
-        @Html.Raw("ShowAppNotification(" + Json.Encode(ViewData["exception"]) + ", 'error');");
+        @Html.Raw("window.onload = function() { ShowAppNotification(" + Json.Encode(ViewData["exception"]) + ", 'error'); };");
     }
     else
     {
-        @Html.Raw("ShowAppNotification('Nastala neznámá chyba', 'error')");
+        @Html.Raw("window.onload = function() { ShowAppNotification('Nastala neznámá chyba', 'error'); };");
     }
     </script>
 }

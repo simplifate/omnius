@@ -5,29 +5,17 @@ using FSS.Omnius.Modules.Entitron.Queryable;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Data.Common;
 using System.Linq;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Entitron.DB
 {
     public class DBConnection
     {
-        public DBConnection(int requestHash)
+        public DBConnection(COREobject core, bool isShared = false)
         {
-            _requestHash = requestHash;
-            Application = null;
-            _type = Entitron.DefaultDBType;
-            _connectionString = Entitron.EntitronConnectionString(_type);
-
-            _tablesToSave = new HashSet<DBTable>();
-            _commandSet = DBCommandSet.GetDBCommandSet(_type);
-        }
-
-        public DBConnection(int requestHash, Application application)
-        {
-            _requestHash = requestHash;
-            Application = application;
-
-            _type = application.DB_Type;
-
+            _core = core;
+            IsShared = isShared;
+            _type = Application?.DB_Type ?? Entitron.DefaultDBType;
             _connectionString = (Application != null && !string.IsNullOrEmpty(Application.DB_ConnectionString))
                     ? Application.DB_ConnectionString
                     : Entitron.EntitronConnectionString(_type);
@@ -36,12 +24,13 @@ namespace FSS.Omnius.Modules.Entitron.DB
             _commandSet = DBCommandSet.GetDBCommandSet(_type);
         }
 
-        private int _requestHash;
+        private COREobject _core;
+        public bool IsShared { get; }
 
         public ESqlType Type => _type;
         private ESqlType _type;
 
-        public Application Application { get; set; }
+        public Application Application => IsShared ? _core.ApplicationShared : _core.Application;
 
         public string ConnectionString => _connectionString;
         private string _connectionString;
@@ -51,7 +40,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         public DBCommandSet CommandSet => _commandSet;
         private Queue<IDbCommand> _commands = new Queue<IDbCommand>();
         public Queue<IDbCommand> Commands => _commands;
-        
+
         #region Data select
         public List<string> List(ETabloid list)
         {
@@ -70,7 +59,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
         public DBTable Table(string name, bool isShared = false)
         {
-            return new DBTable(isShared ? Entitron.iShared : this)
+            return new DBTable(isShared ? _core.EntitronShared : this)
             {
                 Name = name
             };
@@ -78,7 +67,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
         public Tabloid Tabloid(string name, bool isShared = false)
         {
-            return new Tabloid(isShared ? Entitron.iShared : this)
+            return new Tabloid(isShared ? _core.EntitronShared : this)
             {
                 Name = name
             };
@@ -86,11 +75,11 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
         public Select Select(string tabloidName, bool isShared = false, params string[] columns)
         {
-            return new Select(isShared ? Entitron.iShared : this, tabloidName, columns);
+            return new Select(isShared ? _core.EntitronShared : this, tabloidName, columns);
         }
         public Delete Delete(string tabloidName, bool isShared = false)
         {
-            return new Delete(isShared ? Entitron.iShared : this, tabloidName);
+            return new Delete(isShared ? _core.EntitronShared : this, tabloidName);
         }
         public bool ExecSP(string procedureName, Dictionary<string, string> parameters)
         {
@@ -116,7 +105,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             }
         }
         #endregion
-        
+
         #region Edit scheme
         public DBTable TableCreate()
         {
@@ -144,7 +133,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         {
             Commands.Enqueue(CommandSet.TRUNCATE_table(this, tableName));
         }
-        
+
         public DBView ViewCreate()
         {
             DBView newView = new DBView(this);
@@ -220,7 +209,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 {
                     return command.ExecuteNonQuery();
                 }
-                catch(DbException ex)
+                catch (DbException ex)
                 {
                     // always throws exception
                     throw SqlExceptionMessage.TransformAndLogMessage(ex, command);
@@ -255,7 +244,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                     IDbCommand command = null;
                     try
                     {
-                        while(_commands.Any())
+                        while (_commands.Any())
                         {
                             command = _commands.Dequeue();
 

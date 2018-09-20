@@ -7,6 +7,7 @@ using System.Text;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Watchtower;
+using Jayrock.Json;
 using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
@@ -28,7 +29,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 
 		public override int Id => 3012;
 
-		public override string[] InputVar => new string[] { "WsName", "Method", "Params", "?Endpoint", "?v$CustomHeaders" };
+		public override string[] InputVar => new string[] { "WsName", "Method", "?Params", "?ParamsName[index]", "?ParamsValue[index]", "?RpcVersion", "?Endpoint", "?CustomHeaders" };
 
 		public override string Name => "Call JSON RPC";
 
@@ -39,64 +40,85 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 		public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
 		{
 			try
-			{
-				string wsName = (string)vars["WsName"];
+            {
+                /// INIT
+                COREobject core = COREobject.i;
+                DBEntities context = core.Context;
+                var service = context.WSs.First(c => c.Name == (string)vars["WsName"]);
+
+                /// input
 				string method = (string)vars["Method"];
-				string parameters = (string)vars["Params"];
                 List<object> customHeaders = vars.ContainsKey("CustomHeaders") ? (List<object>)vars["CustomHeaders"] : new List<object>();
                 string endpoint = vars.ContainsKey("Endpoint") ? (string)vars["Endpoint"] : "";
-                // vezmu uri
-                CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-				var context = DBEntities.appInstance(core.Application);
-				var service = context.WSs.First(c => c.Name == wsName);
-
+                string rpcVersion = vars.ContainsKey("RpcVersion") ? (string)vars["RpcVersion"] : "2.0";
+                object parameters;
+                if (vars.ContainsKey("Params"))
+                    parameters = (string)vars["Params"];
+                else
+                {
+                    int ParamsCount = vars.Keys.Where(k => k.StartsWith("ParamsName[") && k.EndsWith("]")).Count();
+                    parameters = new Dictionary<string, object>();
+                    for (int i = 0; i < ParamsCount; i++)
+                    {
+                        (parameters as Dictionary<string, object>).Add(vars[$"ParamsName[{i}]"].ToString(), vars[$"ParamsValue[{i}]"]);
+                    }
+                }
+                
+                /// Create request
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                string endpointPath = string.Format("{0}/{1}", service.REST_Base_Url.TrimEnd('/'), endpoint.Trim('/'));
-
-				// Create request
-				var httpWebRequest = (HttpWebRequest)WebRequest.Create(endpointPath);
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create($"{service.REST_Base_Url.TrimEnd('/')}/{endpoint.TrimEnd('/')}");
 				httpWebRequest.Method = "POST";
 				httpWebRequest.ContentType = "application/json";
 				httpWebRequest.Accept = "application/json";
                 httpWebRequest.KeepAlive = false;
+                
+                // authorize
+                if (!string.IsNullOrEmpty(service.Auth_User))
+                    httpWebRequest.Credentials = new NetworkCredential(service.Auth_User, service.Auth_Password);
+                //if (service != null && !string.IsNullOrEmpty(service.Auth_User))
+                //{
+                //    string authEncoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{service.Auth_User}:{service.Auth_Password}"));
+                //    httpWebRequest.Headers.Add("Authorization", $"Basic {authEncoded}");
+                //}
 
+                // customHeaders
                 foreach (string header in customHeaders)
                 {
                     httpWebRequest.Headers.Add(header);
                 }
 
-                if (service != null && !string.IsNullOrEmpty(service.Auth_User))
-                {
-                    string authEncoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{service.Auth_User}:{service.Auth_Password}"));
-                    httpWebRequest.Headers.Add("Authorization", $"Basic {authEncoded}");
-                }
 
-                // Build inputJson
-                // Example form of the request: {"jsonrpc": "2.0", "method": "subtract", "params": {"minuend": 42, "subtrahend": 23}, "id": 3}
-                string inputJson =
-                    $"{{\"jsonrpc\": \"2.0\", \"method\": \"{method}\", \"params\": {parameters}, \"id\": {GenerateJsonId()}}}";
-                byte[] postJsonBytes = Encoding.UTF8.GetBytes(inputJson);
+                /// Build inputJson
+                JsonObject call = new JsonObject();
+                call["jsonrpc"] = rpcVersion;
+                call["id"] = GenerateJsonId();
+                call["method"] = method;
+                call["params"] = parameters;
+
+                byte[] postJsonBytes = Encoding.UTF8.GetBytes(call.ToString());
                 httpWebRequest.ContentLength = postJsonBytes.Length;
-                Stream requestStream = httpWebRequest.GetRequestStream();
-                requestStream.Write(postJsonBytes, 0, postJsonBytes.Length);
+                httpWebRequest.GetRequestStream().Write(postJsonBytes, 0, postJsonBytes.Length);
 
+                /// Response
                 // Example form of the response {"jsonrpc": "2.0", "result": 19, "id": 3}
                 var response = httpWebRequest.GetResponse();
 
-                Stream responseStream = response.GetResponseStream();
-                StreamReader responseReader = new StreamReader(responseStream);
-                string outputJsonString = responseReader.ReadToEnd();
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    using (StreamReader responseReader = new StreamReader(responseStream))
+                    {
+                        var outputJToken = (JObject)JToken.Parse(responseReader.ReadToEnd());
 
-                var outputJToken = (JObject)JToken.Parse(outputJsonString);
-				outputVars["Result"] = outputJToken["result"];
-
-				outputVars["Error"] = outputJToken["Error"];
+                        outputVars["Result"] = outputJToken["result"];
+                        outputVars["Error"] = outputJToken["Error"];
+                    }
+                }
 
 			}
 			catch (Exception e)
 			{
 				string errorMsg = e.Message;
-				CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+                COREobject core = (COREobject)vars["__CORE__"];
 				OmniusException.Log(e, OmniusLogSource.Nexus, core.Application, core.User);
 				outputVars["Result"] = String.Empty;
 				outputVars["Error"] = true;

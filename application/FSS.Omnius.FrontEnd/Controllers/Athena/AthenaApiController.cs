@@ -22,10 +22,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Athena
         {
             try
             {
-                using (var context = DBEntities.instance)
-                {
-                    return context.Graph.ToList();
-                }
+                var context = COREobject.i.Context;
+                return context.Graph.ToList();
             }
             catch (Exception ex)
             {

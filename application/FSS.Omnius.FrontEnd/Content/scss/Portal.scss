@@ -6,13 +6,13 @@ body.portalModule {
 
     #upperPanel {
         @include no-select();
-        position: absolute;
+        position: fixed;
         left: 225px;
         top: 75px;
         right: 0px;
         height: 357px;
         background-color: #3a3a3a; 
-
+        z-index:10000;
         .panelLabel {
             position: absolute;
             left: 52px;

@@ -3,13 +3,6 @@
 @using (Ajax.BeginRouteForm("Mozaic", new { Controller = "Js", Action = "Update" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "form form-horizontal" }))
 {
     <div class="form-group">
-        <label for="JsAppName" class="control-label col-sm-2">Application:</label>
-        <div class="col-sm-10">
-            @Html.DropDownListFor(m => m.ApplicationId, (List<SelectListItem>)ViewData["appList"], "-- Choose --", new { @id = "JsAppName", @class = "form-control" })
-        </div>
-    </div>
-
-    <div class="form-group">
         <label for="JsPageName" class="control-label col-sm-2">Page:</label>
         <div class="col-sm-10">
             @Html.DropDownListFor(m => m.MozaicBootstrapPageId, (List<SelectListItem>)ViewData["pageList"], "-- choose --", new { @id = "JsPageName", @class = "form-control" })
@@ -116,7 +109,7 @@
             }
         };
 
-        $(JsEditor.init);
+        JsEditor.init();
 
     </script>
 }

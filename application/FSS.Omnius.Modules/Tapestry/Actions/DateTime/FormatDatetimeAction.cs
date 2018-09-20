@@ -10,7 +10,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
     {
         public override int Id => 187;
 
-        public override string[] InputVar => new string[] { "Input", "?Format", "?b$ToUnixTimestamp" };
+        public override string[] InputVar => new string[] { "Input", "?Format" };
 
         public override string Name => "Format DateTime";
 
@@ -23,16 +23,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             if (!(vars["Input"].GetType() == typeof(DBNull)))
             {
                 DateTime dateTime = (DateTime)vars["Input"];
-                bool unix = vars.ContainsKey("ToUnixTimestamp") ? (bool)vars["ToUnixTimestamp"] : false;
-                if (unix == true)
-                {
-                    outputVars["Result"] = (Int32)(dateTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                }
-                else
-                {
-                    string format = vars.ContainsKey("Format") ? (string)vars["Format"] : "o";
-                    outputVars["Result"] = dateTime.ToLocalTime().ToString(format);
-                }
+                string format = vars.ContainsKey("Format") ? (string)vars["Format"] : "o";
+                outputVars["Result"] = dateTime.ToLocalTime().ToString(format);
             }
             else
             {

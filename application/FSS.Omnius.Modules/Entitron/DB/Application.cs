@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Master
 {
@@ -24,23 +23,22 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         //    }
         //}
 
-        public static IQueryable<Application> getAllowed(Modules.CORE.CORE core, string userName)
+        public static IQueryable<Application> getAllowed(int userId)
         {
-            DBEntities context = DBEntities.instance;
-            var adGroupIds = context.ADgroups.Where(ad => ad.ADgroup_Users.Any(adu => adu.User.UserName == userName)).Select(ad => ad.Id);
+            DBEntities context = COREobject.i.Context;
+            var adGroupIds = context.ADgroups.Where(ad => ad.ADgroup_Users.Any(adu => adu.UserId == userId)).Select(ad => ad.Id);
 
-            return
-                context.Applications.Where(a =>
-                    a.IsPublished
-                    && a.IsEnabled
-                    && !a.IsSystem
-                    && a.ADgroups.Any(ad => adGroupIds.Contains(ad.Id)));
+            return context.Applications.Where(a =>
+                a.IsPublished
+                && a.IsEnabled
+                && !a.IsSystem
+                && (a.IsAllowedForAll || a.ADgroups.Any(ad => adGroupIds.Contains(ad.Id))));
         }
 
         public static Application SystemApp()
         {
             return
-                DBEntities.instance.Applications.FirstOrDefault(a => a.IsSystem);
+                COREobject.i.Context.Applications.FirstOrDefault(a => a.IsSystem);
         }
     }
 }

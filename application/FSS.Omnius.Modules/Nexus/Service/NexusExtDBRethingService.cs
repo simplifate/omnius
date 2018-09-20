@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 using FSS.Omnius.Modules.Nexus.Gate;
@@ -24,7 +25,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         public NexusExtDBRethingService(int extDBId)
         {
-            var context = DBEntities.instance;
+            var context = COREobject.i.Context;
             Entitron.Entity.Nexus.ExtDB info = context.ExtDBs.Where(d => d.Id == extDBId).SingleOrDefault();
 
             if (info == null) {

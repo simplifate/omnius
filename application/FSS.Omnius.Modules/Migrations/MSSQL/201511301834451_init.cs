@@ -232,7 +232,7 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        username = c.String(nullable: false, maxLength: 50),
+                        UserName = c.String(nullable: false, maxLength: 50),
                         passwordHash = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
@@ -362,20 +362,20 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.TapestryDesigner_MetaBlocks",
+                "dbo.TapestryDesigner_Metablocks",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                         PositionX = c.Int(nullable: false),
                         PositionY = c.Int(nullable: false),
-                        ParentMetaBlock_Id = c.Int(),
+                        ParentMetablock_Id = c.Int(),
                         ParentApp_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.TapestryDesigner_MetaBlocks", t => t.ParentMetaBlock_Id)
+                .ForeignKey("dbo.TapestryDesigner_Metablocks", t => t.ParentMetablock_Id)
                 .ForeignKey("dbo.TapestryDesigner_Apps", t => t.ParentApp_Id)
-                .Index(t => t.ParentMetaBlock_Id)
+                .Index(t => t.ParentMetablock_Id)
                 .Index(t => t.ParentApp_Id);
             
             CreateTable(
@@ -387,11 +387,11 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
                         AssociatedTableName = c.String(),
                         PositionX = c.Int(nullable: false),
                         PositionY = c.Int(nullable: false),
-                        ParentMetaBlock_Id = c.Int(nullable: false),
+                        ParentMetablock_Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.TapestryDesigner_MetaBlocks", t => t.ParentMetaBlock_Id, cascadeDelete: true)
-                .Index(t => t.ParentMetaBlock_Id);
+                .ForeignKey("dbo.TapestryDesigner_Metablocks", t => t.ParentMetablock_Id, cascadeDelete: true)
+                .Index(t => t.ParentMetablock_Id);
             
             CreateTable(
                 "dbo.TapestryDesigner_BlocksCommits",
@@ -503,9 +503,9 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
         
         public override void Down()
         {
-            DropForeignKey("dbo.TapestryDesigner_MetaBlocks", "ParentApp_Id", "dbo.TapestryDesigner_Apps");
-            DropForeignKey("dbo.TapestryDesigner_MetaBlocks", "ParentMetaBlock_Id", "dbo.TapestryDesigner_MetaBlocks");
-            DropForeignKey("dbo.TapestryDesigner_Blocks", "ParentMetaBlock_Id", "dbo.TapestryDesigner_MetaBlocks");
+            DropForeignKey("dbo.TapestryDesigner_Metablocks", "ParentApp_Id", "dbo.TapestryDesigner_Apps");
+            DropForeignKey("dbo.TapestryDesigner_Metablocks", "ParentMetablock_Id", "dbo.TapestryDesigner_Metablocks");
+            DropForeignKey("dbo.TapestryDesigner_Blocks", "ParentMetablock_Id", "dbo.TapestryDesigner_Metablocks");
             DropForeignKey("dbo.TapestryDesigner_BlocksCommits", "ParentBlock_Id", "dbo.TapestryDesigner_Blocks");
             DropForeignKey("dbo.TapestryDesigner_Rules", "ParentBlockCommit_Id", "dbo.TapestryDesigner_BlocksCommits");
             DropForeignKey("dbo.TapestryDesigner_Operators", "ParentRule_Id", "dbo.TapestryDesigner_Rules");
@@ -548,9 +548,9 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
             DropIndex("dbo.TapestryDesigner_Connections", new[] { "TapestryDesignerRule_Id" });
             DropIndex("dbo.TapestryDesigner_Rules", new[] { "ParentBlockCommit_Id" });
             DropIndex("dbo.TapestryDesigner_BlocksCommits", new[] { "ParentBlock_Id" });
-            DropIndex("dbo.TapestryDesigner_Blocks", new[] { "ParentMetaBlock_Id" });
-            DropIndex("dbo.TapestryDesigner_MetaBlocks", new[] { "ParentApp_Id" });
-            DropIndex("dbo.TapestryDesigner_MetaBlocks", new[] { "ParentMetaBlock_Id" });
+            DropIndex("dbo.TapestryDesigner_Blocks", new[] { "ParentMetablock_Id" });
+            DropIndex("dbo.TapestryDesigner_Metablocks", new[] { "ParentApp_Id" });
+            DropIndex("dbo.TapestryDesigner_Metablocks", new[] { "ParentMetablock_Id" });
             DropIndex("dbo.Entitron_DbIndex", new[] { "DbTableId" });
             DropIndex("dbo.Entitron_DbView", new[] { "DbSchemeCommitId" });
             DropIndex("dbo.Entitron_DbRelation", new[] { "DbSchemeCommitId" });
@@ -583,7 +583,7 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
             DropTable("dbo.TapestryDesigner_Rules");
             DropTable("dbo.TapestryDesigner_BlocksCommits");
             DropTable("dbo.TapestryDesigner_Blocks");
-            DropTable("dbo.TapestryDesigner_MetaBlocks");
+            DropTable("dbo.TapestryDesigner_Metablocks");
             DropTable("dbo.TapestryDesigner_Apps");
             DropTable("dbo.CORE_Modules");
             DropTable("dbo.Nexus_Ldap");

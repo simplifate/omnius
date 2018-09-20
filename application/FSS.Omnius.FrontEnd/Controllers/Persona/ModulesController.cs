@@ -4,6 +4,7 @@ using System.Linq;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using System;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Persona
 {
@@ -12,35 +13,33 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         [PersonaAuthorize(NeedsAdmin = true, Module = "Persona")]
         public ActionResult Index()
         {
-            using (var context = DBEntities.instance)
-            {
-                List<AjaxModuleAccessPermission> model = context.ModuleAccessPermissions
-                    .Select(c => new AjaxModuleAccessPermission
-                    {
-                        UserId = c.UserId,
-                        UserName = c.User.DisplayName,
-                        Core = c.Core,
-                        Master = c.Master,
-                        Tapestry = c.Tapestry,
-                        Entitron = c.Entitron,
-                        Mozaic = c.Mozaic,
-                        Persona = c.Persona,
-                        Nexus = c.Nexus,
-                        Sentry = c.Sentry,
-                        Hermes = c.Hermes,
-                        Athena = c.Athena,
-                        Watchtower = c.Watchtower,
-                        Cortex = c.Cortex
-                    }).ToList();
+            var context = COREobject.i.Context;
+            List<AjaxModuleAccessPermission> model = context.ModuleAccessPermissions
+                .Select(c => new AjaxModuleAccessPermission
+                {
+                    UserId = c.UserId,
+                    UserName = c.User.DisplayName,
+                    Core = c.Core,
+                    Master = c.Master,
+                    Tapestry = c.Tapestry,
+                    Entitron = c.Entitron,
+                    Mozaic = c.Mozaic,
+                    Persona = c.Persona,
+                    Nexus = c.Nexus,
+                    Sentry = c.Sentry,
+                    Hermes = c.Hermes,
+                    Athena = c.Athena,
+                    Watchtower = c.Watchtower,
+                    Cortex = c.Cortex
+                }).ToList();
 
-                return View(model);
-            }
+            return View(model);
         }
 
         //getUser JSON (for dataTable)
         public JsonResult loadData()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             //var data = e.Users.OrderBy(a => a.UserName).ToList();
             var data = e.ModuleAccessPermissions
                     .Select(c => new AjaxModuleAccessPermission

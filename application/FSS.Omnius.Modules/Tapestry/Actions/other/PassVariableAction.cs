@@ -14,11 +14,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            /*var registry = new Dictionary<string, object>();
-            if (vars.ContainsKey("CrossBlockRegistry")) {
-                registry = (Dictionary<string, object>)vars["CrossBlockRegistry"];
-            }*/
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            COREobject core = COREobject.i;
 
             if (core.CrossBlockRegistry.ContainsKey((string)vars["Key"])) {
                 if (vars["Value"] == null || (vars["Value"] is string && string.IsNullOrEmpty((string)vars["Value"]))) {

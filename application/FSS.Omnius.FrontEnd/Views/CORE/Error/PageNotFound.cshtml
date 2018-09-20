@@ -10,8 +10,7 @@ else
     ViewBag.Title = "Page not found";
     Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
 
-    <link href="/Content/css/ErrorCss.css" rel="stylesheet" />
+    <link href="~/Content/CssLibs/ErrorCss.css" rel="stylesheet" />
 
-    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.min.js")"></script>
-    <script>ShowAppNotification("Page not found", "error")</script>
+    <script>window.onload = function () { ShowAppNotification("Page not found", "error"); };</script>
 }

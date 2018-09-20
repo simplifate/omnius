@@ -10,6 +10,7 @@ using System.Reflection;
 using FSS.Omnius.Modules.Nexus.Service;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
@@ -19,7 +20,7 @@ namespace FSS.Omnius.Controllers.Nexus
         // GET: LDAP
         public ActionResult Index()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             ViewData["LdapServersCount"] = e.Ldaps.Count();
             ViewData["WebServicesCount"] = e.WSs.Count();
             ViewData["ExtDatabasesCount"] = e.ExtDBs.Count();
@@ -41,7 +42,7 @@ namespace FSS.Omnius.Controllers.Nexus
         [HttpPost]
         public ActionResult Save(Ldap model)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             if (ModelState.IsValid)
             {
                 // Záznam již existuje - pouze upravujeme
@@ -73,19 +74,19 @@ namespace FSS.Omnius.Controllers.Nexus
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             return View("~/Views/Nexus/LDAP/Detail.cshtml", e.Ldaps.Single(m => m.Id == id));
         }
 
         public ActionResult Edit(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             return View("~/Views/Nexus/LDAP/Form.cshtml", e.Ldaps.Single(m => m.Id == id));
         }
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             Ldap row = e.Ldaps.Single(m => m.Id == id);
 
             e.Ldaps.Remove(row);

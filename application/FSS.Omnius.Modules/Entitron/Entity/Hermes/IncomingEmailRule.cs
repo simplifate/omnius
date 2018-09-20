@@ -4,7 +4,6 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using Master;
     using Newtonsoft.Json;
-    using Tapestry;
 
     [Table("Hermes_Incoming_Email_Rule")]
     public partial class IncomingEmailRule : IEntity

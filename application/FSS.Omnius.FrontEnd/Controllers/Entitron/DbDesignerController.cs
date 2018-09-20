@@ -1,4 +1,5 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity;
 using System;
 using System.Linq;
 using System.Web.Mvc;
@@ -11,25 +12,26 @@ namespace FSS.Omnius.Controllers.Entitron
         // GET: DbDesigner
         public ActionResult Index(FormCollection formParams)
         {
-            DBEntities context = DBEntities.instance;
+            COREobject core = COREobject.i;
+            DBEntities context = core.Context;
             int appId = 0;
             string appName = "";
             if (formParams["appId"] != null)
             {
                 appId = int.Parse(formParams["appId"]);
-                HttpContext.GetLoggedUser().DesignAppId = appId;
+                core.User.DesignAppId = appId;
                 context.SaveChanges();
                 appName = context.Applications.Find(appId).DisplayName;
             }
             else
             {
-                var userApp = HttpContext.GetLoggedUser().DesignApp;
+                var userApp = core.User.DesignApp;
                 if (userApp == null)
                     userApp = context.Applications.First();
                 appId = userApp.Id;
                 appName = userApp.DisplayName;
             }
-            var userId = HttpContext.GetCORE().User.Id;
+            var userId = core.User.Id;
             ViewData["appId"] = appId;
             ViewData["appName"] = appName;
 

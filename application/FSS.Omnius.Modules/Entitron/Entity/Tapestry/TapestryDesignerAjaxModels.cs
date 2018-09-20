@@ -212,6 +212,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool? IsForeachEnd { get; set; }
         public string Condition { get; set; }
         public string SymbolType { get; set; }
+        public bool HasParallelLock { get; set; }
         public int? ParentSubflowId { get; set; }
         public int? ParentForeachId { get; set; }
         public virtual List<AjaxTapestryDesignerConditionSet> ConditionSets { get; set; }
@@ -268,6 +269,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Width { get; set; }
         public int Height { get; set; }
         public string DataSource { get; set; }
+        public string ItemName { get; set; }
+        public bool IsParallel { get; set; }
 
         public List<AjaxTapestryDesignerWorkflowItem> WorkflowItems { get; set; }
 

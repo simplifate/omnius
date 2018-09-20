@@ -21,9 +21,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            var dictionary = new Dictionary<string, object>();
-            if (vars.ContainsKey("Dictionary"))
-                dictionary = (Dictionary<string, object>)vars["Dictionary"];
+            var dictionary = vars.ContainsKey("Dictionary")
+                ? (Dictionary<string, object>)vars["Dictionary"]
+                : new Dictionary<string, object>();
             
             DBItem rowData = null;
             bool useRowData = true;
@@ -41,17 +41,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             List <string> mappingStringList = null;
             if (autoMapping)
-            {
                 mappingStringList = rowData.getColumnNames().Select(a => $"{a}:{a}").ToList();
-            }
             else if (!vars.ContainsKey("KeyMapping"))
-            {
                 skipMapping = true;
-            }
             else
-            { 
                 mappingStringList = ((string)vars["KeyMapping"]).Split(',').ToList();
-            }
 
             if (!skipMapping)
             {
@@ -66,22 +60,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                         value = rowData[columnName];
                     else
                         value = KeyValueString.ParseValue(columnName, vars);
-                    if (dictionary.ContainsKey(tokens[0]))
-                    {
-                        if (value == null)
-                            dictionary[tokens[0]] = "";
-                        else
-                            dictionary[tokens[0]] = value;
-                    }
+
+                    if (value == null)
+                        dictionary[tokens[0]] = "";
+                    else if (value is List<object>)
+                        dictionary[tokens[0]] = value;
                     else
-                    {
-                        if (value == null)
-                            dictionary.Add(tokens[0], "");
-                        else
-                            dictionary.Add(tokens[0], value);
-                    }
+                        dictionary[tokens[0]] = value.ToString();
                 }
             }
+
             outputVars["Result"] = dictionary;
         }
     }

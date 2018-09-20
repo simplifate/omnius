@@ -15,6 +15,14 @@
   src: url(/Content/Fonts/MYRIADPRO-REGULAR.OTF) format("opentype"); }
 
 @font-face {
+  font-family: "Feather";
+  src: url(/Content/Fonts/feather-webfont.ttf) format("truetype"); }
+
+@font-face {
+  font-family: "Lato";
+  src: url(/Content/Fonts/LatoLatin-Regular.ttf) format("truetype"); }
+
+@font-face {
   font-family: 'Glyphicons Halflings';
   src: url("fonts/glyphicons-halflings-regular.eot");
   src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
@@ -47,8 +55,15 @@
   src: url(/Content/Fonts/innogy/Innogy-Bold.eot?v=1.1.3);
   src: url(/Content/Fonts/innogy/Innogy-Bold.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/Fonts/innogy/Innogy-Bold.woff?v=1.1.3) format("woff"), url(/Content/Fonts/innogy/Innogy-Bold.ttf?v=1.1.3) format("truetype"), url(/Content/Fonts/innogy/Innogy-Bold.svg#Innogy-Bold?v=1.1.3) format("svg"); }
 
+@font-face {
+  font-family: 'Nexa';
+  src: url("/Content/Fonts/NexaFreeBoldwebfont.eot");
+  src: local("NexaFreeBoldwebfont"), url("/Content/Fonts/NexaFreeBoldwebfont.woff") format("woff"), url("/Content/Fonts/NexaFreeBoldwebfont.ttf") format("truetype"); }
+
 body.adminAppModule #upperPanel {
-  height: 135px; }
+  height: 135px;
+  z-index: 10000;
+  position: fixed; }
 
 body.adminAppModule #lowerPanel {
   top: 200px;
@@ -209,7 +224,8 @@ body.adminAppModule #validationResults {
   bottom: 0;
   width: 225px;
   background-color: #455d73;
-  overflow: auto; }
+  overflow: auto;
+  z-index: 10000; }
   #leftBar .leftMenu {
     padding-left: 0px; }
     #leftBar .leftMenu li {
@@ -289,6 +305,14 @@ body.adminLayout .app-alert-info {
 
 body.adminLayout .app-alert-info.app-alert-odd {
   background-color: #c4e3f3; }
+
+body.adminLayout .app-alert-inprogress {
+  color: #837900;
+  background-color: #fff150;
+  border-color: #c4b500; }
+
+body.adminLayout .app-alert-inprogress.app-alert-odd {
+  background-color: #ffef37; }
 
 body.tapestryModule .toolboxItem {
   min-width: 218px;
@@ -400,6 +424,26 @@ body.tapestryModule #lowerPanel {
     background: rgba(0, 0, 0, 0.8);
     z-index: 1100;
     display: none; }
+  body.tapestryModule #lowerPanel .debug {
+    padding: 10px;
+    font-size: 20px; }
+    body.tapestryModule #lowerPanel .debug span.fa {
+      margin-left: 10px;
+      cursor: pointer; }
+      body.tapestryModule #lowerPanel .debug span.fa.debug-run {
+        color: #07b100; }
+    body.tapestryModule #lowerPanel .debug .debug-input input {
+      width: 50%; }
+    body.tapestryModule #lowerPanel .debug .debug-status.building {
+      color: #855d00; }
+    body.tapestryModule #lowerPanel .debug .debug-status.waiting {
+      color: #3b3b3b; }
+    body.tapestryModule #lowerPanel .debug .debug-status.running {
+      color: #00548b; }
+    body.tapestryModule #lowerPanel .debug .debug-status.error {
+      color: #c80000; }
+    body.tapestryModule #lowerPanel .debug .debug-status.finished {
+      color: #07b100; }
   body.tapestryModule #lowerPanel #tapestryLeftBar {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -655,6 +699,7 @@ body.tapestryModule #lowerPanel {
         bottom: 0px;
         overflow-x: scroll; }
       body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .scrollArea {
+        position: relative;
         width: 6000px;
         height: 290px; }
       body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .resourceRule {
@@ -680,6 +725,7 @@ body.tapestryModule #lowerPanel {
         bottom: 0px;
         overflow: scroll; }
       body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .scrollArea {
+        position: relative;
         width: 6000px;
         height: 4000px; }
       body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule {
@@ -709,6 +755,15 @@ body.tapestryModule #lowerPanel {
           top: 0px;
           right: 0px;
           bottom: 0px; }
+          body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlaneArea .debug-active {
+            box-shadow: 0 0 7px 7px #16d900; }
+          body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlaneArea .debug-passed {
+            box-shadow: 0 0 5px 5px #3b3b3b; }
+          body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlaneArea .debug-error {
+            box-shadow: 0 0 10px 10px #c80000; }
+          body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlaneArea .tooltip-inner {
+            white-space: pre;
+            max-width: none; }
         body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane {
           position: relative;
           width: 100%;
@@ -1038,6 +1093,13 @@ body.tapestryModule .nu-selected {
     height: 286px; }
   body.tapestryModule #lowerPanel {
     top: 361px; } }
+
+.nu-selection-box {
+  border: 1px dotted #BBB;
+  background: rgba(0, 0, 0, 0.04); }
+
+.nu-selected {
+  border: 2px dashed #000 !important; }
 
 body.overviewModule {
   background-color: #3a3a3a; }
@@ -1520,6 +1582,14 @@ body.dbDesignerModule {
   src: url(/Content/Fonts/MYRIADPRO-REGULAR.OTF) format("opentype"); }
 
 @font-face {
+  font-family: "Feather";
+  src: url(/Content/Fonts/feather-webfont.ttf) format("truetype"); }
+
+@font-face {
+  font-family: "Lato";
+  src: url(/Content/Fonts/LatoLatin-Regular.ttf) format("truetype"); }
+
+@font-face {
   font-family: 'Glyphicons Halflings';
   src: url("fonts/glyphicons-halflings-regular.eot");
   src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
@@ -1552,6 +1622,11 @@ body.dbDesignerModule {
   src: url(/Content/Fonts/innogy/Innogy-Bold.eot?v=1.1.3);
   src: url(/Content/Fonts/innogy/Innogy-Bold.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/Fonts/innogy/Innogy-Bold.woff?v=1.1.3) format("woff"), url(/Content/Fonts/innogy/Innogy-Bold.ttf?v=1.1.3) format("truetype"), url(/Content/Fonts/innogy/Innogy-Bold.svg#Innogy-Bold?v=1.1.3) format("svg"); }
 
+@font-face {
+  font-family: 'Nexa';
+  src: url("/Content/Fonts/NexaFreeBoldwebfont.eot");
+  src: local("NexaFreeBoldwebfont"), url("/Content/Fonts/NexaFreeBoldwebfont.woff") format("woff"), url("/Content/Fonts/NexaFreeBoldwebfont.ttf") format("truetype"); }
+
 body.portalModule {
   background-color: #f2f2f3; }
   body.portalModule #upperPanel {
@@ -1561,12 +1636,13 @@ body.portalModule {
     -ms-user-select: none;
     user-select: none;
     cursor: default;
-    position: absolute;
+    position: fixed;
     left: 225px;
     top: 75px;
     right: 0px;
     height: 357px;
-    background-color: #3a3a3a; }
+    background-color: #3a3a3a;
+    z-index: 10000; }
     body.portalModule #upperPanel .panelLabel {
       position: absolute;
       left: 52px;
@@ -3275,13 +3351,41 @@ body.mozaicEditorBody {
     content: "empty list group item"; }
   body.mozaicEditorBody [data-uic="functions|foreach"].empty-element:before {
     content: "empty foreach"; }
-  body.mozaicEditorBody [data-uic="ui|event-calendar"].empty-element:before {
-    content: "Event calendar"; }
-  body.mozaicEditorBody div[data-uic="ui|event-calendar"] {
-    border: 1px solid #d39212; }
-    body.mozaicEditorBody div[data-uic="ui|event-calendar"]:before {
-      color: #d39212;
-      background: #fcffca; }
+  body.mozaicEditorBody label.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px; }
+    body.mozaicEditorBody label.switch input {
+      display: none; }
+    body.mozaicEditorBody label.switch span.switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s; }
+      body.mozaicEditorBody label.switch span.switch-slider.empty-element:before, body.mozaicEditorBody label.switch span.switch-slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s; }
+    body.mozaicEditorBody label.switch input:checked + .switch-slider {
+      background-color: #2196F3; }
+    body.mozaicEditorBody label.switch input:focus + .switch-slider {
+      box-shadow: 0 0 1px #2196F3; }
+    body.mozaicEditorBody label.switch input:checked + .switch-slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px); }
   body.mozaicEditorBody div[data-uic="misc|embed"] .embed-code:empty:before {
     display: block;
     background: #efefef;

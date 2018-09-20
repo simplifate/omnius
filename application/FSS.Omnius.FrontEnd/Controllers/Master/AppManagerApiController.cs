@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
@@ -21,23 +21,20 @@ namespace FSS.Omnius.Controllers.Tapestry
         {
             try
             {
-                using (var context = DBEntities.instance)
+                DBEntities context = COREobject.i.Context;
+                Application app = context.Applications.Include("CSSTemplate").FirstOrDefault(a => a.Id == appId);
+                AjaxAppProperties result = new AjaxAppProperties
                 {
-                    Application app = context.Applications.Include("CSSTemplate").FirstOrDefault(a => a.Id == appId);
-                    AjaxAppProperties result = new AjaxAppProperties
-                    {
-                        Id = app.Id,
-                        DisplayName = app.DisplayName,
-                        CSSTemplateId = app.CssTemplate == null ? 0 : app.CssTemplate.Id,
-                        TileWidth = app.TileWidth,
-                        TileHeight = app.TileHeight,
-                        Color = app.Color,
-                        Icon = app.Icon,
-                        IsAllowedForAll = app.IsAllowedForAll,
-                        IsAllowedGuests = app.IsAllowedGuests
-                    };
-                    return result;
-                }
+                    Id = app.Id,
+                    DisplayName = app.DisplayName,
+                    TileWidth = app.TileWidth,
+                    TileHeight = app.TileHeight,
+                    Color = app.Color,
+                    Icon = app.Icon,
+                    IsAllowedForAll = app.IsAllowedForAll,
+                    IsAllowedGuests = app.IsAllowedGuests
+                };
+                return result;
             }
             catch (Exception ex)
             {
@@ -51,19 +48,16 @@ namespace FSS.Omnius.Controllers.Tapestry
         {
             try
             {
-                using (var context = DBEntities.instance)
-                {
-                    Application app = context.Applications.Where(a => a.Id == appId).First();
-                    app.DisplayName = postData.DisplayName;
-                    app.CssTemplate = context.CssTemplates.Find(postData.CSSTemplateId);
-                    app.TileWidth = postData.TileWidth;
-                    app.TileHeight = postData.TileHeight;
-                    app.Color = postData.Color;
-                    app.Icon = postData.Icon;
-                    app.IsAllowedForAll = postData.IsAllowedForAll;
-                    app.IsAllowedGuests = postData.IsAllowedGuests;
-                    context.SaveChanges();
-                }
+                DBEntities context = COREobject.i.Context;
+                Application app = context.Applications.Where(a => a.Id == appId).First();
+                app.DisplayName = postData.DisplayName;
+                app.TileWidth = postData.TileWidth;
+                app.TileHeight = postData.TileHeight;
+                app.Color = postData.Color;
+                app.Icon = postData.Icon;
+                app.IsAllowedForAll = postData.IsAllowedForAll;
+                app.IsAllowedGuests = postData.IsAllowedGuests;
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -77,28 +71,25 @@ namespace FSS.Omnius.Controllers.Tapestry
         {
             try
             {
-                using (var context = DBEntities.instance)
+                DBEntities context = COREobject.i.Context;
+                var newApp = new Application
                 {
-                    var newApp = new Application
-                    {
-                        Name = postData.DisplayName.RemoveDiacritics(),
-                        DisplayName = postData.DisplayName,
-                        CssTemplate = context.CssTemplates.Find(postData.CSSTemplateId),
-                        TileWidth = postData.TileWidth,
-                        TileHeight = postData.TileHeight,
-                        Color = postData.Color,
-                        Icon = postData.Icon
-                    };
-                    context.Applications.Add(newApp);
-                    context.SaveChanges();
-                    var newRootMetablock = new TapestryDesignerMetablock
-                    {
-                        Name = "Root metablock",
-                        ParentApp = newApp
-                    };
-                    context.TapestryDesignerMetablocks.Add(newRootMetablock);
-                    context.SaveChanges();
-                }
+                    Name = postData.DisplayName.RemoveDiacritics(),
+                    DisplayName = postData.DisplayName,
+                    TileWidth = postData.TileWidth,
+                    TileHeight = postData.TileHeight,
+                    Color = postData.Color,
+                    Icon = postData.Icon
+                };
+                context.Applications.Add(newApp);
+                context.SaveChanges();
+                var newRootMetablock = new TapestryDesignerMetablock
+                {
+                    Name = "Root metablock",
+                    ParentApp = newApp
+                };
+                context.TapestryDesignerMetablocks.Add(newRootMetablock);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -112,12 +103,10 @@ namespace FSS.Omnius.Controllers.Tapestry
         {
             try
             {
-                using (var context = DBEntities.instance)
-                {
-                    Application app = context.Applications.Where(a => a.Id == appId).First();
-                    app.IsEnabled = postData.IsEnabled;
-                    context.SaveChanges();
-                }
+                DBEntities context = COREobject.i.Context;
+                Application app = context.Applications.Where(a => a.Id == appId).First();
+                app.IsEnabled = postData.IsEnabled;
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -140,17 +129,16 @@ namespace FSS.Omnius.Controllers.Tapestry
         {
             try
             {
-                Modules.CORE.CORE core = new Modules.CORE.CORE();
-                DBEntities db = DBEntities.instance;
-                User currentUser = User.GetLogged(core);
+                COREobject core = COREobject.i;
+                DBEntities db = core.Context;
+                User currentUser = core.User;
                 var app = db.Applications.SingleOrDefault(a => a.Name == appName);
-                if (app != null)
-                {
+                if (app != null) {
                     UsersApplications uapp = app.UsersApplications.SingleOrDefault(ua => ua.UserId == currentUser.Id);
                     if (uapp != null)
                     {
-                        uapp.PositionX = Convert.ToInt32(coords.positionX.Substring(0, coords.positionX.Length - 2));
-                        uapp.PositionY = Convert.ToInt32(coords.positionY.Substring(0, coords.positionY.Length - 2));
+                        uapp.PositionX = coords.positionX;
+                        uapp.PositionY = coords.positionY;
                     }
                     else
                     {
@@ -158,8 +146,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                         {
                             UserId = currentUser.Id,
                             ApplicationId = app.Id,
-                            PositionX = Convert.ToInt32(coords.positionX),
-                            PositionY = Convert.ToInt32(coords.positionY)
+                            PositionX = coords.positionX,
+                            PositionY = coords.positionY
                         };
                         db.UsersApplications.Add(uapp);
                     }

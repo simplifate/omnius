@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.Persona;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,24 +20,6 @@ namespace FSS.Omnius.Controllers.CORE
             result += $"User name: {User.Identity.Name}<br/>";
 
             return result;
-        }
-
-        public bool Leave()
-        {
-            Modules.CORE.CORE core = HttpContext.GetCORE();
-
-            core.Persona.NotLogOff(User.Identity.Name);
-
-            return true;
-        }
-
-        public bool LogOut()
-        {
-            Modules.CORE.CORE core = HttpContext.GetCORE();
-
-            core.Persona.LogOff(User.Identity.Name);
-
-            return true;
         }
     }
 }

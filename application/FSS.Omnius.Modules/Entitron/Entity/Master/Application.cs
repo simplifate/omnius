@@ -12,6 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
     using Hermes;
     using FSS.Omnius.Modules.Entitron.DB;
     using FSS.Omnius.Modules.Entitron.Entity.Nexus;
+    using FSS.Omnius.Modules.CORE;
 
     [Table("Master_Applications")]
     public partial class Application : IEntity
@@ -76,8 +77,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public bool DbSchemeLocked { get; set; }
         public int? SchemeLockedForUserId { get; set; }
         
-        public virtual MozaicCssTemplate CssTemplate { get; set; }
-
         // tapestry
         public virtual ICollection<WorkFlow> WorkFlows { get; set; }
         // tapestry - designer
@@ -92,7 +91,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
         // persona
         public virtual ICollection<ADgroup> ADgroups { get; set; }
-        [ImportExport(ELinkType.Child, Branch = "Persona")]
+        #warning importing role removes links to user
+        //[ImportExport(ELinkType.Child, Branch = "Persona")]
         public virtual ICollection<PersonaAppRole> Roles { get; set; }
         public virtual ICollection<User> DesignedBy { get; set; }
         public virtual ICollection<UsersApplications> UsersApplications { get; set; }
@@ -134,7 +134,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
                     return this;
 
                 if (_similarApp == null)
-                    _similarApp = DBEntities.appInstance(this).Applications.SingleOrDefault(a => a.Name == Name);
+                    _similarApp = COREobject.i.Context.Applications.Find(Id);
                 return _similarApp;
             }
         }

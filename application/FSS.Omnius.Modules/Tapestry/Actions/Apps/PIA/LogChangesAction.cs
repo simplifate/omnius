@@ -22,7 +22,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.PIA
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            DBConnection db = Modules.Entitron.Entitron.i;
+            COREobject core = COREobject.i;
+            DBConnection db = core.Entitron;
 
             string tableName = (string)vars["TableName"];
             int modelId = (int)vars["ModelId"];
@@ -30,9 +31,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.PIA
             List<string> ignoreColumns = vars.ContainsKey("IgnoreColumns") ? ((string)vars["IgnoreColumns"]).Split(',').ToList() : new List<string>();
 
             List<string> changes = new List<string>();
-
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            Modules.Entitron.Entitron entitron = core.Entitron;
 
             DBTable table = db.Table(tableName);
             if (table == null)

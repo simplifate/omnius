@@ -9,7 +9,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
     {
         public override int Id => 191;
 
-        public override string[] InputVar => new string[] { "TableData", "ColumnName" };
+        public override string[] InputVar => new string[] { "TableData", "ColumnName", "?StringSeperator" };
 
         public override string Name => "Gather emails to single string";
 
@@ -34,7 +34,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 }
 
                 // gather strings and divide them by "," to single string output
-                outputVars["Result"] = string.Join(",", listStrings);
+                string stringSeperator = vars.ContainsKey("StringSeperator")
+                    ? (string)vars["StringSeperator"]
+                    : ",";
+
+                outputVars["Result"] = string.Join(stringSeperator, listStrings);
             }
         }
     }

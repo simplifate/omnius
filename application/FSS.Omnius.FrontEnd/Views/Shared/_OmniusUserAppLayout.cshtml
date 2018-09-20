@@ -1,14 +1,16 @@
-﻿@using FSS.Omnius.Modules.Entitron.Entity
+﻿﻿@using FSS.Omnius.Modules.Entitron.Entity
+﻿@using FSS.Omnius.Modules.Entitron.DB
 @using FSS.Omnius.Modules.Entitron.Entity.Mozaic
+@using FSS.Omnius.Modules.Entitron
 @using FSS.Omnius.Modules.CORE
 @using FSS.Omnius.Modules.Entitron.Entity.Master
 @using FSS.Omnius.FrontEnd.Utils
 @{
-    T t = new T((string)ViewData["locale"]);
+    T t = new T((Locale)ViewData["locale"]);
     int currentTimestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
     string jsTranslations = JsTranslationsCollection.GetJson(t);
     Message message = (Message)ViewData["Message"];
-
+    Application app = COREobject.i.Application;
 }
 <!DOCTYPE html>
 <html lang="@ViewData["locale"]">
@@ -19,54 +21,39 @@
     <link rel="stylesheet" href="@Services.GetFileVersion("/Content/CssLibs/Bundle.min.css")" />
     <link rel="stylesheet" href="@Services.GetFileVersion("/Content/Scss/Bundle/UserStyleBundle.min.css")" />
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/modernizr.min.js")"></script>
-    <style>
-        @{
-            Application app = FSS.Omnius.Modules.Entitron.Entitron.i.Application;
-            var context = DBEntities.instance;
-            var applicationTemplate = context.Applications.Include("CSSTemplate").Where(c => c.Id == app.Id).First();
-
-
-        }
-        @{  /* @Html.Partial($"{applicationTemplate.CssTemplate.Url}") */
-        }
-    </style>
     @RenderSection("Styles", false)
 </head>
 <body class="@Page.ModuleClass @ViewData["appName"] @ViewData["blockName"] userLayout pageSpinnerShown">
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/jquery.min.js")"></script>
-    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.js")"></script>
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.min.js")"></script>
     <div id="brandBar">
         <div class="logo">
             <img src="@Url.Content("~/Content/Images/LogoCrymicooo.png")" alt="" />
         </div>
-   
+
     </div>
     <div id="userTopBar">
         <div class="icon" id="toggleMenuIcon"><div class="fa fa-bars"></div></div>
         <a href="/Master"><div class="icon" id="appManagerIcon"><div class="fa fa-th"></div></div></a>
-        @if (Context.GetLoggedUser() != null && Context.GetLoggedUser().isAdmin())
+        @if (FSS.Omnius.Modules.CORE.COREobject.i.User != null && FSS.Omnius.Modules.CORE.COREobject.i.User.IsAdmin)
         {
             <a href="/CORE"><div class="icon" id="adminSectionIcon"><div class="fa fa-cog"></div></div></a>
         }
         <a href="/Master/Home/Help"><div class="icon" id="helpIcon"><div class="fa fa-question-circle"></div></div></a>
-     
+
         <div class="clientTitleArea">
             <div class="clientTitle">@t._("Omnius")</div>
-            
         </div>
-       
         <div class="userBoxMinimized">
             <div class="notificationIcon fa fa-bell"></div>
             <div class="avatar icon"></div>
         </div>
-       
         <div class="userBox">
-           
             <div class="notificationIcon fa fa-bell"></div>
             <div class="avatar"></div>
-            <div class="fullName"><a href="/Master/Home/Details">@Context.GetLoggedUser().DisplayName</a></div>
+            <div class="fullName"><a href="/Master/Home/Details">@FSS.Omnius.Modules.CORE.COREobject.i.User.DisplayName</a></div>
             <div class="commands">
-                @Html.Raw(Context.GetLoggedUser().isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">{t._("Logout")}</a> | " : "")
+                @Html.Raw(FSS.Omnius.Modules.CORE.COREobject.i.User.isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">{t._("Logout")}</a> | " : "")
                 <a href="@(ViewData["locale"].ToString() == "cs" ? String.Format("/{0}/?locale=en",ViewData["appSystemName"].ToString()) : String.Format("/{0}/?locale=cs",ViewData["appSystemName"].ToString()))"> @(ViewData["locale"].ToString() == "cs" ? "English" : "Česky")</a>
             </div>
         </div>
@@ -74,8 +61,8 @@
             <div class="searchIcon fa fa-search"></div>
         </div>
         <div class="searchBox">
-                <input type="text" placeholder="@t._("Search in application")" class="searchInputField" name="search" />
-                <div class="searchIcon fa fa-search"></div>
+            <input type="text" placeholder="@t._("Search in application")" class="searchInputField" name="search" />
+            <div class="searchIcon fa fa-search"></div>
         </div>
     </div>
     <div id="userLeftBar">
@@ -84,11 +71,38 @@
         <div class="widgetLabel">Menu</div>
         @Html.Partial($"/Views/App/{app.Name}/menuLayout.cshtml")
     </div>
-    <script>
-        if (window.innerWidth < 1280) {
-            document.body.classList.add("leftBarHidden");
+    <div id="appNotificationArea">
+        @if (message.Success.Count > 0)
+        {
+            foreach (var mes in message.Success)
+            {
+                <div class="app-alert app-alert-success">
+                    <i class="fa fa-check alertSymbol"></i>
+                    <span>
+                        @mes
+                    </span>
+                    <div class="fa fa-times closeAlertIcon">
+
+                    </div>
+                </div>
+            }
         }
-    </script>
+        @if (message.Errors.Count > 0)
+        {
+            foreach (var mes in message.Errors)
+            {
+                <div class="app-alert app-alert-error">
+                    <i class="fa fa-exclamation-circle alertSymbol"></i>
+                    <span>
+                        @mes
+                    </span>
+                    <div class="fa fa-times closeAlertIcon">
+
+                    </div>
+                </div>
+            }
+        }
+    </div>
     <div id="appNotificationArea">
         @if (message.Success.Count > 0)
         {
@@ -146,7 +160,6 @@
                 </div>
             }
         }
-
     </div>
     <div id="userContentArea">
         @RenderBody()
@@ -160,10 +173,12 @@
         </div>
     </div>
     <input type="hidden" id="currentAppName" value="@t._((string)ViewData["appSystemName"])" />
-    <input type="hidden" id="currentLocale" value="@((string)ViewData["locale"])" />
+    <input type="hidden" id="currentLocale" value="@((Locale)ViewData["locale"])" />
     <input type="hidden" id="currentBlockName" value="@t._((string)ViewData["blockName"])" />
     <input type="hidden" id="currentUserName" value="@ViewData["userName"]" />
     <input type="hidden" id="currentUserId" value="@ViewData["UserId"]" />
+    <input type="hidden" id="currentBlockDisplayName" value="@ViewData["pageName"]" />
+    <input type="hidden" id="userRoleArray" value="@ViewData["userRoleArray"]" />
     @if ((string)ViewData["Mode"] == "App" && ViewData["AssociatedModals"] != null)
     {
         <div id="modalRepository">
@@ -175,7 +190,12 @@
             }
         </div>
     }
-    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.js")"></script>
+    <script>
+        if (window.innerWidth < 1280) {
+            document.body.classList.add("leftBarHidden");
+        }
+    </script>
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.min.js")"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

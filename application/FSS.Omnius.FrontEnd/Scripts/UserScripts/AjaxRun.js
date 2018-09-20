@@ -7,8 +7,7 @@ function AjaxRunAndReplace(url, uic_name, modelId)
         error: console.error.bind(console),
         success: function (data) {
             $.each(data, function (name, value) {
-                if ($('select#uic_' + name).size() > 0)
-                {
+                if ($('select#uic_' + name).size() > 0) {
                     var html = '';
                     $.each(value, function (i, item) {
                         html += '<option value="' + item['id'] + '">' + item['Name'] + '</option>';
@@ -16,8 +15,7 @@ function AjaxRunAndReplace(url, uic_name, modelId)
 
                     $('select#uic_' + name).html(html);
                 }
-                else if ($('input#uic_' + name).size() > 0)
-                {
+                else if ($('input#uic_' + name).size() > 0) {
                     $('input#uic_' + name).val(value);
                 }
             });
@@ -30,6 +28,412 @@ $('body').on('click', '.runAjax', function (e) {
 });
 
 $(function () {
+    if ($("#currentBlockName").val() == "Home") {
+        function refresh() {
+            $.ajax({
+                dataType: "html",
+                method: "POST",
+                url: window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/api/run/Grid/Home?button=refresh', //kvůli ignorování selectedProfile v url při autorefreshi
+                success: function (result) {
+                    var data = JSON.parse(result).Data;
+                    // Miner status
+                    var total = data.MinerStatus[0].y + data.MinerStatus[1].y + data.MinerStatus[2].y;
+                    var totalHash = Math.round((data.MinerStatus[0].x + data.MinerStatus[1].x) * 100) / 100;
+                    var totalHash_XMR = Math.round((data.MinerStatus[0].x2 + data.MinerStatus[1].x2) * 100) / 100;
+
+                    rigstatusdonut_graph_chart.series[0].setData(data.MinerStatus, true);
+                    $('#numberOfWarnings').html('You have ' + data.MinerStatus[1].y + ' warnings to explore.');
+                    $('#numberOfRigs').html('Rigs in total ' + total);
+                    $('#sys_hash').html(totalHash + ' GH/s');
+                    $('#sys_hash_xmr').html(totalHash_XMR + ' kH/s');
+
+                    $('#online_percent').html(Math.round((data.MinerStatus[0].y / total) * 10000) / 100 + '%');
+                    $('#online_rigs').html(data.MinerStatus[0].y + ' rigs');
+                    $('#online_ghs').html(data.MinerStatus[0].x + ' GH/s');
+                    $('#online_ghs_xmr').html(data.MinerStatus[0].x2 + ' kH/s');
+
+                    $('#warning_percent').html(Math.round((data.MinerStatus[1].y / total) * 10000) / 100 + '%');
+                    $('#warning_rigs').html(data.MinerStatus[1].y + ' rigs');
+                    $('#warning_ghs').html(data.MinerStatus[1].x + ' GH/s');
+                    $('#warning_ghs_xmr').html(data.MinerStatus[1].x2 + ' kH/s');
+
+                    $('#offline_percent').html(Math.round((data.MinerStatus[2].y / total) * 10000) / 100 + '%');
+                    $('#offline_rigs').html(data.MinerStatus[2].y + ' rigs');
+                    //$('#offline_ghs').html(data.MinerStatus[2].x + ' MH/s');
+
+                    var warningModal = $('#modalWarnings div.modal-dialog div.modal-content div.modal-body ul');
+                    warningModal.html('');
+                    $.each(data.RigsWarningMessages, function (index, item) {
+                        warningModal.append('<li><span>' + item + '</span></li>');
+                    });
+
+                    // Rig Status history
+                    var id = $('body').data('LastId-RigStatusHistory');
+                    if (typeof id === 'undefined' || id != data.RigStatusHistory.id) {
+                        $('body').data('LastId-RigStatusHistory', data.RigStatusHistory.id);
+
+                        testrigstatus_graph_chart.series[0].addPoint([data.RigStatusHistory.id, data.RigStatusHistory.value[0]], true, true);
+                        testrigstatus_graph_chart.series[1].addPoint([data.RigStatusHistory.id, data.RigStatusHistory.value[1]], true, true);
+                    }
+
+                    // Exp vs Real
+                    id = $('body').data('LastId-ExpVsReal');
+                    if (typeof id === 'undefined' || id != data.ExpVsReal.id) {
+                        $('body').data('LastId-ExpVsReal', data.ExpVsReal.id);
+
+                        hc_actual_yield_graph_chart.series[0].addPoint([data.ExpVsReal.id, data.ExpVsReal.value[0]], true, true);
+                        hc_actual_yield_graph_chart.series[2].addPoint([data.ExpVsReal.id, data.ExpVsReal.value[1]], true, true);
+                    }
+
+                    // consum
+                    hc_rigs_consumption_graph_gauge.series[0].setData([data.Consum.rigs], true);
+                    hc_aircondition_consumption_graph_gauge.series[0].setData([data.Consum.air], true);
+                    id = $('body').data('LastId-consum');
+                    if (typeof id === 'undefined' || id != data.Consum.history.id) {
+                        $('body').data('LastId-consum', data.Consum.history.id);
+
+                        hc_modbus_history_graph_chart.series[0].addPoint([data.Consum.history.id, data.Consum.history.value[0]], true, true);
+                        hc_modbus_history_graph_chart.series[1].addPoint([data.Consum.history.id, data.Consum.history.value[1]], true, true);
+                    }
+
+                    // earnings
+                    $('#earnings_amount').html(data.Earnings.day[0]);
+                    $('#yield_amount').html(data.Earnings.day[1]);
+                    $('#cost_amount').html(data.Earnings.day[2]);
+                    $('#elec_amount').html(data.Earnings.day[3]);
+
+                    $('#earnings_amount_weekly').html(data.Earnings.week[0]);
+                    $('#yield_amount_weekly').html(data.Earnings.week[1]);
+                    $('#cost_amount_weekly').html(data.Earnings.week[2]);
+                    $('#elec_amount_weekly').html(data.Earnings.week[3]);
+
+                    $('#earnings_amount_monthly').html(data.Earnings.month[0]);
+                    $('#yield_amount_monthly').html(data.Earnings.month[1]);
+                    $('#cost_amount_monthly').html(data.Earnings.month[2]);
+                    $('#elec_amount_monthly').html(data.Earnings.month[3]);
+
+                    //// last transaction
+                    transactionLine = function (item) {
+                        return '<tr><td style="display:none">' + item.hidden_id + '</td><td style="display:none">' + item.hidden_add + '</td><td style="display:none">' + item.hidden_date + '</td><td>' + item.currency + '</td><td>' + item.amount + '</td><td>' + item.wallet + '</td><td>' + item.date + '</td><td>' + item.time + '</td></tr>';
+                    };
+                    var ltTable = $('#transaction_history_table tbody');
+                    ltTable.html('');
+                    $.each(data.LastTransaction, function (index, item) {
+                        ltTable.append(transactionLine(item));
+                    });
+
+                    //modalHistory = $('#transaction_history_table_more tbody');
+                    //lastModalAdd = $('tr:first td:nth-child(2)', modalHistory).html();
+                    //itemFound = false;
+                    //$.each(data.LastTransaction.reverse(), function (index, item) {
+                    //    if (itemFound) {
+                    //        modalHistory.prepend(transactionLine(item));
+                    //    }
+                    //    else {
+                    //        if (item.hidden_add == lastModalAdd) { // chybná detekce!!!
+                    //            itemFound = true;
+                    //        }
+                    //    }
+                    //});
+                    //// if !itemFound -> list needs to refresh
+
+                    // Total income
+                    id = $('body').data('LastId-totalIncome');
+                    if (typeof id === 'undefined' || id != data.TotalIncome.id) {
+                        $('body').data('LastId-totalIncome', data.TotalIncome.id);
+
+                        totalbalancehistory_graph_chart.series[0].addPoint([data.TotalIncome.id, data.TotalIncome.value], true, true);
+                    }
+
+                    //// exchange rate
+                    $('#bitcoin_value').html('$' + data.ExchangeRates.btc.value);
+                    $('#bitcoin_change').html('$' + data.ExchangeRates.btc.change);
+                    $('#bitcoin_change_percent').html('&nbsp; (' + data.ExchangeRates.btc.percent + '%)');
+                    if (data.ExchangeRates.btc.change < 0)
+                        $('#bitcoin_change').css('color', 'red');
+                    else
+                        $('#bitcoin_change').css('color', 'green');
+
+                    $('#ethereum_value').html('$' + data.ExchangeRates.eth.value);
+                    $('#ethereum_change').html('$' + data.ExchangeRates.eth.change);
+                    $('#ethereum_change_percent').html('&nbsp; (' + data.ExchangeRates.eth.percent + '%)');
+                    if (data.ExchangeRates.eth.change < 0)
+                        $('#ethereum_change').css('color', 'red');
+                    else
+                        $('#ethereum_change').css('color', 'green');
+
+                    $('#zcash_value').html('$' + data.ExchangeRates.zec.value);
+                    $('#zcash_change').html('$' + data.ExchangeRates.zec.change);
+                    $('#zcash_change_percent').html('&nbsp; (' + data.ExchangeRates.zec.percent + '%)');
+                    if (data.ExchangeRates.zec.change < 0)
+                        $('#zcash_change').css('color', 'red');
+                    else
+                        $('#zcash_change').css('color', 'green');
+
+                    $('#dcr_value').html('$' + data.ExchangeRates.dcr.value);
+                    $('#dcr_change').html('$' + data.ExchangeRates.dcr.change);
+                    $('#dcr_change_percent').html('&nbsp; (' + data.ExchangeRates.dcr.percent + '%)');
+                    if (data.ExchangeRates.dcr.change < 0)
+                        $('#dcr_change').css('color', 'red');
+                    else
+                        $('#dcr_change').css('color', 'green');
+
+                    $('#ltc_value').html('$' + data.ExchangeRates.ltc.value);
+                    $('#ltc_change').html('$' + data.ExchangeRates.ltc.change);
+                    $('#ltc_change_percent').html('&nbsp; (' + data.ExchangeRates.ltc.percent + '%)');
+                    if (data.ExchangeRates.ltc.change < 0)
+                        $('#ltc_change').css('color', 'red');
+                    else
+                        $('#ltc_change').css('color', 'green');
+
+                    $('#xmr_value').html('$' + data.ExchangeRates.xmr.value);
+                    $('#xmr_change').html('$' + data.ExchangeRates.xmr.change);
+                    $('#xmr_change_percent').html('&nbsp; (' + data.ExchangeRates.xmr.percent + '%)');
+                    if (data.ExchangeRates.xmr.change < 0)
+                        $('#xmr_change').css('color', 'red');
+                    else
+                        $('#xmr_change').css('color', 'green');
+
+                    $('#music_value').html('$' + data.ExchangeRates.music.value);
+                    $('#music_change').html('$' + data.ExchangeRates.music.change);
+                    $('#music_change_percent').html('&nbsp; (' + data.ExchangeRates.music.percent + '%)');
+                    if (data.ExchangeRates.music.change < 0)
+                        $('#music_change').css('color', 'red');
+                    else
+                        $('#music_change').css('color', 'green');
+                }
+            });
+        }
+        setInterval(refresh, 20000);
+
+
+        //panel state saving
+        $("body").on("click", "div.panel-heading", function () {
+            //get the id of clicked 
+
+            var panelId = $(this).parent().find(".panel-body").attr("id");
+            var panelCollapsed = false;
+            if($(this).hasClass('collapsed')){
+                panelCollapsed = true;
+            }
+            //on each panel header click we show or hide the panel
+            //and then call AJAX to the server to save state of panels
+
+            //AJAX
+            $.ajax({
+                type: "POST",
+                url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=total_yield",
+                data: {"PanelName" : panelId,"TargetState": panelCollapsed},
+                error: console.error.bind(console),
+                complete: function () {
+                },
+                success: function (data) {
+                    
+                }
+            });
+            //End AJAX
+        });
+
+
+        //end 
+        if ($('#ethereum_change').text()[1] == "-") {
+            $('#ethereum_change').css('color', 'red');
+        } else {
+            $('#ethereum_change').css('color', 'green');
+
+        }
+        if ($('#bitcoin_change').text()[1] == "-") {
+            $('#bitcoin_change').css('color', 'red');
+        } else {
+            $('#bitcoin_change').css('color', 'green');
+
+        }
+        if ($('#zcash_change').text()[1] == "-") {
+            $('#zcash_change').css('color', 'red');
+        } else {
+            $('#zcash_change').css('color', 'green');
+
+        }
+        if ($('#dcr_change').text()[1] == "-") {
+            $('#dcr_change').css('color', 'red');
+        } else {
+            $('#dcr_change').css('color', 'green');
+
+        }
+        if ($('#ltc_change').text()[1] == "-") {
+            $('#ltc_change').css('color', 'red');
+        } else {
+            $('#ltc_change').css('color', 'green');
+
+        }
+        if ($('#xmr_change').text()[1] == "-") {
+            $('#xmr_change').css('color', 'red');
+        } else {
+            $('#xmr_change').css('color', 'green');
+
+        }
+        if ($('#music_change').text()[1] == "-") {
+            $('#music_change').css('color', 'red');
+        } else {
+            $('#music_change').css('color', 'green');
+
+        }
+    }
+
+    if ($("#currentBlockName").val() == "ServiceStatus") {
+        //Reload panels
+        function refresh() {
+            $.ajax({
+                dataType: "html",
+                url: window.location.href, //kvůli ignorování selectedProfile v url při autorefreshi
+                success: function (response) {
+                    var x = $(response)
+                    //$("#bodyMiningHistory").html(x.find("#bodyMiningHistory").html());
+                    $("#performance_div").html(x.find("#performance_div").html());
+                    $("#divCam").html(x.find("#divCam").html());
+                    $("#containerConsump").html(x.find("#containerConsump").html());
+                    $("#containerWarnings").html(x.find("#containerWarnings").html());
+                    //$("#divRigPlace").html(x.find("#divRigPlace").html());
+                    //$("#divRigEdit").html(x.find("#divRigEdit").html()); 
+                    setTimeout(
+                        function () {
+                            refresh()
+                        }, 10000);
+                }
+            });
+        }
+
+        refresh();
+        //setInterval(refresh, 20000);
+        //
+        $(document).on('click', '.rig-placement td', function () {
+            var RigId = $(this).data('RigId');
+            if (!RigId) {
+                return false;
+            }
+
+            $("#header").html("");
+            $("#gpuTempGraphModal").html("");
+            $("#gpu-table").html("");
+            $("#messages").html("");
+            $("#MessageWindow").html("");
+            $("#preloader").css("display", "block");
+            $.ajax({
+                dataType: "html",
+                url: "/Grid/RigHistoryMessages?modelId=" + RigId,
+                success: function (response) {
+                    var x = $(response)
+                    $("#preloader").css("display", "none");
+                    $("#header").html(x.find("#HeadingText").html());
+                    $("#gpuTempGraphModal").html(x.find("#gpuTempGraph").html());
+                    $("#gpu-table").html(x.find("#gpuStatus").html());
+                    $("#messages").html(x.find("#Messages").html());
+                    $("#MessageWindow").html(x.find("#MessageWindow").html());
+                    $("#RigIpForm").val($("#header").find("#Rig").text());
+                    $("#RigIpForm").data('RigId', RigId);
+                    $(".Gpu_table .status_column #status_span").each(function () {
+                        var status = $(this).text();
+                        if (status == "UP") {
+                            $(this).hide().parent().children("div.empty-element").css({ "background-color": "green", "display": "block" });
+                        }
+                        else if (status == "DOWN") {
+                            $(this).hide().parent().children("div.empty-element").css({ "background-color": "red", "display": "block" });
+                        }
+                    });
+                }
+            });
+        });
+
+        var reload = function () {
+            var RigId = $("#MessageWindow").find("#RigIpForm").data('RigId');
+            $("#header").html("");
+            $("#gpuTempGraphModal").html("");
+            $("#gpu-table").html("");
+            $("#messages").html("");
+            $("#MessageWindow").html("");
+            $("#preloader").css("display", "block");
+            $.ajax({
+                dataType: "html",
+                url: "/Grid/RigHistoryMessages?modelId=" + RigId,
+                success: function (response) {
+                    var x = $(response)
+                    $("#preloader").css("display", "none");
+                    $("#header").html(x.find("#HeadingText").html());
+                    $("#gpuTempGraphModal").html(x.find("#gpuTempGraph").html());
+                    $("#gpu-table").html(x.find("#gpuStatus").html());
+                    $("#messages").html(x.find("#Messages").html());
+                    $("#MessageWindow").html(x.find("#MessageWindow").html());
+                    $("#RigIpForm").val($("#header").find("#Rig").text());
+                    $("#RigIpForm").data('RigId', RigId);
+                }
+            });
+        }
+
+        $(document).on("click", "#NewMessage", function () {
+            var rigHistoryMessage = $("#rigHistoryMessage").val();
+            $.ajax({
+                type: 'POST',
+                url: '/api/run/Grid/' + $('#currentBlockName').val() + '/?button=NewMessage',
+                data: { 'rigHistoryMessage': rigHistoryMessage, "RigIpForm": $("#RigIpForm").val(), "MessageId": $("#MessageId").val()},
+                success: function (data) {
+                    reload();
+                }
+            });
+        });
+
+        $(document).on("click", "#btnStopRig", function () {
+            var rigHistoryMessage = $("#rigHistoryMessage").val();
+            $.ajax({
+                type: 'POST',
+                url: '/api/run/Grid/' + $('#currentBlockName').val() + '/?button=btnStopRig',
+                data: { 'rigHistoryMessage': rigHistoryMessage, "RigIpForm": $("#RigIpForm").val() },
+                success: function (data) {
+                    reload();
+                }
+            });
+        });
+        $(document).on("click", "#btnStartRig", function () {
+            var rigHistoryMessage = $("#rigHistoryMessage").val();
+            $.ajax({
+                type: 'POST',
+                url: '/api/run/Grid/' + $('#currentBlockName').val() + '/?button=btnStartRig',
+                data: { 'rigHistoryMessage': rigHistoryMessage, "RigIpForm": $("#RigIpForm").val() },
+                success: function (data) {
+                    reload();
+                }
+            });
+        }); $(document).on("click", "#btnRestartRig", function () {
+            var rigHistoryMessage = $("#rigHistoryMessage").val();
+            var modelId = new URL(window.location.href).searchParams.get("modelId");
+            $.ajax({
+                type: 'POST',
+                url: '/api/run/Grid/' + $('#currentBlockName').val() + '/?button=btnRestartRig',
+                data: { 'rigHistoryMessage': rigHistoryMessage, "RigIpForm": $("#RigIpForm").val(), "ContainerId": modelId },
+                success: function (data) {
+                    reload();
+                    alert("Rig has been restarted");
+                }
+            });
+        });
+
+        $(document).on("click", ".fa-pencil", function () {
+            var MsgId = $(this).attr('msgid');
+            $("#MessageId").val(MsgId);
+            var MsgTxt = $(this).parent().find(".reason-txt").html();
+            $("#HiddenMessageTxt").html(MsgTxt);
+            $("#CancelMsg").css("display", "block");
+            $("#HiddenMessage").css("display", "block");
+        });
+        $(document).on("click", "#CancelMsg", function () {
+            $("#MessageId").val("");
+            $("#rigHistoryMessage").val("");
+            $("#HiddenMessageTxt").html("");
+            $("#HiddenMessage").css("display", "none");
+            $("#CancelMsg").css("display", "none");
+        });
+    }
+
+
     var inlineSpinnerTemplate = '<div class="spinner-3"> <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div> </div>';
     if ($("#currentBlockName").val() == "VyjadreniKAuditu" || $("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "EditaceOpatreniVReseni" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem") {
         setTimeout(function () {
@@ -571,6 +975,8 @@ $(function () {
                 }
             });
         });
+
+       
         $("#uic_deputy_textbox").on("change", function (e) {
             var spinner = $(inlineSpinnerTemplate)
                 .attr({ id: "deputy_textbox_spinner" })

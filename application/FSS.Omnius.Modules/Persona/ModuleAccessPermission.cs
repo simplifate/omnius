@@ -39,7 +39,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
                 case "Cortex":
                     return Cortex;
                 case "Compass":
-#warning TODO: Compass
                     return true;
                 default:
                     throw new ArgumentException($"Unknown value: {moduleName}");

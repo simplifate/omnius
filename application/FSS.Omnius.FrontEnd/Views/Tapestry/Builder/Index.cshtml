@@ -19,7 +19,8 @@
     <div id="tapestryLibraryArea">
         <div id="tapestryLibraryResponsiveArea">
             <div id="libraryCategory-Actions" class="libraryCategory">
-                <div libId="1" libType="action" class="libraryCategoryHeader">Actions 
+                <div libId="1" libType="action" class="libraryCategoryHeader">
+                    Actions
                     <button class="librarySearchToggler"><img class="searchIcon" height="15" src="/Content/Images/SearchIcon.png"></button>
                 </div>
                 <input class="librarySearch hidden" type="text" placeholder="Search...">
@@ -432,16 +433,18 @@
                 <div class="col-sm-9">
                     <select id="wr-copy-target" class="form-control">
                         <option value="">-- select one --</option>
-                        @foreach(JToken mb in (JArray)ViewData["blockTree"]) {
+                        @foreach (JToken mb in (JArray)ViewData["blockTree"])
+                        {
                             <optgroup label="@("----------------------------------".Substring(0, (int)mb["Level"] * 2) + (string)mb["Name"])">
-                            @foreach(JToken b in (JArray)mb["Items"]) {
-                                <option value="@((int)b["Id"])">@("----------------------------------".Substring(0, (int)b["Level"] * 2) + (string)b["Name"])</option>
-                            }
+                                @foreach (JToken b in (JArray)mb["Items"])
+                                {
+                                    <option value="@((int)b["Id"])">@("----------------------------------".Substring(0, (int)b["Level"] * 2) + (string)b["Name"])</option>
+                                }
                             </optgroup>
                         }
                     </select>
                 </div>
-            </div> 
+            </div>
         </fieldset>
     </form>
 </div>
@@ -473,6 +476,14 @@
         <fieldset>
             <label for="ForeachDatasource">Data collection</label>
             <input type="text" name="foreach_datasource" id="ForeachDatasource" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="foreach-itemname-dialog" title="Set foreach item name">
+    <form>
+        <fieldset>
+            <label for="ForeachItemName">Item name</label>
+            <input type="text" name="foreach_itemName" id="ForeachItemName" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
         </fieldset>
     </form>
 </div>

@@ -674,30 +674,30 @@ function LoadConditionColumns(parent) {
             break;
         case "string":
             currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
-            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>is not empty</option></select>'));
             break;
         case "unknown":
         default:
             currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
-            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>is not empty</option></select>'));
     }
 }
 var ConditionSetTemplate = '<div class="conditionSet"><div class="conditionSetHeading"><span class="conditionSetPrefix"> a</span>ll of these conditions must be met</div>'
     + '<div class="removeConditionSetIcon">X</div><table class="conditionTable"></table></div>';
 var ConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><select></select>'
-    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>is empty</option><option>is not empty</option></select></td><td class="conditionValueCell">'
+    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>is empty</option><option>is not empty</option><option>is in</option></select></td><td class="conditionValueCell">'
     + '<select><option selected="selected">True</option></select></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
     + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
     + '</tr>';
 var ManualInputConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><input type="text"></input>'
-    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>contains</option><option inputType="none">exists</option></select></td><td class="conditionValueCell">'
+    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>contains</option><option>is in</option><option inputType="none">exists</option></select></td><td class="conditionValueCell">'
     + '<input type="text"></input></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
     + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
     + '</tr>';
 var HermesConditionSetTemplate = '<div class="conditionSet"><div class="conditionSetHeading"><span class="conditionSetPrefix"> a</span>ll of these conditions must be met</div>'
     + '<div class="removeConditionSetIcon">X</div><table class="conditionTable"></table></div>';
 var HermesConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><select class="form-control" style="width:auto"><option value="From">From</option><option value="CC">CC</option><option value="Subject">Subject</option><option value="Body">Body</option></select>'
-    + '</td><td class="conditionOperatorCell"><select class="form-control" style="width:auto"><option value="contains" selected="selected">contains</option><option value="BeginWith">begins with</option><option value="EndWith">ends with</option><option value="IsEmpty" data-inputType="none">is empty</option><option value="IsNotEmpty" data-inputType="none">is not empty</option></select></td><td class="conditionValueCell">'
+    + '</td><td class="conditionOperatorCell"><select class="form-control" style="width:auto"><option value="contains" selected="selected">contains</option><option value="BeginWith">begins with</option><option value="EndWith">ends with</option><option value="IsEmpty" data-inputType="none">is empty</option><option value="IsNotEmpty" data-inputType="none">is not empty</option><option>is not empty</option></select></td><td class="conditionValueCell">'
     + '<input type="text" value="" class="form-control" /></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
     + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
     + '</tr>';
@@ -2022,12 +2022,12 @@ $(function () {
                             break;
                         case "string":
                             currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
-                            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>is not empty</option></select>'));
                             break;
                         case "unknown":
                         default:
                             currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
-                            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>is not empty</option></select>'));
                     }
                 });
                 $(this).on("change", ".conditionOperatorCell select", function () {
@@ -2100,13 +2100,13 @@ $(function () {
                                 break;
                             case "string":
                                 conditionValueCell.append($('<input type="text"></input>'));
-                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>is not empty</option></select>'));
                                 conditionOperatorCell.find("select").val(currentConditionData.Operator);
                                 break;
                             case "unknown":
                             default:
                                 conditionValueCell.append($('<input type="text"></input>'));
-                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>is not empty</option></select>'));
                                 conditionOperatorCell.find("select").val(currentConditionData.Operator);
                         }
                         var optionSelected = $("option:selected", conditionOperatorCell);
@@ -4161,7 +4161,9 @@ TB.save = {
             Width: Math.round(foreach.width()),
             Height: Math.round(foreach.height()),
             WorkflowItems: items,
-            DataSource: foreach.attr('data-datasource')
+            DataSource: foreach.attr('data-datasource'),
+            ItemName: foreach.attr('data-itemname'),
+            IsParallel: foreach.attr('data-parallel') == true
         };
     },
 
@@ -4192,7 +4194,8 @@ TB.save = {
             ConditionSets: item.data('conditionSets'),
             SymbolType: item.attr('symbolType'),
             IsForeachStart: item.find('.fa-play').length > 0,
-            IsForeachEnd: item.find('.fa-stop').length > 0
+            IsForeachEnd: item.find('.fa-stop').length > 0,
+            HasParallelLock: item.attr('data-parallel-lock') == true
         };
     },
 
@@ -4296,7 +4299,7 @@ TB.selection = {
         var x = (e.pageX - this.target.offset().left);
         var y = (e.pageY - this.target.offset().top);
 
-        var items = this.target.find('> .item, > .symbol');
+        var items = this.target.find('.item, .symbol');
         for (var i = 0; i < items.length; i++) {
             this.itemsCache.push({
                 element: items.eq(i),
@@ -4625,7 +4628,9 @@ TB.onInit.push(TB.subflow.init);
 TB.foreach = {
 
     contextItems: {
+        'parallel': { name: 'Set/unset as parallel', icon: 'fa-code-fork' },
         'datasource': { name: 'Set datasource...', icon: 'fa-database' },
+        'item-name': { name: 'Item name', icon: 'fa-file-o' },
         'name': { name: 'Name...', icon: 'fa-tag' },
         'comment': { name: 'Comment...', icon: 'fa-comment' },
         'break': { name: 'Break foreach', icon: 'fa-times-circle' }
@@ -4694,6 +4699,7 @@ TB.foreach = {
             TB.dialog.open('foreachDatasource');
             TB.changedSinceLastSave = true;
             ChangedSinceLastSave = true; /// OBSOLATE
+            self.target.attr('data-itemname', '__item__'); // default value
         }
     },
 
@@ -4738,14 +4744,21 @@ TB.foreach = {
         if (foreachData.DataSource) {
             foreach.attr('data-datasource', foreachData.DataSource);
         }
+        if (foreachData.IsParallel) {
+            foreach.attr('data-parallel', '1');
+        }
         if (foreachData.Name) {
             foreach.append('<span class="foreachName">' + foreachData.Name + '</span>');
         }
         if (foreachData.Comment) {
             foreach.append('<span class="foreachComment' + (foreachData.CommentBottom ? ' bottom' : '') + (foreachData.Name ? ' withName' : '') + '">' + foreachData.Comment + '</span>');
         }
+        foreach.attr('data-itemname', foreachData.ItemName ? foreachData.ItemName : '__item__');
 
         foreach.append('<span class="fa fa-repeat fa-spin"></span>');
+        if (foreachData.IsParallel == true) {
+            foreach.append('<span class="fa fa-code-fork"></span>');
+        }
         parentSwimlane.find('.swimlaneContentArea').append(foreach);
         this.alive(foreach, blockLoad);
 
@@ -4889,6 +4902,14 @@ TB.foreach = {
         TB.dialog.close.apply(this);
     },
 
+    setItemName: function () {
+        var self = TB.foreach;
+        var itemName = $(this).find('#ForeachItemName').val();
+
+        self.target.attr('data-itemname', itemName);
+        TB.dialog.close.apply(this);
+    },
+
     setName: function () {
         var self = TB.foreach;
         var name = $(this).find('#ForeachName').val();
@@ -4960,9 +4981,24 @@ TB.foreach = {
     _contextAction: function (key, options) {
         var self = TB.foreach;
         switch (key) {
+            case 'parallel': {
+                self.target = options.$trigger;
+                var setParallel = !(self.target.attr('data-parallel') == true);
+                self.target.attr('data-parallel', setParallel ? '1' : '0');
+                if (setParallel)
+                    self.target.append('<span class="fa fa-code-fork"></span>');
+                else
+                    self.target.find('span.fa-code-fork').remove();
+                break;
+            }
             case 'datasource': {
                 self.target = options.$trigger;
                 TB.dialog.open('foreachDatasource');
+                break;
+            }
+            case 'item-name': {
+                self.target = options.$trigger;
+                TB.dialog.open('foreachItemName');
                 break;
             }
             case 'name': {
@@ -5000,6 +5036,11 @@ TB.foreach = {
             delay: 0,
             source: variables
         });
+    },
+
+    _setItemNameOpen: function () {
+        var t = TB.foreach.target;
+        $(this).find('#ForeachItemName').val(t.attr('data-itemname'));
     },
 
     _setNameOpen: function () {
@@ -5220,7 +5261,7 @@ TB.wfr = {
     templates: {
         rule: '<div class="rule workflowRule"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;"></div></div><div class="swimlaneArea"></div></div>',
         swimlane: '<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">If you want to specify role<br />'
-            + 'drag & drop in into this section</div></div></div><div class="swimlaneContentArea"></div></div>',
+            + 'drag & drop in into this section</div></div></div><div class="swimlaneContentArea"><div class="debug"><span class="fa fa-play-circle debug-run"></span></div></div></div>',
         item: ''
     },
     
@@ -5262,6 +5303,7 @@ TB.wfr = {
         'group-to-foreach': { name: 'Group to foreach', icon: 'fa-repeat', disabled: TB.foreach.cannotBeGruped },
         'set-as-fe-start': { name: 'Set as foreach start', icon: 'fa-play', disabled: TB.foreach.isNotInForeach },
         'set-as-fe-end': { name: 'Set as foreach end', icon: 'fa-stop', disabled: TB.foreach.isNotInForeach },
+        'parallel-lock': { name: 'Set/unset as parallel lock', icon: 'fa-lock' },
         'sep2': '---------',
         'delete': { name: 'Delete', icon: 'fa-trash' }
     },
@@ -5357,6 +5399,7 @@ TB.wfr = {
         }
 
         self.aliveSwimlane(swimlane);
+        DEBUG.alive(swimlane);
     },
 
     removeSwimlane: function () {
@@ -5433,6 +5476,10 @@ TB.wfr = {
             item.append('<span class="fa fa-play"></span>');
         if (itemData.IsForeachEnd)
             item.append('<span class="fa fa-stop"></span>');
+        if (itemData.HasParallelLock) {
+            item.attr('data-parallel-lock', '1');
+            item.append('<span class="fa fa-lock"></span>');
+        }
        
         if (itemData.TypeClass == 'actionItem') {
             if (itemData.Name) item.append('<span class="itemName">' + itemData.Name + '</span>');
@@ -5778,6 +5825,15 @@ TB.wfr = {
                 TB.foreach.setEnd.apply(options.$trigger, []);
                 break;
             }
+            case 'parallel-lock': {
+                var setLock = !(item.attr('data-parallel-lock') == true);
+                item.attr('data-parallel-lock', setLock ? '1' : '0');
+                if (setLock)
+                    item.append('<span class="fa fa-lock"></span>');
+                else
+                    item.find('span.fa-lock').remove();
+                break;
+            }
         }
     },
 
@@ -6093,6 +6149,17 @@ TB.dialog.dialogList = {
                 { text: 'Cancel', click: TB.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
             ],
             open: TB.foreach._setDatasourceOpen
+        }
+    },
+    foreachItemName: {
+        target: '#foreach-itemname-dialog',
+        submit: TB.foreach.setItemName,
+        options: {
+            buttons: [
+                { text: 'Save', click: TB.foreach.setItemName, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TB.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TB.foreach._setItemNameOpen
         }
     },
     foreachName: {
@@ -9007,8 +9074,9 @@ jsPlumb.ready(function () {
         });
 
         instance.bind("click", function (con) {
-            CurrentConnection = con;
-            editRelationDialog.dialog("open");
+            instance.detach(con);
+            //CurrentConnection = con;
+            //editRelationDialog.dialog("open");
         });
 
         instance.bind("connection", function (info) {
@@ -9020,34 +9088,34 @@ jsPlumb.ready(function () {
             info.connection.addClass("relationConnection");
             info.connection.removeOverlay("arrow");
             info.connection.addOverlay(["Arrow", {
-                location: 0,
-                id: "arrow0",
-                length: 8,
-                width: 8,
-                height: 8,
-                foldback: 0.8,
-                direction: -1
-            }]);
-            info.connection.addOverlay(["Arrow", {
                 location: 1,
-                id: "arrow1",
+                id: "arrow0",
                 length: 8,
                 width: 8,
                 height: 8,
                 foldback: 0.8
             }]);
-            info.connection.addOverlay(["Label", {
-                location: 0.1,
-                id: "label0",
-                cssClass: "relationLabel",
-                label: "1"
-            }]);
-            info.connection.addOverlay(["Label", {
-                location: 0.9,
-                id: "label1",
-                cssClass: "relationLabel",
-                label: "1"
-            }]);
+            //info.connection.addOverlay(["Arrow", {
+            //    location: 0,
+            //    id: "arrow1",
+            //    length: 8,
+            //    width: 8,
+            //    height: 8,
+            //    foldback: 0.8,
+            //    direction: -1
+            //}]);
+            //info.connection.addOverlay(["Label", {
+            //    location: 0.1,
+            //    id: "label0",
+            //    cssClass: "relationLabel",
+            //    label: "1"
+            //}]);
+            //info.connection.addOverlay(["Label", {
+            //    location: 0.9,
+            //    id: "label1",
+            //    cssClass: "relationLabel",
+            //    label: "1"
+            //}]);
         });
 
         instance.batch(function () {
@@ -9475,8 +9543,8 @@ function LoadDbScheme(commitId) {
                 }
             }
             for (i = 0; i < data.Relations.length; i++) {
-                sourceDiv = $("#database-container .dbColumn[dbColumnId='" + data.Relations[i].LeftColumn + "']");
-                targetDiv = $("#database-container .dbColumn[dbColumnId='" + data.Relations[i].RightColumn + "']");
+                sourceDiv = $("#database-container .dbColumn[dbColumnId='" + data.Relations[i].SourceColumn + "']");
+                targetDiv = $("#database-container .dbColumn[dbColumnId='" + data.Relations[i].TargetColumn + "']");
                 newConnection = instance.connect({ source: sourceDiv.attr("id"), target: targetDiv.attr("id"), editable: true });
                 $(newConnection).data("relationType", data.Relations[i].Type);
                 switch (data.Relations[i].Type) {
@@ -10594,7 +10662,7 @@ $(function () {
         });
 
         var currentWs;
-        $(".adminAppTable .actions .btnValidate").on("click", function () {
+        $(".adminAppTable .actions .btnValidate, .adminAppTable .actions .btnRebuild").on("click", function () {
             CurrentAppId = $(this).parents("tr").attr("appId");
 
             if (typeof WebSocket === "undefined") {
@@ -10604,8 +10672,8 @@ $(function () {
 
             appBuildDialog.dialog("option", { title: "Actualization " + $(this).parents("tr").data("displayName") + " in progress "}).empty().dialog("open");
             var messagesById = {};
-
-            var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
+            
+            var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/' + ($(this).hasClass('btnValidate') ? 'BuildApp' : 'RebuildApp') +'/' + CurrentAppId);
             currentWs = ws;
             //var timeLast = Date.now();
             ws.onerror = function () {
@@ -10613,100 +10681,31 @@ $(function () {
             }
             ws.onmessage = function (event) {
                 if (currentWs !== ws) return;
+                var response = JSON.parse(event.data);
 
-                //console.log(Date.now() - timeLast, event.data);
-                //timeLast = Date.now();
-
-                var response;
-                try{
-                    response = JSON.parse(event.data);
-                } catch(e) {
-                    response = { message: event.data, type: "error" };
+                /// create
+                // section
+                if (!appBuildDialog.find('#buildDialog_' + response.section + '_').length) {
+                    appBuildDialog.append('<div id="buildDialog_' + response.section + '_" class="app-alert app-alert-' + response.type + '"><span></span></div>');
+                }
+                // subsection
+                if (!appBuildDialog.find('#buildDialog_' + response.section + '_' + response.subSection).length) {
+                    appBuildDialog.find('#buildDialog_' + response.section + '_').append('<div id="buildDialog_' + response.section + '_' + response.subSection + '" class="app-alert app-alert-odd"><span></span></div>');
                 }
 
-                var $message;
-                if (response.id && messagesById[response.id]) {
-                    $message = messagesById[response.id];
-                } else {
-                    var $parent = response.childOf ? messagesById[response.childOf] : appBuildDialog;
-                    $message = $("<div class='app-alert'><span>").data("messageId", response.id).appendTo($parent);
-                    if (!$parent.is("#app-build-dialog, .app-alert-odd")) $message.addClass("app-alert-odd");
-                    if (response.id) messagesById[response.id] = $message;
-                }
+                /// message
+                var section = appBuildDialog.find('#buildDialog_' + response.section + '_' + response.subSection);
+                section.find('> span').html(response.message);
+                section.removeClass('app-alert-success app-alert-info app-alert-warning app-alert-error app-alert-inprogress').addClass('app-alert-' + response.type);
 
-                if (response.message) $message.children("span").html(response.message);
-
-                $message.removeClass("app-alert-info app-alert-error app-alert-success app-alert-warning").addClass("app-alert-" + (response.type || "info"));
-
-                if (response.abort) $message.nextAll().remove();
-
-                if (response.done) {
-                    setTimeout(function () { appBuildDialog.dialog("close") }, 1000);
-                }
-
-                var childrenHeight = 0;
-                appBuildDialog.children().each(function () {
-                    childrenHeight += $(this).outerHeight();
-                });
-                appBuildDialog.css({ height: childrenHeight + 32 });
+                /// scroll
+                document.location.href = '#buildDialog_' + response.section + '_';
             };
-        });
-        $(".adminAppTable .actions .btnRebuild").on("click", function () {
-            CurrentAppId = $(this).parents("tr").attr("appId");
-
-            if (typeof WebSocket === "undefined") {
-                ShowAppNotification("Your browser does not support WebSockets, cannot continue!", "error");
-                return;
+            ws.onclose = function (event) {
+                if (event.code === 1006) {
+                    alert('unknown error');
+                }
             }
-
-            appBuildDialog.dialog("option", { title: "Actualization " + $(this).parents("tr").data("displayName") + " in progress " }).empty().dialog("open");
-            var messagesById = {};
-
-            var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/RebuildApp/' + CurrentAppId);
-            currentWs = ws;
-            //var timeLast = Date.now();
-            ws.onerror = function () {
-                $(document).trigger("ajaxError", {})
-            }
-            ws.onmessage = function (event) {
-                if (currentWs !== ws) return;
-
-                //console.log(Date.now() - timeLast, event.data);
-                //timeLast = Date.now();
-
-                var response;
-                try {
-                    response = JSON.parse(event.data);
-                } catch (e) {
-                    response = { message: event.data, type: "error" };
-                }
-
-                var $message;
-                if (response.id && messagesById[response.id]) {
-                    $message = messagesById[response.id];
-                } else {
-                    var $parent = response.childOf ? messagesById[response.childOf] : appBuildDialog;
-                    $message = $("<div class='app-alert'><span>").data("messageId", response.id).appendTo($parent);
-                    if (!$parent.is("#app-build-dialog, .app-alert-odd")) $message.addClass("app-alert-odd");
-                    if (response.id) messagesById[response.id] = $message;
-                }
-
-                if (response.message) $message.children("span").html(response.message);
-
-                $message.removeClass("app-alert-info app-alert-error app-alert-success app-alert-warning").addClass("app-alert-" + (response.type || "info"));
-
-                if (response.abort) $message.nextAll().remove();
-
-                if (response.done) {
-                    setTimeout(function () { appBuildDialog.dialog("close") }, 1000);
-                }
-
-                var childrenHeight = 0;
-                appBuildDialog.children().each(function () {
-                    childrenHeight += $(this).outerHeight();
-                });
-                appBuildDialog.css({ height: childrenHeight + 32 });
-            };
         });
         $(".adminAppTable .actions .btnProperties").on("click", function () {
             CurrentAppId = $(this).parents("tr").attr("appId");
@@ -12366,7 +12365,6 @@ MBE.DnD = {
     onDragEnd: [],
     onDrop: [],
     onBeforeDrop: [],
-    onDragOver: [],
 
     isNavNodeDragging: false,
     isUICDragging: false,
@@ -12501,12 +12499,6 @@ MBE.DnD = {
             return false;
         }
 
-        if (!MBE.DnD.canBeDropped('onDragOver', target, [MBE.DnD.placeholder])) {
-            event.originalEvent.dataTransfer.effectAllowed = 'none';
-            MBE.DnD.placeholder.hide();
-            return false;
-        }
-
         if(!childs.length) { // cíl neobsahuje žádné další prvky - vložíme na začátek
             target.append(MBE.DnD.placeholder);
         }
@@ -12535,18 +12527,7 @@ MBE.DnD = {
         event.preventDefault();
         
         var target = $(this);
-        var dropTarget = target.is('.node-handle b') ? target.data('targetuic') :
-            (target.is('.node-handle') ? target.find('b').data('targetuic') :
-                target.find('> .node-handle b').data('targetuic'));
-
-        if (!target.hasClass('root')) {
-            if (!MBE.DnD.canBeDropped('onDragOver', $(dropTarget), [MBE.DnD.placeholder])) {
-                event.originalEvent.dataTransfer.effectAllowed = 'none';
-                MBE.DnD.placeholder.hide();
-                return false;
-            }
-        } 
-
+        
         var y = event.pageY;
         var top = target.offset().top;
         var height = target.outerHeight();
@@ -12676,7 +12657,7 @@ MBE.DnD = {
         $('[data-uic]', MBE.workspace).removeClass('empty-element');
         $('[data-uic]:not(input, select, hr, img, .caret, li.divider, .fa, .glyphicon):empty', MBE.workspace).addClass('empty-element');
 
-        MBE.workspace.find('*:not(iframe, script, style, svg, svg *)').contents().filter(function () {
+        MBE.workspace.find('*:not(iframe, script, style, svg, svg *, option)').contents().filter(function () {
             return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('mbe-text-node') && !$(this).parents('[data-uic="misc|custom-code"]').length;
         }).wrap('<span class="mbe-text-node" />');
 
@@ -12697,16 +12678,6 @@ MBE.DnD = {
             var f = MBE.DnD[eventType][i];
             f.apply(context, params ? params : []);
         }
-    },
-
-    canBeDropped: function (eventType, context, params) {
-        var result = true;
-        for (var i = 0; i < MBE.DnD[eventType].length; i++) {
-            var f = MBE.DnD[eventType][i];
-            var r = f.apply(context, params ? params : []);
-            result = result && r !== false;
-        }
-        return result;
     }
 }
 
@@ -13108,7 +13079,7 @@ MBE.options = {
             lb.append(ch)
             lb.append(' ' + opt.options[k]);
             group.append(lb);
-            group.append(opt.inline ? ' &nbsp;&nbsp;&nbsp;' : '<br>');
+            group.append('<br>');
         }
 
         if (isCollapsed) {
@@ -13206,7 +13177,7 @@ MBE.options = {
         var group = $('<div class="option-group form-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
         var set = opt.set;
 
-        var inp = $('<textarea class="form-control" rows="'+(opt.rows || 15)+'">' + opt.get.apply(MBE.options.target, [opt]) + '</textarea>');
+        var inp = $('<textarea class="form-control" rows="15">' + opt.get.apply(MBE.options.target, [opt]) + '</textarea>');
 
         inp.on('change', function () {
             set.apply(MBE.options.target, [this]);
@@ -13218,17 +13189,8 @@ MBE.options = {
                 MBE.selection._update();
             });
         }
-        
+
         group.append(inp);
-
-        if (opt.showLabel) {
-            group.prepend('<label class="control-label col-xs-2">' + opt.label + '</label>');
-            inp.wrap('<div class="col-xs-10"></div>');
-        }
-
-        if (opt.help) {
-            inp.after('<p class="help-block">' + opt.help + '</p>');
-        }
 
         if (isCollapsed) {
             group.css('display', 'none');
@@ -13238,7 +13200,7 @@ MBE.options = {
             var cm = CodeMirror.fromTextArea(inp[0], {
                 lineNumbers: true,
                 lineWrapping: true,
-                mode: opt.syntax || "htmlmixed",
+                mode: "htmlmixed",
                 autoCloseBrackets: true,
                 autoCloseTags: true,
                 matchBrackets: true,
@@ -14488,7 +14450,7 @@ MBE.io = {
 
     filterContent: function (node) {
         var tmpNode = node.clone(true);
-
+        
         tmpNode.find('span.mbe-text-node').each(function () {
             $(this).replaceWith(this.innerHTML);
         });
@@ -16811,7 +16773,8 @@ MBE.types.form = {
         'legend': '<legend data-uic="form|legend" locked>Field group</legend>',
         'left-addon': '<div class="input-group-addon" data-uic="form|left-addon" locked><span data-uic="text|span">prefix</span></div>',
         'right-addon': '<div class="input-group-addon" data-uic="form|right-addon" locked><span data-uic="text|span">suffix</span></div>',
-        'form-control-feedback': '<span class="glyphicon glyphicon-remove form-control-feedback"></span>'
+        'form-control-feedback': '<span class="glyphicon glyphicon-remove form-control-feedback"></span>',
+        'option': '<option value="" data-uic="form|option" locked></option>'
     },
 
     options: {
@@ -16865,6 +16828,32 @@ MBE.types.form = {
                     attr: 'for',
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
+                }, {
+                    label: 'Switch',
+                    type: 'boolean',
+                    disallowFor: function () {
+                        return !($(this).find(':checkbox').length == 0);
+                    },
+                    options: {
+                        'switch': 'Switch'
+                    },
+                    get: MBE.options.hasClass,
+                    set: function (opt) {
+                        switch (opt.value) {
+                            case 'switch': {
+                                if ($(opt).is(':checked')) {
+                                    $(this).find('> .mbe-text-node').remove();
+                                    $(this).addClass(opt.value).append('<span data-uic="text|span" class="switch-slider"></span>');
+                                }
+                                else {
+                                    $(this).find('> .switch-slider').remove();
+                                    $(this).removeClass(opt.value).append('<span class="mbe-text-node">Checkbox</span>');
+                                }
+                                MBE.DnD.updateDOM();
+                                break;
+                            }
+                        }
+                    }
                 }]
             },
             'labelSize': {
@@ -16888,10 +16877,35 @@ MBE.types.form = {
                     set: function (opt) {
                         $('option', this).remove();
                         if (opt.value) {
-                            $(this).append('<option value="">' + opt.value + '</option>');
+                            var node = $(MBE.types.form.templates.option);
+                            node.html(opt.value);
+                            $(this).append(node);
                         }
+                        MBE.DnD.updateDOM();
                     }
                 }],
+            }
+        },
+        'option': {
+            'optionOptions': {
+                name: 'Option options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Value',
+                    type: 'text',
+                    attr: 'for',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Text',
+                    type: 'text',
+                    get: function () {
+                        return $(MBE.options.target).html();
+                    },
+                    set: function (opt) {
+                        $(this).html(opt.value);
+                    }
+                }]
             }
         },
         'static-control': {
@@ -17330,7 +17344,8 @@ MBE.types.misc = {
         'breadcrumbs-item': '<li data-uic="misc|breadcrumbs-item"></li>',
         'breadcrumbs-active': '<span data-uic="misc|breadcrumbs-active" locked></span>',
         'breadcrumbs-inactive': '<a data-uic="misc|breadcrumbs-inactive" locked></a>',
-        'embed': '<div><div class="embed-code"></div><div class="uic-embed-preview"></div></div>'
+        'embed': '<div><div class="embed-code"></div><div class="uic-embed-preview"></div></div>',
+        'vueApp': '<div></div>'
     },
 
     options: {
@@ -17565,6 +17580,22 @@ MBE.types.misc = {
                 }]
             }
         },
+        'vueApp': {
+            'vueAppOptions': {
+                name: 'Vue App HTML',
+                type:'cm',
+                get: function () {
+                    var html = $(this.innerHTML);
+                    html.find('.mbe-text-node').contents().unwrap();
+                    var helper = $('<div></div>').html(html);
+                    return helper.html();
+                },
+                set: function (opt) {
+                    this.innerHTML = opt.value;
+                    MBE.DnD.updateDOM();
+                }
+            }
+        }
     },
 
     init: function() 
@@ -17841,214 +17872,6 @@ MBE.types.functions = {
 };
 
 MBE.onInit.push(MBE.types.functions.init);
-var CalenStyleDefaultSettings = "var __id__Options = {\n" +
-    "    sectionsList: ['Header', 'Calendar', 'EventList', 'FilterBar'],\n" +
-    "    eventTooltipContent: 'Default',\n" +
-    "    duration: 'Default',\n" +
-    "    durationStrings: BootstrapUserInit.EventCalendar.DEFAULT_DURATION_STRINGS,\n" +
-    "    viewsToDisplay: [{\n" +
-    "        viewName: 'DetailedMonthView',\n" +
-    "        viewDisplayName: 'Month (detail)'\n" +
-    "    }, {\n" +
-    "        viewName: 'MonthView',\n" +
-    "        viewDisplayName: 'Month (simple)'\n" +
-    "    }, {\n" +
-    "        viewName: 'WeekView',\n" +
-    "        viewDisplayName: 'Week'\n" +
-    "    }, {\n" +
-    "        viewName: 'DayView',\n" +
-    "        viewDisplayName: 'Day'\n" +
-    "    }, {\n" +
-    "        viewName: 'AgendaView',\n" +
-    "        viewDisplayName: 'Agenda'\n" +
-    "    }, {\n" +
-    "        viewName: 'WeekPlannerView',\n" +
-    "        viewDisplayName: 'Week planner'\n" +
-    "    }, {\n" +
-    "        viewName: 'QuickAgendaView',\n" +
-    "        viewDisplayName: 'Quick agenda'\n" +
-    "    }, {\n" +
-    "        viewName: 'TaskPlannerView',\n" +
-    "        viewDisplayName: 'Task planner'\n" +
-    "    }, {\n" +
-    "        viewName: 'CustomView',\n" +
-    "        viewDisplayName: 'Custom'\n" +
-    "    }, {\n" +
-    "        viewName: 'DayEventListView',\n" +
-    "        viewDisplayName: 'Day event list'\n" +
-    "    }, {\n" +
-    "        viewName: 'DayEventDetailView',\n" +
-    "        viewDisplayName: 'Day event detail'\n" +
-    "    }\n" +
-    "    ],\n" +
-    "    visibleView: 'MonthView',\n" +
-    "    selectedDate: new Date(),\n" +
-    "    headerComponents: BootstrapUserInit.EventCalendar.DEFAULT_HEADER_COMPONENTS,\n" +
-    "    headerSectionsList: {\n" +
-    "        left: ['MenuDropdownIcon', 'DatePickerIcon', 'TodayButton'],\n" +
-    "        center: ['PreviousButton', 'HeaderLabel', 'NextButton'],\n" +
-    "        right: ['FullscreenButton']\n" +
-    "    },\n" +
-    "    dropdownMenuElements: ['ViewsToDisplay'],\n" +
-    "    formatSeparatorDateTime: ' ',\n" +
-    "    formatSeparatorDate: '-',\n" +
-    "    formatSeparatorTime: ':',\n" +
-    "    inputDateTimeFormat: 'yyyy-dd-MM HH:mm:ss',\n" +
-    "    calDataSource: [{\n" +
-    "        sourceFetchType: 'ALL',\n" +
-    "        sourceType: 'JSON',\n" +
-    "        source: {\n" +
-    "            eventSource: window['__id__JsonData']\n" +
-    "        }\n" +
-    "    }],\n" +
-    "    eventDuration: 30,\n" +
-    "    allDayEventDuration: 1,\n" +
-    "    timeIndicatorUpdationInterval: 15,\n" +
-    "    unitTimeInterval: 30,\n" +
-    "    timeLabels: 'Hour',\n" +
-    "    inputTZOffset: '+00:00',\n" +
-    "    tz: 'Europe/Prague',\n" +
-    "    outputTZOffset: '+00:00',\n" +
-    "    weekStartDay: 1,\n" +
-    "    weekNumCalculation: 'Europe/ISO',\n" +
-    "    daysInCustomView: 4,\n" +
-    "    daysInDayListView: 7,\n" +
-    "    daysInAppointmentView: 4,\n" +
-    "    agendaViewDuration: 'Month',\n" +
-    "    daysInAgendaView: 15,\n" +
-    "    agendaViewTheme: 'Timeline1',\n" +
-    "    quickAgendaViewDuration: 'Week',\n" +
-    "    daysInQuickAgendaView: 5,\n" +
-    "    taskPlannerViewDuration: 'Week',\n" +
-    "    daysInTaskPlannerView: 5,\n" +
-    "    transitionSpeed: 600,\n" +
-    "    actionOnDayClickInMonthView: 'ModifyEventList',\n" +
-    "    eventIndicatorInMonthView: 'Events',\n" +
-    "    eventIndicatorInDatePicker: 'DayNumberBold',\n" +
-    "    eventIndicatorInDayListView: 'DayHighlight',\n" +
-    "    averageEventsPerDayForDayHighlightView: 5,\n" +
-    "    hiddenEventsIndicatorLabel: '+(count) more',\n" +
-    "    hiddenEventsIndicatorAction: 'ShowEventDialog',\n" +
-    "    is24Hour: true,\n" +
-    "    showDaysWithNoEventsInAgendaView: false,\n" +
-    "    fixedHeightOfWeekPlannerViewCells: false,\n" +
-    "    fixedHeightOfTaskPlannerView: true,\n" +
-    "    showTransition: true,\n" +
-    "    fixedNumOfWeeksInMonthView: false,\n" +
-    "    displayWeekNumInMonthView: false,\n" +
-    "    hideExtraEvents: true,\n" +
-    "    addEventsInMonthView: true,\n" +
-    "    displayEventsInMonthView: true,\n" +
-    "    isDragNDropInMonthView: false,\n" +
-    "    isTooltipInMonthView: true,\n" +
-    "    isDragNDropInDetailView: false,\n" +
-    "    isResizeInDetailView: false,\n" +
-    "    isTooltipInDetailView: true,\n" +
-    "    isDragNDropInQuickAgendaView: false,\n" +
-    "    isTooltipInQuickAgendaView: true,\n" +
-    "    isDragNDropInTaskPlannerView: false,\n" +
-    "    isTooltipInTaskPlannerView: true,\n" +
-    "    isTooltipInAppointmentView: true,\n" +
-    "    changeCalendarBorderColorInJS: false,\n" +
-    "    deleteOldDataWhileNavigating: false,\n" +
-    "    onlyTextForNonAllDayEvents: true,\n" +
-    "    excludeNonBusinessHours: false,\n" +
-    "    isNonBusinessHoursDroppable: false,\n" +
-    "    isRestrictedSectionDroppable: false,\n" +
-    "    actionBarHeight: 30,\n" +
-    "    filterBarPosition: 'Left',\n" +
-    "    filterBarHeight: 200,\n" +
-    "    filterBarWidth: 200,\n" +
-    "    eventFilterCriteria: [{\n" +
-    "        keyName: 'calendarId',\n" +
-    "        keyDisplayName: 'Calendars',\n" +
-    "        dataType: 'String',\n" +
-    "        selectedValues: ['work', 'personal'],\n" +
-    "        values: ['work', 'personal']\n" +
-    "    }],\n" +
-    "    noneSelectedFilterAction: 'SelectAll',\n" +
-    "    calendarBorderColor: 'FFFFFF',\n" +
-    "    extraMonthsForDataLoading: 1,\n" +
-    "    datasetModificationRule: 'Default',\n" +
-    "    changeColorBasedOn: 'EventCalendar',\n" +
-    "    borderColor: '',\n" +
-    "    textColor: 'FFFFFF',\n" +
-    "    eventColorsArray: ['C0392B', 'D2527F', '674172', '4183D7', '336E7B', '36D7B7', '68C3A3', 'E87E04', '6C7A89', 'F9690E'],\n" +
-    "    eventIcon: 'cs-icon-Event',\n" +
-    "    hideEventIcon: {\n" +
-    "        Default: false,\n" +
-    "        DetailedMonthView: false,\n" +
-    "        MonthView: false,\n" +
-    "        WeekView: false,\n" +
-    "        DayView: false,\n" +
-    "        CustomView: false,\n" +
-    "        QuickAgendaView: false,\n" +
-    "        TaskPlannerView: false,\n" +
-    "        DayEventDetailView: false,\n" +
-    "        AgendaView: false,\n" +
-    "        WeekPlannerView: false\n" +
-    "    },\n" +
-    "    hideEventTime: {\n" +
-    "        Default: false,\n" +
-    "        DetailedMonthView: false,\n" +
-    "        MonthView: false,\n" +
-    "        WeekView: false,\n" +
-    "        DayView: false,\n" +
-    "        CustomView: false,\n" +
-    "        QuickAgendaView: false,\n" +
-    "        TaskPlannerView: false,\n" +
-    "        DayEventDetailView: false,\n" +
-    "        AgendaView: false,\n" +
-    "        WeekPlannerView: false\n" +
-    "    },\n" +
-    "    businessHoursSource: [\n" +
-    "        { day: 0, times: [{ startTime: '00:00', endTime: '24:00' }] },\n" +
-    "        { day: 1, times: [{ startTime: '00:00', endTime: '24:00' }] },\n" +
-    "        { day: 2, times: [{ startTime: '00:00', endTime: '24:00' }] },\n" +
-    "        { day: 3, times: [{ startTime: '10:00', endTime: '24:00' }] },\n" +
-    "        { day: 4, times: [{ startTime: '00:00', endTime: '24:00' }] },\n" +
-    "        { day: 5, times: [{ startTime: '10:00', endTime: '24:00' }] },\n" +
-    "        { day: 6, times: [{ startTime: '00:00', endTime: '24:00' }] }\n" +
-    "    ],\n" +
-    "    eventOrTaskStatusIndicators: [\n" +
-    "        { name: 'Overdue', color: 'E74C3C' },\n" +
-    "        { name: 'Completed', color: '27AE60' },\n" +
-    "        { name: 'InProgress', color: 'F1C40F' }\n" +
-    "    ],\n" +
-    "    adjustViewOnWindowResize: true,\n" +
-    "    useHammerjsAsGestureLibrary: false,\n" +
-    "\n" +
-    "    // CALLBACKS\n" +
-    "    initialize: null,\n" +
-    "    modifyHeaderViewLabels: null,\n" +
-    "    addEventHandlersInHeader: null,\n" +
-    "    dataLoadingStart: null,\n" +
-    "    dataLoadingEnd: null,\n" +
-    "    cellClicked: null,\n" +
-    "    viewLoaded: null,\n" +
-    "    previousButtonClicked: null,\n" +
-    "    nextButtonClicked: null,\n" +
-    "    todayButtonClicked: null,\n" +
-    "    visibleViewChanged: null,\n" +
-    "    modifyCustomView: null,\n" +
-    "    displayEventListDialog: null,\n" +
-    "    eventInADialogClicked: null,\n" +
-    "    displayEventsForPeriodInListInAgendaView: null,\n" +
-    "    eventRendered: null,\n" +
-    "    eventsAddedInView: null,\n" +
-    "    timeSlotsAddedInView: null,\n" +
-    "    timeSlotClicked: null,\n" +
-    "    saveChangesOnEventDrop: null,\n" +
-    "    saveChangesOnEventResize: null,\n" +
-    "    modifyActionBarView: null,\n" +
-    "    addDaySummaryInTaskPlannerView: null,\n" +
-    "    displayEventsForPeriodInList: BootstrapUserInit.EventCalendar.displayEventsForPeriodInList,\n" +
-    "    eventListAppended: BootstrapUserInit.EventCalendar.adjustList,\n" +
-    "    slotTooltipContent: BootstrapUserInit.EventCalendar.getSlotTooltipContent,\n" +
-    "    eventClicked: BootstrapUserInit.EventCalendar.defaultEventDetail,\n" +
-    "    modifyFilterBarView: BootstrapUserInit.EventCalendar.renderFilters\n" +
-    "};";
-
 MBE.types.ui = {
 
     templates: {
@@ -18078,8 +17901,7 @@ MBE.types.ui = {
                                 '<div class="phase-icon-number">1</div>' +
                             '</div>' +
                             '<div class="phase-label">Fáze 1</div>' + 
-                        '</div>',
-        'event-calendar': '<div class="event-calendar"></div>'
+                        '</div>'
     },
 
     templatesName: {
@@ -18089,8 +17911,7 @@ MBE.types.ui = {
         'countdown': 'Countdown',
         'wizzard': 'Wizzard phases',
         'wizzard-body': 'Wizzard body#hide',
-        'wizzard-phase': 'Wizzard phase#hide',
-        'event-calendar': 'Event calendar'
+        'wizzard-phase': 'Wizzard phase#hide'
     },
 
     options: {
@@ -18212,33 +18033,6 @@ MBE.types.ui = {
                     }
                 }]
             }
-        },
-        'event-calendar': {
-            'eventCalendarOptions': {
-                name: 'Calendar options',
-                type: 'group',
-                groupItems: [
-                    {
-                        label: 'Options',
-                        type: 'cm',
-                        showLabel: true,
-                        syntax: 'text/javascript',
-                        rows: 6,
-                        attr: 'data-options',
-                        help: 'Replace __id__ on line #1 and #58 (default) with desired element ID.<br>' +
-                            'Default data source is select from table or view converted into JArray (Cast variable action) as <i>_uic_{ID}</i> in init workflow.<br>' +
-                            'If you want different datasource, You must implement it yourself.<br>' +
-                            'More info about supported options can be found <a href="https://www.jqueryscript.net/time-clock/Mobile-friendly-Drag-Drop-Event-Calendar-Plugin-CalenStyle.html" target="_blank">here</a>.',
-                        get: function (opt) {
-                            var text = $(this).attr(opt.attr);
-                            return text && text.length ? atob(text) : CalenStyleDefaultSettings;
-                        },
-                        set: function (input) {
-                            $(this).attr('data-options', input.value.length ? btoa(input.value) : '');
-                        }
-                    }
-                ]
-            }
         }
     }, 
     
@@ -18267,7 +18061,6 @@ MBE.types.ui = {
 
         MBE.io.onLoad.push(MBE.types.ui._onLoad);
         MBE.DnD.onDrop.push(MBE.types.ui._drop);
-        MBE.DnD.onDragOver.push(MBE.types.ui._onDragOver);
         MBE.onBeforeDelete['ui|data-table'] = MBE.types.ui._beforeDelete;
 
         $(document)
@@ -18311,13 +18104,6 @@ MBE.types.ui = {
         $('table.dataTable', MBE.workspace).each(function () {
             MBE.types.ui.initDataTable.apply(this, []);
         });
-    },
-
-    _onDragOver: function (object) {
-        if (this.is('.event-calendar')) {
-            return false;
-        }
-        return true;
     },
 
     buildHorizontalFormRow: function()
@@ -18790,7 +18576,22 @@ MBE.types.athena = {
 
     templates: {},
 
-    options: {},
+    options: {
+    'common': {
+        'commonOptions' : { 
+            name: 'csv options',
+            type: 'group',
+            groupItems: [{
+                label: 'csv value',
+                type: 'text',
+                attr: 'csv',
+                get: MBE.options.hasAttr,
+                set: MBE.options.setAttr
+            }]
+            }
+        },
+    },
+
 
     init: function () {
         this.loadGraphList();

@@ -9,7 +9,7 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
         {
             DropForeignKey("dbo.Persona_AppRoles", "Application_Id", "dbo.Master_Applications");
             DropIndex("dbo.Persona_AppRoles", new[] { "Application_Id" });
-            DropIndex("dbo.Persona_Users", new[] { "username" });
+            DropIndex("dbo.Persona_Users", new[] { "UserName" });
             CreateTable(
                 "dbo.Persona_UserClaim",
                 c => new
@@ -100,7 +100,7 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
             DropTable("dbo.Persona_User_Role");
             DropTable("dbo.Persona_UserLogin");
             DropTable("dbo.Persona_UserClaim");
-            CreateIndex("dbo.Persona_Users", "username", unique: true);
+            CreateIndex("dbo.Persona_Users", "UserName", unique: true);
             CreateIndex("dbo.Persona_AppRoles", "Application_Id");
             AddForeignKey("dbo.Persona_AppRoles", "Application_Id", "dbo.Master_Applications", "Id", cascadeDelete: true);
         }

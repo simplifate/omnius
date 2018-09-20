@@ -9,6 +9,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using System.Data.Entity;
 using Logger;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
 {
@@ -22,16 +23,14 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
             try
             {
                 var result = new List<AjaxMozaicEditorPageHeader>();
-                using (var context = DBEntities.instance)
+                var context = COREobject.i.Context;
+                foreach (var page in context.Applications.Find(appId).MozaicEditorPages.Where(p => p.IsDeleted == false).OrderBy(o => o.Name))
                 {
-                    foreach (var page in context.Applications.Find(appId).MozaicEditorPages.Where(p => p.IsDeleted == false).OrderBy(o => o.Name))
+                    result.Add(new AjaxMozaicEditorPageHeader
                     {
-                        result.Add(new AjaxMozaicEditorPageHeader
-                        {
-                            Id = page.Id,
-                            Name = page.Name ?? "(nepojmenovaná stránka)"
-                        });
-                    }
+                        Id = page.Id,
+                        Name = page.Name ?? "(nepojmenovaná stránka)"
+                    });
                 }
                 return result;
             }
@@ -48,81 +47,79 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
         {
             try
             {
-                using (var context = DBEntities.instance)
+                var context = COREobject.i.Context;
+                var requestedPage = context.MozaicEditorPages.Find(pageId);
+
+                // TODO: replace with real error checking
+                if (requestedPage == null)
+                    return new AjaxMozaicEditorPage();
+
+                var result = new AjaxMozaicEditorPage
                 {
-                    var requestedPage = context.MozaicEditorPages.Find(pageId);
-
-                    // TODO: replace with real error checking
-                    if (requestedPage == null)
-                        return new AjaxMozaicEditorPage();
-
-                    var result = new AjaxMozaicEditorPage
+                    Id = requestedPage.Id,
+                    Name = requestedPage.Name ?? "Nepojmenovaná stránka",
+                    IsModal = requestedPage.IsModal,
+                    ModalWidth = requestedPage.ModalWidth,
+                    ModalHeight = requestedPage.ModalHeight
+                };
+                foreach (var component in requestedPage.Components.Where(c => c.ParentComponent == null))
+                {
+                    var ajaxComponent = new AjaxMozaicEditorComponent
                     {
-                        Id = requestedPage.Id,
-                        Name = requestedPage.Name ?? "Nepojmenovaná stránka",
-                        IsModal = requestedPage.IsModal,
-                        ModalWidth = requestedPage.ModalWidth,
-                        ModalHeight = requestedPage.ModalHeight
+                        Id = component.Id,
+                        Name = component.Name ?? "",
+                        Type = component.Type,
+                        PositionX = component.PositionX,
+                        PositionY = component.PositionY,
+                        Width = component.Width,
+                        Height = component.Height,
+                        Tag = component.Tag,
+                        Attributes = component.Attributes,
+                        Classes = component.Classes ?? "",
+                        Styles = component.Styles ?? "",
+                        Content = component.Content,
+                        Label = component.Label,
+                        Placeholder = component.Placeholder,
+                        TabIndex = component.TabIndex,
+                        Properties = component.Properties ?? ""
                     };
-                    foreach (var component in requestedPage.Components.Where(c => c.ParentComponent == null))
+                    if (component.ChildComponents.Count > 0)
                     {
-                        var ajaxComponent = new AjaxMozaicEditorComponent
+                        ajaxComponent.ChildComponents = new List<AjaxMozaicEditorComponent>();
+                        foreach (var childComponent in component.ChildComponents)
                         {
-                            Id = component.Id,
-                            Name = component.Name ?? "",
-                            Type = component.Type,
-                            PositionX = component.PositionX,
-                            PositionY = component.PositionY,
-                            Width = component.Width,
-                            Height = component.Height,
-                            Tag = component.Tag,
-                            Attributes = component.Attributes,
-                            Classes = component.Classes ?? "",
-                            Styles = component.Styles ?? "",
-                            Content = component.Content,
-                            Label = component.Label,
-                            Placeholder = component.Placeholder,
-                            TabIndex = component.TabIndex,
-                            Properties = component.Properties ?? ""
-                        };
-                        if (component.ChildComponents.Count > 0)
-                        {
-                            ajaxComponent.ChildComponents = new List<AjaxMozaicEditorComponent>();
-                            foreach (var childComponent in component.ChildComponents)
+                            ajaxComponent.ChildComponents.Add(new AjaxMozaicEditorComponent
                             {
-                                ajaxComponent.ChildComponents.Add(new AjaxMozaicEditorComponent
-                                {
-                                    Id = childComponent.Id,
-                                    Name = childComponent.Name ?? "",
-                                    Type = childComponent.Type,
-                                    PositionX = childComponent.PositionX,
-                                    PositionY = childComponent.PositionY,
-                                    Width = childComponent.Width,
-                                    Height = childComponent.Height,
-                                    Tag = childComponent.Tag,
-                                    Attributes = childComponent.Attributes,
-                                    Classes = childComponent.Classes ?? "",
-                                    Styles = childComponent.Styles ?? "",
-                                    Content = childComponent.Content,
-                                    Label = childComponent.Label,
-                                    Placeholder = childComponent.Placeholder,
-                                    TabIndex = childComponent.TabIndex,
-                                    Properties = childComponent.Properties
-                                });
-                            }
+                                Id = childComponent.Id,
+                                Name = childComponent.Name ?? "",
+                                Type = childComponent.Type,
+                                PositionX = childComponent.PositionX,
+                                PositionY = childComponent.PositionY,
+                                Width = childComponent.Width,
+                                Height = childComponent.Height,
+                                Tag = childComponent.Tag,
+                                Attributes = childComponent.Attributes,
+                                Classes = childComponent.Classes ?? "",
+                                Styles = childComponent.Styles ?? "",
+                                Content = childComponent.Content,
+                                Label = childComponent.Label,
+                                Placeholder = childComponent.Placeholder,
+                                TabIndex = childComponent.TabIndex,
+                                Properties = childComponent.Properties
+                            });
                         }
-                        result.Components.Add(ajaxComponent);
                     }
-
-                    // Renew deleted page
-                    if (requestedPage.IsDeleted)
-                    {                       
-                        requestedPage.IsDeleted = false;
-                        context.SaveChanges();
-                    }
-                    
-                    return result;
+                    result.Components.Add(ajaxComponent);
                 }
+
+                // Renew deleted page
+                if (requestedPage.IsDeleted)
+                {                       
+                    requestedPage.IsDeleted = false;
+                    context.SaveChanges();
+                }
+                    
+                return result;
             }
             catch (Exception ex)
             {
@@ -137,21 +134,19 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
         {
             try
             {
-                using (var context = DBEntities.instance)
+                var context = COREobject.i.Context;
+                var app = context.Applications.Find(appId);
+                app.MozaicChangedSinceLastBuild = true;
+                app.TapestryChangedSinceLastBuild = true;
+                var newPage = new MozaicEditorPage
                 {
-                    var app = context.Applications.Find(appId);
-                    app.MozaicChangedSinceLastBuild = true;
-                    app.TapestryChangedSinceLastBuild = true;
-                    var newPage = new MozaicEditorPage
-                    {
-                        Name = postData.Name
-                    };
-                    foreach (var ajaxComponent in postData.Components)
-                        newPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, newPage, null));
-                    context.Applications.Find(appId).MozaicEditorPages.Add(newPage);
-                    context.SaveChanges();
-                    return newPage.Id;
-                }
+                    Name = postData.Name
+                };
+                foreach (var ajaxComponent in postData.Components)
+                    newPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, newPage, null));
+                context.Applications.Find(appId).MozaicEditorPages.Add(newPage);
+                context.SaveChanges();
+                return newPage.Id;
             }
             catch (Exception ex)
             {
@@ -166,22 +161,20 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
         {
             try
             {
-                using (var context = DBEntities.instance)
-                {
-                    var app = context.Applications.Find(appId);
-                    app.MozaicChangedSinceLastBuild = true;
-                    app.TapestryChangedSinceLastBuild = true;
-                    var requestedPage = context.MozaicEditorPages.Find(pageId);
-                    deleteComponents(requestedPage, context);
-                    requestedPage.Name = postData.Name;
-                    requestedPage.IsModal = postData.IsModal;
-                    requestedPage.ModalWidth = postData.ModalWidth;
-                    requestedPage.ModalHeight = postData.ModalHeight;
-                    foreach (var ajaxComponent in postData.Components)
-                        requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null));
-                    requestedPage.IsDeleted = false;
-                    context.SaveChanges();
-                }
+                var context = COREobject.i.Context;
+                var app = context.Applications.Find(appId);
+                app.MozaicChangedSinceLastBuild = true;
+                app.TapestryChangedSinceLastBuild = true;
+                var requestedPage = context.MozaicEditorPages.Find(pageId);
+                deleteComponents(requestedPage, context);
+                requestedPage.Name = postData.Name;
+                requestedPage.IsModal = postData.IsModal;
+                requestedPage.ModalWidth = postData.ModalWidth;
+                requestedPage.ModalHeight = postData.ModalHeight;
+                foreach (var ajaxComponent in postData.Components)
+                    requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null));
+                requestedPage.IsDeleted = false;
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -196,7 +189,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
         {
             try
             {
-                var context = DBEntities.instance;
+                var context = COREobject.i.Context;
                 var page = context.MozaicEditorPages.Find(pageId);
                 page.IsDeleted = true;
                 context.SaveChanges();
@@ -215,16 +208,14 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
             try
             {
                 var result = new List<AjaxMozaicEditorPageHeader>();
-                using (var context = DBEntities.instance)
+                var context = COREobject.i.Context;
+                foreach (var page in context.Applications.Find(appId).MozaicEditorPages.Where(p => p.IsDeleted).OrderBy(o => o.Name))
                 {
-                    foreach (var page in context.Applications.Find(appId).MozaicEditorPages.Where(p => p.IsDeleted).OrderBy(o => o.Name))
+                    result.Add(new AjaxMozaicEditorPageHeader
                     {
-                        result.Add(new AjaxMozaicEditorPageHeader
-                        {
-                            Id = page.Id,
-                            Name = page.Name ?? "(nepojmenovaná stránka)"
-                        });
-                    }
+                        Id = page.Id,
+                        Name = page.Name ?? "(nepojmenovaná stránka)"
+                    });
                 }
                 return result;
             }

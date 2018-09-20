@@ -11,22 +11,22 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public string Name { get; set; }
         public int Type { get; set; }
         [ImportExport(ELinkType.LinkRequired, typeof(DbTable))]
-        public int LeftTableId { get; set; }
+        public int SourceTableId { get; set; }
         [ImportExport(ELinkType.LinkRequired, typeof(DbColumn))]
-        public int LeftColumnId { get; set; }
+        public int SourceColumnId { get; set; }
         [ImportExport(ELinkType.LinkRequired, typeof(DbTable))]
-        public int RightTableId { get; set; }
+        public int TargetTableId { get; set; }
         [ImportExport(ELinkType.LinkRequired, typeof(DbColumn))]
-        public int RightColumnId { get; set; }
+        public int TargetColumnId { get; set; }
 
         [ImportExport(ELinkType.LinkRequired)]
-        public virtual DbTable LeftTable { get; set; }
+        public virtual DbTable SourceTable { get; set; }
         [ImportExport(ELinkType.LinkRequired)]
-        public virtual DbColumn LeftColumn { get; set; }
+        public virtual DbColumn SourceColumn { get; set; }
         [ImportExport(ELinkType.LinkRequired)]
-        public virtual DbTable RightTable { get; set; }
+        public virtual DbTable TargetTable { get; set; }
         [ImportExport(ELinkType.LinkRequired)]
-        public virtual DbColumn RightColumn { get; set; }
+        public virtual DbColumn TargetColumn { get; set; }
 
         [ImportExport(ELinkType.Parent, typeof(DbSchemeCommit))]
         public int DbSchemeCommitId { get; set; }

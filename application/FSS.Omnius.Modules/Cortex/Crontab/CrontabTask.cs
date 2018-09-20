@@ -1,8 +1,10 @@
-﻿using NCrontab;
+﻿using FSS.Omnius.Modules.CORE;
+using NCrontab;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 
@@ -44,7 +46,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
                 {
                     Modules.Watchtower.OmniusInfo.Log($"Task[{Id}] start", Modules.Watchtower.OmniusLogSource.Cortex, Application);
                     LastStartTask = DateTime.UtcNow;
-                    DBEntities.instance.SaveChanges();
+                    COREobject.i.Context.SaveChanges();
 
                     if (ScheduleStart == ScheduleStartAt.taskStart)
                     {
@@ -63,19 +65,43 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
         {
             try
             {
-                var core = new Modules.CORE.CORE();
-                var context = DBEntities.instance;
-                core.User = context.Users.Single(u => u.UserName == "scheduler");
-                Modules.Entitron.Entitron.i.Application = context.Applications.Find(ApplicationId);
-                var block = context.Blocks.Single(b => b.WorkFlow.ApplicationId == ApplicationId && b.Name.ToLower() == BlockName.ToLower());
+                // System - call method
+                if (Application.IsSystem)
+                {
+                    string typeName = BlockName;
+                    string[] splitted = Executor.Split('/');
+                    /// Post/string:ahoj;int:4/string:aho
+                    string methodName = splitted[0];
+                    object[] objectArguments = splitted.Length < 2
+                        ? new object[0]
+                        : getArguments(splitted[1]);
+                    object[] callArguments = splitted.Length < 3
+                        ? new object[0]
+                        : getArguments(splitted[2]);
+
+                    Type type = Assembly.GetCallingAssembly().GetType(typeName);
+                    MethodInfo method = type.GetMethod(methodName);
+
+                    if (method.IsStatic)
+                        method.Invoke(null, callArguments);
+                    else
+                        method.Invoke(Activator.CreateInstance(type, objectArguments), callArguments);
+
+                    return;
+                }
+
+                var core = COREobject.i;
+                core.User = core.Context.Users.Single(u => u.UserName == "system");
+                core.Application = core.Context.Applications.Find(ApplicationId);
+                var block = core.Context.Blocks.Single(b => b.WorkFlow.ApplicationId == ApplicationId && b.Name.ToLower() == BlockName.ToLower());
 
                 var tapestry = new Modules.Tapestry.Tapestry(core);
-                var result = tapestry.innerRun(core.User, block, Executor ?? "INIT", ModelId ?? -1, null, -1);
+                var result = tapestry.innerRun(block, Executor ?? "INIT", ModelId ?? -1, null, -1);
 
-                if (result.Item1.Type != Modules.Tapestry.ActionResultType.Error)
+                if (result.Item1.Type != MessageType.Error)
                 {
                     LastEndTask = DateTime.UtcNow;
-                    DBEntities.instance.SaveChanges();
+                    COREobject.i.Context.SaveChanges();
                 }
             }
             catch(Exception ex)
@@ -145,12 +171,45 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
                 return TimeSpan.FromSeconds(-1);
             }
         }
+        
+        /// <summary>
+        /// int:5;string:ahoj
+        /// </summary>
+        private object[] getArguments(string argName)
+        {
+            List<object> result = new List<object>();
+
+            foreach (string arg in argName.Split(';'))
+            {
+                var splitted = arg.Split(':');
+                if (splitted.Length != 2)
+                    throw new InvalidOperationException("");
+
+                switch(splitted[0])
+                {
+                    case "int":
+                        result.Add(Convert.ToInt32(splitted[1]));
+                        break;
+                    case "string":
+                        result.Add(splitted[1]);
+                        break;
+                    case "char":
+                        result.Add(splitted[1][0]);
+                        break;
+                    case "double":
+                        result.Add(Convert.ToDouble(splitted[1]));
+                        break;
+                }
+            }
+
+            return result.ToArray();
+        }
 
         private static object _lock = new object();
 
         public static void StartAll()
         {
-            var tasks = DBEntities.instance.CrontabTask.Where(ct => !ct.IsDeleted && ct.IsActive).ToList();
+            var tasks = COREobject.i.Context.CrontabTask.Where(ct => !ct.IsDeleted && ct.IsActive).ToList();
             foreach (CrontabTask task in tasks)
             {
                 task.Start();
@@ -162,7 +221,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
         }
         public static int CountAll()
         {
-            return DBEntities.instance.CrontabTask.Count(ct => !ct.IsDeleted);
+            return COREobject.i.Context.CrontabTask.Count(ct => !ct.IsDeleted);
         }
 
         [NotMapped]

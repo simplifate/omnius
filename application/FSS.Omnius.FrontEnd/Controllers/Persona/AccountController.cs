@@ -33,11 +33,11 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public static bool watchBadLogins = bool.Parse(WebConfigurationManager.AppSettings["PersonaWatchBadLoginAtempts"]);
-        public static int captchaLimit = int.Parse(WebConfigurationManager.AppSettings["PersonaBadLoginCaptchaLimit"]);
-        public static int waitInterval = int.Parse(WebConfigurationManager.AppSettings["PersonaBadLoginWaitInterval"]);
-        public static int waitTimeout = int.Parse(WebConfigurationManager.AppSettings["PersonaBadLoginWaitTimeout"]);
-        public static bool allowRegistration = bool.Parse(WebConfigurationManager.AppSettings["PersonaAllowRegistration"]);
+        public static bool watchBadLogins = bool.Parse(WebConfigurationManager.AppSettings["Persona_WatchBadLoginAtempts"]);
+        public static int captchaLimit = int.Parse(WebConfigurationManager.AppSettings["Persona_BadLoginCaptchaLimit"]);
+        public static int waitInterval = int.Parse(WebConfigurationManager.AppSettings["Persona_BadLoginWaitInterval"]);
+        public static int waitTimeout = int.Parse(WebConfigurationManager.AppSettings["Persona_BadLoginWaitTimeout"]);
+        public static bool allowRegistration = bool.Parse(WebConfigurationManager.AppSettings["Persona_AllowRegistration"]);
 
         public AccountController()
         {
@@ -82,7 +82,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             ViewData["allowRegistration"] = allowRegistration;
 
             if(watchBadLogins) {
-                BadLoginCount record = DBEntities.instance.BadLoginCounts.SingleOrDefault(a => a.IP == HttpContext.Request.UserHostAddress);
+                BadLoginCount record = COREobject.i.Context.BadLoginCounts.SingleOrDefault(a => a.IP == HttpContext.Request.UserHostAddress);
                 if(record != null) {
                     ViewData["showCaptcha"] = record.AttemptsCount >= captchaLimit;
                     if(record.AttemptsCount >= waitInterval) {
@@ -114,8 +114,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             //if (response.IsValid())
             //{
             // Login user
-            CORE core = HttpContext.GetCORE();
-            core.User = core.Persona.GetUserByEmail(response.GetNameID());
+            COREobject core = COREobject.i;
+            core.User = Modules.Persona.Persona.GetAuthenticatedUserByEmail(response.GetNameID(), false, Request);
             // If user is not found, send error
             if (core.User == null)
             {
@@ -127,7 +127,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 throw ex;
             }
             // Otherwise, login & redirect user home
-            SignInManager.SignIn(core.User, true, true);
+            SignInManager.OmniusSignIn(core.User, true, true);
             return RedirectToAction("RedirectToDefaultApp", "Home");
             /*}
             else
@@ -142,9 +142,9 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         [HttpGet]
         public async Task<ActionResult> LoginSystem(string userName, string password, string returnUrl)
         {
-            var result = await SignInManager.PasswordSignInAsync(userName, password,false,false);
+            var result = await SignInManager.OmniusPasswordSignInAsync(userName, password,false,false);
             if (result == SignInStatus.Success)
-                    return RedirectToLocal(returnUrl);
+                return RedirectToLocal(returnUrl);
             else
                 return View();
         }
@@ -160,7 +160,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         {
             // Security checks
             string userIp = HttpContext.Request.UserHostAddress;
-            DBEntities context = DBEntities.instance;
+            DBEntities context = COREobject.i.Context;
             BadLoginCount record = null;
 
             ViewData["showCaptcha"] = false;
@@ -196,40 +196,37 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.OmniusPasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
-                case SignInStatus.Success: {
-                        context.BadLoginCounts.Remove(record);
-                        context.SaveChanges();
-
-                        return RedirectToLocal(returnUrl);
-                    }
+                case SignInStatus.Success:
+                    context.BadLoginCounts.Remove(record);
+                    context.SaveChanges();
+                    return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
-                default: {
-                        // Check if bruteforce countermeasures are enabled
-                        if (watchBadLogins) {
-                            record.AttemptsCount++;
-                            record.LastAtempt = DateTime.Now;
-                            context.SaveChanges();
+                default:
+                    // Check if bruteforce countermeasures are enabled
+                    if (watchBadLogins) {
+                        record.AttemptsCount++;
+                        record.LastAtempt = DateTime.Now;
+                        context.SaveChanges();
                         
-                            // Show captcha?
-                            ViewData["showCaptcha"] = record.AttemptsCount >= captchaLimit;
+                        // Show captcha?
+                        ViewData["showCaptcha"] = record.AttemptsCount >= captchaLimit;
                             
-                            // Warn before too fast attempts?
-                            if (record.AttemptsCount >= waitInterval) {
-                                int timeout = (int)Math.Floor((double)record.AttemptsCount / waitInterval) * waitTimeout;
-                                ModelState.AddModelError("", string.Format("Please wait {0} seconds before next attempt", timeout));
-                            }
+                        // Warn before too fast attempts?
+                        if (record.AttemptsCount >= waitInterval) {
+                            int timeout = (int)Math.Floor((double)record.AttemptsCount / waitInterval) * waitTimeout;
+                            ModelState.AddModelError("", string.Format("Please wait {0} seconds before next attempt", timeout));
                         }
+                    }
 
-                        ModelState.AddModelError("", "Invalid login attempt.");
-                        return View(model);
-                }
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
             }
         }
 
@@ -302,7 +299,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                     UserName = model.UserName,
                     DisplayName = model.UserName,
                     Email = model.Email,
-                    isLocalUser = true,
+                    AuthTypeId = new Modules.Persona.MasterLocal().Id,
                     localExpiresAt = DateTime.UtcNow,
                     LastLogin = DateTime.UtcNow,
                     LastLogout = DateTime.UtcNow,
@@ -313,7 +310,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 if (result.Succeeded)
                 {
                     // module Access permissions
-                    DBEntities context = DBEntities.instance;
+                    DBEntities context = COREobject.i.Context;
                     context.ModuleAccessPermissions.Add(new ModuleAccessPermission { User = context.Users.Single(u => u.UserName == user.UserName) });
                     context.SaveChanges();
 
@@ -342,7 +339,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
-            IdentityResult result = UserManager.ChangePassword(ControllerContext.HttpContext.GetLoggedUser().Id, model.OldPassword, model.NewPassword);
+            IdentityResult result = UserManager.ChangePassword(COREobject.i.User.Id, model.OldPassword, model.NewPassword);
 
             if (result.Succeeded)
                 return new RedirectToRouteResult("Master", new RouteValueDictionary(new { Controller = "Home", Action = "Details" }));
@@ -561,23 +558,17 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            
-            CORE core = HttpContext.GetCORE();
 
-            // Remove last app cookie and ip form database
-            core.User.LastIp = "";
-            core.User.LastAppCookie = "";
-            DBEntities.instance.SaveChanges();
-            
-            core.Persona.LogOff(User.Identity.Name);
-            
+            COREobject core = COREobject.i;
+            core.User.Logout();
+
             Session.Clear();
             Session.Abandon();
             for(var i = 0; i < Response.Cookies.Count; i++) {
                 Response.Cookies[i].Expires = DateTime.Now.AddDays(-1);
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToRoute("Default");
         }
 
         //
@@ -634,7 +625,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("RedirectToDefaultApp", "Home");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
@@ -685,9 +676,9 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //getUser JSON (for dataTable)
         public JsonResult loadData()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities context = COREobject.i.Context;
             //var data = e.Users.OrderBy(a => a.UserName).ToList();
-            var data = AjaxUsers.converToAjaxUsers(e.Users.ToList()).OrderBy(a => a.UserName);
+            var data = AjaxUsers.converToAjaxUsers(context.Users.ToList()).OrderBy(a => a.UserName);
                 return Json(new { data = data }, JsonRequestBehavior.AllowGet);
 
         }
@@ -695,8 +686,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = DBEntities.instance;
-            return View(e.Users.SingleOrDefault(x => x.Id == id));
+            DBEntities context = COREobject.i.Context;
+            return View(context.Users.SingleOrDefault(x => x.Id == id));
         }
 
         public ActionResult Create()
@@ -706,7 +697,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             model.User = user;
 
             //user je lokalní, není řešeno přes AD
-            model.User.isLocalUser = true;
+            model.User.AuthTypeId = new Modules.Persona.MasterLocal().Id;
 
             //datumy se nastavují protože datetime v databázi a v c# mají rozdílné min.hodnoty
             model.User.localExpiresAt = DateTime.UtcNow;
@@ -721,7 +712,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         {
             IdentityResult result = null;
 
-            model.User.isLocalUser = true;
+            model.User.AuthTypeId = new Modules.Persona.MasterLocal().Id;
 
             if (ModelState.IsValid)
             {
@@ -738,8 +729,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
 
         public ActionResult Update(int id)
         {
-            DBEntities e = DBEntities.instance;
-            User u = e.Users.SingleOrDefault(x => x.Id == id);
+            DBEntities context = COREobject.i.Context;
+            User u = context.Users.SingleOrDefault(x => x.Id == id);
             return View(u);
         }
 
@@ -748,12 +739,12 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         {
             if (ModelState.IsValid)
             {
-                DBEntities e = DBEntities.instance;
-                User user = e.Users.SingleOrDefault(x => x.Id == model.Id);
+                DBEntities context = COREobject.i.Context;
+                User user = context.Users.SingleOrDefault(x => x.Id == model.Id);
                 model.PasswordHash = user.PasswordHash;
                 model.SecurityStamp = user.SecurityStamp;
-                e.Users.AddOrUpdate(user, model);
-                e.SaveChanges();
+                context.Users.AddOrUpdate(user, model);
+                context.SaveChanges();
                 ViewBag.ShowTable = false;
                 return RedirectToAction("Index");
             }
@@ -764,155 +755,11 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = DBEntities.instance;
-            e.Users.Remove(e.Users.SingleOrDefault(x => x.Id == id));
-            e.SaveChanges();
+            DBEntities context = COREobject.i.Context;
+            context.Users.Remove(context.Users.SingleOrDefault(x => x.Id == id));
+            context.SaveChanges();
 
             return RedirectToAction("Index");
-        }
-
-        public ActionResult SyncFromAD()
-        {
-            try
-            {
-                DBEntities e = DBEntities.instance;
-                NexusLdapService service = new NexusLdapService();
-
-                JToken ldapUsers = service.GetUsers();
-                foreach (JToken ldapUser in ldapUsers)
-                {
-                    string username = (string)ldapUser["samaccountname"];
-                    if (ldapUser["samaccountname"] == null)
-                        continue;
-                    if (e.Users.Any(u => u.UserName == username))
-                    {
-                        Logger.Log.Info($"SyncAD: skipping user {username}");
-                        continue;
-                    }
-
-                    try
-                    {
-                        User user = new User
-                        {
-                            UserName = username,
-                            DisplayName = string.IsNullOrWhiteSpace((string)ldapUser["displayname"]) ? username : (string)ldapUser["displayname"],
-                            Email = (string)ldapUser["mail"],
-                            Address = "",
-                            Company = "",
-                            Department = "",
-                            Team = "",
-                            Job = "",
-                            WorkPhone = "",
-                            MobilPhone = "",
-                            LastLogin = (long)ldapUser["lastlogon"] != 0 ? DateTime.FromFileTime((long)ldapUser["lastlogon"]) : new DateTime(1970, 1, 1),
-                            CurrentLogin = DateTime.UtcNow,
-
-                            ModuleAccessPermission = new ModuleAccessPermission(),
-
-                            isLocalUser = false,
-                            localExpiresAt = DateTime.UtcNow.AddMonths(1)
-                        };
-                        e.Users.Add(user);
-                    }
-                    catch(Exception ex)
-                    {
-                        throw new Exception($"LDAP: error in creating user '{username}'", ex);
-                    }
-                }
-                e.SaveChanges();
-            }
-            catch(Exception ex)
-            {
-                OmniusException.Log(ex, OmniusLogSource.Persona);
-            }
-            
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult SyncFromWSO()
-        {
-            var core = new CORE();
-            var db = DBEntities.instance;
-
-            NexusWSService webService = new NexusWSService();
-            object[] parameters = new[] { "Auction_User" };
-            JToken results = webService.CallWebService("RWE_WSO_SOAP", "getUserListOfRole", parameters);
-            var x = results.Children().First().Value<String>();
-
-            //get the list of users names and add it to the list.
-            IEnumerable<String> usersNames = results.Children().Values().Select(y => y.Value<String>());
-
-            List<User> listUsers = new List<User>();
-
-            //iterate list of usersNames and make USerObject
-            foreach (string userName in usersNames)
-            {
-                object[] param = new[] { userName, null };
-                JToken userClaim = webService.CallWebService("RWE_WSO_SOAP", "getUserClaimValues", param);
-                User newUser = new User();
-                newUser.isLocalUser = false;
-                newUser.localExpiresAt = DateTime.Today;//for test
-                newUser.LastLogin = DateTime.Today;
-                newUser.CurrentLogin = DateTime.Today;
-                newUser.EmailConfirmed = false;
-                newUser.PhoneNumberConfirmed = false;
-                newUser.TwoFactorEnabled = false;
-                newUser.LockoutEnabled = false;
-                newUser.AccessFailedCount = 0;
-                newUser.isActive = true;
-                foreach (JToken property in userClaim.Children())
-                {
-                    var a = (property.Children().Single(c => (c as JProperty).Name == "claimUri") as JProperty).Value.ToString();
-
-                    switch (a)
-                    {
-                        case "email":
-                            var email = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString();
-                            newUser.Email = email;
-                            newUser.UserName = email;
-                            break;
-
-                        case "http://wso2.org/claims/mobile":
-                            var mobile = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString();
-                            newUser.MobilPhone = mobile;
-                            break;
-
-                        case "http://wso2.org/claims/organization":
-                            var organization = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString();
-                            newUser.Company = organization;
-                            break;
-
-                        case "fullname":
-                            var fullname = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString();
-                            newUser.DisplayName = fullname;
-                            break;
-                        //SET ROLES FOR this newly created USER
-                        case "http://wso2.org/claims/role":
-                            var roles = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString().Split(',').Where(r => r.Substring(0, 8) == "Auction_").Select(e => e.Remove(0, 8));
-                            foreach (string role in roles)
-                            {
-                                PersonaAppRole approle = db.AppRoles.SingleOrDefault(r => r.Name == role && r.ApplicationId == core.Application.Id);
-                                if (approle == null)
-                                {
-                                    db.AppRoles.Add(new PersonaAppRole() { Name = role, Application = core.Application, Priority = 0 });
-                                    db.SaveChanges();
-                                }
-                                //User_Role userRole = newUser.Roles.SingleOrDefault(ur => ur.AppRole == approle && ur.User == newUser);
-                                if (approle != null && !newUser.Users_Roles.Contains(new User_Role { RoleName = approle.Name, Application = approle.Application, User = newUser }))
-                                {
-                                    newUser.Users_Roles.Add(new User_Role { RoleName = approle.Name, Application = approle.Application, User = newUser });
-                                }
-                            }
-                            break;
-                    }
-                }
-                listUsers.Add(newUser);
-            }
-
-            //Now we can cal the resfresh method from persona
-            Modules.Persona.Persona.RefreshUsersFromWSO(listUsers, core);
-
-            return new HttpStatusCodeResult(200);
         }
 
         [HttpGet]

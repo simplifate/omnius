@@ -91,7 +91,7 @@
     width: 225px;
     background-color: #455d73;
     overflow: auto;
-
+    z-index:10000;
     .leftMenu {
         padding-left: 0px;
 
@@ -147,6 +147,7 @@ body.adminLayout {
         .alertSymbol {
             padding-right: 10px;
         }
+
         .closeAlertIcon {
             color: #e3001b;
             float: right;
@@ -154,36 +155,54 @@ body.adminLayout {
             cursor: pointer;
         }
     }
+
     .app-alert-success {
         color: #3c763d;
         background-color: #dff0d8;
         border-color: #d6e9c6;
     }
-    .app-alert-success.app-alert-odd{
+
+    .app-alert-success.app-alert-odd {
         background-color: darken(#d6e9c6, 5%);
     }
+
     .app-alert-error {
         color: #a94442;
         background-color: #f2dede;
         border-color: #ebccd1;
     }
-    .app-alert-error.app-alert-odd{
+
+    .app-alert-error.app-alert-odd {
         background-color: darken(#f2dede, 5%);
     }
+
     .app-alert-warning {
         color: #8a6d3b;
         background-color: #fcf8e3;
         border-color: #faebcc;
     }
-    .app-alert-warning.app-alert-odd{
+
+    .app-alert-warning.app-alert-odd {
         background-color: darken(#fcf8e3, 5%);
     }
+
     .app-alert-info {
         color: #31708f;
         background-color: #d9edf7;
         border-color: #bce8f1;
     }
-    .app-alert-info.app-alert-odd{
+
+    .app-alert-info.app-alert-odd {
         background-color: darken(#d9edf7, 5%);
+    }
+
+    .app-alert-inprogress {
+        color: #837900;
+        background-color: #fff150;
+        border-color: #c4b500;
+    }
+
+    .app-alert-inprogress.app-alert-odd {
+        background-color: darken(#fff150, 5%);
     }
 }

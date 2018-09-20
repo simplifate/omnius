@@ -38,7 +38,8 @@ MBE.types.misc = {
         'breadcrumbs-item': '<li data-uic="misc|breadcrumbs-item"></li>',
         'breadcrumbs-active': '<span data-uic="misc|breadcrumbs-active" locked></span>',
         'breadcrumbs-inactive': '<a data-uic="misc|breadcrumbs-inactive" locked></a>',
-        'embed': '<div><div class="embed-code"></div><div class="uic-embed-preview"></div></div>'
+        'embed': '<div><div class="embed-code"></div><div class="uic-embed-preview"></div></div>',
+        'vueApp': '<div></div>'
     },
 
     options: {
@@ -273,6 +274,22 @@ MBE.types.misc = {
                 }]
             }
         },
+        'vueApp': {
+            'vueAppOptions': {
+                name: 'Vue App HTML',
+                type:'cm',
+                get: function () {
+                    var html = $(this.innerHTML);
+                    html.find('.mbe-text-node').contents().unwrap();
+                    var helper = $('<div></div>').html(html);
+                    return helper.html();
+                },
+                set: function (opt) {
+                    this.innerHTML = opt.value;
+                    MBE.DnD.updateDOM();
+                }
+            }
+        }
     },
 
     init: function() 

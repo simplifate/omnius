@@ -8,15 +8,15 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
         public override void Up()
         {
             // cascade with triggers
-            Sql("ALTER TABLE dbo.TapestryDesigner_MetaBlocks DROP CONSTRAINT[FK_dbo.TapestryDesigner_Metablocks_Master_Applications_ParentApp_Id]");
-            DropForeignKey("dbo.TapestryDesigner_MetaBlocks", "ParentApp_Id", "dbo.Master_Applications");
-            AddForeignKey("dbo.TapestryDesigner_MetaBlocks", "ParentApp_Id", "dbo.Master_Applications", "Id", cascadeDelete: false);
+            Sql("ALTER TABLE dbo.TapestryDesigner_Metablocks DROP CONSTRAINT[FK_dbo.TapestryDesigner_Metablocks_Master_Applications_ParentApp_Id]");
+            DropForeignKey("dbo.TapestryDesigner_Metablocks", "ParentApp_Id", "dbo.Master_Applications");
+            AddForeignKey("dbo.TapestryDesigner_Metablocks", "ParentApp_Id", "dbo.Master_Applications", "Id", cascadeDelete: false);
             Sql("DROP TRIGGER [dbo].[Trigger_Application_WorkFlow_Cascade];");
-            Sql("CREATE TRIGGER [dbo].[Trigger_ApplicationsToMetaBlockANDWorkFlow] ON [dbo].[Master_Applications] INSTEAD OF DELETE AS BEGIN DELETE FROM [dbo].[Tapestry_WorkFlow] WHERE [ApplicationId] IN (SELECT Id FROM deleted); UPDATE [dbo].[TapestryDesigner_MetaBlocks] SET [ParentMetaBlock_Id] = NULL WHERE [ParentApp_Id] IN (SELECT Id FROM deleted); DELETE FROM [dbo].[TapestryDesigner_MetaBlocks] WHERE [ParentApp_Id] IN (SELECT Id FROM deleted); DELETE FROM [dbo].[Master_Applications] WHERE Id IN (SELECT Id FROM deleted); END");
+            Sql("CREATE TRIGGER [dbo].[Trigger_ApplicationsToMetablockANDWorkFlow] ON [dbo].[Master_Applications] INSTEAD OF DELETE AS BEGIN DELETE FROM [dbo].[Tapestry_WorkFlow] WHERE [ApplicationId] IN (SELECT Id FROM deleted); UPDATE [dbo].[TapestryDesigner_Metablocks] SET [ParentMetablock_Id] = NULL WHERE [ParentApp_Id] IN (SELECT Id FROM deleted); DELETE FROM [dbo].[TapestryDesigner_Metablocks] WHERE [ParentApp_Id] IN (SELECT Id FROM deleted); DELETE FROM [dbo].[Master_Applications] WHERE Id IN (SELECT Id FROM deleted); END");
 
-            DropForeignKey("dbo.TapestryDesigner_Blocks", "ParentMetaBlock_Id", "dbo.TapestryDesigner_MetaBlocks");
-            AddForeignKey("dbo.TapestryDesigner_Blocks", "ParentMetaBlock_Id", "dbo.TapestryDesigner_MetaBlocks", "Id", cascadeDelete: false);
-            Sql("CREATE TRIGGER [dbo].[Trigger_MetaBlockToBlocks] ON [dbo].[TapestryDesigner_MetaBlocks] INSTEAD OF DELETE AS BEGIN DELETE FROM [dbo].[TapestryDesigner_Blocks] WHERE [ParentMetaBlock_Id] IN (SELECT Id FROM deleted); DELETE FROM [dbo].[TapestryDesigner_MetaBlocks] WHERE Id IN (SELECT Id FROM deleted); END");
+            DropForeignKey("dbo.TapestryDesigner_Blocks", "ParentMetablock_Id", "dbo.TapestryDesigner_Metablocks");
+            AddForeignKey("dbo.TapestryDesigner_Blocks", "ParentMetablock_Id", "dbo.TapestryDesigner_Metablocks", "Id", cascadeDelete: false);
+            Sql("CREATE TRIGGER [dbo].[Trigger_MetablockToBlocks] ON [dbo].[TapestryDesigner_Metablocks] INSTEAD OF DELETE AS BEGIN DELETE FROM [dbo].[TapestryDesigner_Blocks] WHERE [ParentMetablock_Id] IN (SELECT Id FROM deleted); DELETE FROM [dbo].[TapestryDesigner_Metablocks] WHERE Id IN (SELECT Id FROM deleted); END");
 
             DropForeignKey("dbo.TapestryDesigner_BlocksCommits", "ParentBlock_Id", "dbo.TapestryDesigner_Blocks");
             AddForeignKey("dbo.TapestryDesigner_BlocksCommits", "ParentBlock_Id", "dbo.TapestryDesigner_Blocks", "Id");
@@ -79,14 +79,14 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
             DropForeignKey("dbo.TapestryDesigner_BlocksCommits", "ParentBlock_Id", "dbo.TapestryDesigner_Blocks");
             AddForeignKey("dbo.TapestryDesigner_BlocksCommits", "ParentBlock_Id", "dbo.TapestryDesigner_Blocks", "Id", cascadeDelete: true);
 
-            Sql("DROP TRIGGER [dbo].[Trigger_MetaBlockToBlocks];");
-            DropForeignKey("dbo.TapestryDesigner_Blocks", "ParentMetaBlock_Id", "dbo.TapestryDesigner_MetaBlocks");
-            AddForeignKey("dbo.TapestryDesigner_Blocks", "ParentMetaBlock_Id", "dbo.TapestryDesigner_MetaBlocks", "Id", cascadeDelete: true);
+            Sql("DROP TRIGGER [dbo].[Trigger_MetablockToBlocks];");
+            DropForeignKey("dbo.TapestryDesigner_Blocks", "ParentMetablock_Id", "dbo.TapestryDesigner_Metablocks");
+            AddForeignKey("dbo.TapestryDesigner_Blocks", "ParentMetablock_Id", "dbo.TapestryDesigner_Metablocks", "Id", cascadeDelete: true);
 
-            Sql("DROP TRIGGER [dbo].[Trigger_ApplicationsToMetaBlockANDWorkFlow];");
+            Sql("DROP TRIGGER [dbo].[Trigger_ApplicationsToMetablockANDWorkFlow];");
             Sql("CREATE TRIGGER [dbo].[Trigger_Application_WorkFlow_Cascade] ON [dbo].[Master_Applications] INSTEAD OF DELETE AS BEGIN DELETE FROM [dbo].[Tapestry_WorkFlow] WHERE [ApplicationId] IN (SELECT Id FROM deleted); DELETE FROM [dbo].[Master_Applications] WHERE Id IN (SELECT Id FROM deleted); END");
-            DropForeignKey("dbo.TapestryDesigner_MetaBlocks", "ParentApp_Id", "dbo.Master_Applications");
-            AddForeignKey("dbo.TapestryDesigner_MetaBlocks", "ParentApp_Id", "dbo.Master_Applications", "Id", cascadeDelete: true);
+            DropForeignKey("dbo.TapestryDesigner_Metablocks", "ParentApp_Id", "dbo.Master_Applications");
+            AddForeignKey("dbo.TapestryDesigner_Metablocks", "ParentApp_Id", "dbo.Master_Applications", "Id", cascadeDelete: true);
         }
     }
 }

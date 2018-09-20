@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Entitron.DB
 {
@@ -122,7 +123,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
         public IEnumerable<string> getColumnDisplayNames()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             DbTable table = e.Applications.Find(_db.Application.Id).DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault()?.Tables.FirstOrDefault(t => t.Name == Tabloid?.Name);
             if (table != null)
                 return table.Columns.Select(c => c.DisplayName ?? c.Name);

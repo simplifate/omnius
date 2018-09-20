@@ -21,16 +21,30 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            JArray list = (JArray)vars["List"];
-            if (list.Count > 0)
+            try
             {
+                // get index
                 var indexParam = vars["Index"];
                 int index = indexParam is JValue ? ((JValue)indexParam).ToObject<int>() : Convert.ToInt32(indexParam);
-                var result = list.ElementAt(index);
-                outputVars["Result"] = result;
+
+                // get value
+                if (vars["List"] is JArray)
+                {
+                    JArray list = (JArray)vars["List"];
+                    outputVars["Result"] = list.ElementAt(index);
+                }
+                else
+                {
+                    List<Object> list = (List<Object>)vars["List"];
+                    outputVars["Result"] = list.ElementAt(index);
+                }
+                outputVars["Error"] = false;
             }
-            else
+            catch (Exception)
+            {
+                outputVars["Error"] = true;
                 outputVars["Result"] = null;
+            }
         }
     }
 }

@@ -22,19 +22,23 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
-            DBConnection db = Modules.Entitron.Entitron.i;
+            DBConnection db = COREobject.i.Entitron;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
-
-            DBTable table = db.Table((string)vars["TableName"], searchInShared);
             string targetColumnName = (string)vars["ColumnName"];
             object targetValue = 0;
+
+            DBTable table = db.Table((string)vars["TableName"], searchInShared);
             if (vars.ContainsKey("ValueType"))
             {
-                if( (string)vars["ValueType"] == "string")
+                if ((string)vars["ValueType"] == "string")
                     targetValue = (string)vars["Value"];
                 if ((string)vars["ValueType"] == "datetime")
-                    targetValue = DateTime.ParseExact((string)vars["Value"], "dd.MM.yyyy",CultureInfo.InvariantCulture);
+                    targetValue = DateTime.ParseExact((string)vars["Value"], "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                if ((string)vars["ValueType"] == "realdatetime")
+                    targetValue = (DateTime)vars["Value"];
+                if ((string)vars["ValueType"] == "bool")
+                    targetValue = (bool)vars["Value"];
             }
             else
                 targetValue = Convert.ToInt32(vars["Value"]);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.CORE;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -30,16 +31,16 @@ namespace FSS.Omnius.Modules.Tapestry
                 }
                 
                 // errory
-                if (result.Type == ActionResultType.Error)
+                if (result.Type == MessageType.Error)
                 {
-                    foreach (
-                        IActionRule_Action reverseActionMap in
-                            actions.Where(a => a.Order < actionMap.Order).OrderByDescending(a => a.Order))
-                    {
-                        var action = Action.All[reverseActionMap.ActionId];
-                        action.ReverseRun(results.ReverseInputData.Last());
-                        results.ReverseInputData.Remove(results.ReverseInputData.Last());
-                    }
+                    //foreach (
+                    //    IActionRule_Action reverseActionMap in
+                    //        actions.Where(a => a.Order < actionMap.Order).OrderByDescending(a => a.Order))
+                    //{
+                    //    var action = Action.All[reverseActionMap.ActionId];
+                    //    action.ReverseRun(results.ReverseInputData.Last());
+                    //    results.ReverseInputData.Remove(results.ReverseInputData.Last());
+                    //}
 
                     // do not continue
                     results.Join(result);

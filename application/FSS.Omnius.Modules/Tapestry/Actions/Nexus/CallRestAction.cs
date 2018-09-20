@@ -6,90 +6,85 @@ using System.IO;
 using System.Text;
 using System.Security.Cryptography;
 using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Tapestry.Actions.Nexus;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Watchtower;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
+namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 {
-    class CachedResult
+    public class CachedResult
     {
         public DateTime resultTime;
         public JToken data;
+        public CookieCollection cookies;
     }
 
     [NexusRepository]
     public class CallRestAction : Action
     {
-        private static Dictionary<string, CachedResult> cache = new Dictionary<string, CachedResult>();
+        public static Dictionary<string, CachedResult> Cache = new Dictionary<string, CachedResult>();
 
         public override int Id => 3002;
 
-        public override string[] InputVar => new string[] { "Endpoint", "Method", "?WSName", "?InputData", "?InputFromJSON", "?isFromBase64", "?MaxAge", "?v$CustomHeaders", "?AddressOverride" };
+        public override string[] InputVar => new string[] { "WSName", "Method", "?Endpoint", "?InputData", "?InputFromJSON", "?isFromBase64", "?MaxAge", "?CustomHeaders", "?AddressOverride", "?Cookies", "?ContentType" };
 
         public override string Name => "Call REST";
 
-        public override string[] OutputVar => new string[] { "Result", "Error" };
+        public override string[] OutputVar => new string[] { "Result", "Error", "Cookies", "CacheDate" };
 
         public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
+            /// init
+            COREobject core = COREobject.i;
+            DBEntities context = core.Context;
+
+            /// input
+            string wsName = (string)vars["WSName"];
+            string method = (string)vars["Method"];
+            string endpoint = vars.ContainsKey("Endpoint") ? (string)vars["Endpoint"] : "";
+            string inputData = vars.ContainsKey("InputData") ? (string)vars["InputData"] : "";
+            bool inputFromJSON = vars.ContainsKey("InputFromJSON") && (bool)vars["InputFromJSON"];
+            bool isFromBase64 = vars.ContainsKey("isFromBase64") && (bool)vars["isFromBase64"];
+            int maxAge = vars.ContainsKey("MaxAge") ? (int)vars["MaxAge"] : 0;
+            List<object> customHeaders = vars.ContainsKey("CustomHeaders") ? (List<object>)vars["CustomHeaders"] : new List<object>();
+            string addressOverride = vars.ContainsKey("AddressOverride") ? (string)vars["AddressOverride"] : null;
+            Dictionary<string, string> inputCookies = vars.ContainsKey("Cookies") ? (Dictionary<string, string>)vars["Cookies"] : new Dictionary<string, string>();
+            string contentType = vars.ContainsKey("ContentType") ? (string)vars["ContentType"] : "application/json";
+                
+            string cacheKey = CalculateMD5($"{endpoint}_{method}_{wsName}_{inputData}_{maxAge}_{inputFromJSON}_{isFromBase64}");
+
             try
             {
-                string endpoint = (string)vars["Endpoint"];
-                string addressOverride = vars.ContainsKey("AddressOverride") ? (string)vars["AddressOverride"] : null;
-                string method = (string)vars["Method"];
-                string wsName = vars.ContainsKey("WSName") ? (string)vars["WSName"] : null;
-                string inputData = vars.ContainsKey("InputData") ? (string)vars["InputData"] : "";
-                List<string> customHeaders = vars.ContainsKey("CustomHeaders") ? (List<string>)vars["CustomHeaders"] : new List<string>(); 
-                int maxAge = vars.ContainsKey("MaxAge") ? (int)vars["MaxAge"] : 0;
-                bool inputFromJSON = vars.ContainsKey("InputFromJSON") ? (bool)vars["InputFromJSON"] : false;
-                bool isFromBase64 = vars.ContainsKey("isFromBase64") ? (bool)vars["isFromBase64"] : false;
-
-                string keyData = string.Format("{0}_{1}_{2}_{3}_{4}_{5}",
-                            endpoint,
-                            method,
-                            wsName,
-                            inputData,
-                            maxAge.ToString(),
-                            inputFromJSON ? "1" : "0",
-                            isFromBase64 ? "1" : "0"
-                        );
-                string cacheKey = CalculateMD5(keyData);
-
+                ///
                 if (maxAge > 0)
                 {
-                    if (cache.ContainsKey(cacheKey))
+                    if (Cache.ContainsKey(cacheKey))
                     {
-                        CachedResult item = cache[cacheKey];
+                        CachedResult item = Cache[cacheKey];
                         double diff = (DateTime.UtcNow - item.resultTime).TotalSeconds;
                         if (diff <= maxAge)
                         {
                             outputVars["Result"] = item.data;
                             outputVars["Error"] = false;
+                            outputVars["Cookies"] = CookiesToDictionary(item.cookies);
+                            outputVars["CacheDate"] = item.resultTime;
                             return;
                         }
                     }
                 }
 
-                CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                var context = DBEntities.appInstance(core.Application);
                 string queryString = "";
-                var service = !String.IsNullOrEmpty(wsName) ? context.WSs.First(c => c.Name == wsName) : null;
+                var service = context.WSs.SingleOrDefault(c => c.Name == wsName) ?? throw new Exception($"WS[name:{wsName}] not found!");
 
                 if (inputData != "" && method.ToUpper() == "GET")
                 {
                     if (inputFromJSON)
                     {
                         JToken input = JToken.Parse(inputData);
-                        foreach (JProperty key in input)
-                        {
-                            queryString += key.Name + "=" + (string)key.Value + '&';
-                        }
-                        queryString = queryString.TrimEnd('&');
+                        queryString = string.Join("&", input.Select(prop => $"{(prop as JProperty).Name}={(prop as JProperty).Value}"));
                     }
                     else
                     {
@@ -97,26 +92,22 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     }
                 }
 
-                string endpointPath = string.Format("{0}/{1}?{2}",
-                    addressOverride == null ? service.REST_Base_Url.TrimEnd('/') : addressOverride.TrimEnd('/'),
-                    endpoint.Trim('/'), 
-                    queryString);
-                endpointPath = endpointPath.TrimEnd('?');
-                endpointPath = endpointPath.TrimEnd('/');
-                var endpointUri = new Uri(endpointPath);
+                string endpointPath = $"{(addressOverride ?? service.REST_Base_Url).TrimEnd('/')}/{endpoint.Trim('/')}?{queryString}".TrimEnd('?').TrimEnd('/');
 
                 //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(endpointPath);
 
                 httpWebRequest.Method = method.ToUpper();
-                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.ContentType = contentType;
                 httpWebRequest.Accept = "application/json";
                 httpWebRequest.KeepAlive = false;
 
-                foreach (string header in customHeaders) {
+                foreach (string header in customHeaders)
+                {
                     httpWebRequest.Headers.Add(header);
                 }
-                
+
+                /// authorise
                 if (service != null && !string.IsNullOrEmpty(service.Auth_User))
                 {
                     string authEncoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{service.Auth_User}:{service.Auth_Password}"));
@@ -130,14 +121,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     httpWebRequest.Credentials = cCache;*/
                 }
 
+                /// input data
                 if (isFromBase64 && vars.ContainsKey("InputData") && method.ToUpper() == "PUT")
                 {
                     using (Stream requestStream = httpWebRequest.GetRequestStream())
                     using (BinaryWriter bw = new BinaryWriter(requestStream))
                     {
-                        inputData = inputData.Replace("%3D","=");
+                        inputData = inputData.Replace("%3D", "=");
                         inputData = inputData.Replace("\r\n", "");
-                        inputData = inputData.Replace("\n","");
+                        inputData = inputData.Replace("\n", "");
                         bw.Write(Convert.FromBase64String(inputData));
                     }
                 }
@@ -158,50 +150,92 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     using (Stream requestStream = httpWebRequest.GetRequestStream())
                         requestStream.Write(postJsonBytes, 0, postJsonBytes.Length);
                 }
+                
+                /// cookies
+                foreach (var cookie in inputCookies)
+                    httpWebRequest.CookieContainer.Add(new Uri("http://" + httpWebRequest.Host), new Cookie(cookie.Key, cookie.Value));
 
-                using (var response = httpWebRequest.GetResponse())
-                using (Stream responseStream = response.GetResponseStream())
-                using (StreamReader responseReader = new StreamReader(responseStream))
+                /// get response
+                using (HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse())
                 {
-                    string outputJsonString = responseReader.ReadToEnd();
-
-                    if (!string.IsNullOrEmpty(outputJsonString))
+                    CookieCollection cookies = response.Cookies;
+                    using (Stream responseStream = response.GetResponseStream())
                     {
-                        var outputJToken = JToken.Parse(outputJsonString);
-                        outputVars["Result"] = outputJToken;
-                        outputVars["Error"] = false;
-
-                        if (maxAge > 0)
+                        // image
+                        if (response.ContentType.StartsWith("image"))
                         {
-                            if (cache.ContainsKey(cacheKey))
+                            byte[] rawData = ReadAllBytes(responseStream);
+
+                            outputVars["Result"] = rawData;
+                            outputVars["Error"] = false;
+                            return;
+                        }
+
+                        // string
+                        using (StreamReader responseReader = new StreamReader(responseStream))
+                        {
+                            string outputJsonString = responseReader.ReadToEnd();
+
+                            if (!string.IsNullOrEmpty(outputJsonString))
                             {
-                                cache[cacheKey].resultTime = DateTime.UtcNow;
-                                cache[cacheKey].data = outputJToken;
+                                try
+                                {
+                                    var outputJToken = JToken.Parse(outputJsonString);
+                                    outputVars["Result"] = outputJToken;
+                                    outputVars["Error"] = false;
+                                    outputVars["Cookies"] = CookiesToDictionary(cookies);
+                                    outputVars["CacheDate"] = new DateTime();
+
+                                    if (maxAge > 0)
+                                    {
+                                        if (Cache.ContainsKey(cacheKey))
+                                        {
+                                            Cache[cacheKey].resultTime = DateTime.UtcNow;
+                                            Cache[cacheKey].data = outputJToken;
+                                            Cache[cacheKey].cookies = cookies;
+                                        }
+                                        else
+                                        {
+                                            Cache.Add(cacheKey, new CachedResult()
+                                            {
+                                                resultTime = DateTime.UtcNow,
+                                                data = outputJToken,
+                                                cookies = cookies
+                                            });
+                                        }
+                                    }
+                                }
+                                catch (Exception)
+                                { // Neni to json
+                                    outputVars["Result"] = outputJsonString;
+                                    outputVars["Error"] = false;
+                                }
                             }
                             else
                             {
-                                cache.Add(cacheKey, new CachedResult()
-                                {
-                                    resultTime = DateTime.UtcNow,
-                                    data = outputJToken
-                                });
+                                outputVars["Result"] = "";
+                                outputVars["Error"] = false;
                             }
                         }
-                    }
-                    else
-                    {
-                        outputVars["Result"] = "";
-                        outputVars["Error"] = false;
                     }
                 }
             }
             catch (Exception e)
             {
-                string errorMsg = e.Message;
-                CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                OmniusException.Log(e, OmniusLogSource.Nexus, core.Application, core.User);
-                outputVars["Result"] = errorMsg;
+                OmniusWarning.Log($"Call REST - using cached result of endpoint {endpoint} because of error {e.Message}, StackTrace={e.StackTrace}", Watchtower.OmniusLogSource.Nexus);
+                if (Cache.ContainsKey(cacheKey))
+                {
+                    CachedResult item = Cache[cacheKey];
+                    outputVars["Result"] = item.data;
+                    outputVars["Error"] = true;
+                    outputVars["Cookies"] = item.cookies;
+                    outputVars["CacheDate"] = item.resultTime;
+                    return;
+                }
+                outputVars["Result"] = string.Empty;
+                outputVars["Cookies"] = null;
                 outputVars["Error"] = true;
+                outputVars["CacheDate"] = new DateTime();
             }
         }
 
@@ -218,6 +252,25 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             }
 
             return sb.ToString();
+        }
+
+        private Dictionary<string, string> CookiesToDictionary(CookieCollection cookies)
+        {
+            Dictionary<string, string> cookieDictionary = new Dictionary<string, string>();
+            foreach (Cookie cookie in cookies)
+            {
+                cookieDictionary.Add(cookie.Name, cookie.Value);
+            }
+            return cookieDictionary;
+        }
+
+        private byte[] ReadAllBytes(Stream stream)
+        {
+            using (var ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                return ms.ToArray();
+            }
         }
     }
 }

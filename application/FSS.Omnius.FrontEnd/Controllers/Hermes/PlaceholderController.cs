@@ -4,6 +4,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using System.Collections.Generic;
 using System;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
@@ -13,7 +14,7 @@ namespace FSS.Omnius.Controllers.Hermes
         // GET: Placeholder list
         public ActionResult Index(int? emailId)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             EmailTemplate template = e.EmailTemplates.Single(t => t.Id == emailId);
 
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
@@ -42,7 +43,7 @@ namespace FSS.Omnius.Controllers.Hermes
             if (emailId == null)
                 throw new Exception("Došlo k neoèekávané chybì");
 
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             if (!ModelState.IsValid && model.Id != 0)
             {
                 return View("~/Views/Hermes/Placeholder/Form.cshtml", model);
@@ -62,7 +63,7 @@ namespace FSS.Omnius.Controllers.Hermes
                 }
                 else
                 {
-                    model.Hermes_Email_Template_Id = emailId;
+                    model.Hermes_Email_Template_Id = emailId.Value;
                     if (e.EmailPlaceholders.Where(p => p.Hermes_Email_Template_Id == emailId).Count() == 0)
                     {
                         model.Num_Order = 1;
@@ -81,7 +82,7 @@ namespace FSS.Omnius.Controllers.Hermes
         
         public ActionResult Edit(int? emailId, int? id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             ViewData["emailId"] = emailId;
 
             return View("~/Views/Hermes/Placeholder/Form.cshtml", e.EmailTemplates.Single(t => t.Id == emailId).PlaceholderList.Single(p => p.Id == id));
@@ -89,7 +90,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Delete(int? emailId, int? id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             EmailPlaceholder row = e.EmailTemplates.Single(t => t.Id == emailId).PlaceholderList.Single(p => p.Id == id);
 
             if (row == null)
@@ -103,7 +104,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult ChangeOrder(int? emailId)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             EmailTemplate template = e.EmailTemplates.Single(t => t.Id == emailId);
 
             ViewData["emailId"] = template.Id;
@@ -113,7 +114,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult SaveNumOrder(int? emailId, ICollection<int> ids)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             List<EmailPlaceholder> list = e.EmailTemplates.Single(t => t.Id == emailId).PlaceholderList.ToList();
 
             int order = 1;

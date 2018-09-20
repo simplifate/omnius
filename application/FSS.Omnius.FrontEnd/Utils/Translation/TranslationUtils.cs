@@ -1,27 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using NGettext;
 using System.Globalization;
-using System.IO;
-using System.Text.RegularExpressions;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.FrontEnd.Utils
 {
-    public class T : FSS.Omnius.Modules.CORE.ITranslator
+    public class T : ITranslator
     {
-        public static Dictionary<string, ICatalog> catalog = new Dictionary<string, ICatalog>();
-        public string cultureInfo { get; set; }
-        public T(string cultureInfo)
+        public static Dictionary<Locale, ICatalog> catalog = new Dictionary<Locale, ICatalog>();
+        public Locale cultureInfo { get; set; }
+        public T(Locale cultureInfo)
         {
             this.cultureInfo = cultureInfo;
 
             if (!catalog.ContainsKey(cultureInfo))
             {
-                catalog.Add(cultureInfo, new Catalog("Omnius", System.Web.Hosting.HostingEnvironment.MapPath("~/Content/Locale"), new CultureInfo(cultureInfo)));
+                catalog.Add(cultureInfo, new Catalog("Omnius", System.Web.Hosting.HostingEnvironment.MapPath("~/Content/Locale"), new CultureInfo(cultureInfo.ToString())));
             }
-
         }
 
         public string _(string sourceString)

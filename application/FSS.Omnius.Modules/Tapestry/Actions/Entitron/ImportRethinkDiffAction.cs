@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
     {
         public override int Id => 1099;
 
-        public override string[] InputVar => new string[] { "v$Diff", "?s$TablesNames", "?s$ExtIdColumnName", "?s$DiffIdColumnName", "?s$IsDeletedColumnName", "?b$AllowPermanentDelete" };
+        public override string[] InputVar => new string[] { "v$Diff", "?s$TablesNames", "?s$ExtIdColumnName", "?s$DiffIdColumnName", "?s$IsDeletedColumnName" };
 
         public override string Name => "Import RethinkDB diff";
 
@@ -34,19 +34,17 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         private string extIdColumnName;
         private string diffIdColumnName;
         private string isDeletedColumnName;
-        private bool allowPermanentDelete;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            db = Modules.Entitron.Entitron.i;
-            
+            COREobject core = COREobject.i;
+            db = core.Entitron;
+
             object diffObject = vars["Diff"];
             string tableNames = vars.ContainsKey("TablesNames") ? (string)vars["TablesNames"] : "";
             extIdColumnName = vars.ContainsKey("ExtIdColumnName") ? (string)vars["ExtIdColumnName"] : "ext_id";
             diffIdColumnName = vars.ContainsKey("DiffIdColumnName") ? (string)vars["DiffIdColumnName"] : "id";
             isDeletedColumnName = vars.ContainsKey("IsDeletedColumnName") ? (string)vars["IsDeletedColumnName"] : "";
-            allowPermanentDelete = vars.ContainsKey("AllowPermanentDelete") ? (bool)vars["AllowPermanentDelete"] : false;
 
             if (diffObject == null)
                 throw new Exception($"{Name}: Diff must not be null");
@@ -54,6 +52,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if (!(diffObject is string) && !(diffObject is JToken))
                 throw new Exception($"{Name}: Diff must be string or JToken");
 
+            try {
                 JToken diff = diffObject is JToken ? (JToken)diffObject : JToken.Parse((string)diffObject);
                 List<string> tableNamesList = tableNames.Split(new char[] { ',', ';' }).ToList();
 
@@ -92,8 +91,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     outputVars["Result"] = -1;
                     outputVars["Error"] = "";
                 }
-            
-        
+            }
+            catch (Exception e) {
+                throw new Exception($"{Name}: Fatal error occured ({e.Message})");
+            }
         }
 
         private RethinkDiffType GetDiffType(JToken oldValue, JToken newValue)
@@ -114,7 +115,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     continue;
                 }
 
-                if (parsedValues.ContainsKey(column.Name) &&  parsedValues[column.Name] != null) {
+                if (parsedValues[column.Name] != null) {
                     item[column.Name] = parsedValues[column.Name];
                 }
                 if (column.Name == extIdColumnName) {
@@ -125,28 +126,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         private void Insert(JToken newValue)
         {
-            var ext_id = (string)newValue[diffIdColumnName];
-            var item = table.Select().Where(t => t.Column(extIdColumnName).Equal(ext_id)).FirstOrDefault();
-            
-            if(item == null)
-            {
-                item = new DBItem(db, table);
-                SetDBItemValues(ref item, table.Columns, newValue);
-                table.Add(item);
-            }
-            else
-            {
-                SetDBItemValues(ref item, table.Columns, newValue);
-                table.Update(item, (int)item[DBCommandSet.PrimaryKey]);
-            }
-
-           
+            var item = new DBItem(db, table);
+            SetDBItemValues(ref item, table.Columns, newValue);
+            table.Add(item);
         }
 
         private void Update(JToken oldValue, JToken newValue)
         {
             var id = (string)oldValue[diffIdColumnName];
-            var item = table.Select().Where(t => t.Column(extIdColumnName).Equal(id)).FirstOrDefault();
+            var item = table.Select().Where(t => t.Column(extIdColumnName).Equal(id)).SingleOrDefault();
 
             if(item != null) {
                 SetDBItemValues(ref item, table.Columns, newValue);
@@ -163,11 +151,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             var item = table.Select().Where(t => t.Column(extIdColumnName).Equal(id)).SingleOrDefault();
 
             if(item != null) {
-                if (isDeletedColumnName != "" && table.Columns.Any(c => c.Name == isDeletedColumnName)) {
+                if (isDeletedColumnName != "") {
                     item[isDeletedColumnName] = true;
                     table.Update(item, (int)item[DBCommandSet.PrimaryKey]);
                 }
-                else if(allowPermanentDelete) {
+                else {
                     table.Delete(item);
                 }
             }

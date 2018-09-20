@@ -10,6 +10,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using System.Data.Entity;
 using Logger;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic.Bootstrap;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
 {
@@ -23,26 +24,24 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
             try
             {
                 var result = new List<MozaicBootstrapAjaxPageHeader>();
-                using (var context = DBEntities.instance)
+                var context = COREobject.i.Context;
+                foreach (var page in context.Applications.Find(appId).MozaicEditorPages.Where(p => p.IsDeleted == false).OrderBy(o => o.Name))
                 {
-                    foreach (var page in context.Applications.Find(appId).MozaicEditorPages.Where(p => p.IsDeleted == false).OrderBy(o => o.Name))
+                    result.Add(new MozaicBootstrapAjaxPageHeader
                     {
-                        result.Add(new MozaicBootstrapAjaxPageHeader
-                        {
-                            Id = page.Id,
-                            Name = page.Name ?? "(nepojmenovaná stránka)",
-                            IsBootstrap = false
-                        });
-                    }
-                    foreach (var page in context.Applications.Find(appId).MozaicBootstrapPages.Where(p => p.IsDeleted == false).OrderBy(o => o.Name)) 
+                        Id = page.Id,
+                        Name = page.Name ?? "(nepojmenovaná stránka)",
+                        IsBootstrap = false
+                    });
+                }
+                foreach (var page in context.Applications.Find(appId).MozaicBootstrapPages.Where(p => p.IsDeleted == false).OrderBy(o => o.Name)) 
+                {
+                    result.Add(new MozaicBootstrapAjaxPageHeader
                     {
-                        result.Add(new MozaicBootstrapAjaxPageHeader
-                        {
-                            Id = page.Id,
-                            Name = page.Name ?? "(nepojmenovaná stránka)",
-                            IsBootstrap = true
-                        });
-                    }
+                        Id = page.Id,
+                        Name = page.Name ?? "(nepojmenovaná stránka)",
+                        IsBootstrap = true
+                    });
                 }
                 return result.OrderBy(p => p.Name);
             }
@@ -59,28 +58,26 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
         public int NewPage(int appId, MozaicBootstrapAjaxPage postData)
         {
             try {
-                using (var context = DBEntities.instance) 
+                var context = COREobject.i.Context;
+                var app = context.Applications.Find(appId);
+                app.MozaicChangedSinceLastBuild = true;
+                app.TapestryChangedSinceLastBuild = true;
+
+                var newPage = new MozaicBootstrapPage
                 {
-                    var app = context.Applications.Find(appId);
-                    app.MozaicChangedSinceLastBuild = true;
-                    app.TapestryChangedSinceLastBuild = true;
+                    Name = postData.Name,
+                    IsDeleted = false,
+                    Version = VersionEnum.Bootstrap
+                };
 
-                    var newPage = new MozaicBootstrapPage
-                    {
-                        Name = postData.Name,
-                        IsDeleted = false,
-                        Version = VersionEnum.Bootstrap
-                    };
-
-                    int numOrder = 0;
-                    foreach (var ajaxComponent in postData.Components) {
-                        newPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, newPage, null, ++numOrder));
-                    }
-
-                    context.Applications.Find(appId).MozaicBootstrapPages.Add(newPage);
-                    context.SaveChanges();
-                    return newPage.Id;
+                int numOrder = 0;
+                foreach (var ajaxComponent in postData.Components) {
+                    newPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, newPage, null, ++numOrder));
                 }
+
+                context.Applications.Find(appId).MozaicBootstrapPages.Add(newPage);
+                context.SaveChanges();
+                return newPage.Id;
             }
             catch (Exception ex) {
                 var errorMessage = $"Mozaic editor: error creating new page (POST api/mozaic-editor/apps/{appId}/pages) " +
@@ -95,23 +92,22 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
         {
             try {
                 var result = new List<MozaicBootstrapAjaxPageHeader>();
-                using (var context = DBEntities.instance) {
-                    foreach (var page in context.Applications.Find(appId).MozaicEditorPages.Where(p => p.IsDeleted).OrderBy(o => o.Name)) {
-                        result.Add(new MozaicBootstrapAjaxPageHeader
-                        {
-                            Id = page.Id,
-                            Name = page.Name ?? "(nepojmenovaná stránka)",
-                            IsBootstrap = false
-                        });
-                    }
-                    foreach (var page in context.Applications.Find(appId).MozaicBootstrapPages.Where(p => p.IsDeleted).OrderBy(o => o.Name)) {
-                        result.Add(new MozaicBootstrapAjaxPageHeader
-                        {
-                            Id = page.Id,
-                            Name = page.Name ?? "(nepojmenovaná stránka)",
-                            IsBootstrap = true
-                        });
-                    }
+                var context = COREobject.i.Context;
+                foreach (var page in context.Applications.Find(appId).MozaicEditorPages.Where(p => p.IsDeleted).OrderBy(o => o.Name)) {
+                    result.Add(new MozaicBootstrapAjaxPageHeader
+                    {
+                        Id = page.Id,
+                        Name = page.Name ?? "(nepojmenovaná stránka)",
+                        IsBootstrap = false
+                    });
+                }
+                foreach (var page in context.Applications.Find(appId).MozaicBootstrapPages.Where(p => p.IsDeleted).OrderBy(o => o.Name)) {
+                    result.Add(new MozaicBootstrapAjaxPageHeader
+                    {
+                        Id = page.Id,
+                        Name = page.Name ?? "(nepojmenovaná stránka)",
+                        IsBootstrap = true
+                    });
                 }
                 return result.OrderBy(p => p.Name);
             }
@@ -127,7 +123,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
         public void DeletePage(int appId, int pageId)
         {
             try {
-                var context = DBEntities.instance;
+                var context = COREobject.i.Context;
                 var page = context.MozaicBootstrapPages.Find(pageId);
                 page.IsDeleted = true;
                 context.SaveChanges();
@@ -144,26 +140,24 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
         public void ReplacePage(int appId, int pageId, MozaicBootstrapAjaxPage postData)
         {
             try {
-                using (var context = DBEntities.instance) 
-                {
-                    var app = context.Applications.Find(appId);
-                    app.MozaicChangedSinceLastBuild = true;
-                    app.TapestryChangedSinceLastBuild = true;
+                var context = COREobject.i.Context;
+                var app = context.Applications.Find(appId);
+                app.MozaicChangedSinceLastBuild = true;
+                app.TapestryChangedSinceLastBuild = true;
 
-                    var requestedPage = context.MozaicBootstrapPages.Find(pageId);
-                    deleteComponents(requestedPage, context);
+                var requestedPage = context.MozaicBootstrapPages.Find(pageId);
+                deleteComponents(requestedPage, context);
 
-                    requestedPage.Name = postData.Name;
-                    requestedPage.Content = postData.Content;
-                    requestedPage.IsDeleted = postData.IsDeleted;
+                requestedPage.Name = postData.Name;
+                requestedPage.Content = postData.Content;
+                requestedPage.IsDeleted = postData.IsDeleted;
 
-                    int numOrder = 0;
-                    foreach (var ajaxComponent in postData.Components) {
-                        requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null, ++numOrder));
-                    }
-
-                    context.SaveChanges();
+                int numOrder = 0;
+                foreach (var ajaxComponent in postData.Components) {
+                    requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null, ++numOrder));
                 }
+
+                context.SaveChanges();
             }
             catch (Exception ex) {
                 var errorMessage = $"Mozaic editor: error replacing page with id={pageId} (POST api/mozaic-bootstrap/apps/{appId}/pages/{pageId}) " +
@@ -178,35 +172,33 @@ namespace FSS.Omnius.FrontEnd.Controllers.Mozaic
         {
             try
             {
-                using (var context = DBEntities.instance)
+                var context = COREobject.i.Context;
+                var requestedPage = context.MozaicBootstrapPages.Find(pageId);
+
+                // TODO: replace with real error checking
+                if (requestedPage == null)
+                    return new MozaicBootstrapAjaxPage();
+
+                var result = new MozaicBootstrapAjaxPage
                 {
-                    var requestedPage = context.MozaicBootstrapPages.Find(pageId);
+                    Id = requestedPage.Id,
+                    Name = requestedPage.Name ?? "Nepojmenovaná stránka",
+                    Content = requestedPage.Content,
+                    Components = new List<MozaicBootstrapAjaxComponent>()
+                };
 
-                    // TODO: replace with real error checking
-                    if (requestedPage == null)
-                        return new MozaicBootstrapAjaxPage();
-
-                    var result = new MozaicBootstrapAjaxPage
-                    {
-                        Id = requestedPage.Id,
-                        Name = requestedPage.Name ?? "Nepojmenovaná stránka",
-                        Content = requestedPage.Content,
-                        Components = new List<MozaicBootstrapAjaxComponent>()
-                    };
-
-                    foreach (var component in requestedPage.Components.Where(c => c.ParentComponent == null)) {
-                        result.Components.Add(convertComponentToAjaxFormat(component));
-                    }
-
-                    // Renew deleted page
-                    if (requestedPage.IsDeleted)
-                    {                       
-                        requestedPage.IsDeleted = false;
-                        context.SaveChanges();
-                    }
-                    
-                    return result;
+                foreach (var component in requestedPage.Components.Where(c => c.ParentComponent == null)) {
+                    result.Components.Add(convertComponentToAjaxFormat(component));
                 }
+
+                // Renew deleted page
+                if (requestedPage.IsDeleted)
+                {                       
+                    requestedPage.IsDeleted = false;
+                    context.SaveChanges();
+                }
+                    
+                return result;
             }
             catch (Exception ex)
             {

@@ -17,8 +17,9 @@ jsPlumb.ready(function () {
         });
 
         instance.bind("click", function (con) {
-            CurrentConnection = con;
-            editRelationDialog.dialog("open");
+            instance.detach(con);
+            //CurrentConnection = con;
+            //editRelationDialog.dialog("open");
         });
 
         instance.bind("connection", function (info) {
@@ -30,34 +31,34 @@ jsPlumb.ready(function () {
             info.connection.addClass("relationConnection");
             info.connection.removeOverlay("arrow");
             info.connection.addOverlay(["Arrow", {
-                location: 0,
-                id: "arrow0",
-                length: 8,
-                width: 8,
-                height: 8,
-                foldback: 0.8,
-                direction: -1
-            }]);
-            info.connection.addOverlay(["Arrow", {
                 location: 1,
-                id: "arrow1",
+                id: "arrow0",
                 length: 8,
                 width: 8,
                 height: 8,
                 foldback: 0.8
             }]);
-            info.connection.addOverlay(["Label", {
-                location: 0.1,
-                id: "label0",
-                cssClass: "relationLabel",
-                label: "1"
-            }]);
-            info.connection.addOverlay(["Label", {
-                location: 0.9,
-                id: "label1",
-                cssClass: "relationLabel",
-                label: "1"
-            }]);
+            //info.connection.addOverlay(["Arrow", {
+            //    location: 0,
+            //    id: "arrow1",
+            //    length: 8,
+            //    width: 8,
+            //    height: 8,
+            //    foldback: 0.8,
+            //    direction: -1
+            //}]);
+            //info.connection.addOverlay(["Label", {
+            //    location: 0.1,
+            //    id: "label0",
+            //    cssClass: "relationLabel",
+            //    label: "1"
+            //}]);
+            //info.connection.addOverlay(["Label", {
+            //    location: 0.9,
+            //    id: "label1",
+            //    cssClass: "relationLabel",
+            //    label: "1"
+            //}]);
         });
 
         instance.batch(function () {

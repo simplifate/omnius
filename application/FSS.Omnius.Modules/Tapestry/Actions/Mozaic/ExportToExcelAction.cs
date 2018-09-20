@@ -4,13 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Text.RegularExpressions;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.DB;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
+using FSS.Omnius.Modules.Entitron.Queryable;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 {
@@ -24,7 +25,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
         public override int? ReverseActionId => null;
 
-        public override string[] InputVar => new string[] { "?TableName", "?ViewName", "?Filter", "?Columns" };
+        public override string[] InputVar => new string[] { "?TableName", "?ViewName", "?TableData", "?Filter", "?Columns", "?OrderBy" };
 
         public override string Name => "Export to Excel";
 
@@ -35,7 +36,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // Init
-            _db = Modules.Entitron.Entitron.i;
+            COREobject core = COREobject.i;
+            DBEntities context = core.Context;
+            _db = core.Entitron;
             List<DBItem> data = new List<DBItem>();
             List<string> rows = new List<string>();
             List<string> columns = new List<string>();
@@ -45,8 +48,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             bool isView = false;
 
             List<string> chars = new List<string>();
-            for(int i = -1; i < abc.Length; i++) {
-                for(int j = 0; j < abc.Length; j++) {
+            for (int i = -1; i < abc.Length; i++)
+            {
+                for (int j = 0; j < abc.Length; j++)
+                {
                     string ch = (i >= 0 ? abc[i].ToString() : "") + abc[j].ToString();
                     chars.Add(ch);
                 }
@@ -83,103 +88,109 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
             Dictionary<string, Dictionary<int, string>> foreignData = new Dictionary<string, Dictionary<int, string>>();
             Dictionary<string, string> foreignColumnNames = new Dictionary<string, string>();
+            
+            if (vars.ContainsKey("ForeignKeys"))
+            {
+                foreach (KeyValuePair<string, string> key in (Dictionary<string, string>)vars["ForeignKeys"])
+                {
+                    foreignData.Add(key.Key, new Dictionary<int, string>());
+                    string[] target = key.Value.Split('.');
+                    string foreignTable = target[0];
+                    string foreignColumn = target[1];
 
-            using (DBEntities e = new DBEntities()) {
-                if (vars.ContainsKey("ForeignKeys")) {
-                    foreach (KeyValuePair<string, string> key in (Dictionary<string, string>)vars["ForeignKeys"]) {
-                        foreignData.Add(key.Key, new Dictionary<int, string>());
-                        string[] target = key.Value.Split('.');
-                        string foreignTable = target[0];
-                        string foreignColumn = target[1];
-
-                        foreach (DBItem fr in _db.Table(foreignTable).Select().Where(c => c.Column("id").In(new HashSet<object>(data.Select(i => i[key.Key])))).ToList()) {
-                            foreignData[key.Key].Add((int)fr["id"], (string)fr[foreignColumn]);
-                        }
-
-                        DbColumn foreignDbColumn = e.DbTables.Include("Columns").Where(t => t.Name == foreignTable).OrderByDescending(t => t.DbSchemeCommitId).First().Columns.Where(c => c.Name == foreignColumn).First();
-                        foreignColumnNames[key.Key] = foreignDbColumn.DisplayName ?? foreignDbColumn.Name;
+                    foreach (DBItem fr in _db.Table(foreignTable).Select().Where(c => c.Column("id").In(new HashSet<object>(data.Select(i => i[key.Key])))).ToList())
+                    {
+                        foreignData[key.Key].Add((int)fr["id"], (string)fr[foreignColumn]);
                     }
+
+                    DbColumn foreignDbColumn = context.DbTables.Include("Columns").Where(t => t.Name == foreignTable).OrderByDescending(t => t.DbSchemeCommitId).First().Columns.Where(c => c.Name == foreignColumn).First();
+                    foreignColumnNames[key.Key] = foreignDbColumn.DisplayName ?? foreignDbColumn.Name;
                 }
+            }
 
-                if (isTable) {
-                    DBColumns = e.DbTables.Include("Columns").Where(t => t.Name == tableName).OrderByDescending(t => t.DbSchemeCommitId).First().Columns.ToList();
-                }
-                
-                using (MemoryStream stream = new MemoryStream()) {
-                    using (SpreadsheetDocument xls = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook, true)) {
-                        WorkbookPart bookPart = xls.AddWorkbookPart();
-                        bookPart.Workbook = new Workbook();
-                        bookPart.Workbook.AppendChild<Sheets>(new Sheets());
+            if (isTable)
+            {
+                DBColumns = context.DbTables.Include("Columns").Where(t => t.Name == tableName).OrderByDescending(t => t.DbSchemeCommitId).First().Columns.ToList();
+            }
 
-                        SharedStringTablePart strings = xls.WorkbookPart.AddNewPart<SharedStringTablePart>();
-                        WorksheetPart sheetPart = InsertWorksheet("Data", bookPart);
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (SpreadsheetDocument xls = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook, true))
+                {
+                    WorkbookPart bookPart = xls.AddWorkbookPart();
+                    bookPart.Workbook = new Workbook();
+                    bookPart.Workbook.AppendChild<Sheets>(new Sheets());
 
-                        int c = 0;
-                        if(isTable) {
-                            foreach (DbColumn col in DBColumns) {
-                                if (columns.Contains(col.Name)) {
-                                    string name;
-                                    if (foreignColumnNames.ContainsKey(col.Name)) {
-                                        name = foreignColumnNames[col.Name];
-                                    }
-                                    else {
-                                        name = col.DisplayName ?? col.Name;
-                                    }
+                    SharedStringTablePart strings = xls.WorkbookPart.AddNewPart<SharedStringTablePart>();
+                    WorksheetPart sheetPart = InsertWorksheet("Data", bookPart);
 
-                                    int i = InsertSharedStringItem(name, strings);
-                                    Cell cell = InsertCellInWorksheet(chars[c], 1, sheetPart);
-                                    cell.CellValue = new CellValue(i.ToString());
-                                    cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-                                    c++;
+                    int c = 0;
+                    if (isTable)
+                    {
+                        foreach (DbColumn col in DBColumns)
+                        {
+                            if (columns.Contains(col.Name))
+                            {
+                                string name;
+                                if (foreignColumnNames.ContainsKey(col.Name))
+                                {
+                                    name = foreignColumnNames[col.Name];
                                 }
-                            }
-                        }
-                        if(isView) {
-                            foreach(string colName in columns) {
-                                int i = InsertSharedStringItem(colName, strings);
+                                else {
+                                    name = col.DisplayName ?? col.Name;
+                                }
+
+                                int i = InsertSharedStringItem(name, strings);
                                 Cell cell = InsertCellInWorksheet(chars[c], 1, sheetPart);
                                 cell.CellValue = new CellValue(i.ToString());
                                 cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
                                 c++;
                             }
                         }
-                        
-                        uint r = 1;
-                        foreach (DBItem item in data) {
-                            c = 0;
-                            r++;
+                    }
+                    if (isView)
+                    {
+                        foreach (string colName in columns)
+                        {
+                            int i = InsertSharedStringItem(colName, strings);
+                            Cell cell = InsertCellInWorksheet(chars[c], 1, sheetPart);
+                            cell.CellValue = new CellValue(i.ToString());
+                            cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                            c++;
+                        }
+                    }
 
-                            if (isTable) {
-                                foreach (DbColumn col in DBColumns) {
-                                    if (columns.Contains(col.Name)) {
-                                        string value;
+                    uint r = 1;
+                    foreach (DBItem item in data)
+                    {
+                        c = 0;
+                        r++;
 
-                                        if (foreignData.ContainsKey(col.Name)) {
-                                            if (foreignData[col.Name].ContainsKey((int)item[col.Name])) {
-                                                value = foreignData[col.Name][(int)item[col.Name]];
-                                            }
-                                            else {
-                                                value = item[col.Name].ToString();
-                                            }
+                        if (isTable)
+                        {
+                            foreach (DbColumn col in DBColumns)
+                            {
+                                if (columns.Contains(col.Name))
+                                {
+                                    string value;
+
+                                    if (foreignData.ContainsKey(col.Name))
+                                    {
+                                        if (foreignData[col.Name].ContainsKey((int)item[col.Name]))
+                                        {
+                                            value = foreignData[col.Name][(int)item[col.Name]];
                                         }
                                         else {
                                             value = item[col.Name].ToString();
-                                            if (col.Type == "boolean") {
-                                                value = value == "True" ? "Ano" : "Ne";
-                                            }
                                         }
-
-                                        int i = InsertSharedStringItem(value, strings);
-                                        Cell cell = InsertCellInWorksheet(chars[c], r, sheetPart);
-                                        cell.CellValue = new CellValue(i.ToString());
-                                        cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-                                        c++;
                                     }
-                                }
-                            }
-                            if(isView) {
-                                foreach(string colName in columns) {
-                                    string value = item[colName].ToString();
+                                    else {
+                                        value = item[col.Name].ToString();
+                                        if (col.Type == "boolean")
+                                        {
+                                            value = value == "True" ? "Ano" : "Ne";
+                                        }
+                                    }
 
                                     int i = InsertSharedStringItem(value, strings);
                                     Cell cell = InsertCellInWorksheet(chars[c], r, sheetPart);
@@ -189,24 +200,38 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                                 }
                             }
                         }
-                        xls.Close();
+                        if (isView)
+                        {
+                            foreach (string colName in columns)
+                            {
+                                string value = item[colName].ToString();
 
-                        stream.Seek(0, SeekOrigin.Begin);
-                        
-                        HttpContext context = HttpContext.Current;
-                        HttpResponse response = context.Response;
-
-                        response.Clear();
-                        response.StatusCode = 200;
-                        response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                        response.AddHeader("content-disposition", "attachment; filename=export.xlsx");
-                        response.BinaryWrite(stream.ToArray());
-                        response.Flush();
-                        response.Close();
-                        response.End();
+                                int i = InsertSharedStringItem(value, strings);
+                                Cell cell = InsertCellInWorksheet(chars[c], r, sheetPart);
+                                cell.CellValue = new CellValue(i.ToString());
+                                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                                c++;
+                            }
+                        }
                     }
+                    xls.Close();
+
+                    stream.Seek(0, SeekOrigin.Begin);
+
+                    HttpContext httpContext = HttpContext.Current;
+                    HttpResponse response = httpContext.Response;
+
+                    response.Clear();
+                    response.StatusCode = 200;
+                    response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    response.AddHeader("content-disposition", "attachment; filename=export.xlsx");
+                    response.BinaryWrite(stream.ToArray());
+                    response.Flush();
+                    response.Close();
+                    response.End();
                 }
             }
+            
         }
 
         private List<DBItem> ExportFromTable(string tableName, Dictionary<string, object> vars, Dictionary<string, object> InvertedInputVars, Message message)
@@ -222,15 +247,35 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
         private List<DBItem> ExportFromView(string viewName, Dictionary<string, object> vars)
         {
-            Tabloid view = _db.Tabloid(viewName);
+            Select viewSelect = _db.Select(viewName);
 
             List<DBItem> rows;
-            if (vars.ContainsKey("Filter")) {
-                string[] ids = ((string)vars["Filter"]).Split(',');
-                rows = view.Select().Where(m => m.Column("id").In(ids)).ToList();
+            if (vars.ContainsKey("Filter"))
+            {
+                object filter = vars["Filter"];
+                IEnumerable<int> ids;
+
+                if (filter is IEnumerable<object>)
+                    ids = (filter as List<object>).Select(f => Convert.ToInt32(f));
+                else if (filter is string)
+                    ids = (filter as string).Split(',').Select(f => Convert.ToInt32(f));
+                else if (filter is IEnumerable<int>)
+                    ids = (IEnumerable<int>)filter;
+                else
+                    throw new InvalidCastException("Filter is in unknown format");
+
+                rows = viewSelect.Where(m => m.Column("id").In(ids.Cast<object>())).ToList();
             }
-            else {
-                rows = view.Select().ToList();
+            else
+            {
+                if (vars.ContainsKey("OrderBy"))
+                {
+                    rows = viewSelect.Order(AscDesc.Asc, vars["OrderBy"].ToString()).ToList();
+                }
+                else
+                {
+                    rows = viewSelect.ToList();
+                }
             }
             return rows;
         }
@@ -239,8 +284,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             List<string> columns = new List<string>();
 
-            if (!vars.ContainsKey("Columns")) {
-                foreach (DBColumn col in _db.Table(tableName).Columns) {
+            if (!vars.ContainsKey("Columns"))
+            {
+                foreach (DBColumn col in _db.Table(tableName).Columns)
+                {
                     columns.Add(col.Name);
                 }
             }
@@ -254,8 +301,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             List<string> columns = new List<string>();
 
-            if (!vars.ContainsKey("Columns")) {
-                if(data.Count > 0) { 
+            if (!vars.ContainsKey("Columns"))
+            {
+                if (data.Count > 0)
+                {
                     columns = data.First().getColumnNames();
                 }
             }
@@ -268,15 +317,18 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         private int InsertSharedStringItem(string text, SharedStringTablePart shareStringPart)
         {
             // If the part does not contain a SharedStringTable, create one.
-            if (shareStringPart.SharedStringTable == null) {
+            if (shareStringPart.SharedStringTable == null)
+            {
                 shareStringPart.SharedStringTable = new SharedStringTable();
             }
 
             int i = 0;
 
             // Iterate through all the items in the SharedStringTable. If the text already exists, return its index.
-            foreach (SharedStringItem item in shareStringPart.SharedStringTable.Elements<SharedStringItem>()) {
-                if (item.InnerText == text) {
+            foreach (SharedStringItem item in shareStringPart.SharedStringTable.Elements<SharedStringItem>())
+            {
+                if (item.InnerText == text)
+                {
                     return i;
                 }
 
@@ -302,7 +354,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
             // Get a unique ID for the new sheet.
             uint sheetId = 1;
-            if (sheets.Elements<Sheet>().Count() > 0) {
+            if (sheets.Elements<Sheet>().Count() > 0)
+            {
                 sheetId = sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1;
             }
 
@@ -322,7 +375,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
             // If the worksheet does not contain a row with the specified row index, insert one.
             Row row;
-            if (sheetData.Elements<Row>().Where(r => r.RowIndex == rowIndex).Count() != 0) {
+            if (sheetData.Elements<Row>().Where(r => r.RowIndex == rowIndex).Count() != 0)
+            {
                 row = sheetData.Elements<Row>().Where(r => r.RowIndex == rowIndex).First();
             }
             else {
@@ -331,7 +385,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             }
 
             // If there is not a cell with the specified column name, insert one.  
-            if (row.Elements<Cell>().Where(c => c.CellReference.Value == columnName + rowIndex).Count() > 0) {
+            if (row.Elements<Cell>().Where(c => c.CellReference.Value == columnName + rowIndex).Count() > 0)
+            {
                 return row.Elements<Cell>().Where(c => c.CellReference.Value == cellReference).First();
             }
             else {

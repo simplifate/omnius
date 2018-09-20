@@ -8,6 +8,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.DB;
 using Newtonsoft.Json.Linq;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Entitron.Service
 {
@@ -47,7 +48,9 @@ namespace FSS.Omnius.Modules.Entitron.Service
             (application["DisplayName"] as JValue).Value = $"{applicationDisplayName} - importing";
 
             /// get context
-            _context = DBEntities.appInstance(DBEntities.instance.Applications.SingleOrDefault(a => a.Name == applicationName));
+            COREobject core = COREobject.i;
+            core.Application = core.Context.Applications.SingleOrDefault(a => a.Name == applicationName);
+            _context = COREobject.i.AppContext;
 
             /// if temp app exists
             Application tempApp = _context.Applications.SingleOrDefault(a => a.Name == tempAppName);

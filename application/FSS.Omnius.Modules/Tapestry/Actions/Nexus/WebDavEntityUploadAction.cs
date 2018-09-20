@@ -26,6 +26,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
+            COREobject core = COREobject.i;
+            DBEntities context = core.Context;
+
             string modelEntityName;
             if(!vars.ContainsKey(InputVar[0]))
             {
@@ -42,10 +45,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
             var files = HttpContext.Current.Request.Files;
             if (files == null)
                 return;
-
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            string appName = core.Application.Name;
-
+            
             string[] inputNames;
             if (vars.ContainsKey(InputVar[1]))
             {
@@ -68,7 +68,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
             else
                 newId = Convert.ToInt32(vars["__ModelId__"]);
             
-            var entities = DBEntities.appInstance(core.Application);
             foreach (string fileName in files)
             {
                 HttpPostedFile file = HttpContext.Current.Request.Files[fileName];
@@ -92,10 +91,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                 string name = vars.ContainsKey(InputVar[2]) ? vars[InputVar[2]].ToString() : string.Empty;
                 if (!string.IsNullOrWhiteSpace(name))
                 {
-                    fmd.WebDavServer = entities.WebDavServers.Single(a => a.Name == name);
+                    fmd.WebDavServer = context.WebDavServers.Single(a => a.Name == name);
                 }
                 else
-                    fmd.WebDavServer = entities.WebDavServers.First();
+                    fmd.WebDavServer = context.WebDavServers.First();
 
                 if (descriptionInputs != null && descriptionInputs.Length > 0)
                 {
@@ -113,8 +112,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                 fmd.ModelEntityName = modelEntityName;
                 fmd.Tag = fileName; //TODO: český čitelný název (systémová tabulka s klíčema a hodnotama?)
 
-                entities.FileMetadataRecords.Add(fmd);
-                entities.SaveChanges(); //ukládat po jednom souboru
+                context.FileMetadataRecords.Add(fmd);
+                context.SaveChanges(); //ukládat po jednom souboru
 
                 IFileSyncService service = new WebDavFileSyncService();
                 service.UploadFile(fmd);

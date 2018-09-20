@@ -4,7 +4,22 @@
 
     templates: {},
 
-    options: {},
+    options: {
+    'common': {
+        'commonOptions' : { 
+            name: 'csv options',
+            type: 'group',
+            groupItems: [{
+                label: 'csv value',
+                type: 'text',
+                attr: 'csv',
+                get: MBE.options.hasAttr,
+                set: MBE.options.setAttr
+            }]
+            }
+        },
+    },
+
 
     init: function () {
         this.loadGraphList();

@@ -20,7 +20,7 @@
         });
 
         var currentWs;
-        $(".adminAppTable .actions .btnValidate").on("click", function () {
+        $(".adminAppTable .actions .btnValidate, .adminAppTable .actions .btnRebuild").on("click", function () {
             CurrentAppId = $(this).parents("tr").attr("appId");
 
             if (typeof WebSocket === "undefined") {
@@ -30,8 +30,8 @@
 
             appBuildDialog.dialog("option", { title: "Actualization " + $(this).parents("tr").data("displayName") + " in progress "}).empty().dialog("open");
             var messagesById = {};
-
-            var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
+            
+            var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/' + ($(this).hasClass('btnValidate') ? 'BuildApp' : 'RebuildApp') +'/' + CurrentAppId);
             currentWs = ws;
             //var timeLast = Date.now();
             ws.onerror = function () {
@@ -39,100 +39,31 @@
             }
             ws.onmessage = function (event) {
                 if (currentWs !== ws) return;
+                var response = JSON.parse(event.data);
 
-                //console.log(Date.now() - timeLast, event.data);
-                //timeLast = Date.now();
-
-                var response;
-                try{
-                    response = JSON.parse(event.data);
-                } catch(e) {
-                    response = { message: event.data, type: "error" };
+                /// create
+                // section
+                if (!appBuildDialog.find('#buildDialog_' + response.section + '_').length) {
+                    appBuildDialog.append('<div id="buildDialog_' + response.section + '_" class="app-alert app-alert-' + response.type + '"><span></span></div>');
+                }
+                // subsection
+                if (!appBuildDialog.find('#buildDialog_' + response.section + '_' + response.subSection).length) {
+                    appBuildDialog.find('#buildDialog_' + response.section + '_').append('<div id="buildDialog_' + response.section + '_' + response.subSection + '" class="app-alert app-alert-odd"><span></span></div>');
                 }
 
-                var $message;
-                if (response.id && messagesById[response.id]) {
-                    $message = messagesById[response.id];
-                } else {
-                    var $parent = response.childOf ? messagesById[response.childOf] : appBuildDialog;
-                    $message = $("<div class='app-alert'><span>").data("messageId", response.id).appendTo($parent);
-                    if (!$parent.is("#app-build-dialog, .app-alert-odd")) $message.addClass("app-alert-odd");
-                    if (response.id) messagesById[response.id] = $message;
-                }
+                /// message
+                var section = appBuildDialog.find('#buildDialog_' + response.section + '_' + response.subSection);
+                section.find('> span').html(response.message);
+                section.removeClass('app-alert-success app-alert-info app-alert-warning app-alert-error app-alert-inprogress').addClass('app-alert-' + response.type);
 
-                if (response.message) $message.children("span").html(response.message);
-
-                $message.removeClass("app-alert-info app-alert-error app-alert-success app-alert-warning").addClass("app-alert-" + (response.type || "info"));
-
-                if (response.abort) $message.nextAll().remove();
-
-                if (response.done) {
-                    setTimeout(function () { appBuildDialog.dialog("close") }, 1000);
-                }
-
-                var childrenHeight = 0;
-                appBuildDialog.children().each(function () {
-                    childrenHeight += $(this).outerHeight();
-                });
-                appBuildDialog.css({ height: childrenHeight + 32 });
+                /// scroll
+                document.location.href = '#buildDialog_' + response.section + '_';
             };
-        });
-        $(".adminAppTable .actions .btnRebuild").on("click", function () {
-            CurrentAppId = $(this).parents("tr").attr("appId");
-
-            if (typeof WebSocket === "undefined") {
-                ShowAppNotification("Your browser does not support WebSockets, cannot continue!", "error");
-                return;
+            ws.onclose = function (event) {
+                if (event.code === 1006) {
+                    alert('unknown error');
+                }
             }
-
-            appBuildDialog.dialog("option", { title: "Actualization " + $(this).parents("tr").data("displayName") + " in progress " }).empty().dialog("open");
-            var messagesById = {};
-
-            var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/RebuildApp/' + CurrentAppId);
-            currentWs = ws;
-            //var timeLast = Date.now();
-            ws.onerror = function () {
-                $(document).trigger("ajaxError", {})
-            }
-            ws.onmessage = function (event) {
-                if (currentWs !== ws) return;
-
-                //console.log(Date.now() - timeLast, event.data);
-                //timeLast = Date.now();
-
-                var response;
-                try {
-                    response = JSON.parse(event.data);
-                } catch (e) {
-                    response = { message: event.data, type: "error" };
-                }
-
-                var $message;
-                if (response.id && messagesById[response.id]) {
-                    $message = messagesById[response.id];
-                } else {
-                    var $parent = response.childOf ? messagesById[response.childOf] : appBuildDialog;
-                    $message = $("<div class='app-alert'><span>").data("messageId", response.id).appendTo($parent);
-                    if (!$parent.is("#app-build-dialog, .app-alert-odd")) $message.addClass("app-alert-odd");
-                    if (response.id) messagesById[response.id] = $message;
-                }
-
-                if (response.message) $message.children("span").html(response.message);
-
-                $message.removeClass("app-alert-info app-alert-error app-alert-success app-alert-warning").addClass("app-alert-" + (response.type || "info"));
-
-                if (response.abort) $message.nextAll().remove();
-
-                if (response.done) {
-                    setTimeout(function () { appBuildDialog.dialog("close") }, 1000);
-                }
-
-                var childrenHeight = 0;
-                appBuildDialog.children().each(function () {
-                    childrenHeight += $(this).outerHeight();
-                });
-                appBuildDialog.css({ height: childrenHeight + 32 });
-            };
         });
         $(".adminAppTable .actions .btnProperties").on("click", function () {
             CurrentAppId = $(this).parents("tr").attr("appId");

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Globalization;
 using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.DB;
 using Newtonsoft.Json.Linq;
 
@@ -24,8 +25,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            DBConnection db = Modules.Entitron.Entitron.i;
+            COREobject core = COREobject.i;
+            DBConnection db = core.Entitron;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
             string tableName = vars.ContainsKey("TableName")
@@ -36,7 +37,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 : (int)vars["__ModelId__"];
 
             DBTable table = db.Table(tableName, searchInShared);
-
             DBItem row = table.SelectById(itemId);
             if (row == null)
                 throw new Exception($"Položka nebyla nalezena (Tabulka: {tableName}, Id: {itemId}, Akce: {Name} ({Id}))");
@@ -50,7 +50,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 else if (vars.ContainsKey(modelColumnName))
                 {
                     var inputValue = vars[modelColumnName];
-                    if (inputValue is Newtonsoft.Json.Linq.JValue)
+                    if (inputValue is JValue)
                         row[column.Name] = ((JValue)inputValue).Value;
                     else if (column.Type == DbType.DateTime && inputValue is string)
                     {

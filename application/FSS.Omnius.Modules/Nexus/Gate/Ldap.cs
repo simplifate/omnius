@@ -8,6 +8,7 @@ namespace FSS.Omnius.Nexus.Gate
     using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
+    using FSS.Omnius.Modules.CORE;
 
     public enum LdapUACFlags
     {
@@ -41,7 +42,7 @@ namespace FSS.Omnius.Nexus.Gate
 
         public Ldap()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             ldapList = e.Ldaps;
         }
 

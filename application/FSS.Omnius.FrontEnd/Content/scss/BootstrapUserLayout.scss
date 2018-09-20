@@ -1,38 +1,27 @@
 ﻿.mozaicBootstrapPage {
 
     .data-table {
+        background-image: url("/Content/Images/modalpreloader.gif");
+        background-position: center center;
+        background-repeat: no-repeat;
+        thead {
+            visibility: hidden;
+        }
+        tbody {
+            visibility: hidden;
+        }
         tfoot {
             display: table-header-group;
-
+            visibility: hidden;
             th input {
                 width: 100%;
             }
         }
-
         .actionIcons {
             white-space: nowrap;
-
             i.fa {
-                margin: 0px 5px;
+                margin: 0px 5px; 
                 cursor: pointer;
-            }
-        }
-    }
-
-    .event-calendar-filters {
-        padding: 1rem;
-        h4 {
-            margin-bottom: 1rem;
-        }
-
-        .panel {
-            margin-bottom: 1rem;
-
-            .panel-heading, .panel-body {
-                padding: 0.5rem;
-            }
-            .checkbox {
-                margin-bottom: 0.35rem;
             }
         }
     }

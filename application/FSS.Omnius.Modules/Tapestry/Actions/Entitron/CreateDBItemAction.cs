@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.DB;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -23,8 +24,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            DBConnection db = Modules.Entitron.Entitron.i;
+            COREobject core = COREobject.i;
+            DBConnection db = core.Entitron;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
 
@@ -42,15 +43,27 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     item[column.Name] = vars.ContainsKey(modelColumnName);
                 else if (vars.ContainsKey(modelColumnName))
                 {
-                    if (column.Type == DbType.DateTime && vars[modelColumnName] is string)
+                    if (column.Type == System.Data.DbType.DateTime)
                     {
-                        DateTime parsedDateTime = new DateTime();
-                        bool parseSuccessful = DateTime.TryParseExact((string)vars[modelColumnName],
-                            new string[] { "d.M.yyyy H:mm:ss", "d.M.yyyy", "H:mm:ss", "yyyy-MM-dd H:mm:ss", "yyyy-MM-dd" },
-                            CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDateTime);
+                        if (vars[modelColumnName] is DateTime)
+                            item[column.Name] = vars[modelColumnName];
+                        else
+                        {
+                            DateTime parsedDateTime = new DateTime();
+                            bool parseSuccessful = DateTime.TryParseExact((string)vars[modelColumnName],
+                                new string[] { "d.M.yyyy H:mm:ss", "d.M.yyyy", "H:mm:ss", "yyyy-MM-ddTHH:mm", "yyyy-MM-dd H:mm:ss", "dd.MM.yyyy HH:mm", "yyyy-MM-dd" },
+                                CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDateTime);
 
-                        if (parseSuccessful)
-                            item[column.Name] = parsedDateTime;
+                            if (parseSuccessful)
+                                item[column.Name] = parsedDateTime;
+                        }
+                    }
+                    else if (vars[modelColumnName] is JValue)
+                    {
+                        if (column.Type == System.Data.DbType.Int32)
+                            item[column.Name] = ((JValue)vars[modelColumnName]).ToObject<int>();
+                        if (column.Type == System.Data.DbType.Double)
+                            item[column.Name] = ((JValue)vars[modelColumnName]).ToObject<double>();
                     }
                     else
                         item[column.Name] = vars[modelColumnName];

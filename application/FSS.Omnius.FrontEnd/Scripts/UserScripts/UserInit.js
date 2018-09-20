@@ -1,7 +1,33 @@
 var ModalDialogArray = [];
 var mozaicFormValidator;
+var lastSubmenu = null;
+var contentAreaTop = parseInt($("#userContentArea").css("top"));
+
 
 $(function () {
+    currentBlockName = $("#currentBlockDisplayName").val();
+    $("#appMenu li").each(function (index, element) {
+        menuLi = $(element);
+        if (menuLi.text().trim() == currentBlockName)
+            menuLi.addClass("active");
+    });
+    $("#appMenu .menu-link").on("click", function () {
+        var clickedSubmenu = $(this).attr("data-menu-link-for");
+        if (lastSubmenu == clickedSubmenu){
+            $("#" + clickedSubmenu).toggle();
+        }
+        else {
+            $(".asMenuArea .submenu").hide();
+            $("#" + clickedSubmenu).show();
+        }
+        if ($(".submenu").is(":visible")) {
+            $("#userContentArea").css("top", $(".submenu").height() + contentAreaTop + "px" );
+        }
+        else {
+            $("#userContentArea").css("top", contentAreaTop + "px");
+        }
+        lastSubmenu = clickedSubmenu;
+    });
     $("#hideMenuIcon").on("click", function () {
         $(document.body).addClass("leftBarHidden");
     });

@@ -4,6 +4,7 @@ using FSS.Omnius.Modules.Compass.Service;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 using FSS.Omnius.Modules.Entitron.Entity;
 using System.Linq;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Compass
 {
@@ -20,7 +21,7 @@ namespace FSS.Omnius.Controllers.Compass
         {
             this.ViewBag.Search = search;
 
-            //DBEntities e = DBEntities.instance;
+            //DBEntities e = COREobject.i.Context;
             
             //e.FileMetadataRecords.Add(new FileMetadata() { AppFolderName = "sebela", Filename = "doc.pdf", WebDavServer = e.WebDavServers.First(), TimeChanged = DateTime.Now, TimeCreated = DateTime.Now });
             //e.SaveChanges();
@@ -38,14 +39,13 @@ namespace FSS.Omnius.Controllers.Compass
         [HttpPost]
         public ActionResult Index_App(string search)
         {
-            Modules.CORE.CORE core = HttpContext.GetCORE();
+            COREobject core = COREobject.i;
 
             this.ViewBag.Search = search;
-
-#warning AppName je null
+            
             this.ViewBag.AppName = core.Application.Name;
 
-            //DBEntities e = DBEntities.instance;
+            //DBEntities e = COREobject.i.Context;
 
             //e.FileMetadataRecords.Add(new FileMetadata() { AppFolderName = "sebela", Filename = "doc.pdf", WebDavServer = e.WebDavServers.First(), TimeChanged = DateTime.Now, TimeCreated = DateTime.Now });
             //e.SaveChanges();

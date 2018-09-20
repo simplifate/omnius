@@ -7,6 +7,7 @@ using System.IO;
 using FSS.Omnius.Modules.Compass.Service;
 using System.Collections.Generic;
 using System.Text;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Nexus.Service
 {
@@ -48,7 +49,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         public void DeleteFile(FileMetadata file)
         {
-            var context = DBEntities.instance;
+            var context = COREobject.i.Context;
             HttpWebRequest httpWebRequest = this.CreateWebRequest(file, "DELETE");
             context.CachedFiles.Remove(file.CachedCopy);
             context.FileMetadataRecords.Remove(file);
@@ -61,35 +62,31 @@ namespace FSS.Omnius.Modules.Nexus.Service
             int contentLength = int.Parse(response.GetResponseHeader("Content-Length"));
             using (Stream responseStream = response.GetResponseStream())
             {
-                //using (var context = DBEntities.instance)
-                using (var context = new DBEntities())
+                DBEntities context = COREobject.i.Context;
+                try
                 {
-
-                    try
-                    {
-                        var foundRec = context.FileMetadataRecords.Find(currentMetadataItem.Id);
-                        currentMetadataItem = foundRec;
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        //currentMetadataItem = currentMetadataItem;
-                        context.FileMetadataRecords.Add(currentMetadataItem);
-                    }
-                    if (currentMetadataItem.CachedCopy == null)
-                        currentMetadataItem.CachedCopy = new FileSyncCache();
-
-                    byte[] buffer = new byte[16 * 1024];
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        int read;
-                        while ((read = responseStream.Read(buffer, 0, buffer.Length)) > 0)
-                        {
-                            ms.Write(buffer, 0, read);
-                        }
-                        currentMetadataItem.CachedCopy.Blob = ms.ToArray();
-                    }
-                    context.SaveChanges();
+                    var foundRec = context.FileMetadataRecords.Find(currentMetadataItem.Id);
+                    currentMetadataItem = foundRec;
                 }
+                catch (InvalidOperationException)
+                {
+                    //currentMetadataItem = currentMetadataItem;
+                    context.FileMetadataRecords.Add(currentMetadataItem);
+                }
+                if (currentMetadataItem.CachedCopy == null)
+                    currentMetadataItem.CachedCopy = new FileSyncCache();
+
+                byte[] buffer = new byte[16 * 1024];
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    int read;
+                    while ((read = responseStream.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        ms.Write(buffer, 0, read);
+                    }
+                    currentMetadataItem.CachedCopy.Blob = ms.ToArray();
+                }
+                context.SaveChanges();
             }
         }
 
@@ -134,11 +131,9 @@ namespace FSS.Omnius.Modules.Nexus.Service
             httpWebRequest.GetResponse();
 
             Uri uploadUri = getUri(file.WebDavServer.UriBasePath, file);
-            using (var context = DBEntities.instance)
-            {
-                context.FileMetadataRecords.Find(file.Id).AbsoluteURL = uploadUri.AbsoluteUri;
-                context.SaveChanges();
-            }
+            DBEntities context = COREobject.i.Context;
+            context.FileMetadataRecords.Find(file.Id).AbsoluteURL = uploadUri.AbsoluteUri;
+            context.SaveChanges();
         }
 
         private Uri getUri(string baseUrl, FileMetadata fmd)

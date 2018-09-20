@@ -8,7 +8,6 @@
     onDragEnd: [],
     onDrop: [],
     onBeforeDrop: [],
-    onDragOver: [],
 
     isNavNodeDragging: false,
     isUICDragging: false,
@@ -143,12 +142,6 @@
             return false;
         }
 
-        if (!MBE.DnD.canBeDropped('onDragOver', target, [MBE.DnD.placeholder])) {
-            event.originalEvent.dataTransfer.effectAllowed = 'none';
-            MBE.DnD.placeholder.hide();
-            return false;
-        }
-
         if(!childs.length) { // cíl neobsahuje žádné další prvky - vložíme na začátek
             target.append(MBE.DnD.placeholder);
         }
@@ -177,18 +170,7 @@
         event.preventDefault();
         
         var target = $(this);
-        var dropTarget = target.is('.node-handle b') ? target.data('targetuic') :
-            (target.is('.node-handle') ? target.find('b').data('targetuic') :
-                target.find('> .node-handle b').data('targetuic'));
-
-        if (!target.hasClass('root')) {
-            if (!MBE.DnD.canBeDropped('onDragOver', $(dropTarget), [MBE.DnD.placeholder])) {
-                event.originalEvent.dataTransfer.effectAllowed = 'none';
-                MBE.DnD.placeholder.hide();
-                return false;
-            }
-        } 
-
+        
         var y = event.pageY;
         var top = target.offset().top;
         var height = target.outerHeight();
@@ -318,7 +300,7 @@
         $('[data-uic]', MBE.workspace).removeClass('empty-element');
         $('[data-uic]:not(input, select, hr, img, .caret, li.divider, .fa, .glyphicon):empty', MBE.workspace).addClass('empty-element');
 
-        MBE.workspace.find('*:not(iframe, script, style, svg, svg *)').contents().filter(function () {
+        MBE.workspace.find('*:not(iframe, script, style, svg, svg *, option)').contents().filter(function () {
             return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('mbe-text-node') && !$(this).parents('[data-uic="misc|custom-code"]').length;
         }).wrap('<span class="mbe-text-node" />');
 
@@ -339,16 +321,6 @@
             var f = MBE.DnD[eventType][i];
             f.apply(context, params ? params : []);
         }
-    },
-
-    canBeDropped: function (eventType, context, params) {
-        var result = true;
-        for (var i = 0; i < MBE.DnD[eventType].length; i++) {
-            var f = MBE.DnD[eventType][i];
-            var r = f.apply(context, params ? params : []);
-            result = result && r !== false;
-        }
-        return result;
     }
 }
 

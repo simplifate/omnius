@@ -24,7 +24,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            DBConnection db = Modules.Entitron.Entitron.i;
+            DBConnection db = COREobject.i.Entitron;
 
             string separator = vars.ContainsKey("Separator") ? vars["Separator"].ToString() : " ";
             int tableCount = vars.Keys.Where(k => k.StartsWith("TableName[") && k.EndsWith("]")).Count();

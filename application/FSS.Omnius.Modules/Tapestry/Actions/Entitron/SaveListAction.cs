@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            DBConnection db = Modules.Entitron.Entitron.i;
+            DBConnection db = COREobject.i.Entitron;
             string tableName = (string)vars["tableName"];
             IEnumerable<DBItem> list = (IEnumerable<DBItem>)vars["list"];
             DBTable targetTable = db.Table(tableName);

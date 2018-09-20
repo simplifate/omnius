@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity.Athena;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Athena
 {
@@ -15,17 +16,17 @@ namespace FSS.Omnius.Controllers.Athena
     {
         public AthenaController()
         {
-            ViewData["GraphCount"] = DBEntities.instance.Graph.Count().ToString();
+            ViewData["GraphCount"] = COREobject.i.Context.Graph.Count().ToString();
         }
 
         public ActionResult Index()
         {
-            return View("~/Views/Athena/Index.cshtml", DBEntities.instance.Graph);
+            return View("~/Views/Athena/Index.cshtml", COREobject.i.Context.Graph);
         }
 
         public ActionResult Create()
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
              
             ViewData["ApplicationList"] = e.Applications;
 
@@ -34,14 +35,14 @@ namespace FSS.Omnius.Controllers.Athena
 
         public ActionResult Edit(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             return View("~/Views/Athena/Form.cshtml", e.Graph.Single(g => g.Id == id));
         }
         
         [ValidateInput(false)]
         public ActionResult Save(Graph model)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
 
             Graph item = model.Id == null ? new Graph() : e.Graph.Single(g => g.Id == model.Id);
 
@@ -74,7 +75,7 @@ namespace FSS.Omnius.Controllers.Athena
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             var item = e.Graph.Single(g => g.Id == id);
 
             e.Graph.Remove(item);

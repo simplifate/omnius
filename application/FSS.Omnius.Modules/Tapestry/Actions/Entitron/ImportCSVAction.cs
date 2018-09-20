@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
     [EntitronRepository]
     public class ImportCSVAction : Action
     {
-        public override int Id => 1042;
+        public override int Id => 1043;
 
         public override int? ReverseActionId => null;
 
@@ -32,8 +32,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // init
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            DBConnection db = Modules.Entitron.Entitron.i;
+            COREobject core = COREobject.i;
+            DBConnection db = core.Entitron;
             bool isServerFile = vars.ContainsKey("isServerFile") ? (bool)vars["isServerFile"] : false;
 
             int countAdded = 0;

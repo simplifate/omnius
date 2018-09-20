@@ -7,6 +7,7 @@ using System;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Web.Helpers;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
@@ -16,7 +17,7 @@ namespace FSS.Omnius.Controllers.Hermes
         // GET: Placeholder list
         public ActionResult Index(int? mailboxId)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             IncomingEmail mailbox = e.IncomingEmail.Single(m => m.Id == mailboxId);
 
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
@@ -33,7 +34,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Create(int? mailboxId)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
 
             ViewData["mailboxId"] = mailboxId;
 
@@ -52,7 +53,7 @@ namespace FSS.Omnius.Controllers.Hermes
             if (mailboxId == null)
                 throw new Exception("Do?lo k neoèekávané chybì");
 
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             if (ModelState.IsValid)
             {
                 // Záznam ji. existuje - pouze upravujeme
@@ -85,7 +86,7 @@ namespace FSS.Omnius.Controllers.Hermes
         
         public ActionResult Edit(int? mailboxId, int? id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             IncomingEmailRule rule = e.IncomingEmail.Single(m => m.Id == mailboxId).IncomingEmailRule.Single(r => r.Id == id);
 
             List<SelectListItem> appList = new List<SelectListItem>();
@@ -101,7 +102,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Delete(int? mailboxId, int? id)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             IncomingEmailRule row = e.IncomingEmail.Single(t => t.Id == mailboxId).IncomingEmailRule.Single(r => r.Id == id);
 
             if (row == null)
@@ -119,7 +120,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult LoadBlockList(int appId, string selectedBlockName)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             TapestryDesignerMetablock root = e.TapestryDesignerMetablocks.Where(b => b.ParentAppId == appId && b.ParentMetablock_Id == null).FirstOrDefault();
 
             BlockJsonResponse blockList = LoadFromMetablock(root, 0, selectedBlockName);   
@@ -129,7 +130,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult LoadWorkflowList(string blockName, int appId, string selectedWorkflowName)
         {
-            DBEntities e = DBEntities.instance;
+            DBEntities e = COREobject.i.Context;
             List<SelectListItem> result = new List<SelectListItem>();
 
             TapestryDesignerBlock block = e.TapestryDesignerBlocks.Where(b => b.Name == blockName && b.ParentMetablock.ParentAppId == appId).SingleOrDefault();

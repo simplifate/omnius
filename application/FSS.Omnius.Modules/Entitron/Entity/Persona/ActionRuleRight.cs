@@ -8,15 +8,18 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
     public partial class ActionRuleRight : IEntity
     {
         [Key]
-        [Column(Order = 1)]
-        public int AppRoleId { get; set; }
-        [Key]
         [Column(Order = 2)]
+        [StringLength(50)]
+        public string AppRoleName { get; set; }
+        [Key]
+        [Column(Order = 1)]
+        public int ApplicationId { get; set; }
+        [Key]
+        [Column(Order = 3)]
         public int ActionRuleId { get; set; }
         
         public bool Executable { get; set; }
-
-        public virtual PersonaAppRole AppRole { get; set; }
+        
         public virtual ActionRule ActionRule { get; set; }
     }
 }

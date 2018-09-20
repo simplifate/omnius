@@ -11,37 +11,37 @@ namespace FSS.Omnius.Modules.Tapestry
     using Entitron;
     using Entitron.Entity;
     using Entitron.Entity.Tapestry;
-    using Entitron.Entity.Persona;
     using Service;
+    using FSS.Omnius.Modules.Watchtower;
 
     public class Tapestry : IModule
     {
-        private CORE _CORE;
+        private COREobject _CORE;
         private ActionResult _results;
 
-        public Tapestry(CORE core)
+        public Tapestry(COREobject core)
         {
             _CORE = core;
             _results = new ActionResult();
         }
 
-        public Tuple<Message, Block, Dictionary<string, object>> run(User user, Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId, Dictionary<string, object> blockDependencies = null, Dictionary<string, object> mergeVars = null)
+        public Tuple<Message, Block, Dictionary<string, object>> run(Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId, Dictionary<string, object> blockDependencies = null, Dictionary<string, object> mergeVars = null)
         {
-            Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc, deleteId, blockDependencies, mergeVars);
+            Tuple<ActionResult, Block> result = innerRun(block, buttonId, modelId, fc, deleteId, blockDependencies, mergeVars);
             var CrossBlockRegistry = result.Item1.OutputData.ContainsKey("CrossBlockRegistry")
                 ? (Dictionary<string, object>)result.Item1.OutputData["CrossBlockRegistry"] : new Dictionary<string, object>();
             return new Tuple<Message, Block, Dictionary<string, object>>(result.Item1.Message, result.Item2, CrossBlockRegistry);
         }
 
-        public JToken jsonRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId = -1)
+        public JToken jsonRun(Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId = -1)
         {
-            Message message = new Message();
-            return jsonRun(user, block, buttonId, modelId, fc, out message, deleteId);
+            Message message = new Message(COREobject.i);
+            return jsonRun(block, buttonId, modelId, fc, out message, deleteId);
         }
 
-        public JToken jsonRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc, out Message message, int deleteId = -1)
+        public JToken jsonRun(Block block, string buttonId, int modelId, NameValueCollection fc, out Message message, int deleteId = -1)
         {
-            Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc, deleteId);
+            Tuple<ActionResult, Block> result = innerRun(block, buttonId, modelId, fc, deleteId);
             JToken output = new JObject();
             foreach (KeyValuePair<string, object> pair in result.Item1.OutputData.Where(d => d.Key.StartsWith("__Result[")))
             {
@@ -65,6 +65,8 @@ namespace FSS.Omnius.Modules.Tapestry
                         output[key] = (int)pair.Value;
                     else if (pair.Value is double)
                         output[key] = (double)pair.Value;
+                    else if (pair.Value is JToken)
+                        output[key] = (JToken)pair.Value;
                     else if (pair.Value is Dictionary<string,object>)
                         output[key] = JToken.FromObject(pair.Value);
                     else
@@ -75,7 +77,7 @@ namespace FSS.Omnius.Modules.Tapestry
             return output;
         }
 
-        public Tuple<ActionResult, Block> innerRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId, Dictionary<string, object> blockDependencies = null, Dictionary<string, object> mergeVars = null)
+        public Tuple<ActionResult, Block> innerRun(Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId, Dictionary<string, object> blockDependencies = null, Dictionary<string, object> mergeVars = null)
         {
             // __CORE__
             // __Result[uicName]__
@@ -84,7 +86,6 @@ namespace FSS.Omnius.Modules.Tapestry
             // __TableName__
 
             // init action
-            _CORE.User = user;
             if (!_results.OutputData.ContainsKey("__CORE__"))
                 _results.OutputData.Add("__CORE__", _CORE);
             if (!string.IsNullOrWhiteSpace(block.ModelName))
@@ -109,22 +110,17 @@ namespace FSS.Omnius.Modules.Tapestry
                     _results.OutputData["__DeleteId__"] = deleteId;
             }
 
-            if (blockDependencies != null)
-            {
-                foreach (KeyValuePair<string, object> dependency in blockDependencies)
-                {
+            if (blockDependencies != null) {
+                foreach (KeyValuePair<string, object> dependency in blockDependencies) {
                     _results.OutputData.Add("__Dependency_" + dependency.Key + "__", dependency.Value);
                 }
             }
 
-            if (mergeVars != null) {
-                foreach (KeyValuePair<string, object> var in mergeVars) {
-                    if (!_results.OutputData.ContainsKey(var.Key)) {
-                        _results.OutputData.Add(var.Key, var.Value);
-                    }
-                    else {
-                        _results.OutputData[var.Key] = var.Value;
-                    }
+            if (mergeVars != null)
+            {
+                foreach (KeyValuePair<string, object> var in mergeVars)
+                {
+                    _results.OutputData[var.Key] = var.Value;
                 }
             }
 
@@ -175,9 +171,17 @@ namespace FSS.Omnius.Modules.Tapestry
             {
                 actionRule = nextRule;
                 prevActionRules.Add(nextRule);
-                actionRule.Run(_results);
-
-                if (_results.Type == ActionResultType.Error) {
+                try
+                {
+                    actionRule.Run(_results);
+                }
+                catch(Exception ex)
+                {
+                    _results.Message.Errors.Add(ex.Message);
+                    OmniusApplicationException.Log(ex, OmniusLogSource.Tapestry, _CORE.Application, _CORE.User);
+                    return new Tuple<ActionResult, Block>(_results, actionRule.TargetBlock);
+                }
+                if (_results.Type == MessageType.Error) {
                     return new Tuple<ActionResult, Block>(_results, actionRule.TargetBlock);
                     //return new Tuple<ActionResult, Block>(_results, Rollback(prevActionRules).SourceBlock);
                 }
@@ -211,10 +215,10 @@ namespace FSS.Omnius.Modules.Tapestry
             return GetActionRule(_CORE, block, results, buttonId);
         }
 
-        public static ActionRule GetActionRule(CORE core, Block block, ActionResult results, string buttonId = null)
+        public static ActionRule GetActionRule(COREobject core, Block block, ActionResult results, string buttonId = null)
         {
-            DBEntities masterContext = DBEntities.instance;
-            DBEntities context = DBEntities.appInstance(core.Application);
+            DBEntities masterContext = core.Context;
+            DBEntities context = core.AppContext;
 
             // filter by executor
             if (buttonId != null)
@@ -236,7 +240,7 @@ namespace FSS.Omnius.Modules.Tapestry
             string priorityString = context.Database.Connection.GetType().FullName == "MySql.Data.MySqlClient.MySqlConnection"
                 ? "IF(appr.Priority IS NOT NULL, appr.Priority, 999)"
                 : "ISNULL(appr.Priority, 999)";
-            List<ActionRule> ARs = context.ActionRules.SqlQuery($"SELECT *, {priorityString} Prior FROM Tapestry_ActionRule ar LEFT JOIN Persona_ActionRuleRights arr ON arr.ActionRuleId = ar.Id Left JOIN Persona_AppRoles appr ON appr.Id = arr.AppRoleId WHERE SourceBlockId = @p0 AND ExecutedBy {(buttonId == null ? "IS NULL" : "= @p1")} AND(arr.AppRoleId IS NULL OR appr.Name IN ({(roles.Any() ? string.Join(", ", roles.Select(s => $"N'{s}'")) : "''")})) ORDER BY Prior", block.Id, buttonId).ToList();
+            List<ActionRule> ARs = context.ActionRules.SqlQuery($"SELECT *, {priorityString} Prior FROM Tapestry_ActionRule ar LEFT JOIN Persona_ActionRuleRights arr ON arr.ActionRuleId = ar.Id Left JOIN Persona_AppRoles appr ON appr.Name = arr.AppRoleName AND appr.ApplicationId = arr.ApplicationId WHERE SourceBlockId = @p0 AND ExecutedBy {(buttonId == null ? "IS NULL" : "= @p1")} AND(arr.AppRoleName IS NULL OR appr.Name IN ({(roles.Any() ? string.Join(", ", roles.Select(s => $"N'{s}'")) : "''")})) ORDER BY Prior", block.Id, buttonId).ToList();
             if (!ARs.Any())
             {
                 results.Message.Errors.Add($"You are not authorized to Block [{block.Name}] with Executor[{buttonId}]");

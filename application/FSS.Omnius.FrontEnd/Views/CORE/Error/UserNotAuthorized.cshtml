@@ -9,8 +9,7 @@ else
 {
     ViewBag.Title = "You are not authorized";
     Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
-    <link href="/Content/css/ErrorCss.css" rel="stylesheet" />
+    <link href="~/Content/CssLibs/ErrorCss.css" rel="stylesheet" />
 
-    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.min.js")"></script>
-    <script>ShowAppNotification("You are not authorized", "error")</script>
+    <script>window.onload = function () { ShowAppNotification("You are not authorized", "error"); };</script>
 }

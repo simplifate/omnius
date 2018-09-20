@@ -3,9 +3,9 @@
     public class AjaxTransferDbRelation : IEntity
     {
         public int Type { get; set; }
-        public int LeftTable { get; set; }
-        public int LeftColumn { get; set; }
-        public int RightTable { get; set; }
-        public int RightColumn { get; set; }
+        public int SourceTable { get; set; }
+        public int SourceColumn { get; set; }
+        public int TargetTable { get; set; }
+        public int TargetColumn { get; set; }
     }
 }

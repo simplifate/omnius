@@ -16,6 +16,14 @@
   src: url(/Content/Fonts/MYRIADPRO-REGULAR.OTF) format("opentype"); }
 
 @font-face {
+  font-family: "Feather";
+  src: url(/Content/Fonts/feather-webfont.ttf) format("truetype"); }
+
+@font-face {
+  font-family: "Lato";
+  src: url(/Content/Fonts/LatoLatin-Regular.ttf) format("truetype"); }
+
+@font-face {
   font-family: 'Glyphicons Halflings';
   src: url("fonts/glyphicons-halflings-regular.eot");
   src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
@@ -47,6 +55,11 @@
   font-weight: 400;
   src: url(/Content/Fonts/innogy/Innogy-Bold.eot?v=1.1.3);
   src: url(/Content/Fonts/innogy/Innogy-Bold.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/Fonts/innogy/Innogy-Bold.woff?v=1.1.3) format("woff"), url(/Content/Fonts/innogy/Innogy-Bold.ttf?v=1.1.3) format("truetype"), url(/Content/Fonts/innogy/Innogy-Bold.svg#Innogy-Bold?v=1.1.3) format("svg"); }
+
+@font-face {
+  font-family: 'Nexa';
+  src: url("/Content/Fonts/NexaFreeBoldwebfont.eot");
+  src: local("NexaFreeBoldwebfont"), url("/Content/Fonts/NexaFreeBoldwebfont.woff") format("woff"), url("/Content/Fonts/NexaFreeBoldwebfont.ttf") format("truetype"); }
 
 @font-face {
   font-family: "RweHeadlineRegular";
@@ -65,6 +78,14 @@
   src: url(/Content/Fonts/MYRIADPRO-REGULAR.OTF) format("opentype"); }
 
 @font-face {
+  font-family: "Feather";
+  src: url(/Content/Fonts/feather-webfont.ttf) format("truetype"); }
+
+@font-face {
+  font-family: "Lato";
+  src: url(/Content/Fonts/LatoLatin-Regular.ttf) format("truetype"); }
+
+@font-face {
   font-family: 'Glyphicons Halflings';
   src: url("fonts/glyphicons-halflings-regular.eot");
   src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
@@ -96,6 +117,11 @@
   font-weight: 400;
   src: url(/Content/Fonts/innogy/Innogy-Bold.eot?v=1.1.3);
   src: url(/Content/Fonts/innogy/Innogy-Bold.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/Fonts/innogy/Innogy-Bold.woff?v=1.1.3) format("woff"), url(/Content/Fonts/innogy/Innogy-Bold.ttf?v=1.1.3) format("truetype"), url(/Content/Fonts/innogy/Innogy-Bold.svg#Innogy-Bold?v=1.1.3) format("svg"); }
+
+@font-face {
+  font-family: 'Nexa';
+  src: url("/Content/Fonts/NexaFreeBoldwebfont.eot");
+  src: local("NexaFreeBoldwebfont"), url("/Content/Fonts/NexaFreeBoldwebfont.woff") format("woff"), url("/Content/Fonts/NexaFreeBoldwebfont.ttf") format("truetype"); }
 
 #userTopBar {
   -webkit-touch-callout: none;
@@ -121,7 +147,7 @@
     color: black;
     cursor: pointer; }
     #userTopBar .icon:hover {
-      color: #f3962c; }
+      color: #4c8196; }
   #userTopBar .activeIcon {
     background-color: #f4f4f4;
     cursor: default; }
@@ -181,7 +207,7 @@
       cursor: pointer;
       color: black; }
       #userTopBar .userBox .notificationIcon:hover, #userTopBar .userBoxMinimized .notificationIcon:hover {
-        color: #f3962c; }
+        color: #4c8196; }
   #userTopBar .searchBoxMinimised {
     display: none; }
   #userTopBar .searchBox, #userTopBar .searchBoxMinimized {
@@ -211,7 +237,7 @@
       cursor: pointer;
       color: black; }
       #userTopBar .searchBox .searchIcon:hover, #userTopBar .searchBoxMinimized .searchIcon:hover {
-        color: #f3962c; }
+        color: #4c8196; }
 
 #userLeftBar {
   -webkit-touch-callout: none;
@@ -260,7 +286,7 @@
   #userLeftBar #showMenuIcon, #userLeftBar #hideMenuIcon {
     position: absolute;
     font-size: 28px;
-    color: #f3962c;
+    color: #4c8196;
     right: 15px;
     top: 30px;
     cursor: pointer; }
@@ -291,7 +317,7 @@
         white-space: nowrap;
         overflow: hidden; }
     #userLeftBar .appList .appListItem:hover {
-      background-color: #f3962c; }
+      background-color: #4c8196; }
       #userLeftBar .appList .appListItem:hover .appName, #userLeftBar .appList .appListItem:hover .icon {
         color: white !important; }
   #userLeftBar .infoBox {
@@ -340,7 +366,7 @@
           height: 24px;
           cursor: pointer; }
         #userLeftBar #appMenu > li ul li:hover {
-          background-color: #f3962c; }
+          background-color: #4c8196; }
           #userLeftBar #appMenu > li ul li:hover a {
             color: white !important; }
     #userLeftBar #appMenu a {
@@ -350,7 +376,7 @@
       display: block; }
     #userLeftBar #appMenu a:hover {
       text-decoration: none;
-      color: #f3962c; }
+      color: #4c8196; }
 
 body.userLayout {
   background-color: #e9e7e7 !important; }
@@ -513,7 +539,7 @@ body.userLayout #brandBar {
     position: absolute; }
   .mozaicForm .button-simple {
     color: white;
-    background-color: #f3962c;
+    background-color: #4c8196;
     border: none;
     padding: 0px 15px;
     border-radius: 300px;
@@ -820,7 +846,7 @@ body.userLayout #brandBar {
       padding-bottom: 3px;
       padding-left: 8px;
       padding-right: 8px;
-      background-color: #f3962c;
+      background-color: #4c8196;
       color: white;
       font-family: Innogy-Regular;
       font-size: 18px; }
@@ -1007,7 +1033,7 @@ table.dataTable {
 body.userLayout a {
   color: black; }
   body.userLayout a:hover {
-    color: #f3962c; }
+    color: #4c8196; }
 
 body.userLayout input, body.userLayout select {
   color: black; }
@@ -1040,7 +1066,7 @@ body.userLayout .dataTables_wrapper .dataTables_paginate .paginate_button {
   body.userLayout .dataTables_wrapper .dataTables_paginate .paginate_button.current {
     color: white !important;
     border: none !important;
-    background: #f3962c !important; }
+    background: #4c8196 !important; }
   body.userLayout .dataTables_wrapper .dataTables_paginate .paginate_button.previous, body.userLayout .dataTables_wrapper .dataTables_paginate .paginate_button.next {
     background: transparent !important;
     color: black !important;
@@ -1052,27 +1078,24 @@ body.userLayout .data-table thead tr {
     vertical-align: middle;
     color: white; }
 
-.mozaicBootstrapPage .data-table tfoot {
-  display: table-header-group; }
-  .mozaicBootstrapPage .data-table tfoot th input {
-    width: 100%; }
-
-.mozaicBootstrapPage .data-table .actionIcons {
-  white-space: nowrap; }
-  .mozaicBootstrapPage .data-table .actionIcons i.fa {
-    margin: 0px 5px;
-    cursor: pointer; }
-
-.mozaicBootstrapPage .event-calendar-filters {
-  padding: 1rem; }
-  .mozaicBootstrapPage .event-calendar-filters h4 {
-    margin-bottom: 1rem; }
-  .mozaicBootstrapPage .event-calendar-filters .panel {
-    margin-bottom: 1rem; }
-    .mozaicBootstrapPage .event-calendar-filters .panel .panel-heading, .mozaicBootstrapPage .event-calendar-filters .panel .panel-body {
-      padding: 0.5rem; }
-    .mozaicBootstrapPage .event-calendar-filters .panel .checkbox {
-      margin-bottom: 0.35rem; }
+.mozaicBootstrapPage .data-table {
+  background-image: url("/Content/Images/modalpreloader.gif");
+  background-position: center center;
+  background-repeat: no-repeat; }
+  .mozaicBootstrapPage .data-table thead {
+    visibility: hidden; }
+  .mozaicBootstrapPage .data-table tbody {
+    visibility: hidden; }
+  .mozaicBootstrapPage .data-table tfoot {
+    display: table-header-group;
+    visibility: hidden; }
+    .mozaicBootstrapPage .data-table tfoot th input {
+      width: 100%; }
+  .mozaicBootstrapPage .data-table .actionIcons {
+    white-space: nowrap; }
+    .mozaicBootstrapPage .data-table .actionIcons i.fa {
+      margin: 0px 5px;
+      cursor: pointer; }
 
 body.Leaderboard #userTopBar {
   display: none; }
@@ -1118,6 +1141,14 @@ body.XMU.Overview {
   src: url(/Content/Fonts/MYRIADPRO-REGULAR.OTF) format("opentype"); }
 
 @font-face {
+  font-family: "Feather";
+  src: url(/Content/Fonts/feather-webfont.ttf) format("truetype"); }
+
+@font-face {
+  font-family: "Lato";
+  src: url(/Content/Fonts/LatoLatin-Regular.ttf) format("truetype"); }
+
+@font-face {
   font-family: 'Glyphicons Halflings';
   src: url("fonts/glyphicons-halflings-regular.eot");
   src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
@@ -1149,6 +1180,11 @@ body.XMU.Overview {
   font-weight: 400;
   src: url(/Content/Fonts/innogy/Innogy-Bold.eot?v=1.1.3);
   src: url(/Content/Fonts/innogy/Innogy-Bold.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/Fonts/innogy/Innogy-Bold.woff?v=1.1.3) format("woff"), url(/Content/Fonts/innogy/Innogy-Bold.ttf?v=1.1.3) format("truetype"), url(/Content/Fonts/innogy/Innogy-Bold.svg#Innogy-Bold?v=1.1.3) format("svg"); }
+
+@font-face {
+  font-family: 'Nexa';
+  src: url("/Content/Fonts/NexaFreeBoldwebfont.eot");
+  src: local("NexaFreeBoldwebfont"), url("/Content/Fonts/NexaFreeBoldwebfont.woff") format("woff"), url("/Content/Fonts/NexaFreeBoldwebfont.ttf") format("truetype"); }
 
 body.appManagerModule {
   position: fixed;
@@ -2479,13 +2515,41 @@ body.mozaicEditorBody {
     content: "empty list group item"; }
   body.mozaicEditorBody [data-uic="functions|foreach"].empty-element:before {
     content: "empty foreach"; }
-  body.mozaicEditorBody [data-uic="ui|event-calendar"].empty-element:before {
-    content: "Event calendar"; }
-  body.mozaicEditorBody div[data-uic="ui|event-calendar"] {
-    border: 1px solid #d39212; }
-    body.mozaicEditorBody div[data-uic="ui|event-calendar"]:before {
-      color: #d39212;
-      background: #fcffca; }
+  body.mozaicEditorBody label.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px; }
+    body.mozaicEditorBody label.switch input {
+      display: none; }
+    body.mozaicEditorBody label.switch span.switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s; }
+      body.mozaicEditorBody label.switch span.switch-slider.empty-element:before, body.mozaicEditorBody label.switch span.switch-slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s; }
+    body.mozaicEditorBody label.switch input:checked + .switch-slider {
+      background-color: #2196F3; }
+    body.mozaicEditorBody label.switch input:focus + .switch-slider {
+      box-shadow: 0 0 1px #2196F3; }
+    body.mozaicEditorBody label.switch input:checked + .switch-slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px); }
   body.mozaicEditorBody div[data-uic="misc|embed"] .embed-code:empty:before {
     display: block;
     background: #efefef;

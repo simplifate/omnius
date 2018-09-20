@@ -6,6 +6,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
+    using FSS.Omnius.Modules.CORE;
+    using FSS.Omnius.Modules.Persona;
     using Master;
 
     [Table("Persona_Users")]
@@ -16,6 +18,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             ADgroup_Users = new HashSet<ADgroup_User>();
             UsersApplications = new HashSet<UsersApplications>();
             SecurityStamp = "b532ea85-8d2e-4ffb-8c64-86e8bfe363d7";
+            _auth = MasterAuth.CreateAnyAuth(this);
         }
         
         [Required]
@@ -35,8 +38,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public string Address { get; set; }
         [StringLength(100)]
         public string Job { get; set; }
-        public bool isLocalUser { get; set; }
-        public int? LocaleId { get; set; }
+        public int AuthTypeId { get; set; }
+        public Locale Locale { get; set; }
         public DateTime CurrentLogin { get; set; }
         public DateTime LastLogin { get; set; }
         public DateTime? LastLogout { get; set; }

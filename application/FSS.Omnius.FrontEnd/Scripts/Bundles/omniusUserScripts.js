@@ -7,8 +7,7 @@ function AjaxRunAndReplace(url, uic_name, modelId)
         error: console.error.bind(console),
         success: function (data) {
             $.each(data, function (name, value) {
-                if ($('select#uic_' + name).size() > 0)
-                {
+                if ($('select#uic_' + name).size() > 0) {
                     var html = '';
                     $.each(value, function (i, item) {
                         html += '<option value="' + item['id'] + '">' + item['Name'] + '</option>';
@@ -16,8 +15,7 @@ function AjaxRunAndReplace(url, uic_name, modelId)
 
                     $('select#uic_' + name).html(html);
                 }
-                else if ($('input#uic_' + name).size() > 0)
-                {
+                else if ($('input#uic_' + name).size() > 0) {
                     $('input#uic_' + name).val(value);
                 }
             });
@@ -30,6 +28,412 @@ $('body').on('click', '.runAjax', function (e) {
 });
 
 $(function () {
+    if ($("#currentBlockName").val() == "Home") {
+        function refresh() {
+            $.ajax({
+                dataType: "html",
+                method: "POST",
+                url: window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/api/run/Grid/Home?button=refresh', //kvůli ignorování selectedProfile v url při autorefreshi
+                success: function (result) {
+                    var data = JSON.parse(result).Data;
+                    // Miner status
+                    var total = data.MinerStatus[0].y + data.MinerStatus[1].y + data.MinerStatus[2].y;
+                    var totalHash = Math.round((data.MinerStatus[0].x + data.MinerStatus[1].x) * 100) / 100;
+                    var totalHash_XMR = Math.round((data.MinerStatus[0].x2 + data.MinerStatus[1].x2) * 100) / 100;
+
+                    rigstatusdonut_graph_chart.series[0].setData(data.MinerStatus, true);
+                    $('#numberOfWarnings').html('You have ' + data.MinerStatus[1].y + ' warnings to explore.');
+                    $('#numberOfRigs').html('Rigs in total ' + total);
+                    $('#sys_hash').html(totalHash + ' GH/s');
+                    $('#sys_hash_xmr').html(totalHash_XMR + ' kH/s');
+
+                    $('#online_percent').html(Math.round((data.MinerStatus[0].y / total) * 10000) / 100 + '%');
+                    $('#online_rigs').html(data.MinerStatus[0].y + ' rigs');
+                    $('#online_ghs').html(data.MinerStatus[0].x + ' GH/s');
+                    $('#online_ghs_xmr').html(data.MinerStatus[0].x2 + ' kH/s');
+
+                    $('#warning_percent').html(Math.round((data.MinerStatus[1].y / total) * 10000) / 100 + '%');
+                    $('#warning_rigs').html(data.MinerStatus[1].y + ' rigs');
+                    $('#warning_ghs').html(data.MinerStatus[1].x + ' GH/s');
+                    $('#warning_ghs_xmr').html(data.MinerStatus[1].x2 + ' kH/s');
+
+                    $('#offline_percent').html(Math.round((data.MinerStatus[2].y / total) * 10000) / 100 + '%');
+                    $('#offline_rigs').html(data.MinerStatus[2].y + ' rigs');
+                    //$('#offline_ghs').html(data.MinerStatus[2].x + ' MH/s');
+
+                    var warningModal = $('#modalWarnings div.modal-dialog div.modal-content div.modal-body ul');
+                    warningModal.html('');
+                    $.each(data.RigsWarningMessages, function (index, item) {
+                        warningModal.append('<li><span>' + item + '</span></li>');
+                    });
+
+                    // Rig Status history
+                    var id = $('body').data('LastId-RigStatusHistory');
+                    if (typeof id === 'undefined' || id != data.RigStatusHistory.id) {
+                        $('body').data('LastId-RigStatusHistory', data.RigStatusHistory.id);
+
+                        testrigstatus_graph_chart.series[0].addPoint([data.RigStatusHistory.id, data.RigStatusHistory.value[0]], true, true);
+                        testrigstatus_graph_chart.series[1].addPoint([data.RigStatusHistory.id, data.RigStatusHistory.value[1]], true, true);
+                    }
+
+                    // Exp vs Real
+                    id = $('body').data('LastId-ExpVsReal');
+                    if (typeof id === 'undefined' || id != data.ExpVsReal.id) {
+                        $('body').data('LastId-ExpVsReal', data.ExpVsReal.id);
+
+                        hc_actual_yield_graph_chart.series[0].addPoint([data.ExpVsReal.id, data.ExpVsReal.value[0]], true, true);
+                        hc_actual_yield_graph_chart.series[2].addPoint([data.ExpVsReal.id, data.ExpVsReal.value[1]], true, true);
+                    }
+
+                    // consum
+                    hc_rigs_consumption_graph_gauge.series[0].setData([data.Consum.rigs], true);
+                    hc_aircondition_consumption_graph_gauge.series[0].setData([data.Consum.air], true);
+                    id = $('body').data('LastId-consum');
+                    if (typeof id === 'undefined' || id != data.Consum.history.id) {
+                        $('body').data('LastId-consum', data.Consum.history.id);
+
+                        hc_modbus_history_graph_chart.series[0].addPoint([data.Consum.history.id, data.Consum.history.value[0]], true, true);
+                        hc_modbus_history_graph_chart.series[1].addPoint([data.Consum.history.id, data.Consum.history.value[1]], true, true);
+                    }
+
+                    // earnings
+                    $('#earnings_amount').html(data.Earnings.day[0]);
+                    $('#yield_amount').html(data.Earnings.day[1]);
+                    $('#cost_amount').html(data.Earnings.day[2]);
+                    $('#elec_amount').html(data.Earnings.day[3]);
+
+                    $('#earnings_amount_weekly').html(data.Earnings.week[0]);
+                    $('#yield_amount_weekly').html(data.Earnings.week[1]);
+                    $('#cost_amount_weekly').html(data.Earnings.week[2]);
+                    $('#elec_amount_weekly').html(data.Earnings.week[3]);
+
+                    $('#earnings_amount_monthly').html(data.Earnings.month[0]);
+                    $('#yield_amount_monthly').html(data.Earnings.month[1]);
+                    $('#cost_amount_monthly').html(data.Earnings.month[2]);
+                    $('#elec_amount_monthly').html(data.Earnings.month[3]);
+
+                    //// last transaction
+                    transactionLine = function (item) {
+                        return '<tr><td style="display:none">' + item.hidden_id + '</td><td style="display:none">' + item.hidden_add + '</td><td style="display:none">' + item.hidden_date + '</td><td>' + item.currency + '</td><td>' + item.amount + '</td><td>' + item.wallet + '</td><td>' + item.date + '</td><td>' + item.time + '</td></tr>';
+                    };
+                    var ltTable = $('#transaction_history_table tbody');
+                    ltTable.html('');
+                    $.each(data.LastTransaction, function (index, item) {
+                        ltTable.append(transactionLine(item));
+                    });
+
+                    //modalHistory = $('#transaction_history_table_more tbody');
+                    //lastModalAdd = $('tr:first td:nth-child(2)', modalHistory).html();
+                    //itemFound = false;
+                    //$.each(data.LastTransaction.reverse(), function (index, item) {
+                    //    if (itemFound) {
+                    //        modalHistory.prepend(transactionLine(item));
+                    //    }
+                    //    else {
+                    //        if (item.hidden_add == lastModalAdd) { // chybná detekce!!!
+                    //            itemFound = true;
+                    //        }
+                    //    }
+                    //});
+                    //// if !itemFound -> list needs to refresh
+
+                    // Total income
+                    id = $('body').data('LastId-totalIncome');
+                    if (typeof id === 'undefined' || id != data.TotalIncome.id) {
+                        $('body').data('LastId-totalIncome', data.TotalIncome.id);
+
+                        totalbalancehistory_graph_chart.series[0].addPoint([data.TotalIncome.id, data.TotalIncome.value], true, true);
+                    }
+
+                    //// exchange rate
+                    $('#bitcoin_value').html('$' + data.ExchangeRates.btc.value);
+                    $('#bitcoin_change').html('$' + data.ExchangeRates.btc.change);
+                    $('#bitcoin_change_percent').html('&nbsp; (' + data.ExchangeRates.btc.percent + '%)');
+                    if (data.ExchangeRates.btc.change < 0)
+                        $('#bitcoin_change').css('color', 'red');
+                    else
+                        $('#bitcoin_change').css('color', 'green');
+
+                    $('#ethereum_value').html('$' + data.ExchangeRates.eth.value);
+                    $('#ethereum_change').html('$' + data.ExchangeRates.eth.change);
+                    $('#ethereum_change_percent').html('&nbsp; (' + data.ExchangeRates.eth.percent + '%)');
+                    if (data.ExchangeRates.eth.change < 0)
+                        $('#ethereum_change').css('color', 'red');
+                    else
+                        $('#ethereum_change').css('color', 'green');
+
+                    $('#zcash_value').html('$' + data.ExchangeRates.zec.value);
+                    $('#zcash_change').html('$' + data.ExchangeRates.zec.change);
+                    $('#zcash_change_percent').html('&nbsp; (' + data.ExchangeRates.zec.percent + '%)');
+                    if (data.ExchangeRates.zec.change < 0)
+                        $('#zcash_change').css('color', 'red');
+                    else
+                        $('#zcash_change').css('color', 'green');
+
+                    $('#dcr_value').html('$' + data.ExchangeRates.dcr.value);
+                    $('#dcr_change').html('$' + data.ExchangeRates.dcr.change);
+                    $('#dcr_change_percent').html('&nbsp; (' + data.ExchangeRates.dcr.percent + '%)');
+                    if (data.ExchangeRates.dcr.change < 0)
+                        $('#dcr_change').css('color', 'red');
+                    else
+                        $('#dcr_change').css('color', 'green');
+
+                    $('#ltc_value').html('$' + data.ExchangeRates.ltc.value);
+                    $('#ltc_change').html('$' + data.ExchangeRates.ltc.change);
+                    $('#ltc_change_percent').html('&nbsp; (' + data.ExchangeRates.ltc.percent + '%)');
+                    if (data.ExchangeRates.ltc.change < 0)
+                        $('#ltc_change').css('color', 'red');
+                    else
+                        $('#ltc_change').css('color', 'green');
+
+                    $('#xmr_value').html('$' + data.ExchangeRates.xmr.value);
+                    $('#xmr_change').html('$' + data.ExchangeRates.xmr.change);
+                    $('#xmr_change_percent').html('&nbsp; (' + data.ExchangeRates.xmr.percent + '%)');
+                    if (data.ExchangeRates.xmr.change < 0)
+                        $('#xmr_change').css('color', 'red');
+                    else
+                        $('#xmr_change').css('color', 'green');
+
+                    $('#music_value').html('$' + data.ExchangeRates.music.value);
+                    $('#music_change').html('$' + data.ExchangeRates.music.change);
+                    $('#music_change_percent').html('&nbsp; (' + data.ExchangeRates.music.percent + '%)');
+                    if (data.ExchangeRates.music.change < 0)
+                        $('#music_change').css('color', 'red');
+                    else
+                        $('#music_change').css('color', 'green');
+                }
+            });
+        }
+        setInterval(refresh, 20000);
+
+
+        //panel state saving
+        $("body").on("click", "div.panel-heading", function () {
+            //get the id of clicked 
+
+            var panelId = $(this).parent().find(".panel-body").attr("id");
+            var panelCollapsed = false;
+            if($(this).hasClass('collapsed')){
+                panelCollapsed = true;
+            }
+            //on each panel header click we show or hide the panel
+            //and then call AJAX to the server to save state of panels
+
+            //AJAX
+            $.ajax({
+                type: "POST",
+                url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=total_yield",
+                data: {"PanelName" : panelId,"TargetState": panelCollapsed},
+                error: console.error.bind(console),
+                complete: function () {
+                },
+                success: function (data) {
+                    
+                }
+            });
+            //End AJAX
+        });
+
+
+        //end 
+        if ($('#ethereum_change').text()[1] == "-") {
+            $('#ethereum_change').css('color', 'red');
+        } else {
+            $('#ethereum_change').css('color', 'green');
+
+        }
+        if ($('#bitcoin_change').text()[1] == "-") {
+            $('#bitcoin_change').css('color', 'red');
+        } else {
+            $('#bitcoin_change').css('color', 'green');
+
+        }
+        if ($('#zcash_change').text()[1] == "-") {
+            $('#zcash_change').css('color', 'red');
+        } else {
+            $('#zcash_change').css('color', 'green');
+
+        }
+        if ($('#dcr_change').text()[1] == "-") {
+            $('#dcr_change').css('color', 'red');
+        } else {
+            $('#dcr_change').css('color', 'green');
+
+        }
+        if ($('#ltc_change').text()[1] == "-") {
+            $('#ltc_change').css('color', 'red');
+        } else {
+            $('#ltc_change').css('color', 'green');
+
+        }
+        if ($('#xmr_change').text()[1] == "-") {
+            $('#xmr_change').css('color', 'red');
+        } else {
+            $('#xmr_change').css('color', 'green');
+
+        }
+        if ($('#music_change').text()[1] == "-") {
+            $('#music_change').css('color', 'red');
+        } else {
+            $('#music_change').css('color', 'green');
+
+        }
+    }
+
+    if ($("#currentBlockName").val() == "ServiceStatus") {
+        //Reload panels
+        function refresh() {
+            $.ajax({
+                dataType: "html",
+                url: window.location.href, //kvůli ignorování selectedProfile v url při autorefreshi
+                success: function (response) {
+                    var x = $(response)
+                    //$("#bodyMiningHistory").html(x.find("#bodyMiningHistory").html());
+                    $("#performance_div").html(x.find("#performance_div").html());
+                    $("#divCam").html(x.find("#divCam").html());
+                    $("#containerConsump").html(x.find("#containerConsump").html());
+                    $("#containerWarnings").html(x.find("#containerWarnings").html());
+                    //$("#divRigPlace").html(x.find("#divRigPlace").html());
+                    //$("#divRigEdit").html(x.find("#divRigEdit").html()); 
+                    setTimeout(
+                        function () {
+                            refresh()
+                        }, 10000);
+                }
+            });
+        }
+
+        refresh();
+        //setInterval(refresh, 20000);
+        //
+        $(document).on('click', '.rig-placement td', function () {
+            var RigId = $(this).data('RigId');
+            if (!RigId) {
+                return false;
+            }
+
+            $("#header").html("");
+            $("#gpuTempGraphModal").html("");
+            $("#gpu-table").html("");
+            $("#messages").html("");
+            $("#MessageWindow").html("");
+            $("#preloader").css("display", "block");
+            $.ajax({
+                dataType: "html",
+                url: "/Grid/RigHistoryMessages?modelId=" + RigId,
+                success: function (response) {
+                    var x = $(response)
+                    $("#preloader").css("display", "none");
+                    $("#header").html(x.find("#HeadingText").html());
+                    $("#gpuTempGraphModal").html(x.find("#gpuTempGraph").html());
+                    $("#gpu-table").html(x.find("#gpuStatus").html());
+                    $("#messages").html(x.find("#Messages").html());
+                    $("#MessageWindow").html(x.find("#MessageWindow").html());
+                    $("#RigIpForm").val($("#header").find("#Rig").text());
+                    $("#RigIpForm").data('RigId', RigId);
+                    $(".Gpu_table .status_column #status_span").each(function () {
+                        var status = $(this).text();
+                        if (status == "UP") {
+                            $(this).hide().parent().children("div.empty-element").css({ "background-color": "green", "display": "block" });
+                        }
+                        else if (status == "DOWN") {
+                            $(this).hide().parent().children("div.empty-element").css({ "background-color": "red", "display": "block" });
+                        }
+                    });
+                }
+            });
+        });
+
+        var reload = function () {
+            var RigId = $("#MessageWindow").find("#RigIpForm").data('RigId');
+            $("#header").html("");
+            $("#gpuTempGraphModal").html("");
+            $("#gpu-table").html("");
+            $("#messages").html("");
+            $("#MessageWindow").html("");
+            $("#preloader").css("display", "block");
+            $.ajax({
+                dataType: "html",
+                url: "/Grid/RigHistoryMessages?modelId=" + RigId,
+                success: function (response) {
+                    var x = $(response)
+                    $("#preloader").css("display", "none");
+                    $("#header").html(x.find("#HeadingText").html());
+                    $("#gpuTempGraphModal").html(x.find("#gpuTempGraph").html());
+                    $("#gpu-table").html(x.find("#gpuStatus").html());
+                    $("#messages").html(x.find("#Messages").html());
+                    $("#MessageWindow").html(x.find("#MessageWindow").html());
+                    $("#RigIpForm").val($("#header").find("#Rig").text());
+                    $("#RigIpForm").data('RigId', RigId);
+                }
+            });
+        }
+
+        $(document).on("click", "#NewMessage", function () {
+            var rigHistoryMessage = $("#rigHistoryMessage").val();
+            $.ajax({
+                type: 'POST',
+                url: '/api/run/Grid/' + $('#currentBlockName').val() + '/?button=NewMessage',
+                data: { 'rigHistoryMessage': rigHistoryMessage, "RigIpForm": $("#RigIpForm").val(), "MessageId": $("#MessageId").val()},
+                success: function (data) {
+                    reload();
+                }
+            });
+        });
+
+        $(document).on("click", "#btnStopRig", function () {
+            var rigHistoryMessage = $("#rigHistoryMessage").val();
+            $.ajax({
+                type: 'POST',
+                url: '/api/run/Grid/' + $('#currentBlockName').val() + '/?button=btnStopRig',
+                data: { 'rigHistoryMessage': rigHistoryMessage, "RigIpForm": $("#RigIpForm").val() },
+                success: function (data) {
+                    reload();
+                }
+            });
+        });
+        $(document).on("click", "#btnStartRig", function () {
+            var rigHistoryMessage = $("#rigHistoryMessage").val();
+            $.ajax({
+                type: 'POST',
+                url: '/api/run/Grid/' + $('#currentBlockName').val() + '/?button=btnStartRig',
+                data: { 'rigHistoryMessage': rigHistoryMessage, "RigIpForm": $("#RigIpForm").val() },
+                success: function (data) {
+                    reload();
+                }
+            });
+        }); $(document).on("click", "#btnRestartRig", function () {
+            var rigHistoryMessage = $("#rigHistoryMessage").val();
+            var modelId = new URL(window.location.href).searchParams.get("modelId");
+            $.ajax({
+                type: 'POST',
+                url: '/api/run/Grid/' + $('#currentBlockName').val() + '/?button=btnRestartRig',
+                data: { 'rigHistoryMessage': rigHistoryMessage, "RigIpForm": $("#RigIpForm").val(), "ContainerId": modelId },
+                success: function (data) {
+                    reload();
+                    alert("Rig has been restarted");
+                }
+            });
+        });
+
+        $(document).on("click", ".fa-pencil", function () {
+            var MsgId = $(this).attr('msgid');
+            $("#MessageId").val(MsgId);
+            var MsgTxt = $(this).parent().find(".reason-txt").html();
+            $("#HiddenMessageTxt").html(MsgTxt);
+            $("#CancelMsg").css("display", "block");
+            $("#HiddenMessage").css("display", "block");
+        });
+        $(document).on("click", "#CancelMsg", function () {
+            $("#MessageId").val("");
+            $("#rigHistoryMessage").val("");
+            $("#HiddenMessageTxt").html("");
+            $("#HiddenMessage").css("display", "none");
+            $("#CancelMsg").css("display", "none");
+        });
+    }
+
+
     var inlineSpinnerTemplate = '<div class="spinner-3"> <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div> </div>';
     if ($("#currentBlockName").val() == "VyjadreniKAuditu" || $("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "EditaceOpatreniVReseni" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem") {
         setTimeout(function () {
@@ -571,6 +975,8 @@ $(function () {
                 }
             });
         });
+
+       
         $("#uic_deputy_textbox").on("change", function (e) {
             var spinner = $(inlineSpinnerTemplate)
                 .attr({ id: "deputy_textbox_spinner" })
@@ -678,6 +1084,7 @@ $(function () {
         });
     }
 });
+
 function ShowAppNotification(text, type) {
     var type = type.toLowerCase() || "info";
     switch (type) {
@@ -952,6 +1359,18 @@ function RecalculatePanelDimensions(panel) {
     panel.width(panelWidth);
     panel.height(panelHeight);
 }
+function findGetParameter(parameterName) {
+    var result = null,
+        tmp = [];
+    location.search
+        .substr(1)
+        .split("&")
+        .forEach(function (item) {
+            tmp = item.split("=");
+            if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+        });
+    return result;
+}
 $(function () {
     $(document).on("click", ".mozaicForm [data-ajax='true']", function () {
         pageSpinner.show();
@@ -1033,8 +1452,34 @@ $(function () {
 
 var ModalDialogArray = [];
 var mozaicFormValidator;
+var lastSubmenu = null;
+var contentAreaTop = parseInt($("#userContentArea").css("top"));
+
 
 $(function () {
+    currentBlockName = $("#currentBlockDisplayName").val();
+    $("#appMenu li").each(function (index, element) {
+        menuLi = $(element);
+        if (menuLi.text().trim() == currentBlockName)
+            menuLi.addClass("active");
+    });
+    $("#appMenu .menu-link").on("click", function () {
+        var clickedSubmenu = $(this).attr("data-menu-link-for");
+        if (lastSubmenu == clickedSubmenu){
+            $("#" + clickedSubmenu).toggle();
+        }
+        else {
+            $(".asMenuArea .submenu").hide();
+            $("#" + clickedSubmenu).show();
+        }
+        if ($(".submenu").is(":visible")) {
+            $("#userContentArea").css("top", $(".submenu").height() + contentAreaTop + "px" );
+        }
+        else {
+            $("#userContentArea").css("top", contentAreaTop + "px");
+        }
+        lastSubmenu = clickedSubmenu;
+    });
     $("#hideMenuIcon").on("click", function () {
         $(document.body).addClass("leftBarHidden");
     });
@@ -1530,9 +1975,8 @@ var BootstrapUserInit = {
             .on('select.dt deselect.dt', '.data-table', self.DataTable.onSearch);
 
         self.DataTable.init();
-        self.EventCalendar.init();
         self.loadValidators();
-        
+
         $(".closeAlertIcon").on("click", function () {
             //$("#upperPanel, #lowerPanel, #minimizedUpperPanel, #userContentArea").css({ top: "-=" + newNotification.outerHeight() + "px" });
             $(this).parents(".app-alert").remove();
@@ -1542,11 +1986,9 @@ var BootstrapUserInit = {
                 RecalculateMozaicToolboxHeight();
             }
         });
-
     },
 
-    confirm: function(message, callbackTrue, callbackFalse, context)
-    {
+    confirm: function (message, callbackTrue, callbackFalse, context) {
         var modal = $('<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog"></div>');
         var modalDialog = $('<div class="modal-dialog" role="document"></div>');
         var modalContent = $('<div class="modal-content"></div>');
@@ -1611,10 +2053,21 @@ var BootstrapUserInit = {
                     });
 
                 }
-                var columns = [];
-                table.find('tr:eq(0) th').each(function () {
-                    columns.push({ data: $(this).text() });
-                });
+
+                //Select extension init
+                if (table.data('dtselect') == '1') {
+                    table.find("thead tr").prepend("<th class='select-head'><input type='checkbox' id='selAll'></th>");
+                    table.find("tfoot tr").prepend("<th>Select All</th>");
+                    table.find("tbody tr").prepend("<td></td>");
+                    $("th.select-head > input[type='checkbox']").on("change", function () {
+                        var cb_checked = $("th.select-head > input[type='checkbox']").prop("checked");
+                        if (cb_checked)
+                            $(this).parents(".data-table").DataTable().rows().select();
+                        else
+                            $(this).parents(".data-table").DataTable().rows().deselect();
+                    });
+
+                }
 
                 table.DataTable({
                     columnDefs: table.data('dtselect') ? [{
@@ -1628,16 +2081,12 @@ var BootstrapUserInit = {
                     } : false,
                     //order: [[ 1, 'asc' ]],
                     paging: table.data('dtpaging') == '1',
-                    pageLength: 20,
+                    pageLength: 50,
                     lengthMenu: [[10, 20, 50, 100, 200, 500, 1000, -1], [10, 20, 50, 100, 200, 500, 1000, 'Vše']],
                     info: table.data('dtinfo') == '1',
                     filter: table.data('dtfilter') == '1' || table.data('dtcolumnfilter') == '1',
                     ordering: table.data('dtordering') == '1',
                     order: table.data('dtorder') ? eval(table.data('dtorder')) : [[0, 'desc']],
-                    processing: table.data('dtserverside') == '1',
-                    serverSide: table.data('dtserverside') == '1',
-                    ajax: table.data('dtserverside') == '1' ? { url: "/api/run" + location.pathname + '?button=' + table.attr('id'), type: 'POST' } : null,
-                    columns: columns,
                     language: {
                         sEmptyTable: 'Table contains no data',
                         sInfo: 'Showing _START_ to _END_ of total _TOTAL_ entries',
@@ -1681,13 +2130,13 @@ var BootstrapUserInit = {
                         if (title == "Action" || title == "Select All")
                             $(this).html("");
                         else
-                            $(this).html('<input type="text" placeholder="" />');
+                            $(this).html('<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />');
                     });
                 }
                 else {
                     table.find('> tfoot').remove();
                 }
-                
+
                 table.css("background-image", "initial");
                 table.children("thead").css("visibility", "visible");
                 table.children("tbody").css("visibility", "visible");
@@ -1756,361 +2205,7 @@ var BootstrapUserInit = {
             })
         },
 
-        },
-
-    /******************************************************/
-    /* Event calendar                                     */
-    /******************************************************/
-    EventCalendar: {
-
-        DEFAULT_HEADER_COMPONENTS: {
-            DatePickerIcon: "<span class='cContHeaderButton cContHeaderDatePickerIcon clickableLink cs-icon-Calendar'></span>",
-            PreviousButton: "<span class='cContHeaderButton cContHeaderNavButton cContHeaderPrevButton clickableLink cs-icon-Prev'></span>",
-            NextButton: "<span class='cContHeaderButton cContHeaderNavButton cContHeaderNextButton clickableLink cs-icon-Next'></span>",
-            TodayButton: "<span class='cContHeaderButton cContHeaderToday clickableLink'></span>",
-            HeaderLabel: "<span class='cContHeaderLabelOuter'><span class='cContHeaderLabel'></span></span>",
-            HeaderLabelWithDropdownMenuArrow: "<span class='cContHeaderLabelOuter clickableLink'><span class='cContHeaderLabel'></span><span class='cContHeaderButton cContHeaderDropdownMenuArrow'></span></span>",
-            MenuSegmentedTab: "<span class='cContHeaderMenuSegmentedTab'></span>",
-            MenuDropdownIcon: "<span class='cContHeaderButton cContHeaderMenuButton clickableLink'>&#9776;</span>",
-            FullscreenButton: function (isFullscreen) {
-                var sIconClass = (isFullscreen) ? "cs-icon-Contract" : "cs-icon-Expand";
-                return "<span class='cContHeaderButton cContHeaderFullscreen clickableLink " + sIconClass + "'></span>";
-            }
-        },
-
-        DEFAULT_DURATION_STRINGS: {
-            y: ["year ", "years "],
-            M: ["month ", "months "],
-            w: ["w ", "w "],
-            d: ["d ", "d "],
-            h: ["h ", "h "],
-            m: ["m ", "m "],
-            s: ["s ", "s "]
-        },
-
-        init: function () {
-            $('.event-calendar').each(function () {
-                var elm = $(this);
-                var cal = elm.CalenStyle(window[this.id + "Options"]);
-                
-                setTimeout(function () {
-                    BootstrapUserInit.EventCalendar.adjustList.apply(cal);
-                }, 0);
-                $(window).resize(function () {
-                    BootstrapUserInit.EventCalendar.adjustList.apply(cal);
-                });
-            });
-        },
-
-        renderFilters: function (filterBarElement, eventFilterCriteria, eventFilterCount)
-        {
-            var self = this,
-                tempFC = JSON.stringify(eventFilterCriteria),
-                tempFCJ = $.parseJSON(tempFC),
-                hasCount = (eventFilterCount != null) ? ((eventFilterCount.length > 0) ? true : false) : false;
-
-            var col = $('<div class="col-xs-12 event-calendar-filters"></div>');
-            col.append('<h4>Filters</h4>');
-
-            $(filterBarElement).html('').append(col);
-
-            for (var i = 0; i < eventFilterCriteria.length; i++) {
-                var filter = eventFilterCriteria[i],
-                    keyName = filter['keyName'],
-                    displayName = filter['keyDisplayName'] || keyName,
-                    dataType = filter['dataType'],
-                    values = filter['values'],
-                    selectedValues = filter['selectedValues'];
-
-                var filterCountList;
-                for (var j = 0; j < eventFilterCount.length; j++) {
-                    var filterCount = eventFilterCount[j];
-                    if (filterCount['keyName'] == keyName) {
-                        filterCountList = filterCount;
-                        break;
-                    }
-                }
-
-                var panel = $('<div class="panel panel-default"></div>');
-                var header = $('<div class="panel-heading" data-filterkey="' + keyName + '">' + displayName + '</div>');
-                var body = $('<div class="panel-body"></div>');
-                
-                for (var j = 0; j < values.length; j++) {
-                    var value = values[j];
-                    var valueCount = hasCount ? filterCountList[value] : 0;
-
-                    var isChecked = "";
-                    for (var k = 0; k < selectedValues.length; k++) {
-                        if (value == selectedValues[k]) {
-                            isChecked = "checked";
-                            break;
-                        }
-                    }
-
-                    var div = $('<div class="checkbox"></div>');
-                    var label = $('<label></label>');
-                    var chb = $('<input type="checkbox" value="' + value + '" ' + isChecked + '>');
-
-                    label.append(chb).append(value);
-                    div.append(label);
-
-                    if (hasCount) {
-                        label.append(' (' + valueCount + ')');
-                    }
-                    body.append(div);
-                }
-                panel.append(header);
-                panel.append(body);
-
-                col.append(panel);
-            }
-
-            $('input[type="checkbox"]', col).change(function () {
-                var $this = $(this),
-                    isChecked = $this.is(':checked'),
-                    value = $this.val(),
-                    $parent = $this.closest('.panel-body'),
-                    childCheckboxList = $parent.find("input[type='checkbox']"),
-                    keyName = $parent.prev().data('filterkey');
-
-                for (var i = 0; i < eventFilterCriteria.length; i++) {
-                    var filter = eventFilterCriteria[i];
-                    if ($.cf.compareStrings(filter["keyName"], keyName)) {
-                        var selectedList = new Array();
-                        for (var j = 0; j < childCheckboxList.length; j++) {
-                            var $checkbox = childCheckboxList.eq(j);
-                            if ($checkbox.is(':checked'))
-                                selectedList.push($checkbox.val());
-                        }
-
-                        eventFilterCriteria[i]["selectedValues"] = selectedList;
-                        self.applyFilter(eventFilterCriteria, []);
-                        break;
-                    }
-                }
-            });
-        },
-
-        getSlotTooltipContent: function(slotAvailability) {
-            if (slotAvailability.status === "Busy")
-                return "";
-            else if (slotAvailability.status === "Free") {
-                if (slotAvailability.count === undefined || slotAvailability.count === null)
-                    return "<div class=cavTooltipBookNow>Book Now</div>";
-                else
-                    return "<div class=cavTooltipSlotCount>" + slotAvailability.count + " slots available</div><div class=cavTooltipBookNow>Book Now</div>";
-            }
-        },
-
-        defaultEventDetail: function (visibleView, selector, event) {
-            var calendar = this;
-            console.log(calendar);
-            $(calendar.elem).find(selector).popover({
-                placement: 'top',
-                trigger: 'manual',
-                html: true,
-                container: 'body',
-                content: function () {
-                    var tooltipContentData = $(this).data('tooltipcontent'),
-                        title = tooltipContentData.title || '',
-                        startTime = tooltipContentData.startDateTime || '',
-                        endTime = tooltipContentData.endDateTime || '',
-                        description = event.desc || '',
-                        url = event.url || '',
-                        time = startTime + ((endTime !== '') ? (' - ' + endTime) : "");
-
-                    var body = $('<div></div>');
-                    body.append('<div class="cTooltipTitle">' + title + '</div>');
-                    body.append('<p><time class="cTooltipTime">' + time + '</time></p>');
-                    if (description) {
-                        body.append('<div class="cTooltipDescription">' + description + '</div>');
-                    }
-                    if (url) {
-                        body.append('<hr />');
-                        body.append('<div class="text-center"><a href="' + url + '" class="btn btn-default text-white">Detail</a></div>');
-                    }
-                    return body[0];
-                }
-            });
-
-            $(calendar.elem).find(selector).popover('show');
-
-            $(document).one('click', function () {
-                $('.popover').remove();
-            });
-        },
-
-        adjustList: function () {
-            $('.elem-CalenStyle').each(function () {
-                var eventWidth = $('.cListOuterCont', this).width(),
-                    eventColorWidth = $('.cListEventColor', this).outerWidth(true),
-                    eventIconWidth = $('.cListEventIcon span', this).outerWidth(true),
-                    timeItems = $('.cListEventTime span', this),
-                    actionItems = $('.cListEventActions a', this);
-                console.log(eventWidth);
-                var timeMaxWidth = timeItems.length ? Math.max.apply(null, timeItems.map(function () {
-                    return Math.ceil($(this).outerWidth(true));
-                }).get()) : 0;
-                timeMaxWidth += 10;
-
-                var actionMaxWidth = actionItems.length ? Math.max.apply(null, actionItems.map(function () {
-                    return Math.ceil($(this).outerWidth(true));
-                }).get()) : 0;
-                actionMaxWidth += 10;
-
-                $('.cListEventTime', this).css({ 'width': timeMaxWidth });
-                $('.cListEventActions', this).css({ 'width': actionMaxWidth });
-
-                console.log(eventColorWidth, eventIconWidth, timeMaxWidth, actionMaxWidth);
-
-                var eventTitleWidth = eventWidth - (eventColorWidth + eventIconWidth + timeMaxWidth + actionMaxWidth) - 22;
-                $('.cListEventTitle').css({ 'width': eventTitleWidth });
-            });
-        },
-
-        displayEventsForPeriodInList: function (listStartDate, listEndDate) {
-            var eventId = 0, eventCount = 0;
-            var viewDetails = new Array();
-
-            if (this.compareDates(listStartDate, listEndDate) == 0) {
-                var viewDetail = new Object();
-                viewDetail.date = new Date(listStartDate);
-                var tempVSDate = this.setDateInFormat({ "date": listStartDate }, "START"),
-                    tempVEDate = this.setDateInFormat({ "date": listStartDate }, "END");
-                viewDetail.events = this.getArrayOfEventsForView(tempVSDate, tempVEDate);
-                viewDetails.push(viewDetail);
-                eventCount += viewDetail.events.length;
-            }
-            else {
-                var tempDate = new Date(listStartDate);
-                while (this.compareDates(tempDate, listEndDate) != 0) {
-                    var viewDetail = new Object();
-                    viewDetail.date = new Date(tempDate);
-                    var tempVSDate = this.setDateInFormat({ "date": tempDate }, "START"),
-                        tempVEDate = this.setDateInFormat({ "date": tempDate }, "END");
-                    viewDetail.events = this.getArrayOfEventsForView(tempVSDate, tempVEDate);
-                    viewDetails.push(viewDetail);
-                    eventCount += viewDetail.events.length;
-
-                    tempDate.setDate(tempDate.getDate() + 1);
-                }
-            }
-
-            var table = $('<table class="table table-condensed table-striped"></table>');
-            var body = $('<tbody></tbody>');
-            
-            if (eventCount > 0) {
-                for (var i = 0; i < viewDetails.length; i++) {
-                    var viewDetail = viewDetails[i],
-                        viewDate = viewDetail.date,
-                        eventList = viewDetail.events,
-                        colspan = this.setting.hideEventIcon[this.setting.visibleView] ? 3 : 4;
-
-                    if (viewDetails.length > 1) {
-                        var fullDate = this.getDateInFormat({ "date": viewDate }, "DDD MMM dd, yyyy", false, true);
-                        var dateId = "Date-" + fullDate;
-                        body.append("<tr><th colspan='" + colspan + "'><div id='" + dateId + "' class='cListDate'>" + fullDate + "</div></th></tr>");
-                    }
-
-                    if (eventList.length > 0) {
-                        for (var j = 0; j < eventList.length; j++) {
-                            var event = eventList[j],
-                                startDateTime = null, endDateTime = null,
-                                isAllDay = 0, title = "", url = "", eventColor = "", desc = "",
-                                isMarked = false;
-
-                            if (event.start != null) startDateTime = event.start;
-                            if (event.end != null) endDateTime = event.end;
-                            if (event.isAllDay != null) isAllDay = event.isAllDay;
-                            if (event.title != null) title = event.title;
-                            if (event.desc !== null) desc = event.desc;
-                            if (event.url != null) url = event.url;
-                            if (event.isMarked !== null) isMarked = event.isMarked;
-                            if (isMarked) isAllDay = true;
-
-                            var sArrEventDateTime = this.getEventDateTimeDataForAgendaView(startDateTime, endDateTime, isAllDay, viewDate, "cListEventTime"),
-                                sEventDateTime = sArrEventDateTime[0];
-                            if (sEventDateTime === "")
-                                sEventDateTime = "All Day";
-
-                            eventColor = event.fromSingleColor ? event.textColor : event.backgroundColor;
-                            eventColor = ($.cf.compareStrings(eventColor, "") || $.cf.compareStrings(eventColor, "transparent")) ? "transparent" : eventColor;
-                            var idAttr = "Event" + (++eventId),
-                                sStyleColorHeight = sArrEventDateTime[1],
-                                icon, iconStyle,
-                                eventClass = "cListEvent",
-                                fontIconClass;
-
-                            if (isMarked) {
-                                eventClass += " cMarkedDayEvent";
-                                icon = ($.cf.isValid(event.icon) && event.icon !== "Dot") ? event.icon : "cs-icon-Mark";
-                                iconStyle = "background: " + eventColor + ";";
-                                fontIconClass = "cListEventIconFont " + icon;
-                            }
-                            else {
-                                icon = $.cf.isValid(event.icon) ? event.icon : this.setting.eventIcon;
-                                iconStyle = "background: " + eventColor + "; ";
-                                fontIconClass = $.cf.compareStrings(icon, "Dot") ? "cListEventIconDot" : "cListEventIconFont " + icon;
-                            }
-
-                            if ($.cf.compareStrings(this.setting.visibleView, "DayEventListView") && $.cf.isValid(event.status)) {
-                                fontIconClass += $.cf.compareStrings(icon, "Dot") ? " cListEventIconDotStatus" : " cListEventIconFontStatus";
-                                iconStyle += "border-color: " + event.statusColor + ";";
-                            }
-
-
-                            var row = $('<tr></tr>');
-                            row.attr('id', idAttr).addClass(eventClass);
-
-                            row.append('<td class="cListEventColor"><span style="background:' + eventColor + '; height:' + sStyleColorHeight + ';"></span></td>');
-                            row.append('<td class="cListEventTime">' + sEventDateTime + '</td>');
-
-                            if (isMarked) {
-                                row.append('<td class="cListEventIcon"><span class="' + fontIconClass + '" style="' + iconStyle + '"></span></td>');
-                            }
-                            else {
-                                if (!this.setting.hideEventIcon[this.setting.visibleView]) {
-                                    if ($.cf.compareStrings(icon, "Dot"))
-                                        row.append('<td class="cListEventIcon"><span class="' + fontIconClass + '" style="' + iconStyle + '"></span></td>');
-                                    else {
-                                        fontIconClass = "cListEventIconFont " + ($.cf.compareStrings(this.setting.visibleView, "DayEventListView") && $.cf.isValid(event.status) ? "cListEventIconFontStatus " : "") + icon;
-                                        row.append('<td class="cListEventIcon"><span class="' + fontIconClass + '" style="' + iconStyle + '"></span></td>');
-                                    }
-                                }
-                            }
-
-                            var cell = $('<td class="cListEventContent"></td>');
-                            cell.append('<div class="cListEventTitle">' + title + '</div>');
-                            cell.append('<div class="cListEventDesc">' + desc + '</div>');
-
-                            cell.appendTo(row);
-
-                            var action = $('<td class="cListEventActions"></td>');
-                            if (url) {
-                                action.append('<a href="' + url + '" title="Detail" class="btn btn-default">Detail</a>');
-                            }
-                            action.appendTo(row);
-
-                            row.appendTo(body);
-                        }
-                    }
-                    else {
-                        body.append('<tr><td colspan="' + colspan + '" class="cEmptyList">No events</td></tr>');
-                    }
-                }
-            }
-            else {
-                body.append('<tr><td>No events</td></tr>');
-            }
-            body.appendTo(table);
-
-            return table[0];
-        }
     },
-
-    /******************************************************/
-    /* Validators                                         */
-    /******************************************************/
 
     loadValidators: function () {
         $.extend($.validator.methods, {

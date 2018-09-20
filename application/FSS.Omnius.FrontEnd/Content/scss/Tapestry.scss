@@ -39,6 +39,7 @@ body.tapestryModule {
             left: 600px;
             top: 39px;
         }
+
         #tapestryLibraryArea {
             position: absolute;
             left: 66px;
@@ -95,6 +96,7 @@ body.tapestryModule {
                 border-right: 5px solid #3a3a3a;
                 white-space: nowrap;
             }
+
             .librarySearchToggler {
                 border: none;
                 float: right;
@@ -102,9 +104,11 @@ body.tapestryModule {
                 height: 30px;
                 background-color: #f2f2f3;
             }
+
             .librarySearch.hidden {
                 display: none;
             }
+
             .librarySearch.shown {
                 display: block;
                 width: 100%;
@@ -121,6 +125,7 @@ body.tapestryModule {
                 border-right: 5px solid #3a3a3a;
                 white-space: nowrap;
             }
+
             .libraryItem.highlighted {
                 background-color: #84c441;
                 color: #425b33;
@@ -138,6 +143,48 @@ body.tapestryModule {
             background: rgba(0, 0, 0, 0.8);
             z-index: 1100;
             display: none;
+        }
+
+        .debug {
+            padding: 10px;
+            font-size: 20px;
+
+            span.fa {
+                margin-left: 10px;
+                cursor: pointer;
+
+                &.debug-run {
+                    color: #07b100;
+                }
+            }
+
+            .debug-input {
+                input {
+                    width: 50%;
+                }
+            }
+
+            .debug-status {
+                &.building {
+                    color: #855d00
+                }
+
+                &.waiting {
+                    color: #3b3b3b;
+                }
+
+                &.running {
+                    color: #00548b
+                }
+
+                &.error {
+                    color: #c80000;
+                }
+
+                &.finished {
+                    color: #07b100;
+                }
+            }
         }
 
         #tapestryLeftBar {
@@ -360,7 +407,8 @@ body.tapestryModule {
             .activeItem {
                 box-shadow: 0 0 0px 2px green;
             }
-	    .isMatch {
+
+            .isMatch {
                 box-shadow: 0 0 0 3px #c2b52b !important;
             }
 
@@ -495,6 +543,7 @@ body.tapestryModule {
                 }
 
                 .scrollArea {
+                    position: relative;
                     width: 6000px;
                     height: 290px;
                 }
@@ -530,6 +579,7 @@ body.tapestryModule {
                 }
 
                 .scrollArea {
+                    position: relative;
                     width: 6000px;
                     height: 4000px;
                 }
@@ -566,6 +616,24 @@ body.tapestryModule {
                         top: 0px;
                         right: 0px;
                         bottom: 0px;
+
+
+                        .debug-active {
+                            box-shadow: 0 0 7px 7px #16d900;
+                        }
+
+                        .debug-passed {
+                            box-shadow: 0 0 5px 5px #3b3b3b;
+                        }
+
+                        .debug-error {
+                            box-shadow: 0 0 10px 10px #c80000;
+                        }
+
+                        .tooltip-inner {
+                            white-space: pre;
+                            max-width: none;
+                        }
                     }
 
                     .swimlane {
@@ -942,6 +1010,7 @@ body.tapestryModule {
                     color: red;
                     cursor: pointer;
                 }
+
                 span.fa-plus {
                     cursor: pointer;
                 }
@@ -960,8 +1029,10 @@ body.tapestryModule {
             font-weight: bold;
             padding: 2px 5px;
         }
+
         .ui-menu-item {
             padding: 1px 15px;
+
             &.ui-state-focus {
                 padding: 0px 14px;
             }
@@ -1040,4 +1111,13 @@ body.tapestryModule {
             top: 361px;
         }
     }
+}
+
+.nu-selection-box {
+    border: 1px dotted #BBB;
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.nu-selected {
+    border: 2px dashed #000 !important;
 }
