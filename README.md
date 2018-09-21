@@ -5,11 +5,11 @@ A web based low-code application platform.
 Installation instructions
 -------------------------
 
-1 - Clone the repository
-2 - Open it in Visual Studio
-3 - Set your database connection string as DefaultConnection on line 191 in Web.config (supported database engines are MySQL, MariaDB and MS SQL Server)
-4 - Run migrations on the Modules project (this will create a default account and a sample application)
-5 - Set Frontend as startup project and run it
+1 - Clone the repository  
+2 - Open it in Visual Studio  
+3 - Set your database connection string as DefaultConnection on line 191 in Web.config (supported database engines are MySQL, MariaDB and MS SQL Server)  
+4 - Run migrations on the Modules project (this will create a default account and a sample application)  
+5 - Set Frontend as startup project and run it  
 
 ### Default account credentials
 User: `admin`  
