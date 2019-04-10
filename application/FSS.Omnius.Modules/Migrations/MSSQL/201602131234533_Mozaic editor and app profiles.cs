@@ -47,14 +47,14 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
                 .Index(t => t.MozaicEditorPage_Id);
             
             AddColumn("dbo.Master_Applications", "TapestryDesignerRootMetablock_Id", c => c.Int());
-            AddColumn("dbo.Entitron_DbSchemeCommit", "Application_Id", c => c.Int());
+            AddColumn("dbo.Entitron_DbSchemeCommit", "ApplicationId", c => c.Int());
             AddColumn("dbo.TapestryDesigner_Apps", "RootMetablock_Id", c => c.Int());
             AlterColumn("dbo.TapestryDesigner_Apps", "Id", c => c.Int(nullable: false, identity: true));
             AddPrimaryKey("dbo.TapestryDesigner_Apps", "Id");
             CreateIndex("dbo.Master_Applications", "TapestryDesignerRootMetablock_Id");
-            CreateIndex("dbo.Entitron_DbSchemeCommit", "Application_Id");
+            CreateIndex("dbo.Entitron_DbSchemeCommit", "ApplicationId");
             CreateIndex("dbo.TapestryDesigner_Apps", "RootMetablock_Id");
-            AddForeignKey("dbo.Entitron_DbSchemeCommit", "Application_Id", "dbo.Master_Applications", "Id");
+            AddForeignKey("dbo.Entitron_DbSchemeCommit", "ApplicationId", "dbo.Master_Applications", "Id");
             AddForeignKey("dbo.TapestryDesigner_Apps", "RootMetablock_Id", "dbo.TapestryDesigner_Metablocks", "Id");
             AddForeignKey("dbo.Master_Applications", "TapestryDesignerRootMetablock_Id", "dbo.TapestryDesigner_Metablocks", "Id");
         }
@@ -65,16 +65,16 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
             DropForeignKey("dbo.TapestryDesigner_Apps", "RootMetablock_Id", "dbo.TapestryDesigner_Metablocks");
             DropForeignKey("dbo.MozaicEditor_Pages", "ParentApp_Id", "dbo.Master_Applications");
             DropForeignKey("dbo.MozaicEditor_Components", "MozaicEditorPage_Id", "dbo.MozaicEditor_Pages");
-            DropForeignKey("dbo.Entitron_DbSchemeCommit", "Application_Id", "dbo.Master_Applications");
+            DropForeignKey("dbo.Entitron_DbSchemeCommit", "ApplicationId", "dbo.Master_Applications");
             DropIndex("dbo.TapestryDesigner_Apps", new[] { "RootMetablock_Id" });
             DropIndex("dbo.MozaicEditor_Components", new[] { "MozaicEditorPage_Id" });
             DropIndex("dbo.MozaicEditor_Pages", new[] { "ParentApp_Id" });
-            DropIndex("dbo.Entitron_DbSchemeCommit", new[] { "Application_Id" });
+            DropIndex("dbo.Entitron_DbSchemeCommit", new[] { "ApplicationId" });
             DropIndex("dbo.Master_Applications", new[] { "TapestryDesignerRootMetablock_Id" });
             DropPrimaryKey("dbo.TapestryDesigner_Apps");
             AlterColumn("dbo.TapestryDesigner_Apps", "Id", c => c.Int(nullable: false));
             DropColumn("dbo.TapestryDesigner_Apps", "RootMetablock_Id");
-            DropColumn("dbo.Entitron_DbSchemeCommit", "Application_Id");
+            DropColumn("dbo.Entitron_DbSchemeCommit", "ApplicationId");
             DropColumn("dbo.Master_Applications", "TapestryDesignerRootMetablock_Id");
             DropTable("dbo.MozaicEditor_Components");
             DropTable("dbo.MozaicEditor_Pages");

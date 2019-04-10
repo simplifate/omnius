@@ -25,8 +25,6 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
             DropIndex("dbo.Mozaic_Template", new[] { "CategoryId" });
             DropIndex("dbo.Mozaic_CssPages", new[] { "CssId" });
             DropIndex("dbo.Mozaic_CssPages", new[] { "PageId" });
-            RenameColumn(table: "dbo.Entitron_DbSchemeCommit", name: "Application_Id", newName: "ApplicationId");
-            RenameIndex(table: "dbo.Entitron_DbSchemeCommit", name: "IX_Application_Id", newName: "IX_ApplicationId");
             AlterColumn("dbo.Hermes_Email_Template", "AppId", c => c.Int(nullable: false));
             AlterColumn("dbo.Hermes_Email_Template_Content", "Hermes_Email_Template_Id", c => c.Int(nullable: false));
             AlterColumn("dbo.Hermes_Email_Placeholder", "Hermes_Email_Template_Id", c => c.Int(nullable: false));
@@ -141,8 +139,6 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
             AlterColumn("dbo.Hermes_Email_Placeholder", "Hermes_Email_Template_Id", c => c.Int());
             AlterColumn("dbo.Hermes_Email_Template_Content", "Hermes_Email_Template_Id", c => c.Int());
             AlterColumn("dbo.Hermes_Email_Template", "AppId", c => c.Int());
-            RenameIndex(table: "dbo.Entitron_DbSchemeCommit", name: "IX_ApplicationId", newName: "IX_Application_Id");
-            RenameColumn(table: "dbo.Entitron_DbSchemeCommit", name: "ApplicationId", newName: "Application_Id");
             CreateIndex("dbo.Mozaic_CssPages", "PageId");
             CreateIndex("dbo.Mozaic_CssPages", "CssId");
             CreateIndex("dbo.Mozaic_Template", "CategoryId");

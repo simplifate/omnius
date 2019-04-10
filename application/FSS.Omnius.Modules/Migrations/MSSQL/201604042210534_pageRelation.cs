@@ -23,7 +23,7 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
                 "DELETE FROM [dbo].[Tapestry_WorkFlow] WHERE [ApplicationId] IN (SELECT Id FROM deleted);" +
                 "UPDATE [dbo].[TapestryDesigner_Metablocks] SET [ParentMetablock_Id] = NULL WHERE [ParentAppId] IN (SELECT Id FROM deleted);" +
                 "DELETE FROM [dbo].[TapestryDesigner_Metablocks] WHERE [ParentAppId] IN (SELECT Id FROM deleted);" +
-                "DELETE FROM [dbo].[Entitron_DbSchemeCommit] WHERE [Application_Id] IN (SELECT Id FROM deleted);" +
+                "DELETE FROM [dbo].[Entitron_DbSchemeCommit] WHERE [ApplicationId] IN (SELECT Id FROM deleted);" +
                 "UPDATE [dbo].[Persona_ADgroups] SET [ApplicationId] = NULL WHERE [ApplicationId] IN (SELECT Id FROM deleted);" +
                 "UPDATE [dbo].[Entitron___META] SET [ApplicationId] = NULL WHERE [ApplicationId] IN (SELECT Id FROM deleted);" +
                 "DELETE FROM [dbo].[MozaicEditor_Pages] WHERE [ParentApp_Id] IN (SELECT Id FROM deleted);" +
@@ -42,7 +42,7 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
                 "DELETE FROM [dbo].[Tapestry_WorkFlow] WHERE [ApplicationId] IN (SELECT Id FROM deleted);" +
                 "UPDATE [dbo].[TapestryDesigner_Metablocks] SET [ParentMetablock_Id] = NULL WHERE [ParentAppId] IN (SELECT Id FROM deleted);" +
                 "DELETE FROM [dbo].[TapestryDesigner_Metablocks] WHERE [ParentAppId] IN (SELECT Id FROM deleted);" +
-                "DELETE FROM [dbo].[Entitron_DbSchemeCommit] WHERE [Application_Id] IN (SELECT Id FROM deleted);" +
+                "DELETE FROM [dbo].[Entitron_DbSchemeCommit] WHERE [ApplicationId] IN (SELECT Id FROM deleted);" +
                 "UPDATE [dbo].[Persona_ADgroups] SET [ApplicationId] = NULL WHERE [ApplicationId] IN (SELECT Id FROM deleted);" +
                 "UPDATE [dbo].[Entitron___META] SET [ApplicationId] = NULL WHERE [ApplicationId] IN (SELECT Id FROM deleted);" +
                 "DELETE FROM [dbo].[Master_Applications] WHERE Id IN (SELECT Id FROM deleted); END");

@@ -12,7 +12,7 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
             DropForeignKey("dbo.Tapestry_ActionRule", "SourceBlockId", "dbo.Tapestry_Blocks");
             DropForeignKey("dbo.TapestryDesigner_ConditionSets", "ConditionGroupId", "dbo.TapestryDesigner_ConditionGroups");
             DropForeignKey("dbo.Entitron_ColumnMetadata", "ApplicationId", "dbo.Master_Applications");
-            DropForeignKey("dbo.Entitron_DbSchemeCommit", "Application_Id", "dbo.Master_Applications");
+            DropForeignKey("dbo.Entitron_DbSchemeCommit", "ApplicationId", "dbo.Master_Applications");
             DropForeignKey("dbo.Hermes_Incoming_Email_Rule", "ApplicationId", "dbo.Master_Applications");
             DropForeignKey("dbo.Mozaic_Js", "ApplicationId", "dbo.Master_Applications");
             DropForeignKey("dbo.MozaicBootstrap_Page", "ParentApp_Id", "dbo.Master_Applications");
@@ -76,7 +76,7 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
             AddForeignKey("dbo.Tapestry_ActionRule", "SourceBlockId", "dbo.Tapestry_Blocks", "Id");
             AddForeignKey("dbo.TapestryDesigner_ConditionSets", "ConditionGroupId", "dbo.TapestryDesigner_ConditionGroups", "Id");
             AddForeignKey("dbo.Entitron_ColumnMetadata", "ApplicationId", "dbo.Master_Applications", "Id");
-            AddForeignKey("dbo.Entitron_DbSchemeCommit", "Application_Id", "dbo.Master_Applications", "Id");
+            AddForeignKey("dbo.Entitron_DbSchemeCommit", "ApplicationId", "dbo.Master_Applications", "Id");
             AddForeignKey("dbo.Hermes_Incoming_Email_Rule", "ApplicationId", "dbo.Master_Applications", "Id");
             AddForeignKey("dbo.Mozaic_Js", "ApplicationId", "dbo.Master_Applications", "Id");
             AddForeignKey("dbo.MozaicBootstrap_Page", "ParentApp_Id", "dbo.Master_Applications", "Id");
@@ -303,7 +303,7 @@ namespace FSS.Omnius.Modules.Migrations.MSSQL
             AddForeignKey("dbo.MozaicBootstrap_Page", "ParentApp_Id", "dbo.Master_Applications", "Id", cascadeDelete: true);
             AddForeignKey("dbo.Mozaic_Js", "ApplicationId", "dbo.Master_Applications", "Id", cascadeDelete: true);
             AddForeignKey("dbo.Hermes_Incoming_Email_Rule", "ApplicationId", "dbo.Master_Applications", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.Entitron_DbSchemeCommit", "Application_Id", "dbo.Master_Applications", "Id", cascadeDelete: true);
+            AddForeignKey("dbo.Entitron_DbSchemeCommit", "ApplicationId", "dbo.Master_Applications", "Id", cascadeDelete: true);
             AddForeignKey("dbo.Entitron_ColumnMetadata", "ApplicationId", "dbo.Master_Applications", "Id", cascadeDelete: true);
             AddForeignKey("dbo.TapestryDesigner_ConditionSets", "ConditionGroupId", "dbo.TapestryDesigner_ConditionGroups", "Id", cascadeDelete: true);
             AddForeignKey("dbo.Tapestry_ActionRule", "SourceBlockId", "dbo.Tapestry_Blocks", "Id", cascadeDelete: true);
